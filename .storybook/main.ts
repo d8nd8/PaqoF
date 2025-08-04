@@ -1,29 +1,45 @@
-import type { StorybookConfig } from '@storybook/react-vite';
+// .storybook/main.ts
+import path from 'path'
+import type { StorybookConfig } from '@storybook/react-vite'
+import svgr from 'vite-plugin-svgr'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+  stories: [
+    '../src/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
-  "addons": [
-    "@chromatic-com/storybook",
-    "@storybook/addon-docs",
-    "@storybook/addon-a11y",
-    "@storybook/addon-vitest",
-    "@storybook/addon-actions",
-    "@storybook/addon-essentials"
+  addons: [
+    '@chromatic-com/storybook',
+    '@storybook/addon-docs',
+    '@storybook/addon-a11y',
+    '@storybook/addon-vitest',
   ],
-  "framework": {
-    "name": "@storybook/react-vite",
-    "options": {}
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
   },
-  "typescript": {
-    "check": false,
-    "reactDocgen": "react-docgen-typescript",
-    "reactDocgenTypescriptOptions": {
-      "shouldExtractLiteralValuesFromEnum": true,
-      "propFilter": (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
-    },
-  }
-};
-export default config;
+  async viteFinal(baseConfig) {
+    baseConfig.resolve = {
+      ...(baseConfig.resolve || {}),
+      alias: {
+        ...(baseConfig.resolve?.alias as Record<string, string>),
+        '@icons': path.resolve(__dirname, '../src/assets/icons'),
+      },
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.svg'],
+    }
+
+    baseConfig.plugins = baseConfig.plugins || []
+    baseConfig.plugins.unshift(
+      tsconfigPaths(),
+      svgr({
+        include: '**/*.svg',
+        svgrOptions: { icon: true },
+      })
+    )
+
+    return baseConfig
+  },
+}
+
+export default config

@@ -3,8 +3,8 @@
     "target": "ESNext",
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "Node",
     "allowJs": false,
+    "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,16 +17,14 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
 
-    // Если вы хотите использовать абсолютные импорты из "src", раскомментируйте:
-    "baseUrl": "src"
-    // "paths": {
-    //   "*": ["*"]
-    // }
+    "baseUrl": "src",
+    "paths": {
+      "@/*":       ["*"],
+      "@icons/*":  ["assets/icons/*"],
+      "@images/*": ["assets/images/*"]
+    }
   },
-  "include": [
-    "src",
-    "types"
-  ],
+  "include": ["src", "src/global.d.ts", "vite-env.d.ts" ],
   "exclude": [
     "node_modules",
     "dist"

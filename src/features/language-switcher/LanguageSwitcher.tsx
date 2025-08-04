@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import CheckIcon from '../../../public/images/icons/check.svg?react';
+import CheckIcon from '@icons/check.svg?react';
 import * as S from './LanguageSwitcher.styled';
 import { BottomSheet } from '../../shared/components/BottomSheet/BottomSheet'
 

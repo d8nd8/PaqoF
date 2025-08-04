@@ -1,22 +1,23 @@
-/// <reference types="vitest/config" />
 import path, { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
+import  storybookTest  from '@storybook/addon-vitest/vitest-plugin';
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import svgr from 'vite-plugin-svgr'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const dirname =
   typeof __dirname !== 'undefined'
     ? __dirname
     : path.dirname(fileURLToPath(import.meta.url))
 
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   base: '/',
   resolve: {
     alias: {
       '@src': resolve(__dirname, './src'),
+      '@icons': path.resolve(__dirname, 'src/assets/icons'),
+      '@images': path.resolve(__dirname, 'src/assets/images'),
     },
   },
   build: {
@@ -32,6 +33,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    tsconfigPaths(),
     svgr({
       svgrOptions: {
         exportType: 'default',
@@ -53,6 +55,7 @@ export default defineConfig({
         plugins: [
           storybookTest({
             configDir: path.join(dirname, '.storybook'),
+            storybookScript: 'npm run storybook -- --ci',
           }),
         ],
         test: {

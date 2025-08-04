@@ -1,9 +1,9 @@
 export const colors = {
   // Text colors
   textPrimary: '#000000',
-  textSecondary: '#3C3C43', // 60% opacity
+  textSecondary: 'rgba(60, 60, 67, 0.60)', // 60% opacity
   textTertiary: '#3C3C43', // 30% opacity
-  textQuaternary: '#3C3C43', // 18% opacity
+  textQuaternary: 'rgba(60, 60, 67, 0.18)', // 18% opacity
 
   // Reverse Background
   reverseBackgroundPrimary: '#FFFFFF',
