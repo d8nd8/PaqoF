@@ -1,4 +1,4 @@
-import { useTelegram } from "../shared/hooks/useTelegram.ts"
+import { useTelegram } from "../shared/hooks/useTelegram"
 
 export const TelegramTest = () => {
     const {

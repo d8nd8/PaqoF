@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom'
-import {routes} from "../constants/routes.ts";
+import {routes} from "../constants/routes";
 
 
 

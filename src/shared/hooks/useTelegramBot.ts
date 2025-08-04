@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import WebApp from '@twa-dev/sdk'
-import {telegramBot} from "../api/telegram.ts";
+import {telegramBot} from "../api/telegram";
 
 export const useTelegramBot = () => {
     const [botInfo, setBotInfo] = useState<any>(null)

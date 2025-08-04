@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {useTelegramBot} from "../shared/hooks/useTelegramBot.ts";
+import {useTelegramBot} from "../shared/hooks/useTelegramBot";
 
 export const BotControlPage = () => {
     const {

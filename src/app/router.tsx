@@ -1,11 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { BaseLayout } from './layouts/BaseLayout.tsx'
-import { ErrorBoundary } from './components/ErrorBoundary.tsx'
-import { HydrateFallback } from './components/HydrateFallback.tsx'
-import { RouteHandler } from './components/RouteHandler.tsx'
-import { TelegramTest } from '../pages/TelegramTest.tsx'
-import { BotControlPage } from "../pages/BotControlPage.tsx"
+import { BaseLayout } from './layouts/BaseLayout'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { HydrateFallback } from './components/HydrateFallback'
+import { RouteHandler } from './components/RouteHandler'
+import { TelegramTest } from '../pages/TelegramTest'
+import { BotControlPage } from "../pages/BotControlPage"
 
 export const router = createBrowserRouter([
   {

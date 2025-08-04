@@ -4,7 +4,7 @@ import '@src/app/styles/general.scss'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {Root} from "./app/components/Root.tsx";
+import {Root} from "./app/components/Root";
 
 
 
