@@ -87,7 +87,7 @@ export const Footer = styled.div({
   padding: '0 14px 40px',
 });
 
-export const BottomButton = styled.button<{ $disabled?: boolean }>(({$disabled, theme}) => ({
+export const BottomButton = styled.button<{ $disabled?: boolean }>(({theme}) => ({
   width: '100%',
   padding: '16px',
   backgroundColor: theme.colors.primary500,
