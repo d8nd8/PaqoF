@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-export const CryptoListContainer = styled.div(({theme}) => ({
+export const CryptoListContainer = styled.div(({
   display: 'flex',
   flexDirection: 'column',
-  gap: '1px',
-  overflow: 'hidden'
+  gap: '14px',
+  overflow: 'hidden',
 }));
 
 export const CryptoItemContainer = styled.div(({theme}) => ({
@@ -12,6 +12,7 @@ export const CryptoItemContainer = styled.div(({theme}) => ({
   alignItems: 'center',
   padding: '14px',
   color: theme.colors.systemElevatedBackground,
+  backgroundColor: theme.colors.systemElevatedBackground,
   borderRadius: '14px',
   cursor: 'pointer',
   transition: 'background-color 0.2s ease',
@@ -40,7 +41,7 @@ export const CryptoIcon = styled.div<CryptoIconProps>(() => ({
   }
 }));
 
-export const CryptoIconText = styled.span(({theme}) => ({
+export const CryptoIconText = styled.span(() => ({
   fontSize: '13px',
   fontWeight: '600'
 }));
