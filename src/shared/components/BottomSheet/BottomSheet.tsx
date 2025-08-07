@@ -11,6 +11,9 @@ interface BottomSheetProps {
   isBottomButtonDisabled?: boolean;
   closeButtonText?: string;
   showBottomButton?: boolean;
+  status?: 'default' | 'success';
+  showCloseButton?: boolean;
+  showHeader?: boolean;
 }
 
 export const BottomSheet: React.FC<BottomSheetProps> = ({
@@ -22,7 +25,10 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
                                                           onBottomButtonClick,
                                                           isBottomButtonDisabled = false,
                                                           closeButtonText = 'Закрыть',
-                                                          showBottomButton = true
+                                                          showBottomButton = true,
+                                                          showCloseButton = true,
+                                                          status = 'default',
+                                                          showHeader = true,
                                                         }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -76,16 +82,20 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
         $isClosing={isClosing}
         onClick={handleOverlayClick}
       />
-      <S.Sheet $isVisible={isVisible && !isClosing} $isClosing={isClosing}>
-        <S.Handle onClick={handleClose} />
-        <S.Header>
-          <S.Title>{title}</S.Title>
-          <S.CloseButton onClick={handleClose}>{closeButtonText}</S.CloseButton>
-        </S.Header>
-        <S.Content>
-          {children}
+      <S.Sheet $isVisible={isVisible && !isClosing} $isClosing={isClosing} $status={status}>
+        <S.TopWrapper>
+          {showHeader && (
+          <S.Header>
+            <S.Title>{title}</S.Title>
+            {showCloseButton &&<S.CloseButton onClick={handleClose}>{closeButtonText}</S.CloseButton>}
+          </S.Header>
+          )}
+          <S.Content>
+            {children}
+          </S.Content>
 
-        </S.Content>
+        </S.TopWrapper>
+
         {showBottomButton && (
         <S.Footer>
           <S.BottomButton

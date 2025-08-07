@@ -1,0 +1,267 @@
+import styled from '@emotion/styled';
+
+export const PaymentFormContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '14px',
+  height: '100%'
+});
+
+export const PaymentDetails = styled.div(({theme}) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '14px',
+  padding: '14px',
+  backgroundColor: theme.colors.systemElevatedBackground,
+  borderRadius: '13px',
+}));
+
+export const DetailRow = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+export const DetailLabel = styled.span(({theme}) => ({
+  fontSize: '13px',
+  fontWeight: '400',
+  color: theme.colors.textSecondary,
+  lineHeight: '18px'
+}));
+
+export const DetailValue = styled.span(({theme}) => ({
+  fontSize: '13px',
+  fontWeight: '600',
+  color: theme.colors.neutral950,
+  lineHeight: '18px'
+}));
+
+export const CurrencySection = styled.div({
+});
+
+export const TotalSection = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+export const TotalLabel = styled.div(({theme}) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  fontSize: '17px',
+  lineHeight: '22px',
+  fontWeight: '600',
+  color: theme.colors.neutral950,
+}));
+
+export const CommissionNote = styled.span(({theme}) => ({
+  fontSize: '12px',
+  fontWeight: '400',
+  color: theme.colors.textTertiary,
+  lineHeight: '16px',
+}));
+
+export const TotalAmount = styled.div(({theme}) => ({
+  fontSize: '28px',
+  fontWeight: '700',
+  color: theme.colors.neutral950,
+  lineHeight: '34px'
+}));
+
+interface StatusContainerProps {
+  success?: boolean;
+}
+
+export const StatusContainer = styled.div<StatusContainerProps>(({ success = false, theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
+  paddingTop: '12px',
+  background: success ? 'linear-gradient(135deg, #A3D977 0%, #4CAF50 100%)' : 'transparent',
+  borderRadius: success ? '16px' : '0',
+  margin: success ? '-20px -20px 0' : '0',
+  color: theme.colors.neutral950,
+}));
+
+export const StatusHeader = styled.h2<{ success?: boolean }>(({ success = false, theme }) => ({
+  fontSize: '18px',
+  fontWeight: '600',
+  color: theme.colors.neutral950,
+  lineHeight: '22px',
+  marginBottom: '133px',
+}));
+
+export const StatusDate = styled.div(({theme}) => ({
+  fontSize: '14px',
+  fontWeight: '400',
+  color: theme.colors.textSecondary,
+  lineHeight: '18px'
+}));
+
+export const StatusAmount = styled.div(({theme}) => ({
+  fontSize: '32px',
+  fontWeight: '700',
+  color: theme.colors.neutral950,
+  lineHeight: '38px',
+  marginBottom: '33px',
+}));
+
+export const StatusDetails = styled.div(({theme}) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  width: '100%',
+  backgroundColor: theme.colors.systemElevatedBackground,
+  borderRadius: '12px',
+  padding: '16px',
+  marginBottom: '20px'
+}));
+
+// Error state styles
+export const ErrorIcon = styled.div(({theme}) => ({
+  width: '80px',
+  height: '80px',
+  backgroundColor: '#FF3B30',
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  margin: '20px 0'
+}));
+
+export const QRErrorIcon = styled.div(({theme}) => ({
+  fontSize: '40px',
+  color: '#ffffff',
+  fontWeight: '600'
+}));
+
+export const ErrorTitle = styled.h3(({theme}) => ({
+  fontSize: '20px',
+  fontWeight: '600',
+  color: '#000000',
+  margin: '10px 0',
+  lineHeight: '24px'
+}));
+
+export const ErrorDescription = styled.p(({theme}) => ({
+  fontSize: '16px',
+  fontWeight: '400',
+  color: '#8E8E93',
+  lineHeight: '22px',
+  margin: '0 0 20px',
+  maxWidth: '280px'
+}));
+
+// CurrencyButton styles (re-used from previous implementation)
+interface CurrencyButtonContainerProps {
+  disabled: boolean;
+  hasOptions: boolean;
+}
+
+export const CurrencyButtonContainer = styled.button<CurrencyButtonContainerProps>(({ disabled, hasOptions, theme }) => ({
+  width: '100%',
+  backgroundColor: '#ffffff',
+  border: '1px solid #E5E5E7',
+  borderRadius: '12px',
+  padding: '16px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  cursor: disabled || !hasOptions ? 'not-allowed' : 'pointer',
+  transition: 'all 0.2s ease',
+  opacity: disabled ? 0.6 : 1,
+
+  '&:hover': {
+    backgroundColor: disabled || !hasOptions ? '#ffffff' : '#f8f9fa',
+    borderColor: disabled || !hasOptions ? '#E5E5E7' : '#D1D5DB'
+  },
+
+  '&:active': {
+    transform: disabled || !hasOptions ? 'none' : 'scale(0.98)'
+  },
+
+  '&:focus': {
+    outline: 'none',
+    borderColor: hasOptions && !disabled ? '#4CAF50' : '#E5E5E7'
+  }
+}));
+
+export const CurrencyContent = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  flex: 1
+});
+
+interface CurrencyIconProps {
+  color?: string;
+  isUSDT?: boolean;
+}
+
+export const CurrencyIcon = styled.div<CurrencyIconProps>(({ color = '#4CAF50', isUSDT = false, theme }) => ({
+  width: '40px',
+  height: '40px',
+  borderRadius: '50%',
+  backgroundColor: isUSDT ? '#4CAF50' : color,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+
+  '& svg': {
+    width: isUSDT ? '24px' : '20px',
+    height: isUSDT ? '24px' : '20px',
+    fill: '#ffffff'
+  }
+}));
+
+export const CurrencyIconText = styled.span(({theme}) => ({
+  color: '#ffffff',
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '1'
+}));
+
+export const CurrencyInfo = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: '2px'
+});
+
+export const CurrencyName = styled.div(({theme}) => ({
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#000000',
+  lineHeight: '20px'
+}));
+
+export const CurrencyAmount = styled.div(({theme}) => ({
+  fontSize: '14px',
+  fontWeight: '400',
+  color: '#8E8E93',
+  lineHeight: '18px'
+}));
+
+export const PlaceholderText = styled.div(({theme}) => ({
+  fontSize: '16px',
+  fontWeight: '400',
+  color: '#8E8E93',
+  lineHeight: '20px'
+}));
+
+export const ChevronContainer = styled.div(({theme}) => ({
+  width: '20px',
+  height: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transform: 'rotate(-90deg)',
+
+  '& svg': {
+    width: '16px',
+    height: '16px',
+    fill: '#8E8E93'
+  }
+}));
