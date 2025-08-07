@@ -4,7 +4,7 @@ import { PaymentOverlay, type PaymentStep } from '@/features/payment-overlay/Pay
 import { type CryptoItemData } from '@/features/crypto-list/CryptoList';
 
 const meta: Meta<typeof PaymentOverlay> = {
-  title: 'Components/PaymentOverlay',
+  title: 'QRComponents/PaymentOverlay',
   component: PaymentOverlay,
   parameters: {
     layout: 'padded',

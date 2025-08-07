@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { OverlayTransactionDetails } from '@/features/overlay-transaction-details/OverlayTransactionDetails'
 
 const meta: Meta<typeof OverlayTransactionDetails> = {
-  title: 'Components/OverlayTransactionDetails',
+  title: 'HistoryComponents/OverlayTransactionDetails',
   component: OverlayTransactionDetails,
   parameters: {
     layout: 'fullscreen',
@@ -21,7 +21,6 @@ const meta: Meta<typeof OverlayTransactionDetails> = {
 export default meta;
 type Story = StoryObj<typeof OverlayTransactionDetails>;
 
-// Оплата (Withdraw)
 export const Withdraw: Story = {
   args: {
     isOpen: true,
@@ -47,7 +46,6 @@ export const Withdraw: Story = {
   },
 };
 
-// Пополнение (Deposit)
 export const Deposit: Story = {
   args: {
     isOpen: true,

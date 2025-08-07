@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { OverlayCommission } from '@/features/overlay-commission'
 
 const meta: Meta<typeof OverlayCommission> = {
-  title: 'Components/OverlayCommission',
+  title: 'ExternalWallet/OverlayCommission',
   component: OverlayCommission,
   parameters: {
     layout: 'padded',
