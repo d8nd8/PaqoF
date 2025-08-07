@@ -16,9 +16,16 @@ export interface CryptoItemData {
 interface CryptoItemProps {
   data: CryptoItemData;
   onClick?: (crypto: CryptoItemData) => void;
+  showRightSection?: boolean;
+  rightSection?: React.ReactNode;
 }
 
-const CryptoItem: React.FC<CryptoItemProps> = ({ data, onClick }) => {
+const CryptoItem: React.FC<CryptoItemProps> = ({
+                                                 data,
+                                                 onClick,
+                                                 showRightSection = true,
+                                                 rightSection
+                                               }) => {
   const handleClick = () => {
     onClick?.(data);
   };
@@ -46,10 +53,14 @@ const CryptoItem: React.FC<CryptoItemProps> = ({ data, onClick }) => {
         <S.CryptoRubles>{data.amountInRubles}</S.CryptoRubles>
       </S.CryptoInfo>
 
-      <S.CryptoAmount>
-        <S.CryptoAmountValue>{data.amount}</S.CryptoAmountValue>
-        <S.CryptoAmountInRubles>{data.amountInRubles}</S.CryptoAmountInRubles>
-      </S.CryptoAmount>
+      {showRightSection && (
+        rightSection || (
+          <S.CryptoAmount>
+            <S.CryptoAmountValue>{data.amount}</S.CryptoAmountValue>
+            <S.CryptoAmountInRubles>{data.amountInRubles}</S.CryptoAmountInRubles>
+          </S.CryptoAmount>
+        )
+      )}
     </S.CryptoItemContainer>
   );
 };
@@ -57,11 +68,15 @@ const CryptoItem: React.FC<CryptoItemProps> = ({ data, onClick }) => {
 interface CryptoListProps {
   cryptos: CryptoItemData[];
   onCryptoClick?: (crypto: CryptoItemData) => void;
+  showRightSection?: boolean;
+  renderRightSection?: (crypto: CryptoItemData) => React.ReactNode;
 }
 
 export const CryptoList: React.FC<CryptoListProps> = ({
                                                         cryptos,
-                                                        onCryptoClick
+                                                        onCryptoClick,
+                                                        showRightSection = true,
+                                                        renderRightSection
                                                       }) => {
   return (
     <S.CryptoListContainer>
@@ -70,6 +85,8 @@ export const CryptoList: React.FC<CryptoListProps> = ({
           key={crypto.id}
           data={crypto}
           onClick={onCryptoClick}
+          showRightSection={showRightSection}
+          rightSection={renderRightSection?.(crypto)}
         />
       ))}
     </S.CryptoListContainer>

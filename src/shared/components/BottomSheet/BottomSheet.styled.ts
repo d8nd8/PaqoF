@@ -21,30 +21,56 @@ export const Overlay = styled.div<OverlayProps>((props) => ({
 interface SheetProps {
   $isVisible: boolean;
   $isClosing: boolean;
+  $status?: 'default' | 'success' | 'error';
 }
 
 export const Sheet = styled.div<SheetProps>((props) => ({
+  willChange: 'transform, background',
   position: 'fixed',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent:'space-between',
   bottom: '0',
   left: '0',
   right: '0',
-  backgroundColor: '#f5f5f5',
+  background:
+    props.$status === 'success'
+      ? [
+        `radial-gradient(165.91% 110.87% at 0% 0%,
+            ${props.theme.colors.primary300} 0%,
+            rgba(242, 242, 247, 0) 60%)`,
+        `radial-gradient(164.95% 98.92% at 52.53% 0%,
+             ${props.theme.colors.success500} 0%,
+            rgba(242, 242, 247, 0) 60%)`,
+        `radial-gradient(165.9% 110.75% at 100% 0%,
+             ${props.theme.colors.success400} 0%,
+            rgba(242, 242, 247, 0) 60%)`,
+        ` ${props.theme.colors.systemElevatedBackground}`,
+      ].join(', ')
+      : '#f5f5f5',
   borderRadius: '20px 20px 0 0',
   zIndex: 1001,
-  maxHeight: '90vh',
+  minHeight: '50vh',
   overflow: 'hidden',
-  transform: props.$isVisible && !props.$isClosing ? 'translateY(0)' : 'translateY(100%)',
-  transition: 'transform 300ms ease-out'
+  transform:
+    props.$isVisible && !props.$isClosing
+      ? 'translateY(0)'
+      : 'translateY(100%)',
+  transition: 'transform 300ms ease-out',
 }));
 
-export const Handle = styled.div(({theme}) => ({
+export const Handle = styled.div<{ $status?: 'default' | 'success' }>(({$status, theme}) => ({
   color: theme.colors.textPrimary,
-textAlign: 'center',
-fontSize: '13px',
-fontWeight: '600',
-lineHeight: '18px',
-letterSpacing: '-0.08px',
+  textAlign: 'center',
+  fontSize: '13px',
+  fontWeight: '600',
+  lineHeight: '18px',
+  letterSpacing: '-0.08px',
+  display: $status === 'success' ? 'none' : 'block',
 }));
+
+export const TopWrapper = styled.div({
+});
 
 export const Header = styled.div({
   position: 'relative',
