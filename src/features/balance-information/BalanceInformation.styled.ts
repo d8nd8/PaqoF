@@ -79,7 +79,7 @@ export const ActionItemContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '8px'
+  gap: '4px'
 });
 
 export const ActionButton = styled.button(({theme}) => ({

@@ -162,7 +162,6 @@ interface CurrencyButtonContainerProps {
 export const CurrencyButtonContainer = styled.button<CurrencyButtonContainerProps>(({ disabled, hasOptions, theme }) => ({
   width: '100%',
   backgroundColor: '#ffffff',
-  border: '1px solid #E5E5E7',
   borderRadius: '12px',
   padding: '16px',
   display: 'flex',

@@ -54,7 +54,8 @@ export const OverlayTransactionDetails: React.FC<OverlayTransactionDetailsProps>
       showBottomButton={showBottomButton}
       bottomButtonText={bottomButtonText}
       onBottomButtonClick={handleBottomButtonClick}
-      showCloseButton={false}
+      closeButtonType="icon"
+      showCloseButton={true}
       showHeader={true}
     >
       <S.TransactionDetailsWrapper>

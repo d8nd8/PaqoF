@@ -7,8 +7,8 @@ export const OverlayCryptoSelectionContent = styled.div({
 
 export const SelectionIndicator = styled.div<{ $isSelected: boolean }>(
   ({ $isSelected, theme }) => ({
-    width: '24px',
-    height: '24px',
+    width: '20px',
+    height: '20px',
     borderRadius: '50%',
     backgroundColor: $isSelected
       ? theme.colors.primary500

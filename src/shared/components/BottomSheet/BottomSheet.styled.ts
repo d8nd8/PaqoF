@@ -59,14 +59,35 @@ export const Sheet = styled.div<SheetProps>((props) => ({
   transition: 'transform 300ms ease-out',
 }));
 
-export const Handle = styled.div<{ $status?: 'default' | 'success' }>(({$status, theme}) => ({
+export const CloseIconButton = styled.button(({ theme }) => ({
+  position: 'absolute',
+  right: '20px',
+  top: '12px',
+  width: '24px',
+  height: '24px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
+  borderRadius: '6px',
   color: theme.colors.textPrimary,
-  textAlign: 'center',
-  fontSize: '13px',
-  fontWeight: '600',
-  lineHeight: '18px',
-  letterSpacing: '-0.08px',
-  display: $status === 'success' ? 'none' : 'block',
+  transition: 'all 0.2s ease',
+
+  '&:hover': {
+    backgroundColor: theme.colors.neutral200,
+    opacity: 0.8,
+  },
+
+  '&:active': {
+    transform: 'scale(0.95)',
+  },
+
+  '& svg': {
+    width: '16px',
+    height: '16px',
+  },
 }));
 
 export const TopWrapper = styled.div({
@@ -115,7 +136,7 @@ export const Footer = styled.div({
 
 export const BottomButton = styled.button<{ $disabled?: boolean }>(({theme}) => ({
   width: '100%',
-  padding: '16px',
+  padding: '11px',
   backgroundColor: theme.colors.primary500,
   color: theme.colors.neutral900,
   border: 'none',

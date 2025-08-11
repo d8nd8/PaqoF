@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CloseIcon from '@icons/close.svg?react';
 import * as S from './BottomSheet.styled';
 
 interface BottomSheetProps {
@@ -14,6 +15,7 @@ interface BottomSheetProps {
   status?: 'default' | 'success';
   showCloseButton?: boolean;
   showHeader?: boolean;
+  closeButtonType?: 'text' | 'icon'; // Новый проп для выбора типа кнопки
 }
 
 export const BottomSheet: React.FC<BottomSheetProps> = ({
@@ -29,6 +31,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
                                                           showCloseButton = true,
                                                           status = 'default',
                                                           showHeader = true,
+                                                          closeButtonType = 'text', // По умолчанию текстовая кнопка
                                                         }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -85,26 +88,35 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
       <S.Sheet $isVisible={isVisible && !isClosing} $isClosing={isClosing} $status={status}>
         <S.TopWrapper>
           {showHeader && (
-          <S.Header>
-            <S.Title>{title}</S.Title>
-            {showCloseButton &&<S.CloseButton onClick={handleClose}>{closeButtonText}</S.CloseButton>}
-          </S.Header>
+            <S.Header>
+              <S.Title>{title}</S.Title>
+              {showCloseButton && (
+                closeButtonType === 'icon' ? (
+                  <S.CloseIconButton onClick={handleClose}>
+                    <CloseIcon />
+                  </S.CloseIconButton>
+                ) : (
+                  <S.CloseButton onClick={handleClose}>
+                    {closeButtonText}
+                  </S.CloseButton>
+                )
+              )}
+            </S.Header>
           )}
           <S.Content>
             {children}
           </S.Content>
-
         </S.TopWrapper>
 
         {showBottomButton && (
-        <S.Footer>
-          <S.BottomButton
-            onClick={handleBottomButtonClick}
-            disabled={isBottomButtonDisabled}
-          >
-            {bottomButtonText}
-          </S.BottomButton>
-        </S.Footer>
+          <S.Footer>
+            <S.BottomButton
+              onClick={handleBottomButtonClick}
+              disabled={isBottomButtonDisabled}
+            >
+              {bottomButtonText}
+            </S.BottomButton>
+          </S.Footer>
         )}
       </S.Sheet>
     </>
