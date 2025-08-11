@@ -67,11 +67,9 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
     }
   };
 
-  // Генерируем AML статусы на основе данных транзакции
   const getAMLStatusItems = (): AMLStatusItem[] => {
     const items: AMLStatusItem[] = [];
 
-    // Если есть завершенная AML проверка
     if (transaction.amlStatus === 'completed') {
       items.push({
         id: 'aml-completed',
@@ -81,7 +79,6 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
       });
     }
 
-    // Если есть проблема с AML
     if (transaction.hasAMLIssue) {
       items.push({
         id: 'aml-suspicious',
@@ -90,7 +87,6 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
       });
     }
 
-    // Если AML проверка в процессе
     if (transaction.amlStatus === 'pending') {
       items.push({
         id: 'aml-pending',
@@ -99,7 +95,6 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
       });
     }
 
-    // Если AML проверка не прошла
     if (transaction.amlStatus === 'failed') {
       items.push({
         id: 'aml-failed',

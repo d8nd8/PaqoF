@@ -1,24 +1,26 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom';
 
-import { BaseLayout } from './layouts/BaseLayout'
-import { ErrorBoundary } from './components/ErrorBoundary'
-import { HydrateFallback } from './components/HydrateFallback'
-import { RouteHandler } from './components/RouteHandler'
-import { TelegramTest } from '../pages/TelegramTest'
-import { BotControlPage } from "../pages/BotControlPage"
+import { BaseLayout } from './layouts/BaseLayout';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { HydrateFallback } from './components/HydrateFallback';
+import { RouteHandler } from './components/RouteHandler';
+import { WelcomeScreen } from '@/pages/WelcomeScreen'
+import { TelegramTest } from '@/pages/TelegramTest'
+import { BotControlPage } from '@/pages/BotControlPage'
+
 
 export const router = createBrowserRouter([
   {
-    path: '/', // Корневой путь - прямо TelegramTest
-    element: <TelegramTest />,
+    path: '/', // ✅ теперь это WelcomeScreen
+    element: <WelcomeScreen />,
     errorElement: <ErrorBoundary />
   },
   {
-    path: '/admin', // Перенесем административные роуты на другой путь
+    path: '/admin',
     element: (
-        <RouteHandler>
-          <BaseLayout />
-        </RouteHandler>
+      <RouteHandler>
+        <BaseLayout />
+      </RouteHandler>
     ),
     errorElement: <ErrorBoundary />,
     hydrateFallbackElement: <HydrateFallback />,
@@ -37,4 +39,4 @@ export const router = createBrowserRouter([
       }
     ],
   },
-])
+]);

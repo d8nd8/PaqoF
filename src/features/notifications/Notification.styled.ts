@@ -62,7 +62,8 @@ export const NotificationTitle = styled.h3(({theme}) => ({
   minWidth: 0,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  letterSpacing: '0.5px'
 }));
 
 export const NotificationDate = styled.span(({theme}) => ({
