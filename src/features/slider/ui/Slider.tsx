@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, EffectFade } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
+import "swiper/css/effect-fade";
 import { SliderPagination } from "@/features/slider/ui/SliderPagination";
 import * as S from "./Slider.styled";
 
@@ -17,7 +18,11 @@ interface SliderProps {
   onButtonClick?: () => void;
 }
 
-export const Slider: React.FC<SliderProps> = ({ slides, autoPlayDuration = 5000, onButtonClick }) => {
+export const Slider: React.FC<SliderProps> = ({
+                                                slides,
+                                                autoPlayDuration = 5000,
+                                                onButtonClick
+                                              }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -32,36 +37,36 @@ export const Slider: React.FC<SliderProps> = ({ slides, autoPlayDuration = 5000,
       <S.SwipeAreaRight onClick={() => swiperRef.current?.slideNext()} />
 
       <Swiper
-        modules={[Autoplay]}
+        modules={[Autoplay, EffectFade]}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
         loop
         autoplay={{ delay: autoPlayDuration, disableOnInteraction: false }}
+        allowTouchMove={true} // включаем свайп
+        touchStartPreventDefault={false} // чтобы свайп был мягче
+        resistanceRatio={0.85} // "дрейф" при свайпе
+        speed={700} // мягкость анимации
         onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         style={{
           flex: 1,
-          width: '100%',
-          maxWidth: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column"
         }}
         slidesPerView={1}
-        spaceBetween={0}
-        centeredSlides={true}
+        centeredSlides={false}
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            height: '100%'
-          }}>
+          <SwiperSlide key={index} className="slider-slide">
             <S.SlideCenter>
               <S.Title>{slide.title}</S.Title>
               <S.Description>{slide.description}</S.Description>
             </S.SlideCenter>
           </SwiperSlide>
         ))}
+
         <SliderPagination
           totalSlides={slides.length}
           currentSlide={currentSlide}
@@ -72,7 +77,6 @@ export const Slider: React.FC<SliderProps> = ({ slides, autoPlayDuration = 5000,
       </Swiper>
 
       <S.BottomSection>
-
         <S.MainButton onClick={onButtonClick}>Перейти в кошелёк</S.MainButton>
       </S.BottomSection>
     </S.SliderContainer>

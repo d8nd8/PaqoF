@@ -12,6 +12,7 @@ import CloseIcon from "@icons/close.svg?react";
 import { Slider } from '@/features/slider/ui/Slider';
 import { LanguageSwitcher } from '@/features/language-switcher/LanguageSwitcher';
 import { SecurityPinCode } from '@/features/security-pin-code/SecurityPinCode';
+import { useNavigate } from 'react-router-dom'
 
 const slides = [
   {
@@ -32,6 +33,7 @@ const slides = [
 ];
 
 export const WelcomeSlider: React.FC = () => {
+  const navigate = useNavigate();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("ru");
   const [isPinVisible, setIsPinVisible] = useState(false);
@@ -39,8 +41,9 @@ export const WelcomeSlider: React.FC = () => {
   const handleOpenLang = () => setIsLangOpen(true);
   const handleCloseLang = () => setIsLangOpen(false);
   const handleLanguageChange = (lang: string) => setSelectedLanguage(lang);
-
-  const handleGoToWallet = () => setIsPinVisible(true);
+  const handleGoToWallet = () => {
+    navigate("/main", { state: { openPin: true } });
+  };
   const handlePinComplete = (pin: string) => {
     console.log("PIN введён:", pin);
     setIsPinVisible(false);

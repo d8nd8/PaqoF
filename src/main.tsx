@@ -1,29 +1,34 @@
-
 import '@src/app/styles/index.scss'
 import '@src/app/styles/general.scss'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { viewport, init as initTelegramSdk } from '@telegram-apps/sdk-react';
+import App from '@/app/components/App'
+import { ThemeProvider } from '@emotion/react'
+import { theme } from '@/styles/theme'
 
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import {Root} from "./app/components/Root";
 
+const initApp = async () => {
+  try {
+    initTelegramSdk();
 
-
-try {
-  const container = document.getElementById('root')
-  if (!container) {
-    throw new Error('Root element not found')
+    if (!viewport.mount.isAvailable()) {
+      throw new Error('Failed to initialize Telegram SDK: viewport.mount.isAvailable() is false');
+    } else {
+      await viewport.mount();
+      viewport.expand();
+    }
+  } catch (error) {
+    console.error(error);
   }
+};
 
-  const root = createRoot(container)
-  root.render(
-    import.meta.env.VITE_STRICT_MODE === 'true' ? (
-      <StrictMode>
-        <Root />
-      </StrictMode>
-    ) : (
-      <Root />
-    ),
-  )
-} catch (error) {
-  console.error(error)
-}
+initApp();
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </StrictMode>,
+);
