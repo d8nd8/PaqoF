@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import WebApp from '@twa-dev/sdk'
 import { router } from "../router"
+import '../styles/general.scss';
 
 const useTelegram = () => {
     useEffect(() => {
