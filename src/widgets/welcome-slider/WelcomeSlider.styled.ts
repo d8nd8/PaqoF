@@ -1,28 +1,29 @@
 import styled from "@emotion/styled";
 
-export const SliderWrapper = styled.div(({ theme }) => ({
+export const WelcomeSliderWrapper = styled.div(({ theme }) => ({
+  position: "relative",
   height: `calc(100vh + env(safe-area-inset-top) + env(safe-area-inset-bottom))`,
+  maxWidth: "100%",
+  overflowX: "hidden",
   paddingTop: "env(safe-area-inset-top)",
   paddingBottom: "env(safe-area-inset-bottom)",
   boxSizing: "border-box",
   background: theme.colors.systemBackground,
   display: "flex",
-  flexDirection: "column"
+  flexDirection: "column",
+  padding: "60px 0 60px",
 }));
 
-export const Header = styled.div({
-  display: "flex",
-  justifyContent: "flex-end",
-  padding: "16px"
-});
-
 export const LangButton = styled.button({
+  position: "absolute",
+  zIndex: 10,
+  left: "10px",
   background: "none",
   border: "none",
   padding: 0,
   cursor: "pointer",
-  width: 32,
-  height: 32,
+  width: 50,
+  height: 50,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -30,4 +31,42 @@ export const LangButton = styled.button({
     width: 20,
     height: 20
   }
+});
+
+// стили для пинкода
+
+export const PinModalOverlay = styled.div(({
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0, 0, 0, 0.5)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 999,
+}));
+
+export const PinModalContent = styled.div(({ theme }) => ({
+  background: theme.colors.systemBackground,
+  width: "100%",
+  height: "100%",
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center"
+}));
+
+
+export const PinModalClose = styled.button({
+  position: "absolute",
+  top: 60,
+  right: 0,
+  background: "transparent",
+  border: "none",
+  padding: 0,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: 44,
+  height: 44,
 });

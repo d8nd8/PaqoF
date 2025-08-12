@@ -28,14 +28,15 @@ export const TextSection = styled.div({
 });
 
 export const InfoTitle = styled.h2(({theme}) => ({
-  fontSize: '20px',
+  fontSize: '18px',
   fontWeight: '600',
   color: theme.colors.neutral950,
   lineHeight: '25px',
+  letterSpacing: 0.6
 }));
 
 export const InfoDescription = styled.p(({theme}) => ({
-  fontSize: '15px',
+  fontSize: '14px',
   fontWeight: '400',
   color: theme.colors.textSecondary,
   lineHeight: '20px',

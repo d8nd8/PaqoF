@@ -118,7 +118,7 @@ export const CloseButton = styled.div(({ theme }) => ({
   fontSize: '13px',
   color: theme.colors.textPrimary,
   cursor: 'pointer',
-  fontWeight: '600',
+  fontWeight: '400',
   '&:hover': { opacity: 0.7 },
 }));
 

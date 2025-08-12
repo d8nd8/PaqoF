@@ -1,8 +1,12 @@
 import styled from '@emotion/styled'
 
 export const Wrapper = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   textAlign: 'center',
   padding: '24px',
+  width: '100%'
 })
 
 export const Title = styled.h2({
@@ -59,11 +63,14 @@ export const Keypad = styled.div({
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   gap: '12px',
+  maxWidth: '254px',
+  width: '100%'
 })
 
 export const Key = styled.button(({theme}) => ({
   maxWidth: '75px',
   maxHeight: '75px',
+  width: '100%',
   fontSize: '34px',
   lineHeight: '41px',
   padding: '17px',
@@ -73,7 +80,7 @@ export const Key = styled.button(({theme}) => ({
   ':hover': {
     background: theme.colors.textTertiary,
   },
-  '&:focus': { outline: 'none' }
+  '&:focus': { outline: 'none' },
 }))
 
 export const EmptyKey = styled.div({})
