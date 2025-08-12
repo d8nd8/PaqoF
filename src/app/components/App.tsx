@@ -1,42 +1,54 @@
-import { useEffect } from 'react'
-import { RouterProvider } from 'react-router-dom'
-import { Toaster } from 'sonner'
-import WebApp from '@twa-dev/sdk'
-import { router } from "../router"
-import '../styles/general.scss';
+import { useEffect } from "react";
+import { RouterProvider } from "react-router-dom";
+import {
+  miniApp,
+  viewport,
+  mainButton,
+  secondaryButton
+} from "@telegram-apps/sdk-react";
 
-const useTelegram = () => {
-    useEffect(() => {
-        WebApp.ready()
+import { router } from "@/app/router";
+import useApplicationStore from "@/shared/stores/application";
+import Preloader from "@/shared/components/Preloader/Preloader";
+import { Wrapper, WrapperRoot } from "./App.styled";
 
-        WebApp.expand()
+const App = () => {
+  const {
+    headerOffset,
+    fullscreen,
+    fullscreenCentered,
+    setFullscreen,
+  } = useApplicationStore();
 
-        WebApp.enableClosingConfirmation()
+  useEffect(() => {
+    if (mainButton.mount.isAvailable()) mainButton.mount();
+    if (secondaryButton.mount.isAvailable()) secondaryButton.mount();
 
-        WebApp.setHeaderColor('#ffffff')
-        WebApp.setBackgroundColor('#ffffff')
+    if (miniApp.mountSync.isAvailable()) {
+      miniApp.mountSync();
+      miniApp.setBackgroundColor("#F2F3F4");
+      miniApp.setBottomBarColor("#FFFFFF");
+      miniApp.setHeaderColor("#F2F3F4");
+    }
 
-        const handleMainButtonClick = () => {
-            console.log('Main button clicked')
-        }
-        WebApp.onEvent('mainButtonClicked', handleMainButtonClick)
+    if (viewport.mount.isAvailable()) {
+      viewport.mount();
+      setFullscreen(viewport.isFullscreen());
+    }
+  }, [setFullscreen]);
 
-        return () => {
-            WebApp.offEvent('mainButtonClicked', handleMainButtonClick)
-        }
-    }, [])
-}
+  return (
+    <Wrapper
+      fullscreen={fullscreen}
+      fullscreenCentered={fullscreenCentered}
+      noHeaderOffset={!headerOffset}
+    >
+      <WrapperRoot>
+        <RouterProvider router={router} />
+      </WrapperRoot>
+      <Preloader />
+    </Wrapper>
+  );
+};
 
-export const App = () => {
-    useTelegram()
-
-    return (
-        <>
-            <RouterProvider router={router} />
-            <Toaster
-                position="bottom-right"
-                richColors
-            />
-        </>
-    )
-}
+export default App;

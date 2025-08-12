@@ -22,20 +22,27 @@ export const SwipeAreaRight = styled.div({
 
 export const SliderContainer = styled.div(({ theme }) => ({
   flex: 1,
-  width: "100%",
-  maxWidth: "100%",
-  position: "relative",
-  overflow: "hidden",
-  background: theme.colors.systemBackground,
+  width: "100vw",
+  maxWidth: "100vw",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "flex-end",
-}));
+  background: theme.colors.systemBackground,
 
+  ".slider-slide": {
+    width: "100% !important",
+    maxWidth: "100%",
+    flexShrink: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    boxSizing: "border-box",
+  },
+}));
 
 export const SlideCenter = styled.div({
   flex: 1,
   display: "flex",
+  height: "100%",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "flex-end",
@@ -71,8 +78,8 @@ export const MainButton = styled.button(({ theme }) => ({
   color: theme.colors.textPrimary,
   border: "none",
   borderRadius: 8,
-  padding: "12px",
-  fontWeight: 600,
-  fontSize: "16px",
+  padding: "10px",
+  fontWeight: 400,
+  fontSize: "14px",
   cursor: "pointer"
 }));

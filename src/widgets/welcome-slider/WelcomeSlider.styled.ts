@@ -2,21 +2,19 @@ import styled from "@emotion/styled";
 
 export const WelcomeSliderWrapper = styled.div(({ theme }) => ({
   position: "relative",
-  height: `calc(100vh + env(safe-area-inset-top) + env(safe-area-inset-bottom))`,
   maxWidth: "100%",
-  overflowX: "hidden",
-  paddingTop: "env(safe-area-inset-top)",
-  paddingBottom: "env(safe-area-inset-bottom)",
+  height: "100%",
   boxSizing: "border-box",
   background: theme.colors.systemBackground,
   display: "flex",
   flexDirection: "column",
-  padding: "60px 0 60px",
+  padding: "60px 0 40px",
 }));
 
 export const LangButton = styled.button({
   position: "absolute",
   zIndex: 10,
+  top: "80px",
   left: "10px",
   background: "none",
   border: "none",
