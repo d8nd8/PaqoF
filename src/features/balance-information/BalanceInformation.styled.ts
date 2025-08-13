@@ -16,8 +16,8 @@ export const BalanceHeader = styled.div({
 });
 
 export const BalanceTitle = styled.span(({theme}) => ({
-  fontSize: '11px',
-  fontWeight: '400',
+  fontSize: '12px',
+  fontWeight: 400,
   color: theme.colors.textSecondary,
   lineHeight: '17px'
 }));
@@ -122,7 +122,7 @@ export const ActionIcon = styled.div(({theme}) => ({
 }));
 
 export const ActionLabel = styled.span({
-  fontSize: '11px',
+  fontSize: '12px',
   fontWeight: '400',
   color: theme.colors.textSecondary,
   lineHeight: '13px',
@@ -156,6 +156,7 @@ export const UserText = styled.div({
   lineHeight: '13px',
   flexDirection: 'column',
   color: theme.colors.textSecondary,
+  fontWeight: 600
 });
 
 export const Greeting = styled.span(({ theme }) => ({
@@ -197,8 +198,8 @@ export const NotificationButton = styled.button({
 
 export const NotificationDot = styled.span({
   position: 'absolute',
-  top: '2px',
-  right: '2px',
+  top: '9px',
+  right: '9px',
   width: '6px',
   height: '6px',
   backgroundColor: '#FF3B30',

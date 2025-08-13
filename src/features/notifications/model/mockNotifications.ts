@@ -1,4 +1,5 @@
 import VkusvillImage from '@images/vkusvill.png'
+import VkusvillDetailedImage from '@images/vkusvill-detailed.png'
 import ReferralImage from '@images/referral.png'
 
 export interface NotificationProps {
@@ -8,8 +9,10 @@ export interface NotificationProps {
   date: string;
   isRead?: boolean;
   imageUrl?: string;
+  detailImageUrl?: string;
   onClick?: (id: string) => void;
 }
+
 
 export const mockNotifications: NotificationProps[] = [
   {
@@ -19,6 +22,7 @@ export const mockNotifications: NotificationProps[] = [
     date: '26 Октября',
     isRead: false,
     imageUrl: VkusvillImage,
+    detailImageUrl: VkusvillDetailedImage,
   },
   {
     id: '2',
@@ -27,5 +31,6 @@ export const mockNotifications: NotificationProps[] = [
     date: '5 Мая',
     isRead: true,
     imageUrl: ReferralImage,
+    detailImageUrl: VkusvillDetailedImage,
   },
 ];

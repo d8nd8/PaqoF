@@ -50,7 +50,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
               date: selectedNotification.date,
               title: selectedNotification.title,
               text: selectedNotification.description,
-              imageUrl: selectedNotification.imageUrl
+              imageUrl: selectedNotification.detailImageUrl
             }
             : null
         }
