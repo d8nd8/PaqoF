@@ -37,18 +37,6 @@ const meta: Meta<typeof BalanceCard> = {
       control: { type: 'boolean' },
       description: 'Видимость баланса по умолчанию'
     },
-    topUpLabel: {
-      control: { type: 'text' },
-      description: 'Текст кнопки пополнения'
-    },
-    sendLabel: {
-      control: { type: 'text' },
-      description: 'Текст кнопки отправки'
-    },
-    payLabel: {
-      control: { type: 'text' },
-      description: 'Текст кнопки оплаты'
-    }
   },
   decorators: [
     (Story) => (
@@ -83,8 +71,5 @@ export const Default: Story = {
     balance: 95450.0,
     currency: '₽',
     isVisible: true,
-    topUpLabel: 'Пополнить',
-    sendLabel: 'Отправить',
-    payLabel: 'Оплатить'
   }
 };

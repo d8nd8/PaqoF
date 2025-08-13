@@ -2,11 +2,8 @@ import styled from '@emotion/styled';
 
 
 export const HeaderContainer = styled.div(({ theme }) => ({
-  backgroundColor: theme.colors.systemElevatedBackground,
-  maxWidth: '375px',
+  backgroundColor: 'inherit',
   minHeight: '44px',
-  margin: '0 auto',
-  boxSizing: 'border-box'
 }));
 
 export const HeaderContent = styled.div({

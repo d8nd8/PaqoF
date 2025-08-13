@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from '@storybook/react-vite'
 
 
 
-import { NotificationList } from '../NotificationList'
+import { NotificationList } from '../ui/notification-list/NotificationList'
 import type { NotificationProps } from '@/features/notifications'
 
 

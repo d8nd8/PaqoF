@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import type { NavbarItemState } from '@/widgets/base-layout/BaseLayout.types'
 
-export type NavbarItemState = 'default' | 'active' | 'history';
+
 
 interface NavbarItemStyledProps {
   state: NavbarItemState;
@@ -12,7 +13,7 @@ export const NavbarContainer = styled.div(({theme}) => ({
   bottom: 0,
   left: '50%',
   transform: 'translateX(-50%)',
-  width: '375px',
+  width: '100%',
   height: '81px',
   backgroundColor: theme.colors.systemElevatedBackground,
   borderTop: '1px solid #E0E0E0',

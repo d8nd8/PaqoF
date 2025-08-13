@@ -1,5 +1,5 @@
 import React from 'react';
-import { Notification, type NotificationProps } from './Notification';
+import { Notification, type NotificationProps } from '../notification/Notification';
 import * as S from './NotificationList.styled';
 
 export interface NotificationListProps {

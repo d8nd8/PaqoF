@@ -4,8 +4,8 @@ import * as S from './HeaderOverlay.styled';
 
 export interface HeaderOverlayProps {
   title: string;
-  leftButtonText?: string;
-  rightButtonText?: string;
+  leftButtonText?: string | React.ReactNode;
+  rightButtonText?: string | React.ReactNode;
   onLeftButtonClick?: () => void;
   onRightButtonClick?: () => void;
   onLeftChevronClick?: () => void;

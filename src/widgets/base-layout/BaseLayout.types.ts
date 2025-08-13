@@ -10,6 +10,8 @@ import BonusActiveIcon  from '@icons/bonus-active.svg?react'
 import UserIcon         from '@icons/user.svg?react'
 import UserActiveIcon   from '@icons/user-active.svg?react'
 
+export type NavbarItemState = 'default' | 'active' | 'history';
+
 export interface IBaseLayoutProps {
   children: React.ReactNode;
   className?: string;
@@ -27,34 +29,34 @@ export const NavbarItems: NavbarItemConfig[] = [
     label: 'Главная',
     icon: HomeIcon,
     activeIcon: HomeActiveIcon,
-    state: 'default',
+    state: 'default' as NavbarItemState,
   },
   {
     id: 'history',
     label: 'История',
     icon: ClockIcon,
     activeIcon: ClockActiveIcon,
-    state: 'default',
+    state: 'default' as NavbarItemState,
   },
   {
     id: 'qr',
     label: '',
     icon: QRIcon,
     activeIcon: QRIcon,
-    state: 'default',
+    state: 'default' as NavbarItemState,
   },
   {
     id: 'bonus',
     label: 'Бонусы',
     icon: BonusIcon,
     activeIcon: BonusActiveIcon,
-    state: 'default',
+    state: 'default' as NavbarItemState,
   },
   {
     id: 'profile',
     label: 'Профиль',
     icon: UserIcon,
     activeIcon: UserActiveIcon,
-    state: 'default',
+    state: 'default' as NavbarItemState,
   },
 ];

@@ -1,5 +1,3 @@
-export { Notification } from './Notification';
-export type { NotificationProps } from './Notification';
-
-export { NotificationList } from './NotificationList';
-export type { NotificationListProps } from './NotificationList';
+export * from './ui/notification'
+export * from './ui/notification-list'
+export * from './ui/notifications-modal'

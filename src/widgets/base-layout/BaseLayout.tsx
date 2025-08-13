@@ -1,15 +1,12 @@
 import { useEffect, useMemo } from "react";
-import { Navbar } from "@/features/navbar";
+import { Navbar, type NavbarItemConfig } from '@/features/navbar'
 import useApplicationStore from "@/shared/stores/application";
 import { useTransition } from "@react-spring/web";
-import { backButton, viewport } from '@telegram-apps/sdk-react'
-import { useLocation, useNavigate } from 'react-router-dom'
-
-
-
+import { backButton, viewport } from "@telegram-apps/sdk-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { WrapperPage } from "./BaseLayout.styled";
-import { type IBaseLayoutProps, NavbarItems } from './BaseLayout.types'
-
+import { type IBaseLayoutProps, NavbarItems, type NavbarItemState } from './BaseLayout.types'
+import { useSafeAreaInsets } from "@/shared/hooks/useSafeAreaInsets";
 
 const BaseLayout = ({
                       children,
@@ -24,7 +21,23 @@ const BaseLayout = ({
   const { modal, setHeaderOffset, setFullscreenCentered } =
     useApplicationStore();
   const navigate = useNavigate();
+  const { top, bottom } = useSafeAreaInsets();
+
   const isModalOpened = useMemo(() => modal !== null, [modal]);
+
+  const navbarItemsWithActive = useMemo<NavbarItemConfig[]>(() => {
+    return NavbarItems.map(item => {
+      let state: NavbarItemState = 'default';
+
+      if (item.id === 'home' && location.pathname === '/main') state = 'active';
+      if (item.id === 'wallet' && location.pathname.startsWith('/wallet')) state = 'active';
+      if (item.id === 'settings' && location.pathname.startsWith('/settings')) state = 'active';
+
+      return { ...item, state };
+    });
+  }, [location.pathname]);
+
+
   const transitions = useTransition(location, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -39,7 +52,7 @@ const BaseLayout = ({
   const handleItemClick = (itemId: string) => {
     switch (itemId) {
       case "home":
-        navigate("/");
+        navigate("/main");
         break;
       case "wallet":
         navigate("/wallet");
@@ -51,7 +64,6 @@ const BaseLayout = ({
         console.warn(`Неизвестный пункт меню: ${itemId}`);
     }
   };
-
 
   useEffect(() => {
     setHeaderOffset(headerOffset);
@@ -74,16 +86,22 @@ const BaseLayout = ({
         <WrapperPage
           style={style}
           shortBottomPadding={shortBottomPadding}
+          styleExtra={{
+            paddingTop: `${top}px`,
+            paddingBottom: shortBottomPadding
+              ? `${bottom}px`
+              : `${bottom + (showNavbar ? 56 : 0)}px`,
+          }}
           className={`wrapper-page ${className || ""}`.trim()}
         >
           {children}
         </WrapperPage>
       ))}
-      {showNavbar && !isModalOpened && <Navbar items={NavbarItems}
-                                               onItemClick={handleItemClick} />}
-
+      {showNavbar && !isModalOpened && (
+        <Navbar items={navbarItemsWithActive} onItemClick={handleItemClick} />
+      )}
     </>
-  )
+  );
 };
 
 export default BaseLayout;

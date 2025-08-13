@@ -6,6 +6,7 @@ import EyeClosedIcon from '@icons/close-eye.svg?react'
 import PlusCircleIcon from '@icons/plus-circle.svg?react'
 import SendIcon from '@icons/send.svg?react'
 import QRIcon from '@icons/qr.svg?react'
+import NotificationIcon from '@icons/notification.svg?react'
 
 interface ActionIconButtonProps {
   icon: React.ReactNode;
@@ -14,27 +15,19 @@ interface ActionIconButtonProps {
 
 const ActionIconButton: React.FC<ActionIconButtonProps> = ({ icon, onClick }) => (
   <S.ActionButton onClick={onClick}>
-    <S.ActionIcon>
-      {icon}
-    </S.ActionIcon>
+    <S.ActionIcon>{icon}</S.ActionIcon>
   </S.ActionButton>
 );
 
-interface ActionLabelProps {
-  label: string;
-}
-
-const ActionLabel: React.FC<ActionLabelProps> = ({ label }) => (
+const ActionLabel: React.FC<{ label: string }> = ({ label }) => (
   <S.ActionLabel>{label}</S.ActionLabel>
 );
 
-interface ActionItemProps {
-  icon: React.ReactNode;
-  label: string;
-  onClick?: () => void;
-}
-
-const ActionItem: React.FC<ActionItemProps> = ({ icon, label, onClick }) => (
+const ActionItem: React.FC<{ icon: React.ReactNode; label: string; onClick?: () => void }> = ({
+                                                                                                icon,
+                                                                                                label,
+                                                                                                onClick,
+                                                                                              }) => (
   <S.ActionItemContainer>
     <ActionIconButton icon={icon} onClick={onClick} />
     <ActionLabel label={label} />
@@ -42,49 +35,60 @@ const ActionItem: React.FC<ActionItemProps> = ({ icon, label, onClick }) => (
 );
 
 interface BalanceCardProps {
+  avatarUrl?: string;
+  username?: string;
+  greeting?: string;
+  hasNotifications?: boolean;
   balance: number;
   currency?: string;
   isVisible?: boolean;
   onTopUp?: () => void;
   onSend?: () => void;
   onPay?: () => void;
-  topUpLabel?: string;
-  sendLabel?: string;
-  payLabel?: string;
+  onNotificationsClick?: () => void;
 }
 
 export const BalanceCard: React.FC<BalanceCardProps> = ({
-    balance,
-    currency = '₽',
-    isVisible: initialVisibility = true,
-    onTopUp,
-    onSend,
-    onPay,
-    topUpLabel = 'Пополнить',
-    sendLabel = 'Отправить',
-    payLabel = 'Оплатить'
-  }) => {
+                                                          avatarUrl = '',
+                                                          username = '',
+                                                          greeting = 'Добрый день!',
+                                                          hasNotifications = false,
+                                                          balance,
+                                                          currency = '₽',
+                                                          isVisible: initialVisibility = true,
+                                                          onTopUp,
+                                                          onSend,
+                                                          onPay,
+                                                          onNotificationsClick
+                                                        }) => {
   const [isVisible, setIsVisible] = useState(initialVisibility);
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   const formatBalance = (amount: number) => {
-    const parts = amount.toFixed(1).split('.');
+    const parts = amount.toFixed(2).split('.');
     const integerPart = new Intl.NumberFormat('ru-RU').format(parseInt(parts[0]));
-    const decimalPart = parts[1];
-
-    return {
-      integer: integerPart,
-      decimal: decimalPart
-    };
+    return { integer: integerPart, decimal: parts[1] };
   };
 
   const formattedBalance = formatBalance(balance);
 
   return (
     <S.BalanceCardContainer>
+      <S.TopRow>
+        <S.UserInfo>
+          <S.Avatar src={avatarUrl} alt={username} />
+          <S.UserText>
+            <S.Greeting>{greeting}</S.Greeting>
+            <S.Username>@{username}</S.Username>
+          </S.UserText>
+        </S.UserInfo>
+        <S.NotificationButton onClick={onNotificationsClick}>
+          <NotificationIcon />
+          {hasNotifications && <S.NotificationDot />}
+        </S.NotificationButton>
+      </S.TopRow>
+
       <S.BalanceHeader>
         <S.BalanceTitle>Доступный баланс</S.BalanceTitle>
         <S.EyeButton onClick={toggleVisibility}>
@@ -106,21 +110,9 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       )}
 
       <S.ActionButtons>
-        <ActionItem
-          icon={<PlusCircleIcon />}
-          label={topUpLabel}
-          onClick={onTopUp}
-        />
-        <ActionItem
-          icon={<SendIcon />}
-          label={sendLabel}
-          onClick={onSend}
-        />
-        <ActionItem
-          icon={<QRIcon />}
-          label={payLabel}
-          onClick={onPay}
-        />
+        <ActionItem icon={<PlusCircleIcon />} label="Пополнить" onClick={onTopUp} />
+        <ActionItem icon={<SendIcon />} label="Отправить" onClick={onSend} />
+        <ActionItem icon={<QRIcon />} label="Оплатить" onClick={onPay} />
       </S.ActionButtons>
     </S.BalanceCardContainer>
   );
