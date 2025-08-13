@@ -1,6 +1,11 @@
-import React from 'react';
-import { Notification, type NotificationProps } from '../notification/Notification';
+import React, { useState } from 'react';
+
 import * as S from './NotificationList.styled';
+import { Notification } from '@/features/notifications'
+import {
+  NotificationDetailsModal
+} from '@/features/notifications/ui/notifications-details-modal/NotificationDetailsModal'
+import type { NotificationProps } from '@/features/notifications/model/mockNotifications'
 
 export interface NotificationListProps {
   notifications: NotificationProps[];
@@ -11,23 +16,45 @@ export const NotificationList: React.FC<NotificationListProps> = ({
                                                                     notifications,
                                                                     onNotificationClick
                                                                   }) => {
-  if (notifications.length === 0) {
-    return (
-      <S.NotificationListContainer>
-        <S.EmptyState>Нет уведомлений</S.EmptyState>
-      </S.NotificationListContainer>
-    );
-  }
+  const [selectedNotification, setSelectedNotification] = useState<NotificationProps | null>(null);
+
+  const handleNotificationClick = (notification: NotificationProps) => {
+    setSelectedNotification(notification);
+    onNotificationClick?.(notification.id); // вызов внешнего обработчика, если есть
+  };
+
+  const handleCloseModal = () => {
+    setSelectedNotification(null);
+  };
 
   return (
     <S.NotificationListContainer>
-      {notifications.map((notification) => (
-        <Notification
-          key={notification.id}
-          {...notification}
-          onClick={onNotificationClick}
-        />
-      ))}
+      {notifications.length === 0 ? (
+        <S.EmptyState>Нет уведомлений</S.EmptyState>
+      ) : (
+        notifications.map((notification) => (
+          <Notification
+            key={notification.id}
+            {...notification}
+            onClick={() => handleNotificationClick(notification)}
+          />
+        ))
+      )}
+
+      <NotificationDetailsModal
+        isOpen={!!selectedNotification}
+        onClose={handleCloseModal}
+        notification={
+          selectedNotification
+            ? {
+              date: selectedNotification.date,
+              title: selectedNotification.title,
+              text: selectedNotification.description,
+              imageUrl: selectedNotification.imageUrl
+            }
+            : null
+        }
+      />
     </S.NotificationListContainer>
   );
 };

@@ -21,6 +21,7 @@ export interface IBaseLayoutProps {
   disableBackButton?: boolean;
   showNavbar?: boolean;
   centered?: boolean;
+  modalIsOpen?: boolean;
 }
 
 export const NavbarItems: NavbarItemConfig[] = [

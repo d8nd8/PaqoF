@@ -95,22 +95,15 @@ export const NotificationDescription = styled.p(({theme}) => ({
   textOverflow: 'ellipsis'
 }));
 
-export const NotificationIcon = styled.div<NotificationIconProps>(({ backgroundColor = '#4CAF50' }) => ({
+export const NotificationImage = styled.img<NotificationIconProps>( {
   width: '54px',
   height: '54px',
   borderRadius: '13px',
-  backgroundColor: backgroundColor,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-
-  '& svg': {
-    width: '32px',
-    height: '32px',
-    fill: '#ffffff'
-  }
-}));
+});
 
 export const NotificationIconText = styled.span(({theme}) => ({
   color: theme.colors.systemElevatedBackground,

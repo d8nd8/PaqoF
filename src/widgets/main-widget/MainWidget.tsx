@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { BalanceCard } from '@/features/balance-information/BalanceInformation';
 import { AdBanner } from '@/features/ad-banner/AdBanner';
 import { type CryptoItemData, CryptoList } from '@/features/crypto-list/CryptoList';
 import * as S from './MainWidget.styled';
 import { NotificationsModal } from '@/features/notifications'
+import useApplicationStore from '@/shared/stores/application'
 
 const usdtData: CryptoItemData[] = [
   {
@@ -34,7 +35,7 @@ const usdtData: CryptoItemData[] = [
 ];
 
 export const MainWidget: React.FC = () => {
-  const [isNotificationsOpen, setNotificationsOpen] = useState(false);
+  const { modal, openModal, closeModal } = useApplicationStore();
 
   return (
     <S.Wrapper>
@@ -45,7 +46,7 @@ export const MainWidget: React.FC = () => {
         onTopUp={() => console.log('Пополнить')}
         onSend={() => console.log('Отправить')}
         onPay={() => console.log('Оплатить')}
-        onNotificationsClick={() => setNotificationsOpen(true)} // ✅ открываем модалку
+        onNotificationsClick={() => openModal('notifications')}
       />
 
       <S.CryptoWrapper>
@@ -58,8 +59,8 @@ export const MainWidget: React.FC = () => {
       </S.CryptoWrapper>
 
       <NotificationsModal
-        isOpen={isNotificationsOpen}
-        onClose={() => setNotificationsOpen(false)}
+        isOpen={modal === 'notifications'}
+        onClose={closeModal}
       />
     </S.Wrapper>
   );

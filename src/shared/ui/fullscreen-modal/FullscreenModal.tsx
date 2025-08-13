@@ -1,7 +1,7 @@
 import React from 'react';
 import * as S from './FullscreenModal.styled';
-import CloseIcon from '@icons/close.svg?react';
-import { HeaderOverlay } from '@/features/header-overlay'
+import { HeaderOverlay } from '@/features/header-overlay';
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets';
 
 interface FullscreenModalProps {
   isOpen: boolean;
@@ -16,10 +16,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                                                                   onClose,
                                                                   children,
                                                                 }) => {
+  const { top, bottom } = useSafeAreaInsets();
+
   if (!isOpen) return null;
 
   return (
-    <S.Overlay>
+    <S.Overlay $top={top} $bottom={bottom}>
       <S.ModalContent>
         <HeaderOverlay
           title={title}
