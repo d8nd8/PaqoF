@@ -3,8 +3,8 @@ import {
   NavbarContainer,
   NavbarItem,
   NavbarLabel,
-  type NavbarItemState,
 } from './Navbar.styled'
+import type { NavbarItemState } from '@/widgets/base-layout/BaseLayout.types'
 
 export interface NavbarItemConfig {
   id: string
