@@ -10,6 +10,7 @@ import * as S from "./Slider.styled";
 interface Slide {
   title: string;
   description: string;
+  image?: string;
 }
 
 interface SliderProps {
@@ -21,7 +22,7 @@ interface SliderProps {
 export const Slider: React.FC<SliderProps> = ({
                                                 slides,
                                                 autoPlayDuration = 5000,
-                                                onButtonClick
+                                                onButtonClick,
                                               }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
@@ -61,6 +62,20 @@ export const Slider: React.FC<SliderProps> = ({
         {slides.map((slide, index) => (
           <SwiperSlide key={index} className="slider-slide">
             <S.SlideCenter>
+              {slide.image && (
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  style={{
+                    width: "100%",
+                    maxWidth: "380px",
+                    height: "auto",
+                    objectFit: "contain",
+                    marginBottom: "16px",
+                    marginTop: "-10px",
+                  }}
+                />
+              )}
               <S.Title>{slide.title}</S.Title>
               <S.Description>{slide.description}</S.Description>
             </S.SlideCenter>

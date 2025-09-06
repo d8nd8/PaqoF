@@ -1,40 +1,45 @@
 import React from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   NavbarContainer,
   NavbarItem,
   NavbarLabel,
 } from './Navbar.styled'
-import type { NavbarItemState } from '@/widgets/base-layout/BaseLayout.types'
 
 export interface NavbarItemConfig {
   id: string
   label: string
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   activeIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>
-  state: NavbarItemState
+  to: string
 }
 
 interface NavbarProps {
   items: NavbarItemConfig[]
-  onItemClick: (itemId: string) => void
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ items, onItemClick }) => (
-  <NavbarContainer>
-    {items.map(item => {
-      const Icon = item.state === 'active' ? item.activeIcon : item.icon;
+export const Navbar: React.FC<NavbarProps> = ({ items }) => {
+  const navigate = useNavigate()
+  const location = useLocation()
 
-      return (
-        <NavbarItem
-          key={item.id}
-          state={item.state}
-          isQr={item.id === 'qr'}
-          onClick={() => onItemClick(item.id)}
-        >
-          <Icon />
-          {item.label && <NavbarLabel>{item.label}</NavbarLabel>}
-        </NavbarItem>
-      );
-    })}
-  </NavbarContainer>
-);
+  return (
+    <NavbarContainer>
+      {items.map(item => {
+        const isActive = location.pathname === item.to
+        const Icon = isActive ? item.activeIcon : item.icon
+
+        return (
+          <NavbarItem
+            key={item.id}
+            state={isActive ? 'active' : 'default'}
+            isQr={item.id === 'qr'}
+            onClick={() => navigate(item.to)}
+          >
+            <Icon />
+            {item.label && <NavbarLabel>{item.label}</NavbarLabel>}
+          </NavbarItem>
+        )
+      })}
+    </NavbarContainer>
+  )
+}

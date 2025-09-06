@@ -1,4 +1,4 @@
-export type Routes = 'home'
+export type Routes = 'home' | 'profile'
 
 export type IRoute = {
   /** Translation key for the route title (document title) */
@@ -11,5 +11,9 @@ export const routes: Record<Routes, IRoute> = {
   home: {
     titleKey: 'Home',
     url: () => '/',
+  },
+  profile: {
+    titleKey: 'Profile',
+    url: () => '/profile',
   },
 }

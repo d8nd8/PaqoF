@@ -1,4 +1,3 @@
-// WelcomeSlider.tsx
 import React, { useState } from "react";
 import {
   LangButton,
@@ -19,16 +18,19 @@ const slides = [
     title: "Как крипто-карта, только крипто-СБП",
     description: "Пополняйте кошелёк удобными для вас криптовалютами",
     buttonText: "Перейти в кошелёк",
+    image: "src/assets/images/home2.png",
   },
   {
     title: "Быстрое пополнение счёта",
     description: "Пополняйте кошелёк удобными для вас криптовалютами",
     buttonText: "Перейти в кошелёк",
+    image: "src/assets/images/home1.png",
   },
   {
     title: "Удобный вывод средств",
     description: "Моментальные переводы на карты и счета",
     buttonText: "Перейти в кошелёк",
+    image: "src/assets/images/home1.png",
   },
 ];
 
