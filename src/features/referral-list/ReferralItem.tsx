@@ -1,6 +1,6 @@
-
 import React from 'react';
 import * as S from './ReferralList.styled';
+import CircularProgress from '@/features/referral-list/CircularProgress'
 
 export interface ReferralItemData {
   id: string;
@@ -8,6 +8,7 @@ export interface ReferralItemData {
   avatar: string;
   level: number;
   earnings: string;
+  progress?: number;
 }
 
 interface ReferralItemProps {
@@ -32,7 +33,17 @@ export const ReferralItem: React.FC<ReferralItemProps> = ({
           <S.Level>Lvl {data.level}</S.Level>
         </S.UserDetails>
       </S.UserInfo>
-      <S.Earnings>{data.earnings}</S.Earnings>
+      <S.EarningsContainer>
+        <S.Earnings>{data.earnings}</S.Earnings>
+        {data.progress !== undefined && (
+          <CircularProgress
+            progress={data.progress}
+            size={30}
+            strokeWidth={3}
+            color="#00D4AA"
+          />
+        )}
+      </S.EarningsContainer>
     </S.ReferralItem>
   );
 };

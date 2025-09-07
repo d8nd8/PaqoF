@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { WelcomeScreen } from '@/pages/WelcomeScreen';
 import { MainPage } from '@/pages/MainPage';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { ReferralProgramPage } from '@/pages/ReferralProgramPage';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +14,16 @@ export const router = createBrowserRouter([
   {
     path: '/main',
     element: <MainPage />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: '/referral',
+    element: <ReferralProgramPage />,
     errorElement: <ErrorBoundary />
   }
 ]);

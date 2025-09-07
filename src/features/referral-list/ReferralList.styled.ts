@@ -91,8 +91,8 @@ export const UserInfo = styled.div({
 });
 
 export const Avatar = styled.img(({ theme }) => ({
-  width: '40px',
-  height: '40px',
+  width: '50px',
+  height: '50px',
   borderRadius: '50%',
   objectFit: 'cover',
   backgroundColor: '#f5f5f5'
@@ -122,10 +122,53 @@ export const Level = styled.div(({ theme }) => ({
   width: 'fit-content'
 }));
 
+export const EarningsContainer = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+});
+
 export const Earnings = styled.div(({ theme }) => ({
   fontSize: '13px',
-  fontWeight: '400',
+  fontWeight: 400,
   color: theme.colors.success600,
   lineHeight: '18px',
   textAlign: 'right',
+}));
+
+export const ProgressContainer = styled.div<{ size: number }>(({ size }) => ({
+  position: 'relative',
+  width: `${size}px`,
+  height: `${size}px`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+export const ProgressSvg = styled.svg<{ size: number }>(({ size }) => ({
+  width: `${size}px`,
+  height: `${size}px`,
+  transform: 'rotate(-90deg)',
+}));
+
+export const ProgressCircleBackground = styled.circle({
+  fill: 'none',
+});
+
+export const ProgressCircle = styled.circle({
+  fill: 'none',
+  strokeLinecap: 'round',
+  transition: 'stroke-dashoffset 0.3s ease',
+});
+
+export const ProgressText = styled.div<{ size: number }>(({ size }) => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  fontSize: '8px',
+  fontWeight: 600,
+  color: '#000000',
+  lineHeight: '13px',
+  textAlign: 'center',
 }));

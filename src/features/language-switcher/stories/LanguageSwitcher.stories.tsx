@@ -103,7 +103,7 @@ export const Default: Story = {
       }, 'Изменить язык'),
 
       React.createElement(LanguageSwitcher, {
-        key: 'switcher',
+        key: 'Switcher',
         ...args,
         isOpen: isOpen,
         onClose: () => {
@@ -149,7 +149,7 @@ export const WithMoreLanguages: Story = {
       }, 'Выбрать язык'),
 
       React.createElement(LanguageSwitcher, {
-        key: 'switcher',
+        key: 'Switcher',
         ...args,
         isOpen: isOpen,
         onClose: () => {
