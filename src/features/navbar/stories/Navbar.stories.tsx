@@ -19,37 +19,38 @@ const defaultNavbarItems: NavbarItemConfig[] = [
     label: 'Главная',
     icon: HomeIcon,
     activeIcon: HomeActiveIcon,
-    state: 'default',
+    to: '/',
   },
   {
     id: 'history',
     label: 'История',
     icon: ClockIcon,
     activeIcon: ClockActiveIcon,
-    state: 'default',
+    to: '/history',
   },
   {
     id: 'qr',
     label: '',
     icon: QRIcon,
     activeIcon: QRIcon,
-    state: 'default',
+    to: '/qr',
   },
   {
     id: 'bonus',
     label: 'Бонусы',
     icon: BonusIcon,
     activeIcon: BonusActiveIcon,
-    state: 'default',
+    to: '/bonus',
   },
   {
     id: 'profile',
     label: 'Профиль',
     icon: UserIcon,
     activeIcon: UserActiveIcon,
-    state: 'default',
+    to: '/profile',
   },
-];
+]
+
 
 const MobileContainer = styled.div({
   width: '375px',

@@ -1,14 +1,13 @@
-import styled from '@emotion/styled';
-import type { NavbarItemState } from '@/widgets/base-layout/BaseLayout.types'
+import styled from '@emotion/styled'
 
-
+type NavbarItemState = 'default' | 'active'
 
 interface NavbarItemStyledProps {
-  state: NavbarItemState;
+  state: NavbarItemState
   isQr: boolean
 }
 
-export const NavbarContainer = styled.div(({theme}) => ({
+export const NavbarContainer = styled.div(({ theme }) => ({
   position: 'fixed',
   bottom: 0,
   left: '50%',
@@ -22,7 +21,7 @@ export const NavbarContainer = styled.div(({theme}) => ({
   justifyContent: 'space-between',
   padding: '10px 20px 20px',
   zIndex: 1000,
-}));
+}))
 
 export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
   const base = {
@@ -42,7 +41,7 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     position: 'relative' as const,
     backgroundColor: 'transparent',
     color: props.theme.colors.textSecondary,
-  };
+  }
 
   if (props.isQr) {
     return {
@@ -51,9 +50,11 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
       height: '50px',
       borderRadius: '18px',
       backgroundColor: props.theme.colors.primary500,
-      '&:focus': { outline: 'none', backgroundColor: props.theme.colors.primary400,
-      }
-    };
+      '&:focus': {
+        outline: 'none',
+        backgroundColor: props.theme.colors.primary400,
+      },
+    }
   }
 
   if (props.state === 'active') {
@@ -63,19 +64,8 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
       width: '50px',
       height: '50px',
       borderRadius: '20px',
-      '&:focus': { outline: 'none' }
-    };
-  }
-
-  if (props.state === 'history') {
-    return {
-      ...base,
-      color: props.theme.colors.textSecondary,
-      width: '50px',
-      height: '50px',
-      borderRadius: '12px',
-      '&:focus': { outline: 'none' }
-    };
+      '&:focus': { outline: 'none' },
+    }
   }
 
   return {
@@ -84,14 +74,14 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     width: '50px',
     height: '50px',
     borderRadius: '12px',
-    '&:focus': { outline: 'none' }
-  };
-});
+    '&:focus': { outline: 'none' },
+  }
+})
 
 export const NavbarLabel = styled.span({
   fontSize: '11px',
   fontWeight: '400',
   lineHeight: '13px',
   textAlign: 'center',
-  whiteSpace: 'nowrap'
-});
+  whiteSpace: 'nowrap',
+})

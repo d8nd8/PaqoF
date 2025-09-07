@@ -105,7 +105,7 @@ export const TransactionItem = styled.div(({ theme }) => ({
   alignItems: "center",
   padding: `${theme.spacing.md} 0`,
   cursor: "pointer",
-  borderBottom: `1px solid ${theme.colors.borderLight}`,
+  borderBottom: `1px solid ${theme.semantic.borderLight}`,
   ":last-of-type": {
     borderBottom: "none",
   },
