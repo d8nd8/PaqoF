@@ -14,11 +14,13 @@ export interface ReferralItemData {
 interface ReferralItemProps {
   data: ReferralItemData;
   onClick?: (referral: ReferralItemData) => void;
+  showProgress?: boolean;
 }
 
 export const ReferralItem: React.FC<ReferralItemProps> = ({
                                                             data,
-                                                            onClick
+                                                            onClick,
+                                                            showProgress = true,
                                                           }) => {
   const handleClick = () => {
     onClick?.(data);
@@ -35,10 +37,10 @@ export const ReferralItem: React.FC<ReferralItemProps> = ({
       </S.UserInfo>
       <S.EarningsContainer>
         <S.Earnings>{data.earnings}</S.Earnings>
-        {data.progress !== undefined && (
+        {showProgress && data.progress !== undefined && (
           <CircularProgress
             progress={data.progress}
-            size={30}
+            size={40}
             strokeWidth={3}
             color="#00D4AA"
           />

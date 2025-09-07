@@ -8,14 +8,20 @@ export const WidgetWrapper = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.systemBackground,
 }));
 
-export const SwitchableContent = styled.div({
+interface SwitchableContentProps {
+  background?: string;
+}
+
+export const SwitchableContent = styled.div<SwitchableContentProps>(({ background }) => ({
   display: 'flex',
   flexDirection: 'column',
-  padding: '60px 14px 14px',
-  background: 'linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
+  padding: '14px 14px',
+  background: background,
   borderBottomLeftRadius: '13px',
   borderBottomRightRadius: '13px',
-});
+  height: '100%',
+  maxHeight: '693px',
+}));
 
 export const PageHeader = styled.div({
   display: "flex",
@@ -24,13 +30,17 @@ export const PageHeader = styled.div({
   marginBottom: "14px",
 });
 
-export const BackButton = styled.button(({ theme }) => ({
+interface HeaderElementProps {
+  level?: number;
+}
+
+export const BackButton = styled.button<HeaderElementProps>(({ theme, level }) => ({
   background: "transparent",
   border: "none",
   fontSize: "24px",
   cursor: "pointer",
   padding: "8px",
-  color: theme.colors.textPrimary,
+  color: (level === 3 || level === 5) ? "#FFFFFF" : theme.colors.textPrimary,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -40,20 +50,20 @@ export const BackButton = styled.button(({ theme }) => ({
   },
 }));
 
-export const PageTitle = styled.h1(({ theme }) => ({
+export const PageTitle = styled.h1<HeaderElementProps>(({ theme, level }) => ({
   fontSize: "16px",
   fontWeight: 600,
-  color: theme.colors.textPrimary,
+  color: (level === 3 || level === 5) ? "#FFFFFF" : theme.colors.textPrimary,
   textAlign: "center",
   flex: 1,
 }));
 
-export const InfoButton = styled.button(({ theme }) => ({
+export const InfoButton = styled.button<HeaderElementProps>(({ theme, level }) => ({
   background: "transparent",
   border: "none",
   cursor: "pointer",
   padding: "8px",
-  color: theme.colors.textSecondary,
+  color: (level === 3 || level === 5) ? "#FFFFFF" : theme.colors.textSecondary,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

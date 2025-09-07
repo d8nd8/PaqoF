@@ -4,10 +4,7 @@ import ReferralCodes from "@/features/profile/referral-codes";
 import type { ReferralItemData } from '@/features/referral-list/ReferralItem';
 import { ReferralList } from '@/features/referral-list/ReferralList'
 
-
-
 import { RefBackWrapper } from './RefBackTab.styled';
-
 
 type ReferralData = {
   id: string;
@@ -77,7 +74,7 @@ export const RefBackTab: React.FC<Props> = ({
   return (
     <RefBackWrapper>
       <PayoutsCard
-        title="Выплаты"
+        title="Вывод"
         description="Рефбэк автоматически поступит на ваш реферальный баланс в течение 14 дней после каждой транзакции, совершённой рефералом."
         balance={balance}
         balanceUSD={balanceUSD}
@@ -93,13 +90,10 @@ export const RefBackTab: React.FC<Props> = ({
         onCopyCode={onCopyCode}
       />
 
-
       <ReferralList
-        activeReferrals={{
-          title: "Рефералы",
-          count: referralsCount,
-          referrals: referralItemsData
-        }}
+        referrals={referralItemsData}
+        referralsCount={referralsCount}
+        title="Рефералы"
         onReferralClick={onReferralClick}
       />
     </RefBackWrapper>

@@ -9,6 +9,7 @@ type Props = {
   backgroundColor?: string;
   showPercentage?: boolean;
   className?: string;
+  visible?: boolean;
 };
 
 export const CircularProgress: React.FC<Props> = ({
@@ -18,8 +19,11 @@ export const CircularProgress: React.FC<Props> = ({
                                                     color = '#00D4AA',
                                                     backgroundColor = '#E5E5E7',
                                                     showPercentage = true,
+                                                    visible = true,
                                                     className
                                                   }) => {
+  if (!visible) return null;
+
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDasharray = circumference;

@@ -63,7 +63,6 @@ const InteractiveOverlay = ({ initialSelected }: { initialSelected?: string }) =
   const handleClose = () => {
     console.log('Close crypto selection overlay');
     setIsOpen(false);
-    // Для демонстрации откроем снова через секунду
     setTimeout(() => setIsOpen(true), 1000);
   };
 

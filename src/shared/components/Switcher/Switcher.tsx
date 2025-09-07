@@ -14,6 +14,7 @@ type Props = {
   activeKey: string;
   onChange: (key: string) => void;
   className?: string;
+  level?: number;
 };
 
 export const Switcher: React.FC<Props> = ({
@@ -21,6 +22,7 @@ export const Switcher: React.FC<Props> = ({
                                             activeKey,
                                             onChange,
                                             className,
+                                            level,
                                           }) => {
   return (
     <SwitcherWrapper className={className}>
@@ -28,6 +30,7 @@ export const Switcher: React.FC<Props> = ({
         <SwitcherTab
           key={option.key}
           active={activeKey === option.key}
+          level={level}
           onClick={() => onChange(option.key)}
         >
           {option.label}
@@ -36,5 +39,3 @@ export const Switcher: React.FC<Props> = ({
     </SwitcherWrapper>
   );
 };
-
-export default Switcher;
