@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BaseLayout } from '@/widgets/base-layout'
 import { ReferralWidget } from '@/widgets/profile/referral-widget'
 
@@ -28,51 +28,57 @@ type Props = {
 };
 
 export const ReferralProgramPage: React.FC<Props> = ({
-   progress = 50,
-   balance = 500,
-   balanceUSD = 500,
-   referralCode = "dko777ka",
-   referralLink = "https://t.me/papagowallet",
-   referrals = [
-     {
-       id: "1",
-       username: "@curlyhunter",
-       avatar: "/images/avatar1.jpg",
-       earnings: "+100.00000 USDT"
-     },
-     {
-       id: "2",
-       username: "@curlypaster",
-       avatar: "/images/avatar2.jpg",
-       earnings: "+45 USDT"
-     },
-     {
-       id: "3",
-       username: "@oscar",
-       avatar: "/images/avatar3.jpg",
-       earnings: "+45 USDT"
-     },
-     {
-       id: "4",
-       username: "@valerysmolenka",
-       avatar: "/images/avatar4.jpg",
-       earnings: "+5 USDT"
-     }
-   ],
-   referralsCount = 105,
-   level = 1,
-   experience = 0,
-   maxExperience = 100,
-   onBack,
-   onInfo,
-   onWithdraw,
-   onCopyCode,
-   initialTab = "refback",
-  }) => {
+                                                       balance = 500,
+                                                       balanceUSD = 500,
+                                                       referralCode = "dko777ka",
+                                                       referralLink = "https://t.me/papagowallet",
+                                                       referrals = [
+                                                         {
+                                                           id: "1",
+                                                           username: "@curlyhunter",
+                                                           avatar: "/images/avatar1.jpg",
+                                                           earnings: "+100.00000 USDT"
+                                                         },
+                                                         {
+                                                           id: "2",
+                                                           username: "@curlypaster",
+                                                           avatar: "/images/avatar2.jpg",
+                                                           earnings: "+45 USDT"
+                                                         },
+                                                         {
+                                                           id: "3",
+                                                           username: "@oscar",
+                                                           avatar: "/images/avatar3.jpg",
+                                                           earnings: "+45 USDT"
+                                                         },
+                                                         {
+                                                           id: "4",
+                                                           username: "@valerysmolenka",
+                                                           avatar: "/images/avatar4.jpg",
+                                                           earnings: "+5 USDT"
+                                                         }
+                                                       ],
+                                                       referralsCount = 105,
+                                                       level = 1,
+                                                       experience = 0,
+                                                       maxExperience = 100,
+                                                       onBack,
+                                                       onInfo,
+                                                       onWithdraw,
+                                                       onCopyCode,
+                                                       initialTab = "refback",
+                                                     }) => {
+
+  const [showNavbar, setShowNavbar] = useState(true);
+
+  const handleOverlayStateChange = (isOpen: boolean) => {
+    setShowNavbar(!isOpen);
+  };
+
   return (
-    <BaseLayout showNavbar>
+    <BaseLayout showNavbar={showNavbar}>
       <ReferralWidget
-        progress={progress}
+        progress={30}
         balance={balance}
         balanceUSD={balanceUSD}
         referralCode={referralCode}
@@ -86,10 +92,9 @@ export const ReferralProgramPage: React.FC<Props> = ({
         onInfo={onInfo}
         onWithdraw={onWithdraw}
         onCopyCode={onCopyCode}
+        onOverlayStateChange={handleOverlayStateChange}
         initialTab={initialTab}
       />
     </BaseLayout>
   );
 };
-
-export default ReferralProgramPage;

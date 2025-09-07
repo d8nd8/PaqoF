@@ -118,7 +118,6 @@ export const StatusDetails = styled.div(({theme}) => ({
   marginBottom: '20px'
 }));
 
-// Error state styles
 export const ErrorIcon = styled.div(({theme}) => ({
   width: '80px',
   height: '80px',
@@ -153,7 +152,6 @@ export const ErrorDescription = styled.p(({theme}) => ({
   maxWidth: '280px'
 }));
 
-// CurrencyButton styles (re-used from previous implementation)
 interface CurrencyButtonContainerProps {
   disabled: boolean;
   hasOptions: boolean;

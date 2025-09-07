@@ -15,7 +15,7 @@ interface BottomSheetProps {
   status?: 'default' | 'success';
   showCloseButton?: boolean;
   showHeader?: boolean;
-  closeButtonType?: 'text' | 'icon'; // Новый проп для выбора типа кнопки
+  closeButtonType?: 'text' | 'icon';
 }
 
 export const BottomSheet: React.FC<BottomSheetProps> = ({
@@ -31,7 +31,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
                                                           showCloseButton = true,
                                                           status = 'default',
                                                           showHeader = true,
-                                                          closeButtonType = 'text', // По умолчанию текстовая кнопка
+                                                          closeButtonType = 'text',
                                                         }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);

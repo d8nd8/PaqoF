@@ -9,7 +9,7 @@ export const SwitcherWrapper = styled.div(({ theme }) => ({
   boxSizing: "border-box",
 }));
 
-export const SwitcherTab = styled.button<{ active: boolean }>(({ theme, active }) => ({
+export const SwitcherTab = styled.button<{ active: boolean; level?: number }>(({ theme, active, level }) => ({
   flex: 1,
   padding: "2px 16px",
   background: active ? theme.colors.primary500 : "transparent",
@@ -17,7 +17,9 @@ export const SwitcherTab = styled.button<{ active: boolean }>(({ theme, active }
   borderRadius: theme.borderRadius.md,
   fontSize: "13px",
   fontWeight: 600,
-  color: theme.colors.textPrimary,
+  color: active
+    ? theme.colors.textPrimary
+    : (level === 5 ? "#FFFFFF" : theme.colors.textPrimary),
   cursor: "pointer",
   transition: "all 0.2s ease",
   textAlign: "center",

@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const PayoutsCard: React.FC<Props> = ({
-                                               title = "Выплаты",
+                                               title = "Вывод",
                                                description = "Прибыль начисляется ежемесячно при еще совершившим бонус в течение 14 дней после каждой транзакции, реферальной программы.",
                                                balance = 0,
                                                balanceUSD = 0,
