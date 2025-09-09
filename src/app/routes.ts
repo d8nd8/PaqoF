@@ -5,4 +5,5 @@ export const ROUTES = {
   MAIN: '/main' as RoutePath,
   PROFILE: '/profile' as RoutePath,
   REFERRAL: '/referral' as RoutePath,
+  HISTORY: '/history' as RoutePath,
 } as const;

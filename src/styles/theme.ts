@@ -93,6 +93,7 @@ export const theme = {
     xxl: '24px',
     xxxl: '32px',
     huge: '40px',
+    header: "50px",
   },
 
   // Typography

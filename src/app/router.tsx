@@ -4,6 +4,7 @@ import { WelcomeScreen } from '@/pages/WelcomeScreen';
 import { MainPage } from '@/pages/MainPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ReferralProgramPage } from '@/pages/ReferralProgramPage';
+import HistoryPage from '@/pages/HistoryPage'
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,11 @@ export const router = createBrowserRouter([
   {
     path: '/referral',
     element: <ReferralProgramPage />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: '/history',
+    element: <HistoryPage />,
     errorElement: <ErrorBoundary />
   }
 ]);

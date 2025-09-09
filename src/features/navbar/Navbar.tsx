@@ -16,9 +16,10 @@ export interface NavbarItemConfig {
 
 interface NavbarProps {
   items: NavbarItemConfig[]
+  onItemClick?: (id: string) => void
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ items }) => {
+export const Navbar: React.FC<NavbarProps> = ({ items, onItemClick }) => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -33,7 +34,10 @@ export const Navbar: React.FC<NavbarProps> = ({ items }) => {
             key={item.id}
             state={isActive ? 'active' : 'default'}
             isQr={item.id === 'qr'}
-            onClick={() => navigate(item.to)}
+            onClick={() => {
+              navigate(item.to)
+              onItemClick?.(item.id)
+            }}
           >
             <Icon />
             {item.label && <NavbarLabel>{item.label}</NavbarLabel>}
