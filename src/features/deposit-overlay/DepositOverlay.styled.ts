@@ -1,4 +1,3 @@
-// DepositOverlay.styled.ts
 import styled from "@emotion/styled";
 
 export const OverlayBackground = styled.div`
@@ -20,11 +19,36 @@ export const OverlayContainer = styled.div`
   box-shadow: ${({ theme }) => theme.semantic.shadowLight};
 `;
 
-export const OverlayHeader = styled.div`
+export const OverlayHeaderTop = styled.div`
   position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+`;
+
+export const CloseButton = styled.button`
+  border: none;
+  background: none;
+  padding: 0;
+
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.08px;
+  color: ${({ theme }) => theme.semantic.textPrimary};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.neutral600};
+  }
+`;
+
+export const OverlayHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 15px;
 `;
 
 export const OverlayTitle = styled.h2`
@@ -32,23 +56,8 @@ export const OverlayTitle = styled.h2`
   font-weight: 600;
   line-height: 25px;
   letter-spacing: -0.45px;
-  margin: 0 0 5px 0;
+  margin: 0;
   color: ${({ theme }) => theme.semantic.textPrimary};
-`;
-
-export const CloseButton = styled.button`
-  position: absolute;
-  right: 0; 
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: none;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 18px;
-  letter-spacing: -0.08px;
-  color: ${({ theme }) => theme.semantic.textSecondary};
-  cursor: pointer;
 `;
 
 export const Description = styled.p`
@@ -58,9 +67,9 @@ export const Description = styled.p`
   line-height: 18px;
   letter-spacing: -0.08px;
   color: ${({ theme }) => theme.semantic.textSecondary};
-  text-align: center;    
-  white-space: normal;    
-  word-break: break-word;  
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
 `;
 
 export const Option = styled.div`

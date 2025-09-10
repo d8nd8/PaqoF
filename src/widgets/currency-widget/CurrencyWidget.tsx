@@ -11,6 +11,8 @@ import {
   ChainList,
   ChainTypeCard,
   ChainIcon,
+  ChainContent,
+  ChainRow,
   ChainInfo,
   ChainHeader,
   ChainTitle,
@@ -19,6 +21,7 @@ import {
   ChainFee,
   CopyButton,
   CopyNotification,
+  CopyGroup,
 } from "./CurrencyWidget.styled";
 
 import TetherIcon from "@/assets/icons/usdt-icon.svg?react";
@@ -117,69 +120,76 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({ symbol }) => {
     data.chains.length === 1 ? [...data.chains, ...data.chains] : data.chains;
 
   return (
-    <CurrencyWrapper>
-      <Header>
-        <Title>{data.name}</Title>
-      </Header>
+    <>
+      <CurrencyWrapper>
+        <Header>
+          <Title>{data.name}</Title>
+        </Header>
 
-      <BalanceWrapper>
-        {copied && (
-          <CopyNotification>
-            <CheckIcon />
-            Адрес скопирован
-          </CopyNotification>
-        )}
-        <BalanceSection>
-          {data.chains[0].icon}
-          <BalanceAmount>{data.amount}</BalanceAmount>
-          <BalanceFiat>{data.fiat}</BalanceFiat>
-        </BalanceSection>
-      </BalanceWrapper>
+        <BalanceWrapper>
+          {copied && (
+            <CopyNotification>
+              <CheckIcon />
+              Адрес скопирован
+            </CopyNotification>
+          )}
+          <BalanceSection>
+            {data.chains[0].icon}
+            <BalanceAmount>{data.amount}</BalanceAmount>
+            <BalanceFiat>{data.fiat}</BalanceFiat>
+          </BalanceSection>
+        </BalanceWrapper>
 
-      <ActionsRow>
-        <ActionItem
-          icon={<PlusCircleIcon />}
-          label="Пополнить"
-          onClick={() => setShowDeposit(true)}
-          variant="secondary"
-        />
-        <ActionItem
-          icon={<SendIcon />}
-          label="Отправить"
-          onClick={() => console.log("send")}
-          variant="secondary"
-        />
-        <ActionItem
-          icon={<QRPayIcon />}
-          label="Оплатить"
-          onClick={() => console.log("pay")}
-          variant="secondary"
-        />
-      </ActionsRow>
+        <ActionsRow>
+          <ActionItem
+            icon={<PlusCircleIcon />}
+            label="Пополнить"
+            onClick={() => setShowDeposit(true)}
+            variant="secondary"
+          />
+          <ActionItem
+            icon={<SendIcon />}
+            label="Отправить"
+            onClick={() => console.log("send")}
+            variant="secondary"
+          />
+          <ActionItem
+            icon={<QRPayIcon />}
+            label="Оплатить"
+            onClick={() => console.log("pay")}
+            variant="secondary"
+          />
+        </ActionsRow>
 
-      <ChainList>
-        {chainsToRender.map((chain, index) => (
-          <ChainTypeCard key={`${chain.address}-${index}`}>
-            <ChainIcon>{chain.icon}</ChainIcon>
-            <ChainInfo>
-              <ChainHeader>
-                <ChainTitle>{chain.chainTitle}</ChainTitle>
-                <ChainBadge>{NETWORK_BADGE}</ChainBadge>
-              </ChainHeader>
-              <ChainAddress>{chain.address}</ChainAddress>
-              <ChainFee>Комиссия: {chain.fee}</ChainFee>
-            </ChainInfo>
-            <CopyButton onClick={() => handleCopy(chain.address)}>
-              <QrIcon width={20} height={20} />
-              <CopyIcon width={20} height={20} />
-            </CopyButton>
-          </ChainTypeCard>
-        ))}
-      </ChainList>
+        <ChainList>
+          {chainsToRender.map((chain, index) => (
+            <ChainTypeCard key={`${chain.address}-${index}`}>
+              <ChainIcon>{chain.icon}</ChainIcon>
+              <ChainContent>
+                <ChainRow>
+                  <ChainHeader>
+                    <ChainTitle>{chain.chainTitle}</ChainTitle>
+                    <ChainBadge>{NETWORK_BADGE}</ChainBadge>
+                  </ChainHeader>
+                  <CopyGroup>
+                    <CopyButton onClick={() => handleCopy(chain.address)}>
+                      <QrIcon width={20} height={20} />
+                    </CopyButton>
+                    <CopyButton onClick={() => handleCopy(chain.address)}>
+                      <CopyIcon width={20} height={20} />
+                    </CopyButton>
+                  </CopyGroup>
+                </ChainRow>
+                <ChainAddress>{chain.address}</ChainAddress>
+                <ChainFee>Комиссия: {chain.fee}</ChainFee>
+              </ChainContent>
+            </ChainTypeCard>
+          ))}
+        </ChainList>
 
-      <HistoryWidget />
-
-      {showDeposit && <DepositOverlay onClose={() => setShowDeposit(false)} />}
-    </CurrencyWrapper>
+        {showDeposit && <DepositOverlay onClose={() => setShowDeposit(false)} />}
+      </CurrencyWrapper>
+      <HistoryWidget variant="card" />
+    </>
   );
 };

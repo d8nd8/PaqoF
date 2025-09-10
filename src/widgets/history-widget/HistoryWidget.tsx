@@ -28,8 +28,8 @@ import type { TransactionData } from "@/features/overlay-transaction-details/tra
 import { OverlayTransactionDetails } from "@/features/overlay-transaction-details/OverlayTransactionDetails";
 import useApplicationStore from "@/shared/stores/application";
 
-import ClockIcon from '@/assets/icons/clock.svg?react';
-import ExclamationCircleIcon from '@/assets/icons/exclamation-circle.svg?react';
+import ClockIcon from "@/assets/icons/clock.svg?react";
+import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
 
 const TABS = [
   { id: "all", label: "Все" },
@@ -37,7 +37,11 @@ const TABS = [
   { id: "deposit", label: "Пополнения" },
 ];
 
-export const HistoryWidget: React.FC = () => {
+interface HistoryWidgetProps {
+  variant?: "default" | "card";
+}
+
+export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default" }) => {
   const [activeTab, setActiveTab] = useState("all");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTx, setSelectedTx] = useState<TransactionData | null>(null);
@@ -91,9 +95,9 @@ export const HistoryWidget: React.FC = () => {
   };
 
   return (
-    <HistoryWrapper>
+    <HistoryWrapper $variant={variant}>
       <Header>
-        <Title>История транзакций</Title>
+        <Title $variant={variant}>История транзакций</Title>
         <Tabs>
           {TABS.map((tab) => (
             <TabButton
@@ -121,22 +125,17 @@ export const HistoryWidget: React.FC = () => {
               <DateTitle>{group.date}</DateTitle>
               <DateTotalWrapper>
                 <DateTotalMain>
-                  {total >= 0 ? "+" : "−"}{" "}
-                  {Math.abs(total).toLocaleString("ru-RU")} ₽
+                  {total >= 0 ? "+" : "−"} {Math.abs(total).toLocaleString("ru-RU")} ₽
                 </DateTotalMain>
                 <DateTotalSecondary>
-                  {totalUsd >= 0 ? "+" : "−"}{" "}
-                  {Math.abs(totalUsd).toFixed(2)} USDT
+                  {totalUsd >= 0 ? "+" : "−"} {Math.abs(totalUsd).toFixed(2)} USDT
                 </DateTotalSecondary>
               </DateTotalWrapper>
             </DateHeader>
 
             <TransactionList>
               {group.items.map((tx) => (
-                <TransactionItem
-                  key={tx.id}
-                  onClick={() => handleCardClick(tx)}
-                >
+                <TransactionItem key={tx.id} onClick={() => handleCardClick(tx)}>
                   <TransactionLeft>
                     <IconCircle>{tx.icon}</IconCircle>
                     <TransactionInfo>
@@ -145,16 +144,8 @@ export const HistoryWidget: React.FC = () => {
                     </TransactionInfo>
                   </TransactionLeft>
                   <TransactionRight>
-                    <Amount type={tx.type} >
-                      {renderStatusIcon(tx)}
-                      {tx.amount}
-
-                    </Amount>
-                    {tx.amountUsd && (
-                      <Amount type={tx.type} secondary >
-                        {tx.amountUsd}
-                      </Amount>
-                    )}
+                    <Amount type={tx.type}>{renderStatusIcon(tx)} {tx.amount}</Amount>
+                    {tx.amountUsd && <Amount type={tx.type} secondary>{tx.amountUsd}</Amount>}
                   </TransactionRight>
                 </TransactionItem>
               ))}

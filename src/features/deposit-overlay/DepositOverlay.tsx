@@ -2,6 +2,7 @@ import React from "react";
 import {
   OverlayBackground,
   OverlayContainer,
+  OverlayHeaderTop,
   OverlayHeader,
   OverlayTitle,
   CloseButton,
@@ -22,9 +23,12 @@ export const DepositOverlay: React.FC<Props> = ({ onClose, onSelectWallet }) => 
   return (
     <OverlayBackground onClick={onClose}>
       <OverlayContainer onClick={(e) => e.stopPropagation()}>
+        <OverlayHeaderTop>
+          <CloseButton onClick={onClose}>Закрыть</CloseButton>
+        </OverlayHeaderTop>
+
         <OverlayHeader>
           <OverlayTitle>Пополнить</OverlayTitle>
-          <CloseButton onClick={onClose}>Закрыть</CloseButton>
         </OverlayHeader>
 
         <Description>

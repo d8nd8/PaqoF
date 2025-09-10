@@ -1,35 +1,67 @@
 import styled from "@emotion/styled";
 
-export const HistoryWrapper = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  padding: theme.spacing.lg,
-  background: theme.colors.systemBackground,
-  paddingTop: theme.spacing.header,
-  minHeight: "100%",
-}));
+export const HistoryWrapper = styled.div<{ $variant?: "default" | "card" }>(
+  ({ theme, $variant }) => ({
+    display: "flex",
+    flexDirection: "column",
+    padding: $variant === "card" ? theme.spacing.md : theme.spacing.lg,
+    paddingTop: $variant === "card" ? theme.spacing.lg : theme.spacing.header,
+    background:
+      $variant === "card"
+        ? theme.colors.systemElevatedBackground
+        : theme.colors.systemBackground,
+    borderRadius: $variant === "card" ? theme.borderRadius.lg : 0,
+    border:
+      $variant === "card"
+        ? `1px solid ${theme.colors.neutral300}`
+        : "none",
+    borderTop: "none",
 
+    ...( $variant === "card"
+        ? {
+          width: "100%",
+          maxWidth: "100%",
+          margin: "0 auto",
+          height: "auto",
+        }
+        : {
+          minHeight: "100%",
+        }
+    ),
+  })
+);
+export const Header = styled.div<{ $variant?: "default" | "card" }>(
+  ({ theme, $variant }) => ({
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: theme.spacing.lg,
+    marginTop: $variant === "card" ? "20px" : theme.spacing.xxl, // 20px при card
+  })
+);
 
-export const Header = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  marginBottom: theme.spacing.lg,
-  marginTop: theme.spacing.xxl,
-}));
+export const Title = styled.h2<{ $variant?: "default" | "card" }>(
+  ({ theme, $variant }) => ({
+    fontFamily: "Inter, sans-serif",
+    fontWeight: theme.typography.fontWeight.semibold,
+    color: theme.colors.textPrimary,
+    margin: 0,
+    marginBottom: theme.spacing.lg,
 
-
-export const Title = styled.h2(({ theme }) => ({
-  fontFamily: theme.typography.fontFamily,
-  fontSize: theme.typography.fontSize.md,
-  fontWeight: theme.typography.fontWeight.semibold,
-  lineHeight: "21px",
-  letterSpacing: "-0.31px",
-  color: theme.colors.textPrimary,
-  margin: 0,
-  marginBottom: theme.spacing.lg,
-  textAlign: "center",
-}));
-
+    ...( $variant === "card"
+      ? {
+        fontSize: "17px",
+        lineHeight: "22px",
+        letterSpacing: "-0.43px",
+        textAlign: "left",
+      }
+      : {
+        fontSize: theme.typography.fontSize.md,
+        lineHeight: "21px",
+        letterSpacing: "-0.31px",
+        textAlign: "center",
+      }),
+  })
+);
 
 export const Tabs = styled.div({
   display: "flex",
@@ -45,7 +77,9 @@ export const TabButton = styled.button<{ $active?: boolean }>(
     fontWeight: theme.typography.fontWeight.medium,
     border: "none",
     cursor: "pointer",
-    backgroundColor: $active ? theme.colors.neutral950 : theme.colors.neutral300,
+    backgroundColor: $active
+      ? theme.colors.neutral950
+      : theme.colors.neutral300,
     color: $active ? theme.colors.neutral100 : theme.colors.textPrimary,
     transition: theme.transition.fast,
   })
@@ -145,50 +179,50 @@ export const TransactionRight = styled.div({
   alignItems: "flex-end",
 });
 
-export const Amount = styled.div<{ type?: "income" | "expense"; secondary?: boolean }>(
-  ({ theme, type, secondary }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: '13px',
-    height: "20px",
-    letterSpacing: "-0.08px",
-    fontWeight: secondary
-      ? theme.typography.fontWeight.normal
-      : theme.typography.fontWeight.normal,
-    color: secondary
-      ? theme.colors.textTertiary
-      : type === "income"
-        ? theme.colors.success600
-        : theme.colors.textPrimary,
-  })
-);
+export const Amount = styled.div<{
+  type?: "income" | "expense";
+  secondary?: boolean;
+}>(({ theme, type, secondary }) => ({
+  display: "flex",
+  alignItems: "center",
+  fontSize: "13px",
+  height: "20px",
+  letterSpacing: "-0.08px",
+  fontWeight: theme.typography.fontWeight.normal,
+  color: secondary
+    ? theme.colors.textTertiary
+    : type === "income"
+      ? theme.colors.success600
+      : theme.colors.textPrimary,
+}));
 
-export const StatusIcon = styled.div<{ status: "pending" | "warning" }>(({ theme, status }) => {
-  const backgroundColor = "#F3F4F6";
-  let color ;
+export const StatusIcon = styled.div<{ status: "pending" | "warning" }>(
+  ({ theme, status }) => {
+    const backgroundColor = "#F3F4F6";
+    let color;
 
-  switch (status) {
-    case "pending":
-      color = theme.colors.warning500;
-      break;
-    case "warning":
-      color = theme.colors.textTertiary;
-      break;
-  }
-
-  return {
-    width: "20px",
-    height: "20px",
-    borderRadius: "50%",
-    backgroundColor,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: "2px",
-
-    "& svg": {
-      color,
-      fill: "currentColor",
+    switch (status) {
+      case "pending":
+        color = theme.colors.warning500;
+        break;
+      case "warning":
+        color = theme.colors.textTertiary;
+        break;
     }
-  };
-});
+
+    return {
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      backgroundColor,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginLeft: "2px",
+      "& svg": {
+        color,
+        fill: "currentColor",
+      },
+    };
+  }
+);
