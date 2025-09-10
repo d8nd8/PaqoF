@@ -37,7 +37,6 @@ const BaseLayout = ({
     });
   }, [location.pathname]);
 
-
   const transitions = useTransition(location, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -80,6 +79,9 @@ const BaseLayout = ({
     backButton.hide();
   }
 
+  const navbarHeight = showNavbar ? 81 : 0;
+  const bottomPadding = shortBottomPadding ? bottom : bottom + navbarHeight;
+
   return (
     <>
       {transitions((style) => (
@@ -88,9 +90,7 @@ const BaseLayout = ({
           shortBottomPadding={shortBottomPadding}
           styleExtra={{
             paddingTop: `${top}px`,
-            paddingBottom: shortBottomPadding
-              ? `${bottom}px`
-              : `${bottom + (showNavbar ? 56 : 0)}px`,
+            paddingBottom: `${bottomPadding}px`,
           }}
           className={`wrapper-page ${className || ""}`.trim()}
         >

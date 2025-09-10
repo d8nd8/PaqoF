@@ -4,7 +4,7 @@ export const ProfileWrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   background: theme.colors.systemBackground,
-  minHeight: "100%",
+  width: "100%",
 }));
 
 export const ProfileTop = styled.div({
@@ -14,12 +14,8 @@ export const ProfileTop = styled.div({
   minHeight: "180px",
   maxHeight: "260px",
   background: `
-    radial-gradient(circle at top left, #1F0BFF 0%, #F7F7F7 100%),
-    radial-gradient(circle at top right, #0754FB 0%, #F7F7F7 100%),
-    radial-gradient(circle at bottom, #389BEC 0%, #F7F7F7 100%)
+    linear-gradient(135deg, #4A9EFF 0%, #6B7EFF 40%, #8B6EFF 70%, #B95EFF 100%)
   `,
-  borderBottomLeftRadius: "16px",
-  borderBottomRightRadius: "16px",
 });
 
 export const Username = styled.div({
@@ -56,13 +52,13 @@ export const Avatar = styled.img(({ theme }) => ({
   width: "100px",
   height: "100px",
   borderRadius: "50%",
-  border: `7px solid ${theme.colors.systemElevatedBackground}`,
-  background: theme.colors.systemElevatedBackground,
   objectFit: "cover",
 }));
 
 export const Content = styled.div(({ theme }) => ({
   padding: theme.spacing.lg,
+  paddingBottom: `calc(${theme.spacing.lg})`,
+  flex: 1,
 }));
 
 export const Section = styled.div(({ theme }) => ({
@@ -87,6 +83,9 @@ export const SectionItem = styled.button(({ theme }) => ({
   cursor: "pointer",
   border: "none",
   textAlign: "left",
+  position: "relative",
+  zIndex: 1,
+  transition: "all 0.2s ease",
 
   "&:first-of-type": {
     borderTopLeftRadius: theme.borderRadius.lg,
@@ -96,6 +95,16 @@ export const SectionItem = styled.button(({ theme }) => ({
     borderBottomLeftRadius: theme.borderRadius.lg,
     borderBottomRightRadius: theme.borderRadius.lg,
   },
+
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    transform: "translateY(-1px)",
+    zIndex: 2,
+  },
+
+  "&:active": {
+    transform: "translateY(0px)",
+  }
 }));
 
 export const IconBox = styled.div(({ theme }) => ({
@@ -153,4 +162,18 @@ export const LogoutButton = styled.button(({ theme }) => ({
   cursor: "pointer",
   padding: "0 16px",
   marginTop: theme.spacing.sm,
+  border: "none",
+  position: "relative",
+  zIndex: 1,
+  transition: "all 0.2s ease",
+
+  "&:hover": {
+    backgroundColor: "rgba(255, 43, 39, 0.1)",
+    transform: "translateY(-1px)",
+    zIndex: 2,
+  },
+
+  "&:active": {
+    transform: "translateY(0px)",
+  }
 }));

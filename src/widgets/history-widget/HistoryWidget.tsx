@@ -19,13 +19,17 @@ import {
   TransactionCategory,
   TransactionRight,
   Amount,
+  StatusIcon,
 } from "./HistoryWidget.styled";
 
 import { MOCK_TRANSACTIONS } from "./history.mocks";
-import { mapTransactionToDetails, truncateText } from "./history.utils"; // ⚡ добавили truncateText
+import { mapTransactionToDetails, truncateText } from "./history.utils";
 import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
 import { OverlayTransactionDetails } from "@/features/overlay-transaction-details/OverlayTransactionDetails";
 import useApplicationStore from "@/shared/stores/application";
+
+import ClockIcon from '@/assets/icons/clock.svg?react';
+import ExclamationCircleIcon from '@/assets/icons/exclamation-circle.svg?react';
 
 const TABS = [
   { id: "all", label: "Все" },
@@ -64,6 +68,27 @@ export const HistoryWidget: React.FC = () => {
   };
 
   const filtered = filterTransactions(activeTab);
+
+  const renderStatusIcon = (tx: any) => {
+    if (tx.type !== "income" || !tx.status) return null;
+
+    switch (tx.status) {
+      case "pending":
+        return (
+          <StatusIcon status="pending">
+            <ClockIcon width={18} height={18} />
+          </StatusIcon>
+        );
+      case "warning":
+        return (
+          <StatusIcon status="warning">
+            <ExclamationCircleIcon width={18} height={18} />
+          </StatusIcon>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <HistoryWrapper>
@@ -120,9 +145,13 @@ export const HistoryWidget: React.FC = () => {
                     </TransactionInfo>
                   </TransactionLeft>
                   <TransactionRight>
-                    <Amount type={tx.type}>{tx.amount}</Amount>
+                    <Amount type={tx.type} >
+                      {renderStatusIcon(tx)}
+                      {tx.amount}
+
+                    </Amount>
                     {tx.amountUsd && (
-                      <Amount type={tx.type} secondary>
+                      <Amount type={tx.type} secondary >
                         {tx.amountUsd}
                       </Amount>
                     )}

@@ -11,7 +11,7 @@ export const ProfilePage: React.FC = () => {
     <BaseLayout showNavbar>
       <ProfileWidget
         username="@twixmaster"
-        avatarSrc="/images/cat-avatar.jpg"
+        avatarSrc="src/assets/images/profile/user-picture.png"
         onReferralClick={goToReferral}
       />
     </BaseLayout>

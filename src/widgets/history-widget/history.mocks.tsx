@@ -1,5 +1,5 @@
 import type { TransactionGroup } from "@/widgets/history-widget/history.types";
-import ShopIcon from "@/assets/icons/shop.svg?react"; // ⚡ для Vite
+import ShopIcon from "@/assets/icons/shop.svg?react";
 
 export const MOCK_TRANSACTIONS: TransactionGroup[] = [
   {
@@ -14,6 +14,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
         amount: "-110 323.99 ₽",
         amountUsd: "-1 290.49 USDT",
         type: "expense",
+        status: "completed",
       },
       {
         id: 102,
@@ -23,6 +24,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
         amount: "-110 323.99 ₽",
         amountUsd: "-1 290.49 USDT",
         type: "expense",
+        status: "completed",
       },
       {
         id: 103,
@@ -31,6 +33,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
         category: "Пополнение",
         amount: "+110 323.99 ₽",
         type: "income",
+        status: "pending",
       },
     ],
   },
@@ -46,6 +49,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
         amount: "-110 323.99 ₽",
         amountUsd: "-1 290.49 USDT",
         type: "expense",
+        status: "completed",
       },
       {
         id: 202,
@@ -54,6 +58,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
         category: "Пополнение",
         amount: "+110 323.99 USDT",
         type: "income",
+        status: "warning",
       },
       {
         id: 203,
@@ -62,7 +67,11 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
         category: "Перевод",
         amount: "-1 290.99 USDT",
         type: "expense",
+        status: "completed",
       },
     ],
   },
 ];
+
+export type TransactionStatus = "pending" | "warning" | "completed";
+export type TransactionType = "income" | "expense";

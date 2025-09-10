@@ -6,6 +6,7 @@ type Props = {
   referrals: ReferralItemData[];
   referralsCount: number;
   title?: string;
+  showLevel?: boolean;
   onReferralClick?: (referral: ReferralItemData) => void;
   className?: string;
 };
@@ -14,6 +15,7 @@ export const ReferralList: React.FC<Props> = ({
                                                 referrals,
                                                 referralsCount,
                                                 title = "Рефералы",
+                                                showLevel = true,
                                                 onReferralClick,
                                                 className
                                               }) => {
@@ -37,6 +39,7 @@ export const ReferralList: React.FC<Props> = ({
               <ReferralItem
                 key={referral.id}
                 data={referral}
+                showLevel={showLevel}
                 onClick={onReferralClick}
               />
             ))}

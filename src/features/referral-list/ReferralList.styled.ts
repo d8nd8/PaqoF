@@ -116,7 +116,7 @@ export const Level = styled.div(({ theme }) => ({
   fontWeight: '600',
   color: theme.colors.textSecondary,
   lineHeight: '13px',
-  backgroundColor: theme.colors.textQuaternary,
+  backgroundColor:theme.colors.textQuaternary,
   padding: '2px 6px',
   borderRadius: '6px',
   width: 'fit-content'
@@ -131,7 +131,7 @@ export const EarningsContainer = styled.div({
 export const Earnings = styled.div(({ theme }) => ({
   fontSize: '13px',
   fontWeight: 400,
-  color: theme.colors.success600,
+  color: '#00B347',
   lineHeight: '18px',
   textAlign: 'right',
 }));
@@ -166,7 +166,7 @@ export const ProgressText = styled.div<{ size: number }>(({ size }) => ({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  fontSize: '8px',
+  fontSize: '9px',
   fontWeight: 600,
   color: '#000000',
   lineHeight: '13px',

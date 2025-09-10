@@ -15,12 +15,14 @@ interface ReferralItemProps {
   data: ReferralItemData;
   onClick?: (referral: ReferralItemData) => void;
   showProgress?: boolean;
+  showLevel?: boolean;
 }
 
 export const ReferralItem: React.FC<ReferralItemProps> = ({
                                                             data,
                                                             onClick,
                                                             showProgress = true,
+                                                            showLevel = true,
                                                           }) => {
   const handleClick = () => {
     onClick?.(data);
@@ -32,7 +34,7 @@ export const ReferralItem: React.FC<ReferralItemProps> = ({
         <S.Avatar src={data.avatar} alt={data.username} />
         <S.UserDetails>
           <S.Username>{data.username}</S.Username>
-          <S.Level>Lvl {data.level}</S.Level>
+          {showLevel && <S.Level>Lvl {data.level}</S.Level>}
         </S.UserDetails>
       </S.UserInfo>
       <S.EarningsContainer>
@@ -40,9 +42,9 @@ export const ReferralItem: React.FC<ReferralItemProps> = ({
         {showProgress && data.progress !== undefined && (
           <CircularProgress
             progress={data.progress}
-            size={40}
+            size={30}
             strokeWidth={3}
-            color="#00D4AA"
+            color="#00B347"
           />
         )}
       </S.EarningsContainer>

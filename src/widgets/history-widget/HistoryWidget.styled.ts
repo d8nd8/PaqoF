@@ -151,11 +151,13 @@ export const TransactionRight = styled.div({
 
 export const Amount = styled.div<{ type?: "income" | "expense"; secondary?: boolean }>(
   ({ theme, type, secondary }) => ({
-    fontSize: theme.typography.fontSize.xs, // 13px
-    lineHeight: "18px",
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '13px',
+    height: "20px",
     letterSpacing: "-0.08px",
     fontWeight: secondary
-      ? theme.typography.fontWeight.normal // 400
+      ? theme.typography.fontWeight.normal
       : theme.typography.fontWeight.normal,
     color: secondary
       ? theme.colors.textTertiary
@@ -164,3 +166,33 @@ export const Amount = styled.div<{ type?: "income" | "expense"; secondary?: bool
         : theme.colors.textPrimary,
   })
 );
+
+export const StatusIcon = styled.div<{ status: "pending" | "warning" }>(({ theme, status }) => {
+  const backgroundColor = "#F3F4F6";
+  let color ;
+
+  switch (status) {
+    case "pending":
+      color = theme.colors.warning500;
+      break;
+    case "warning":
+      color = theme.colors.textTertiary;
+      break;
+  }
+
+  return {
+    width: "20px",
+    height: "20px",
+    borderRadius: "50%",
+    backgroundColor,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "2px",
+
+    "& svg": {
+      color,
+      fill: "currentColor",
+    }
+  };
+});

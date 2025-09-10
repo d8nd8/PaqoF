@@ -20,7 +20,8 @@ export const NavbarContainer = styled.div(({ theme }) => ({
   alignItems: 'flex-end',
   justifyContent: 'space-between',
   padding: '10px 20px 20px',
-  zIndex: 1000,
+  zIndex: 9999,
+  boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
 }))
 
 export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
@@ -54,6 +55,10 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
         outline: 'none',
         backgroundColor: props.theme.colors.primary400,
       },
+      '&:hover': {
+        backgroundColor: props.theme.colors.primary400,
+        transform: 'translateY(-1px)',
+      },
     }
   }
 
@@ -65,6 +70,10 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
       height: '50px',
       borderRadius: '20px',
       '&:focus': { outline: 'none' },
+      '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        transform: 'translateY(-1px)',
+      },
     }
   }
 
@@ -75,6 +84,10 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     height: '50px',
     borderRadius: '12px',
     '&:focus': { outline: 'none' },
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      transform: 'translateY(-1px)',
+    },
   }
 })
 

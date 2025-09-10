@@ -1,6 +1,7 @@
 import React from "react";
 
 export type TransactionType = "income" | "expense";
+export type TransactionStatus = "pending" | "warning" | "completed";
 
 export interface Transaction {
   id: number;
@@ -10,6 +11,7 @@ export interface Transaction {
   amount: string;
   amountUsd?: string;
   type: TransactionType;
+  status?: TransactionStatus;
 }
 
 export interface TransactionGroup {

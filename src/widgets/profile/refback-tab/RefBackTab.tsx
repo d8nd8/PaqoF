@@ -94,6 +94,7 @@ export const RefBackTab: React.FC<Props> = ({
         referrals={referralItemsData}
         referralsCount={referralsCount}
         title="Рефералы"
+        showLevel={false}
         onReferralClick={onReferralClick}
       />
     </RefBackWrapper>

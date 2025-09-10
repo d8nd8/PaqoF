@@ -25,7 +25,6 @@ import QuestionIcon from '@/assets/icons/profile/question-mark-circle.svg?react'
 import SendIcon from '@/assets/icons/profile/send.svg?react';
 import { useAppNavigation } from '@/shared/hooks/useAppNavigation'
 
-
 type Props = {
   username?: string;
   avatarSrc?: string;
@@ -41,7 +40,7 @@ type Props = {
 
 export const ProfileWidget: React.FC<Props> = ({
                                                  username = '@twixmaster',
-                                                 avatarSrc = '/images/cat-avatar.jpg',
+                                                 avatarSrc = "src/assets/images/profile/user-picture.png",
                                                  onReferralClick,
                                                  onKycClick,
                                                  onSecurityClick,
