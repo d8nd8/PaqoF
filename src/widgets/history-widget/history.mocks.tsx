@@ -1,5 +1,10 @@
 import type { TransactionGroup } from "@/widgets/history-widget/history.types";
+
 import ShopIcon from "@/assets/icons/shop.svg?react";
+import VkusvillIcon from "@/assets/icons/vkusvill.svg?react";
+import MvideoIcon from "@/assets/icons/mvideo.svg?react";
+import DepositIcon from "@/assets/icons/deposit.svg?react";
+import TransferIcon from "@/assets/icons/transfer.svg?react";
 
 export const MOCK_TRANSACTIONS: TransactionGroup[] = [
   {
@@ -8,7 +13,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
     items: [
       {
         id: 101,
-        icon: <ShopIcon />,
+        icon: <VkusvillIcon />,
         title: "ВкусВилл",
         category: "Продукты",
         amount: "-110 323.99 ₽",
@@ -28,7 +33,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       },
       {
         id: 103,
-        icon: <ShopIcon />,
+        icon: <DepositIcon />,
         title: "Пополнение с карты",
         category: "Пополнение",
         amount: "+110 323.99 ₽",
@@ -43,7 +48,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
     items: [
       {
         id: 201,
-        icon: <ShopIcon />,
+        icon: <MvideoIcon />,
         title: "М.Видео",
         category: "Электроника",
         amount: "-110 323.99 ₽",
@@ -53,7 +58,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       },
       {
         id: 202,
-        icon: <ShopIcon />,
+        icon: <DepositIcon />,
         title: "Поступление на кошелек",
         category: "Пополнение",
         amount: "+110 323.99 USDT",
@@ -62,7 +67,7 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       },
       {
         id: 203,
-        icon: <ShopIcon />,
+        icon: <TransferIcon />,
         title: "Перевод USDT TRC20",
         category: "Перевод",
         amount: "-1 290.99 USDT",

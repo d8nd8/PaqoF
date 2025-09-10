@@ -18,6 +18,7 @@ export interface IBaseLayoutProps {
   disableBackButton?: boolean
   showNavbar?: boolean
   centered?: boolean
+  title?: string;
 }
 
 export type NavbarItemState = 'default' | 'active' | 'history'

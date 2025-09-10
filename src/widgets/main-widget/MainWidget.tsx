@@ -7,30 +7,30 @@ import * as S from './MainWidget.styled';
 import { NotificationsModal } from '@/features/notifications'
 import useApplicationStore from '@/shared/stores/application'
 
-const usdtData: CryptoItemData[] = [
+const cryptoData: CryptoItemData[] = [
   {
-    id: 'usdt-1',
-    name: 'USDT',
-    symbol: 'USDT',
-    amount: '1 290.49 USDT',
-    amountInRubles: '110 323.99 ₽',
-    iconColor: '#4CAF50',
+    id: "usdt-1",
+    name: "USDT",
+    symbol: "USDT",
+    amount: "1 290.49 USDT",
+    amountInRubles: "110 323.99 ₽",
+    iconColor: "#26A17B",
   },
   {
-    id: 'usdt-2',
-    name: 'USDT',
-    symbol: 'USDT',
-    amount: '850.00 USDT',
-    amountInRubles: '72 675.00 ₽',
-    iconColor: '#4CAF50',
+    id: "ton-1",
+    name: "Toncoin",
+    symbol: "TON",
+    amount: "580.00 TON",
+    amountInRubles: "144 426.19 ₽",
+    iconColor: "#0088CC",
   },
   {
-    id: 'usdt-3',
-    name: 'USDT',
-    symbol: 'USDT',
-    amount: '2 500.75 USDT',
-    amountInRubles: '213 814.13 ₽',
-    iconColor: '#4CAF50',
+    id: "btc-1",
+    name: "Bitcoin",
+    symbol: "BTC",
+    amount: "0.0041 BTC",
+    amountInRubles: "34 880.61 ₽",
+    iconColor: "#F7931A",
   },
 ];
 
@@ -53,7 +53,7 @@ export const MainWidget: React.FC = () => {
         <AdBanner level={3} />
 
         <CryptoList
-          cryptos={usdtData}
+          cryptos={cryptoData}
           onCryptoClick={(crypto) => console.log('Clicked:', crypto)}
         />
       </S.CryptoWrapper>

@@ -7,32 +7,8 @@ import PlusCircleIcon from '@icons/plus-circle.svg?react'
 import SendIcon from '@icons/send.svg?react'
 import QRIcon from '@icons/qr.svg?react'
 import NotificationIcon from '@icons/notification.svg?react'
+import { ActionItem } from '@/shared/components/ActionItem/ActionItem'
 
-interface ActionIconButtonProps {
-  icon: React.ReactNode;
-  onClick?: () => void;
-}
-
-const ActionIconButton: React.FC<ActionIconButtonProps> = ({ icon, onClick }) => (
-  <S.ActionButton onClick={onClick}>
-    <S.ActionIcon>{icon}</S.ActionIcon>
-  </S.ActionButton>
-);
-
-const ActionLabel: React.FC<{ label: string }> = ({ label }) => (
-  <S.ActionLabel>{label}</S.ActionLabel>
-);
-
-const ActionItem: React.FC<{ icon: React.ReactNode; label: string; onClick?: () => void }> = ({
-                                                                                                icon,
-                                                                                                label,
-                                                                                                onClick,
-                                                                                              }) => (
-  <S.ActionItemContainer>
-    <ActionIconButton icon={icon} onClick={onClick} />
-    <ActionLabel label={label} />
-  </S.ActionItemContainer>
-);
 
 interface BalanceCardProps {
   avatarUrl?: string;

@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from './CryptoList.styled';
 import UsdtIcon from '@icons/usdt-icon.svg?react';
+import TonIcon from '@icons/ton-icon.svg?react';
+import BtcIcon from '@icons/bitcoin-icon.svg?react';
 
 export interface CryptoItemData {
   id: string;
@@ -24,22 +27,29 @@ const CryptoItem: React.FC<CryptoItemProps> = ({
                                                  data,
                                                  onClick,
                                                  showRightSection = true,
-                                                 rightSection
+                                                 rightSection,
                                                }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
     onClick?.(data);
+    navigate(`/currency?symbol=${data.symbol}`);
   };
 
   const renderIcon = () => {
-    if (data.symbol === 'USDT') {
-      return <UsdtIcon />;
+    switch (data.symbol) {
+      case 'USDT':
+        return <UsdtIcon />;
+      case 'TON':
+        return <TonIcon />;
+      case 'BTC':
+        return <BtcIcon />;
+      default:
+        if (data.useCustomIcon && React.isValidElement(data.icon)) {
+          return data.icon;
+        }
+        return <S.CryptoIconText>{data.icon}</S.CryptoIconText>;
     }
-
-    if (data.useCustomIcon && React.isValidElement(data.icon)) {
-      return data.icon;
-    }
-
-    return <S.CryptoIconText>{data.icon}</S.CryptoIconText>;
   };
 
   return (
@@ -53,14 +63,13 @@ const CryptoItem: React.FC<CryptoItemProps> = ({
         <S.CryptoRubles>{data.amountInRubles}</S.CryptoRubles>
       </S.CryptoInfo>
 
-      {showRightSection && (
-        rightSection || (
+      {showRightSection &&
+        (rightSection || (
           <S.CryptoAmount>
             <S.CryptoAmountValue>{data.amount}</S.CryptoAmountValue>
             <S.CryptoAmountInRubles>{data.amountInRubles}</S.CryptoAmountInRubles>
           </S.CryptoAmount>
-        )
-      )}
+        ))}
     </S.CryptoItemContainer>
   );
 };
@@ -76,7 +85,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
                                                         cryptos,
                                                         onCryptoClick,
                                                         showRightSection = true,
-                                                        renderRightSection
+                                                        renderRightSection,
                                                       }) => {
   return (
     <S.CryptoListContainer>
