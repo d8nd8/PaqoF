@@ -163,8 +163,8 @@ export const ProgressCircle = styled.circle({
 
 export const ProgressText = styled.div<{ size: number }>(({ size }) => ({
   position: 'absolute',
-  top: '50%',
-  left: '50%',
+  top: '46%',
+  left: '51%',
   transform: 'translate(-50%, -50%)',
   fontSize: '9px',
   fontWeight: 600,

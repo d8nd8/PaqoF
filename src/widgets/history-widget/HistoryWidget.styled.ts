@@ -163,13 +163,13 @@ export const TransactionInfo = styled.div({
 });
 
 export const TransactionTitle = styled.div(({ theme }) => ({
-  fontSize: theme.typography.fontSize.md,
+  fontSize: "13px",
   fontWeight: theme.typography.fontWeight.normal,
   color: theme.colors.textPrimary,
 }));
 
 export const TransactionCategory = styled.div(({ theme }) => ({
-  fontSize: theme.typography.fontSize.sm,
+  fontSize: theme.typography.fontSize.xs,
   color: theme.colors.textSecondary,
 }));
 
