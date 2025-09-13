@@ -15,7 +15,7 @@ export const Overlay = styled.div({
 export const CameraContainer = styled.div({
   position: 'relative',
   width: '100%',
-  height: '75vh',
+  height: '78vh',
   background: '#000',
 });
 
