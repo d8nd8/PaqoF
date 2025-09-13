@@ -9,9 +9,6 @@ import {
   CloseButton,
   CameraContainer,
   ScannerOverlay,
-  ScannerFrame,
-  ScannerFrameBottom,
-  ScanLine,
   BottomActions,
   ActionButton,
   ErrorMessage,
@@ -84,13 +81,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       <CameraContainer>
         <div id={containerId} style={{ width: '100%', height: '100%' }} />
         <div id="gallery-scan-temp" style={{ display: 'none' }} />
-        <ScannerOverlay>
-          <ScannerFrame>
-            <ScannerFrameBottom />
-            {isScanning && <ScanLine />}
-          </ScannerFrame>
-        </ScannerOverlay>
-        {isScanning && <LoadingSpinner />}
+        <ScannerOverlay/>
         <BottomActions>
           <ActionButton onClick={toggleTorch} title="Фонарик">
             <TorchlightIcon />
@@ -107,13 +98,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       <Footer>
         <FooterHint>Что можно оплатить?</FooterHint>
       </Footer>
-
-      {error && (
-        <ErrorMessage>
-          <div>{error}</div>
-          <ErrorButton onClick={retryScanner}>Повторить</ErrorButton>
-        </ErrorMessage>
-      )}
     </Overlay>
   );
 };

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const Overlay = styled.div({
   position: 'fixed',
@@ -7,13 +7,16 @@ export const Overlay = styled.div({
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
+  paddingTop: '60px'
 });
 
 export const Header = styled.div({
+  position: 'relative',
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   alignItems: 'center',
-  padding: 16,
+  padding: '0 14px',
+  height: 56,
 });
 
 export const Title = styled.div({
@@ -23,16 +26,23 @@ export const Title = styled.div({
 });
 
 export const CloseButton = styled.button({
+  position: 'absolute',
+  width: '44px',
+  height: '44px',
+  right: 16,
+  top: '50%',
+  transform: 'translateY(-50%)',
   color: 'white',
   background: 'transparent',
   border: 'none',
   fontSize: 20,
 });
 
+
 export const CameraContainer = styled.div({
   position: 'relative',
   width: '100%',
-  height: '85vh',
+  height: '80vh',
 });
 
 export const ScannerOverlay = styled.div({
@@ -43,26 +53,6 @@ export const ScannerOverlay = styled.div({
   alignItems: 'center',
 });
 
-export const ScannerFrame = styled.div({
-  width: 260,
-  height: 260,
-  border: '2px solid white',
-  position: 'relative',
-  borderRadius: 8,
-});
-
-export const ScannerFrameBottom = styled.div({});
-
-export const ScanLine = styled.div({
-  position: 'absolute',
-  top: '50%',
-  left: 0,
-  width: '100%',
-  height: 2,
-  backgroundColor: 'red',
-  animation: 'scanline 1.5s linear infinite',
-});
-
 export const LoadingSpinner = styled.div({
   position: 'absolute',
   top: '50%',
@@ -71,25 +61,26 @@ export const LoadingSpinner = styled.div({
 
 export const BottomActions = styled.div({
   position: 'absolute',
-  bottom: 16,
+  bottom: 14,
   width: '100%',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
+  padding: '0 14px',
   alignItems: 'center',
   gap: 40,
 });
 
-export const ActionButton = styled.button({
-  width: 48,
-  height: 48,
-  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+export const ActionButton = styled.button(({ theme }) => ({
+  width: 44,
+  height: 44,
+  backgroundColor: theme.colors.systemBlurryOverlay,
   borderRadius: '50%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   border: 'none',
   color: 'white',
-});
+}));
 
 export const ScanButton = styled.button({
   width: 60,
@@ -100,25 +91,22 @@ export const ScanButton = styled.button({
 });
 
 export const Footer = styled.div({
-  height: '15vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-start',
   paddingTop: 12,
 });
 
-export const FooterHint = styled.div({
-  fontSize: 14,
+export const FooterHint = styled.div(({ theme }) => ({
+  background: '#1C1C23',
+  fontSize: 12,
+  lineHeight: '16px',
+  fontWeight: 500,
   color: 'white',
-  padding: '0 16px',
+  padding: '8px 15px',
   textAlign: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
   borderRadius: 16,
-  paddingTop: 8,
-  paddingBottom: 8,
-  paddingLeft: 16,
-  paddingRight: 16,
-});
+}));
 
 export const ErrorMessage = styled.div({
   color: 'red',
