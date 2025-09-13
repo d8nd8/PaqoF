@@ -11,9 +11,6 @@ import {
   ScannerOverlay,
   BottomActions,
   ActionButton,
-  ErrorMessage,
-  ErrorButton,
-  LoadingSpinner,
   ScanButton,
   Footer,
   FooterHint,
@@ -21,14 +18,12 @@ import {
 import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
 
 export const QRScanner: React.FC<QRScannerProps> = ({
-                                               isVisible,
-                                               onScan,
-                                               onClose,
-                                               title = 'Оплата по QR',
-                                             }) => {
+                                                      isVisible,
+                                                      onScan,
+                                                      onClose,
+                                                      title = 'Оплата по QR',
+                                                    }) => {
   const {
-    isScanning,
-    error,
     closeScanner,
     retryScanner,
     toggleTorch,
@@ -73,16 +68,17 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
   return (
     <Overlay>
-
-
       <CameraContainer>
         <Header>
           <Title>{title}</Title>
           <CloseButton onClick={handleClose}>✕</CloseButton>
         </Header>
+
         <div id={containerId} style={{ width: '100%', height: '100%' }} />
         <div id="gallery-scan-temp" style={{ display: 'none' }} />
-        <ScannerOverlay/>
+
+        <ScannerOverlay />
+
         <BottomActions>
           <ActionButton onClick={toggleTorch} title="Фонарик">
             <TorchlightIcon />
