@@ -15,7 +15,7 @@ export const Overlay = styled.div({
 export const CameraContainer = styled.div({
   position: 'relative',
   width: '100%',
-  height: '80vh',
+  height: '75vh',
   background: '#000',
 });
 
@@ -98,13 +98,6 @@ export const ScannerOverlay = styled.div({
   pointerEvents: 'none',
 });
 
-export const LoadingSpinner = styled.div({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  zIndex: 2,
-});
-
 export const BottomActions = styled.div({
   position: 'absolute',
   bottom: 14,
@@ -148,7 +141,7 @@ export const Footer = styled.div({
   paddingTop: 12,
   width: '100%',
   zIndex: 10001,
-  bottom: '-46px'
+  bottom: '-54px'
 });
 
 export const FooterHint = styled.div({
