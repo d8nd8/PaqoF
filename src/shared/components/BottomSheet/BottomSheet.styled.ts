@@ -22,73 +22,92 @@ interface SheetProps {
   $isVisible: boolean;
   $isClosing: boolean;
   $status?: 'default' | 'success' | 'error';
+  $customBackground?: string;
 }
 
-export const Sheet = styled.div<SheetProps>((props) => ({
-  willChange: 'transform, background',
-  position: 'fixed',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent:'space-between',
-  bottom: '0',
-  left: '0',
-  right: '0',
-  background:
-    props.$status === 'success'
-      ? [
-        `radial-gradient(165.91% 110.87% at 0% 0%,
-            ${props.theme.colors.primary300} 0%,
-            rgba(242, 242, 247, 0) 60%)`,
-        `radial-gradient(164.95% 98.92% at 52.53% 0%,
-             ${props.theme.colors.success500} 0%,
-            rgba(242, 242, 247, 0) 60%)`,
-        `radial-gradient(165.9% 110.75% at 100% 0%,
-             ${props.theme.colors.success400} 0%,
-            rgba(242, 242, 247, 0) 60%)`,
-        ` ${props.theme.colors.systemElevatedBackground}`,
-      ].join(', ')
-      : '#f5f5f5',
-  borderRadius: '20px 20px 0 0',
-  zIndex: 1001,
-  minHeight: '50vh',
-  overflow: 'hidden',
-  transform:
-    props.$isVisible && !props.$isClosing
-      ? 'translateY(0)'
-      : 'translateY(100%)',
-  transition: 'transform 300ms ease-out',
-}));
+export const Sheet = styled.div<SheetProps>((props) => {
+  if (props.$customBackground) {
+    return {
+      willChange: 'transform, background',
+      position: 'fixed',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      bottom: '0',
+      left: '0',
+      right: '0',
+      background: props.$customBackground,
+      borderRadius: '20px 20px 0 0',
+      zIndex: 100000,
+      minHeight: '50vh',
+      overflow: 'hidden',
+      transform:
+        props.$isVisible && !props.$isClosing
+          ? 'translateY(0)'
+          : 'translateY(100%)',
+      transition: 'transform 300ms ease-out',
+    };
+  }
 
-export const CloseIconButton = styled.button(({ theme }) => ({
-  position: 'absolute',
-  right: '20px',
-  top: '12px',
-  width: '24px',
-  height: '24px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
-  borderRadius: '6px',
-  color: theme.colors.textPrimary,
-  transition: 'all 0.2s ease',
+  // Базовая логика для статусов
+  return {
+    willChange: 'transform, background',
+    position: 'fixed',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    bottom: '0',
+    left: '0',
+    right: '0',
+    background:
+      props.$status === 'success'
+        ? [
+          `radial-gradient(165.91% 110.87% at 0% 0%,
+                ${props.theme.colors.primary300} 0%,
+                rgba(242, 242, 247, 0) 60%)`,
+          `radial-gradient(164.95% 98.92% at 52.53% 0%,
+                 ${props.theme.colors.success500} 0%,
+                rgba(242, 242, 247, 0) 60%)`,
+          `radial-gradient(165.9% 110.75% at 100% 0%,
+                 ${props.theme.colors.success400} 0%,
+                rgba(242, 242, 247, 0) 60%)`,
+          ` ${props.theme.colors.systemElevatedBackground}`,
+        ].join(', ')
+        : '#f5f5f5',
+    borderRadius: '20px 20px 0 0',
+    zIndex: 100000,
+    minHeight: '50vh',
+    overflow: 'hidden',
+    transform:
+      props.$isVisible && !props.$isClosing
+        ? 'translateY(0)'
+        : 'translateY(100%)',
+    transition: 'transform 300ms ease-out',
+  };
+});
 
-  '&:hover': {
-    backgroundColor: theme.colors.neutral200,
-    opacity: 0.8,
-  },
-
-  '&:active': {
-    transform: 'scale(0.95)',
-  },
-
-  '& svg': {
-    width: '16px',
-    height: '16px',
-  },
-}));
+export const CloseIconButton = styled.button<{ $customCloseColor?: string }>`
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 10px;
+  color: ${({ $customCloseColor }) => $customCloseColor ?? '#9ca3af'};
+  cursor: pointer;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  &:active {
+    transform: translateY(-50%) scale(0.98);
+  }
+  svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+`
 
 export const TopWrapper = styled.div({
 });
@@ -111,16 +130,24 @@ export const Title = styled.h2(({ theme }) => ({
   transform: 'translateX(-50%)',
 }));
 
-export const CloseButton = styled.div(({ theme }) => ({
-  position: 'absolute',
-  right: '20px',
-  top: '16px',
-  fontSize: '13px',
-  color: theme.colors.textPrimary,
-  cursor: 'pointer',
-  fontWeight: '400',
-  '&:hover': { opacity: 0.7 },
-}));
+
+export const CloseButton = styled.button<{ $customCloseColor?: string }>`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 10px;
+  color: ${({ $customCloseColor }) => $customCloseColor ?? '#000000'};
+  cursor: pointer;
+  border-radius: 10px;
+  &:active {
+    transform: translateY(-50%) scale(0.98);
+  }
+`
 
 export const Content = styled.div({
   padding: '0 14px',

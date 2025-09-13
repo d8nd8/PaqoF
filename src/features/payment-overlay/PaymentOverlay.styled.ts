@@ -85,11 +85,11 @@ export const StatusContainer = styled.div<StatusContainerProps>(({ success = fal
 }));
 
 export const StatusHeader = styled.h2<{ success?: boolean }>(({ success = false, theme }) => ({
-  fontSize: '18px',
+  fontSize: '16px',
   fontWeight: '600',
   color: theme.colors.neutral950,
-  lineHeight: '22px',
-  marginBottom: '133px',
+  lineHeight: '21px',
+  marginBottom: '92px',
 }));
 
 export const StatusDate = styled.div(({theme}) => ({
@@ -100,11 +100,11 @@ export const StatusDate = styled.div(({theme}) => ({
 }));
 
 export const StatusAmount = styled.div(({theme}) => ({
-  fontSize: '32px',
+  fontSize: '28px',
   fontWeight: '700',
   color: theme.colors.neutral950,
-  lineHeight: '38px',
-  marginBottom: '33px',
+  lineHeight: '34px',
+  marginBottom: '47px',
 }));
 
 export const StatusDetails = styled.div(({theme}) => ({
@@ -118,38 +118,19 @@ export const StatusDetails = styled.div(({theme}) => ({
   marginBottom: '20px'
 }));
 
-export const ErrorIcon = styled.div(({theme}) => ({
-  width: '80px',
-  height: '80px',
-  backgroundColor: '#FF3B30',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '20px 0'
-}));
-
-export const QRErrorIcon = styled.div(({theme}) => ({
-  fontSize: '40px',
-  color: '#ffffff',
-  fontWeight: '600'
-}));
-
 export const ErrorTitle = styled.h3(({theme}) => ({
   fontSize: '20px',
   fontWeight: '600',
   color: '#000000',
   margin: '10px 0',
-  lineHeight: '24px'
+  lineHeight: '25px'
 }));
 
 export const ErrorDescription = styled.p(({theme}) => ({
-  fontSize: '16px',
+  fontSize: '15px',
   fontWeight: '400',
   color: '#8E8E93',
-  lineHeight: '22px',
-  margin: '0 0 20px',
-  maxWidth: '280px'
+  lineHeight: '20px',
 }));
 
 interface CurrencyButtonContainerProps {

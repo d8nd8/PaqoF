@@ -144,7 +144,7 @@ export const Footer = styled.div({
   bottom: '-48px'
 });
 
-export const FooterHint = styled.div({
+export const FooterHint = styled.button({
   background: '#1C1C23',
   fontSize: 12,
   lineHeight: '16px',

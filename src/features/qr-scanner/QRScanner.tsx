@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TorchlightIcon from '@icons/scanner/torchlight.svg?react';
 import AttachmentIcon from '@icons/scanner/attachment.svg?react';
 import type { QRScannerProps } from './QRScanner.types';
@@ -13,16 +13,62 @@ import {
   ActionButton,
   ScanButton,
   Footer,
-  FooterHint, CameraFeed
-} from './QrScanner.styled'
+  FooterHint,
+  CameraFeed
+} from './QrScanner.styled';
 import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
+import { PaymentInfoOverlay } from '@/features/qr-scanner/payment-info-overlay';
+import { PaymentOverlay } from '@/features/payment-overlay/PaymentOverlay';
+import type { CryptoItemData } from '@/features/crypto-list/CryptoList';
+
+const AVAILABLE_CURRENCIES: CryptoItemData[] = [
+  {
+    id: 'usdt-1',
+    name: 'USDT',
+    symbol: 'USDT',
+    amount: '1 290.53 USDT',
+    amountInRubles: '110 323.99 ₽',
+    iconColor: '#4CAF50'
+  },
+  {
+    id: 'toncoin-1',
+    name: 'Toncoin',
+    symbol: 'TON',
+    amount: '590.00 TON',
+    amountInRubles: '144 426.19 ₽',
+    icon: '◆',
+    iconColor: '#0088CC'
+  },
+  {
+    id: 'bitcoin-1',
+    name: 'Bitcoin',
+    symbol: 'BTC',
+    amount: '1.18234 BTC',
+    amountInRubles: '34 880.61 ₽',
+    icon: '₿',
+    iconColor: '#F7931A'
+  },
+  {
+    id: 'usdc-1',
+    name: 'USDC',
+    symbol: 'USDC',
+    amount: '850.00 USDC',
+    amountInRubles: '77 650.00 ₽',
+    icon: 'U',
+    iconColor: '#2775CA'
+  }
+];
 
 export const QRScanner: React.FC<QRScannerProps> = ({
-                                               isVisible,
-                                               onScan,
-                                               onClose,
-                                               title = 'Оплата по QR',
-                                             }) => {
+                                                      isVisible,
+                                                      onScan,
+                                                      onClose,
+                                                      title = 'Оплата по QR',
+                                                    }) => {
+  const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false);
+  const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(AVAILABLE_CURRENCIES[0]);
+
   const {
     closeScanner,
     retryScanner,
@@ -43,13 +89,11 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
-
       try {
         const { Html5Qrcode } = await import('html5-qrcode');
         const scanner = new Html5Qrcode('gallery-scan-temp');
         const result = await scanner.scanFile(file, true);
         await scanner.clear();
-
         if (result) {
           onScan(result);
           handleClose();
@@ -64,37 +108,68 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     input.click();
   };
 
+  const handlePayment = async (currency: CryptoItemData, amount: string) => {
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() > 0.3) resolve();
+        else reject(new Error('Payment failed'));
+      }, 1500);
+    });
+  };
+
   if (!isVisible) return null;
 
   return (
-    <Overlay>
-      <CameraContainer>
-        <CameraFeed id={containerId} />
+    <>
+      <Overlay>
+        <CameraContainer>
+          <CameraFeed id={containerId} />
 
-        <Header>
-          <Title>{title}</Title>
-          <CloseButton onClick={handleClose}>✕</CloseButton>
-        </Header>
+          <Header>
+            <Title>{title}</Title>
+            <CloseButton onClick={handleClose}>✕</CloseButton>
+          </Header>
 
-        <ScannerOverlay />
-        <div id="gallery-scan-temp" style={{ display: 'none' }} />
+          <ScannerOverlay />
+          <div id="gallery-scan-temp" style={{ display: 'none' }} />
 
-        <BottomActions>
-          <ActionButton onClick={toggleTorch} title="Фонарик">
-            <TorchlightIcon />
-          </ActionButton>
+          <BottomActions>
+            <ActionButton onClick={toggleTorch} title="Фонарик">
+              <TorchlightIcon />
+            </ActionButton>
 
-          <ScanButton onClick={() => {}} />
+            <ScanButton onClick={() => setIsPaymentOverlayOpen(true)} />
 
-          <ActionButton onClick={handleGalleryOpen} title="Из галереи">
-            <AttachmentIcon />
-          </ActionButton>
-        </BottomActions>
-        <Footer>
-          <FooterHint>Что можно оплатить?</FooterHint>
-        </Footer>
-      </CameraContainer>
-    </Overlay>
+            <ActionButton onClick={handleGalleryOpen} title="Из галереи">
+              <AttachmentIcon />
+            </ActionButton>
+          </BottomActions>
+
+          <Footer>
+            <FooterHint onClick={() => setIsPaymentInfoOpen(true)}>
+              Что можно оплатить?
+            </FooterHint>
+          </Footer>
+        </CameraContainer>
+      </Overlay>
+
+      <PaymentInfoOverlay
+        isOpen={isPaymentInfoOpen}
+        onClose={() => setIsPaymentInfoOpen(false)}
+      />
+
+      <PaymentOverlay
+        isOpen={isPaymentOverlayOpen}
+        onClose={() => setIsPaymentOverlayOpen(false)}
+        selectedCurrency={selectedCurrency}
+        availableCurrencies={AVAILABLE_CURRENCIES}
+        onCurrencySelect={setSelectedCurrency}
+        amount="15.095 USDT"
+        exchangeRate="85.49 USDT"
+        commission="20 сек"
+        onPayment={handlePayment}
+      />
+    </>
   );
 };
 
