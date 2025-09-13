@@ -3,11 +3,12 @@ import styled from '@emotion/styled';
 export const Overlay = styled.div({
   position: 'fixed',
   inset: 0,
-  backgroundColor: '#000',
+  backgroundColor: 'black',
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+
 });
 
 export const Header = styled.div({
@@ -19,34 +20,47 @@ export const Header = styled.div({
   height: 56,
 });
 
+export const CameraFeed = styled.div({
+  position: 'absolute',
+  inset: 0,
+  overflow: 'hidden',
+
+  // Само видео и canvas, которые вставит html5-qrcode
+  '& video, & canvas': {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',  // чтобы картинка заполняла без искажений
+  },
+});
+
+
 export const Title = styled.div({
-  fontSize: 17,
-  fontWeight: 500,
-  color: '#fff',
+  fontSize: 16,
+  fontWeight: 600,
+  color: 'white',
 });
 
 export const CloseButton = styled.button({
   position: 'absolute',
-  width: 44,
-  height: 44,
-  right: 8,
+  width: '44px',
+  height: '44px',
+  right: 16,
   top: '50%',
   transform: 'translateY(-50%)',
-  color: 'rgba(255,255,255,0.9)',
+  color: 'white',
   background: 'transparent',
   border: 'none',
-  fontSize: 22,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  cursor: 'pointer',
+  fontSize: 20,
 });
+
 
 export const CameraContainer = styled.div({
   position: 'relative',
-  flex: 1,
   width: '100%',
-  overflow: 'hidden',
+  height: '90vh',
+  paddingTop: '50px'
 });
 
 export const ScannerOverlay = styled.div({
@@ -56,21 +70,6 @@ export const ScannerOverlay = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
 
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 240,
-    height: 240,
-    transform: 'translate(-50%, -50%)',
-    border: '2px solid #fff',
-    borderRadius: 6,
-    boxSizing: 'border-box',
-  },
-
-  backgroundColor: 'rgba(0,0,0,0.5)',
-  backdropFilter: 'blur(2px)',
 });
 
 export const LoadingSpinner = styled.div({
@@ -81,54 +80,52 @@ export const LoadingSpinner = styled.div({
 
 export const BottomActions = styled.div({
   position: 'absolute',
-  bottom: 40,
+  bottom: 14,
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
-  padding: '0 60px',
+  padding: '0 14px',
   alignItems: 'center',
+  gap: 40,
 });
 
-export const ActionButton = styled.button({
+export const ActionButton = styled.button(({ theme }) => ({
   width: 44,
   height: 44,
-  backgroundColor: 'rgba(60,60,67,0.6)',
+  backgroundColor: theme.colors.systemBlurryOverlay,
   borderRadius: '50%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   border: 'none',
-  color: '#fff',
-  cursor: 'pointer',
-});
+  color: 'white',
+}));
 
 export const ScanButton = styled.button({
-  width: 68,
-  height: 68,
+  width: 60,
+  height: 60,
   borderRadius: '50%',
-  backgroundColor: '#fff',
+  backgroundColor: 'white',
   border: '2px solid #fff',
-  boxShadow: '0 0 4px rgba(0,0,0,0.4)',
-  cursor: 'pointer',
 });
 
 export const Footer = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-start',
-  paddingBottom: 24,
+  paddingTop: 12,
 });
 
-export const FooterHint = styled.div({
-  background: 'rgba(44,44,46,0.8)',
-  fontSize: 13,
-  lineHeight: '17px',
+export const FooterHint = styled.div(({ theme }) => ({
+  background: '#1C1C23',
+  fontSize: 12,
+  lineHeight: '16px',
   fontWeight: 500,
-  color: '#fff',
-  padding: '8px 18px',
+  color: 'white',
+  padding: '8px 15px',
   textAlign: 'center',
-  borderRadius: 18,
-});
+  borderRadius: 16,
+}));
 
 export const ErrorMessage = styled.div({
   color: 'red',
