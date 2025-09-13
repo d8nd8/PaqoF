@@ -7,7 +7,8 @@ export const Overlay = styled.div({
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
-  paddingTop: '60px'
+  height: '100%',
+
 });
 
 export const Header = styled.div({
@@ -42,7 +43,8 @@ export const CloseButton = styled.button({
 export const CameraContainer = styled.div({
   position: 'relative',
   width: '100%',
-  height: '80vh',
+  height: '90vh',
+  paddingTop: '50px'
 });
 
 export const ScannerOverlay = styled.div({
@@ -51,6 +53,7 @@ export const ScannerOverlay = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+
 });
 
 export const LoadingSpinner = styled.div({

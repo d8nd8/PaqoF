@@ -73,12 +73,13 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
   return (
     <Overlay>
-      <Header>
-        <Title>{title}</Title>
-        <CloseButton onClick={handleClose}>✕</CloseButton>
-      </Header>
+
 
       <CameraContainer>
+        <Header>
+          <Title>{title}</Title>
+          <CloseButton onClick={handleClose}>✕</CloseButton>
+        </Header>
         <div id={containerId} style={{ width: '100%', height: '100%' }} />
         <div id="gallery-scan-temp" style={{ display: 'none' }} />
         <ScannerOverlay/>
