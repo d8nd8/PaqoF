@@ -12,7 +12,6 @@ import {
   ScannerFrame,
   ScannerFrameBottom,
   ScanLine,
-  InstructionText,
   BottomActions,
   ActionButton,
   ErrorMessage,
