@@ -1,12 +1,13 @@
-import { useEffect, useMemo } from "react";
-import { Navbar, type NavbarItemConfig } from '@/features/navbar'
+import { useEffect, useMemo, useState } from "react";
+import { Navbar, type NavbarItemConfig } from "@/features/navbar";
 import useApplicationStore from "@/shared/stores/application";
 import { useTransition } from "@react-spring/web";
 import { backButton, viewport } from "@telegram-apps/sdk-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { WrapperPage } from "./BaseLayout.styled";
-import { type IBaseLayoutProps, NavbarItems, type NavbarItemState } from './BaseLayout.types'
+import { type IBaseLayoutProps, NavbarItems, type NavbarItemState } from "./BaseLayout.types";
 import { useSafeAreaInsets } from "@/shared/hooks/useSafeAreaInsets";
+import QRScanner from "@/features/qr-scanner/QRScanner";
 
 const BaseLayout = ({
                       children,
@@ -18,20 +19,21 @@ const BaseLayout = ({
                       centered = false,
                     }: IBaseLayoutProps) => {
   const location = useLocation();
-  const { modal, setHeaderOffset, setFullscreenCentered } =
-    useApplicationStore();
+  const { modal, setHeaderOffset, setFullscreenCentered } = useApplicationStore();
   const navigate = useNavigate();
   const { top, bottom } = useSafeAreaInsets();
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
   const isModalOpened = useMemo(() => modal !== null, [modal]);
 
   const navbarItemsWithActive = useMemo<NavbarItemConfig[]>(() => {
-    return NavbarItems.map(item => {
-      let state: NavbarItemState = 'default';
+    return NavbarItems.map((item) => {
+      let state: NavbarItemState = "default";
 
-      if (item.id === 'home' && location.pathname === '/main') state = 'active';
-      if (item.id === 'wallet' && location.pathname.startsWith('/wallet')) state = 'active';
-      if (item.id === 'settings' && location.pathname.startsWith('/settings')) state = 'active';
+      if (item.id === "home" && location.pathname === "/main") state = "active";
+      if (item.id === "history" && location.pathname.startsWith("/history")) state = "active";
+      if (item.id === "bonus" && location.pathname.startsWith("/bonus")) state = "active";
+      if (item.id === "profile" && location.pathname.startsWith("/profile")) state = "active";
 
       return { ...item, state };
     });
@@ -48,20 +50,36 @@ const BaseLayout = ({
     reset: false,
   });
 
-  const handleItemClick = (itemId: string) => {
+  const handleItemClick = (itemId: string): void => {
     switch (itemId) {
       case "home":
         navigate("/main");
         break;
-      case "wallet":
-        navigate("/wallet");
+      case "history":
+        navigate("/history");
         break;
-      case "settings":
-        navigate("/settings");
+      case "qr":
+        setIsScannerOpen(true);
+        break;
+      case "bonus":
+        navigate("/bonus");
+        break;
+      case "profile":
+        navigate("/profile");
         break;
       default:
         console.warn(`Неизвестный пункт меню: ${itemId}`);
     }
+  };
+
+  const handleCloseScanner = (): void => {
+    setIsScannerOpen(false);
+  };
+
+  const handlePay = (qrValue: string): void => {
+    console.log("QR-код для оплаты:", qrValue);
+    // Тут можно добавить отправку запроса или навигацию
+    setIsScannerOpen(false);
   };
 
   useEffect(() => {
@@ -72,12 +90,14 @@ const BaseLayout = ({
     setFullscreenCentered(centered);
   }, [centered, setFullscreenCentered]);
 
-  if (disableBackButton && viewport.mount.isAvailable()) {
-    if (!backButton.isMounted()) {
-      backButton.mount();
+  useEffect(() => {
+    if (disableBackButton && viewport.mount.isAvailable()) {
+      if (!backButton.isMounted()) {
+        backButton.mount();
+      }
+      backButton.hide();
     }
-    backButton.hide();
-  }
+  }, [disableBackButton]);
 
   const navbarHeight = showNavbar ? 81 : 0;
   const bottomPadding = shortBottomPadding ? bottom : bottom + navbarHeight;
@@ -97,9 +117,16 @@ const BaseLayout = ({
           {children}
         </WrapperPage>
       ))}
-      {showNavbar && !isModalOpened && (
+
+      {showNavbar && !isModalOpened && !isScannerOpen && (
         <Navbar items={navbarItemsWithActive} onItemClick={handleItemClick} />
       )}
+
+      <QRScanner
+        isVisible={isScannerOpen}
+        onScan={handlePay}
+        onClose={handleCloseScanner}
+      />
     </>
   );
 };
