@@ -7,7 +7,6 @@ export const Overlay = styled.div({
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-start',
 });
 
 export const Header = styled.div({
@@ -27,12 +26,13 @@ export const CloseButton = styled.button({
   color: 'white',
   background: 'transparent',
   border: 'none',
+  fontSize: 20,
 });
 
 export const CameraContainer = styled.div({
-  width: '100%',
-  height: '80vh',
   position: 'relative',
+  width: '100%',
+  height: '85vh',
 });
 
 export const ScannerOverlay = styled.div({
@@ -44,10 +44,11 @@ export const ScannerOverlay = styled.div({
 });
 
 export const ScannerFrame = styled.div({
-  width: 240,
-  height: 240,
+  width: 260,
+  height: 260,
   border: '2px solid white',
   position: 'relative',
+  borderRadius: 8,
 });
 
 export const ScannerFrameBottom = styled.div({});
@@ -55,6 +56,7 @@ export const ScannerFrameBottom = styled.div({});
 export const ScanLine = styled.div({
   position: 'absolute',
   top: '50%',
+  left: 0,
   width: '100%',
   height: 2,
   backgroundColor: 'red',
@@ -67,22 +69,14 @@ export const LoadingSpinner = styled.div({
   left: '50%',
 });
 
-export const InstructionText = styled.div({
-  textAlign: 'center',
-  marginTop: 12,
-  fontSize: 15,
-  color: 'white',
-});
-
 export const BottomActions = styled.div({
-  paddingTop: 16,
+  position: 'absolute',
+  bottom: 16,
+  width: '100%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   gap: 40,
-  position: 'absolute',
-  bottom: 24,
-  width: '100%',
 });
 
 export const ActionButton = styled.button({
@@ -106,7 +100,7 @@ export const ScanButton = styled.button({
 });
 
 export const Footer = styled.div({
-  height: '20vh',
+  height: '15vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-start',
