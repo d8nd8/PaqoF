@@ -24,7 +24,7 @@ import {
 } from './QrScanner.styled';
 import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
 
-const QRScanner: React.FC<QRScannerProps> = ({
+export const QRScanner: React.FC<QRScannerProps> = ({
                                                isVisible,
                                                onScan,
                                                onClose,

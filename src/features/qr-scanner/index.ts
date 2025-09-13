@@ -1,1 +1,1 @@
-export { QRScannerOverlay } from './QRScanner';
+export { QRScanner } from './QRScanner';
