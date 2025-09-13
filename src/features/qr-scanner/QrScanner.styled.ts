@@ -141,7 +141,7 @@ export const Footer = styled.div({
   paddingTop: 12,
   width: '100%',
   zIndex: 10001,
-  bottom: '-54px'
+  bottom: '-48px'
 });
 
 export const FooterHint = styled.div({
