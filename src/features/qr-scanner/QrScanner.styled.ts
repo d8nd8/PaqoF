@@ -8,65 +8,29 @@ export const Overlay = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-});
-
-export const Header = styled.div({
-  position: 'relative',
-  display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
-  padding: '0 14px',
-  height: 56,
-  zIndex: 3, // всегда над видеопотоком
-});
-
-export const Title = styled.div({
-  fontSize: 16,
-  fontWeight: 600,
-  color: 'white',
-});
-
-export const CloseButton = styled.button({
-  position: 'absolute',
-  width: '44px',
-  height: '44px',
-  right: 16,
-  top: '50%',
-  transform: 'translateY(-50%)',
-  color: 'white',
-  background: 'transparent',
-  border: 'none',
-  fontSize: 20,
 });
 
 export const CameraContainer = styled.div({
   position: 'relative',
   width: '100%',
-  height: '80vh',            // область камеры ~80% экрана
-  background: '#000',        // базовый фон под всем
+  height: '80vh',
+  background: '#000',
 });
 
-// НОВОЕ: сам контейнер превью с тестовым фоном
 export const CameraFeed = styled.div({
   position: 'absolute',
-  left: 0,
-  right: 0,
-  bottom: 0,
-  top: 56,                   // отступ под шапку 56px
-  overflow: 'hidden',
-  borderRadius: 12,
-  width: '100%',
-  height: '100%',
+  inset: 0,
+  zIndex: 1,
 
-  // Тестовый фон (виден на ПК без камеры)
   backgroundColor: '#0e1016',
   backgroundImage:
     'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),' +
     'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)',
   backgroundPosition: '0 0, 25px 25px',
   backgroundSize: '50px 50px',
+  height: '100%',
 
-  // Подсказка по центру, исчезает когда появится <video>/<canvas>
   '&::after': {
     content: '"Предпросмотр камеры (тестовый фон)"',
     position: 'absolute',
@@ -80,33 +44,64 @@ export const CameraFeed = styled.div({
   },
   '&:has(video, canvas)::after': { display: 'none' },
 
-  // Видео/canvas от html5-qrcode
   '& video, & canvas': {
     position: 'absolute',
     inset: 0,
     width: '100%',
-    height: '100%',
+    height: "100%",
     objectFit: 'cover',
   },
 });
 
-export const ScannerOverlay = styled.div({
+export const Header = styled.div({
   position: 'absolute',
+  top: 0,
   left: 0,
   right: 0,
-  bottom: 0,
-  top: 56,                  // чтобы не перекрывать шапку
+  height: 56,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  pointerEvents: 'none',
+  padding: '0 14px',
+  zIndex: 3,
+  pointerEvents: 'auto',
+});
+
+export const Title = styled.div({
+  fontSize: 16,
+  fontWeight: 600,
+  color: 'white',
+});
+
+export const CloseButton = styled.button({
+  position: 'absolute',
+  width: 44,
+  height: 44,
+  right: 16,
+  top: '50%',
+  transform: 'translateY(-50%)',
+  color: 'white',
+  background: 'transparent',
+  border: 'none',
+  fontSize: 20,
+  cursor: 'pointer',
+});
+
+export const ScannerOverlay = styled.div({
+  position: 'absolute',
+  inset: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   zIndex: 2,
+  pointerEvents: 'none',
 });
 
 export const LoadingSpinner = styled.div({
   position: 'absolute',
   top: '50%',
   left: '50%',
+  zIndex: 2,
 });
 
 export const BottomActions = styled.div({
@@ -119,7 +114,7 @@ export const BottomActions = styled.div({
   padding: '0 14px',
   alignItems: 'center',
   gap: 40,
-  zIndex: 3,               // над видео
+  zIndex: 3,
 });
 
 export const ActionButton = styled.button(({ theme }) => ({
@@ -132,6 +127,7 @@ export const ActionButton = styled.button(({ theme }) => ({
   alignItems: 'center',
   border: 'none',
   color: 'white',
+  cursor: 'pointer',
 }));
 
 export const ScanButton = styled.button({
@@ -140,13 +136,18 @@ export const ScanButton = styled.button({
   borderRadius: '50%',
   backgroundColor: 'white',
   border: '2px solid #fff',
+  cursor: 'pointer',
 });
 
 export const Footer = styled.div({
+  position: 'absolute',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-start',
   paddingTop: 12,
+  width: '100%',
+  zIndex: 10001,
+  bottom: '-50px'
 });
 
 export const FooterHint = styled.div({

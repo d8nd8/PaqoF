@@ -11,9 +11,6 @@ import {
   ScannerOverlay,
   BottomActions,
   ActionButton,
-  ErrorMessage,
-  ErrorButton,
-  LoadingSpinner,
   ScanButton,
   Footer,
   FooterHint, CameraFeed
@@ -27,8 +24,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({
                                                title = 'Оплата по QR',
                                              }) => {
   const {
-    isScanning,
-    error,
     closeScanner,
     retryScanner,
     toggleTorch,
@@ -73,16 +68,17 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
   return (
     <Overlay>
-
-
       <CameraContainer>
+        <CameraFeed id={containerId} />
+
         <Header>
           <Title>{title}</Title>
           <CloseButton onClick={handleClose}>✕</CloseButton>
         </Header>
-        <CameraFeed id={containerId} />
+
+        <ScannerOverlay />
         <div id="gallery-scan-temp" style={{ display: 'none' }} />
-        <ScannerOverlay/>
+
         <BottomActions>
           <ActionButton onClick={toggleTorch} title="Фонарик">
             <TorchlightIcon />
@@ -94,11 +90,10 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             <AttachmentIcon />
           </ActionButton>
         </BottomActions>
+        <Footer>
+          <FooterHint>Что можно оплатить?</FooterHint>
+        </Footer>
       </CameraContainer>
-
-      <Footer>
-        <FooterHint>Что можно оплатить?</FooterHint>
-      </Footer>
     </Overlay>
   );
 };
