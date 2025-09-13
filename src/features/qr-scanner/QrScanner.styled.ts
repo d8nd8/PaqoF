@@ -9,7 +9,7 @@ export const Overlay = styled.div({
   flexDirection: 'column',
   height: '100%',
   justifyContent: 'end',
-  paddingBottom: '82px',
+  paddingBottom: '60px',
 });
 
 export const CameraContainer = styled.div({
@@ -148,7 +148,7 @@ export const Footer = styled.div({
   paddingTop: 12,
   width: '100%',
   zIndex: 10001,
-  bottom: '-58px'
+  bottom: '-46px'
 });
 
 export const FooterHint = styled.div({
@@ -160,14 +160,4 @@ export const FooterHint = styled.div({
   padding: '8px 15px',
   textAlign: 'center',
   borderRadius: 16,
-});
-
-export const ErrorMessage = styled.div({
-  color: 'red',
-  textAlign: 'center',
-  marginTop: 8,
-});
-
-export const ErrorButton = styled.button({
-  marginTop: 8,
 });
