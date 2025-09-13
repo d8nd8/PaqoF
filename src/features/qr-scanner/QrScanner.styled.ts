@@ -8,7 +8,8 @@ export const Overlay = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  justifyContent: 'center',
+  justifyContent: 'end',
+  paddingBottom: '82px',
 });
 
 export const CameraContainer = styled.div({
@@ -147,7 +148,7 @@ export const Footer = styled.div({
   paddingTop: 12,
   width: '100%',
   zIndex: 10001,
-  bottom: '-50px'
+  bottom: '-58px'
 });
 
 export const FooterHint = styled.div({
