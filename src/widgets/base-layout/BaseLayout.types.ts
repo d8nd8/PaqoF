@@ -29,7 +29,7 @@ export const NavbarItems: NavbarItemConfig[] = [
     label: 'Главная',
     icon: HomeIcon,
     activeIcon: HomeActiveIcon,
-    to: '/',
+    to: '/main',
   },
   {
     id: 'history',
@@ -43,7 +43,6 @@ export const NavbarItems: NavbarItemConfig[] = [
     label: '',
     icon: QRIcon,
     activeIcon: QRIcon,
-    to: '/qr',
   },
   {
     id: 'bonus',

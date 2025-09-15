@@ -24,6 +24,7 @@
     "axios": "^1.11.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
+    "html5-qrcode": "^2.3.8",
     "i18next": "^25.2.1",
     "lucide-react": "^0.534.0",
     "qrcode.react": "^4.2.0",

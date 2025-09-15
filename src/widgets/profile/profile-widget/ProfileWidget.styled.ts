@@ -53,6 +53,28 @@ export const Avatar = styled.img(({ theme }) => ({
   height: "100px",
   borderRadius: "50%",
   objectFit: "cover",
+  border: `3px solid ${theme.colors.systemBackground}`,
+  boxSizing: "border-box",
+}));
+
+export const AvatarPlaceholder = styled.div(({ theme }) => ({
+  width: "100px",
+  height: "100px",
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  background: "linear-gradient(135deg, #E5E7EB 0%, #F3F4F6 50%, #E5E7EB 100%)",
+  border: `3px solid ${theme.colors.systemBackground}`,
+  boxSizing: "border-box",
+
+  fontFamily: "Inter, sans-serif",
+  fontSize: "32px",
+  fontWeight: 600,
+  color: "#6B7280",
+  letterSpacing: "1px",
+
 }));
 
 export const Content = styled.div(({ theme }) => ({
@@ -139,9 +161,16 @@ export const ItemContent = styled.div({
 });
 
 export const Chevron = styled.span({
-  fontSize: "20px",
+  fontSize: "18px",
   lineHeight: 1,
-  opacity: 0.6,
+  opacity: 0.5,
+  color: "#8E8E93",
+  fontWeight: "normal",
+
+  WebkitUserSelect: "none",
+  userSelect: "none",
+  WebkitTapHighlightColor: "transparent",
+  pointerEvents: "none",
 });
 
 export const LogoutButton = styled.button(({ theme }) => ({

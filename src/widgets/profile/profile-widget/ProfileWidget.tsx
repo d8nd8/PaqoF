@@ -5,6 +5,7 @@ import {
   Username,
   AvatarWrapper,
   Avatar,
+  AvatarPlaceholder,
   Content,
   Section,
   SectionTitle,
@@ -40,7 +41,7 @@ type Props = {
 
 export const ProfileWidget: React.FC<Props> = ({
                                                  username = '@twixmaster',
-                                                 avatarSrc = "src/assets/images/profile/user-picture.png",
+                                                 avatarSrc,
                                                  onReferralClick,
                                                  onKycClick,
                                                  onSecurityClick,
@@ -60,6 +61,11 @@ export const ProfileWidget: React.FC<Props> = ({
     goToReferral();
   };
 
+  const getInitials = (username: string) => {
+    const cleanUsername = username.replace('@', '');
+    return cleanUsername.slice(0, 2).toUpperCase();
+  };
+
   return (
     <ProfileWrapper>
       <ProfileTop>
@@ -67,7 +73,13 @@ export const ProfileWidget: React.FC<Props> = ({
       </ProfileTop>
 
       <AvatarWrapper>
-        <Avatar src={avatarSrc} alt="Аватар" />
+        {avatarSrc ? (
+          <Avatar src={avatarSrc} alt="Аватар" />
+        ) : (
+          <AvatarPlaceholder>
+            {getInitials(username)}
+          </AvatarPlaceholder>
+        )}
       </AvatarWrapper>
 
       <Content>

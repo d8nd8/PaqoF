@@ -11,7 +11,7 @@ export interface NavbarItemConfig {
   label: string
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   activeIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>
-  to: string
+  to?: string
 }
 
 interface NavbarProps {
@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ items, onItemClick }) => {
   return (
     <NavbarContainer>
       {items.map(item => {
-        const isActive = location.pathname === item.to
+        const isActive = item.to ? location.pathname === item.to : false
         const Icon = isActive ? item.activeIcon : item.icon
 
         return (
@@ -35,8 +35,12 @@ export const Navbar: React.FC<NavbarProps> = ({ items, onItemClick }) => {
             state={isActive ? 'active' : 'default'}
             isQr={item.id === 'qr'}
             onClick={() => {
-              navigate(item.to)
-              onItemClick?.(item.id)
+              if (onItemClick) {
+                onItemClick(item.id)
+              }
+              if (item.to && item.id !== 'qr') {
+                navigate(item.to)
+              }
             }}
           >
             <Icon />

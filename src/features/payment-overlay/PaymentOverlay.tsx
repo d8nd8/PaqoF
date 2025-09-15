@@ -4,6 +4,7 @@ import { OverlayCryptoSelection } from '@/features/overlay-crypto-selection';
 import { CurrencyButton } from './CurrencyButton';
 import * as S from './PaymentOverlay.styled';
 import type { CryptoItemData } from '@/features/crypto-list/CryptoList'
+import ErrorIcon from '@icons/scanner/qr-error.svg?react'
 
 export type PaymentStep = 'form' | 'processing' | 'success' | 'error';
 
@@ -128,9 +129,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
     <S.StatusContainer>
       <S.StatusHeader>Возникла проблема</S.StatusHeader>
 
-      <S.ErrorIcon>
-        <S.QRErrorIcon>⚠</S.QRErrorIcon>
-      </S.ErrorIcon>
+      <ErrorIcon />
 
       <S.ErrorTitle>Что-то не так с QR-кодом</S.ErrorTitle>
       <S.ErrorDescription>
