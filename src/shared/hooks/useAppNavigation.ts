@@ -28,12 +28,34 @@ export const useAppNavigation = () => {
     navigate(ROUTES.REFERRAL);
   };
 
+  const goToInfo = () => {
+    navigate(ROUTES.INFO);
+  };
+
+  const goToAccounts = () => {
+    navigate(ROUTES.ACCOUNTS);
+  };
+
+  const goToLang = () => {
+    navigate(ROUTES.LANGUAGES);
+  }
+
+  const goToSecurity = () => {
+    navigate(ROUTES.SECURITY)
+  }
+
+
+
   return {
     goTo,
+    goToAccounts,
+    goToSecurity,
+    goToLang,
     goBack,
     goToHome,
     goToMain,
     goToProfile,
     goToReferral,
+    goToInfo
   };
 };

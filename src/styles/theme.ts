@@ -94,6 +94,7 @@ export const theme = {
     xxxl: '32px',
     huge: '40px',
     header: "50px",
+    page: "14px",
   },
 
   // Typography

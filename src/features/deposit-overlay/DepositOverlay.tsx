@@ -9,15 +9,19 @@ import {
   Option,
   OptionIcon,
   OptionText,
+  OptionTitle,
+  OptionSubtitle,
+  OptionRight,
   Description,
 } from "./DepositOverlay.styled";
 
-import WalletIcon from "@/assets/icons/deposit.svg?react";
+import WalletIcon from "@/assets/icons/wallet-icon.svg?react";
+import ChevronRightIcon from "@icons/chevron-right.svg?react";
 
 interface Props {
   onClose: () => void;
   onSelectWallet?: () => void;
-};
+}
 
 export const DepositOverlay: React.FC<Props> = ({ onClose, onSelectWallet }) => {
   return (
@@ -32,19 +36,24 @@ export const DepositOverlay: React.FC<Props> = ({ onClose, onSelectWallet }) => 
         </OverlayHeader>
 
         <Description>
-          Выберите способ внесения криптовалюты на Paqo Wallet
+          Выберите способ внесения криптовалюты на <br /> Paqo Wallet
         </Description>
 
         <Option onClick={onSelectWallet}>
           <OptionIcon>
-            <WalletIcon width={24} height={24} />
+            <WalletIcon />
           </OptionIcon>
           <OptionText>
-            <div>Внешний кошелёк</div>
-            <small>Перевод с другого кошелька</small>
+            <OptionTitle>Внешний кошелёк</OptionTitle>
+            <OptionSubtitle>Перевод с другого кошелька</OptionSubtitle>
           </OptionText>
+          <OptionRight>
+            <ChevronRightIcon />
+          </OptionRight>
         </Option>
       </OverlayContainer>
     </OverlayBackground>
   );
 };
+
+export default DepositOverlay;

@@ -1,25 +1,12 @@
-import React, { useState } from 'react';
-
-import CheckIcon from '@icons/check.svg?react';
-import * as S from './LanguageSwitcher.styled';
-import { BottomSheet } from '../../shared/components/BottomSheet/BottomSheet'
-
-interface Language {
-  code: string;
-  name: string;
-}
-
-interface LanguageSwitcherProps {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedLanguage: string;
-  onLanguageChange: (language: string) => void;
-  languages?: Language[];
-}
+import React, { useState } from "react";
+import { BottomSheet } from "@/shared/components/BottomSheet/BottomSheet";
+import { LanguageOptionsList } from "@/shared/components/language-options/LanguageOptionsList";
+import type { LanguageSwitcherProps } from '@/features/language-switcher/LanguageSwitcher.tpyes'
+import type { Language } from '@/shared/components/language-options/LanguageOptionsList.types'
 
 const defaultLanguages: Language[] = [
-  { code: 'ru', name: 'Русский' },
-  { code: 'en', name: 'English' }
+  { code: "ru", name: "Русский" },
+  { code: "en", name: "English" },
 ];
 
 export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
@@ -27,7 +14,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                                                                     onClose,
                                                                     selectedLanguage,
                                                                     onLanguageChange,
-                                                                    languages = defaultLanguages
+                                                                    languages = defaultLanguages,
                                                                   }) => {
   const [tempSelected, setTempSelected] = useState(selectedLanguage);
 
@@ -47,29 +34,16 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     <BottomSheet
       isOpen={isOpen}
       onClose={handleClose}
-      title="Изменить язык"
+      title="Выбор языка"
       bottomButtonText="Сохранить"
       onBottomButtonClick={handleSave}
       isBottomButtonDisabled={!isChanged}
     >
-      <S.LanguageOptionWrapper>
-        {languages.map((language) => (
-          <S.LanguageOption
-            key={language.code}
-            $isSelected={tempSelected === language.code}
-            onClick={() => setTempSelected(language.code)}
-          >
-            <S.LanguageText>{language.name}</S.LanguageText>
-            <S.IconWrapper $isSelected={tempSelected === language.code}>
-              <CheckIcon />
-            </S.IconWrapper>
-          </S.LanguageOption>
-        ))}
-      </S.LanguageOptionWrapper>
-
-      <S.Description>
-        Язык можно поменять в любое время в настройках
-      </S.Description>
+      <LanguageOptionsList
+        selected={tempSelected}
+        onSelect={setTempSelected}
+        languages={languages}
+      />
     </BottomSheet>
   );
 };

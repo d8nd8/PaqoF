@@ -1,0 +1,78 @@
+import styled from "@emotion/styled";
+
+export const LanguageWrapper = styled.div(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "100%",
+  background: theme.colors.systemBackground,
+  padding: `0 ${theme.spacing.page}`,
+  paddingTop: theme.spacing.header,
+}));
+
+export const Header = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  marginTop: theme.spacing.xxl,
+  marginBottom: theme.spacing.xxl,
+}));
+
+export const Title = styled.h2(({ theme }) => ({
+  fontFamily: "Inter, sans-serif",
+  fontWeight: theme.typography.fontWeight.semibold,
+  fontSize: "17px",
+  lineHeight: "22px",
+  letterSpacing: "-0.43px",
+  color: theme.colors.textPrimary,
+  margin: 0,
+  textAlign: "center",
+}));
+
+export const LanguageList = styled.div(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: 0,
+  background: theme.colors.neutral100,
+  borderRadius: theme.borderRadius.xl,
+  overflow: "hidden",
+}));
+
+export const LanguageItem = styled.button(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  height: "52px",
+  width: "100%",
+  padding: "0 16px",
+  background: "transparent",
+  border: "none",
+  cursor: "pointer",
+  textAlign: "left",
+  transition: "background 0.2s ease",
+
+  "&:hover": {
+    background: theme.semantic.hover,
+  },
+  "&:active": {
+    background: theme.semantic.active,
+  },
+}));
+
+export const LanguageText = styled.span(({ theme }) => ({
+  fontSize: "15px",
+  fontWeight: theme.typography.fontWeight.normal,
+  color: theme.colors.textPrimary,
+}));
+
+export const RadioWrapper = styled.div<{ $active?: boolean }>(({ theme, $active }) => ({
+  width: "24px",
+  height: "24px",
+  borderRadius: "9999px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: $active ? theme.colors.primary500 : theme.colors.textQuaternary,
+  color: $active ? theme.colors.textPrimary : "transparent",
+  transition: theme.transition.fast,
+}));

@@ -22,15 +22,12 @@ export const OverlayCryptoSelection: React.FC<OverlayCryptoSelectionProps> = ({
                                                                                 title = 'Выберите криптовалюту'
                                                                               }) => {
   const handleCryptoClick = (crypto: CryptoItemData) => {
-    console.log('🔥 Clicked crypto:', crypto);
-    console.log('🔥 Current selected:', selectedCryptoId);
     onCryptoSelect(crypto);
     onClose();
   };
 
   const renderRightSection = (crypto: CryptoItemData) => {
     const isSelected = crypto.id === selectedCryptoId;
-    console.log(`🎯 Crypto ${crypto.name} (${crypto.id}) - Selected: ${isSelected}`);
 
     return (
       <S.SelectionIndicator $isSelected={isSelected}>
@@ -39,12 +36,7 @@ export const OverlayCryptoSelection: React.FC<OverlayCryptoSelectionProps> = ({
     );
   };
 
-  console.log('🚀 OverlayCryptoSelection render:', {
-    isOpen,
-    selectedCryptoId,
-    cryptosCount: cryptos.length,
-    cryptoIds: cryptos.map(c => c.id)
-  });
+
 
   return (
     <BottomSheet
@@ -60,6 +52,7 @@ export const OverlayCryptoSelection: React.FC<OverlayCryptoSelectionProps> = ({
           onCryptoClick={handleCryptoClick}
           showRightSection={true}
           renderRightSection={renderRightSection}
+          disableNavigation
         />
       </S.OverlayCryptoSelectionContent>
     </BottomSheet>

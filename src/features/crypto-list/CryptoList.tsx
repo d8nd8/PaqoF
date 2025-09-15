@@ -21,19 +21,24 @@ interface CryptoItemProps {
   onClick?: (crypto: CryptoItemData) => void;
   showRightSection?: boolean;
   rightSection?: React.ReactNode;
+  disableNavigation?: boolean;
 }
 
-const CryptoItem: React.FC<CryptoItemProps> = ({
+export const CryptoItem: React.FC<CryptoItemProps> = ({
                                                  data,
                                                  onClick,
                                                  showRightSection = true,
                                                  rightSection,
+                                                 disableNavigation = false,
                                                }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     onClick?.(data);
-    navigate(`/currency?symbol=${data.symbol}`);
+
+    if (!disableNavigation) {
+      navigate(`/currency?symbol=${data.symbol}`);
+    }
   };
 
   const renderIcon = () => {
@@ -79,6 +84,7 @@ interface CryptoListProps {
   onCryptoClick?: (crypto: CryptoItemData) => void;
   showRightSection?: boolean;
   renderRightSection?: (crypto: CryptoItemData) => React.ReactNode;
+  disableNavigation?: boolean;
 }
 
 export const CryptoList: React.FC<CryptoListProps> = ({
@@ -86,6 +92,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
                                                         onCryptoClick,
                                                         showRightSection = true,
                                                         renderRightSection,
+                                                        disableNavigation = false,
                                                       }) => {
   return (
     <S.CryptoListContainer>
@@ -96,6 +103,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
           onClick={onCryptoClick}
           showRightSection={showRightSection}
           rightSection={renderRightSection?.(crypto)}
+          disableNavigation={disableNavigation}
         />
       ))}
     </S.CryptoListContainer>

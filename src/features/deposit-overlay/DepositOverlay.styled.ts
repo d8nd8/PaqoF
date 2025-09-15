@@ -48,7 +48,6 @@ export const OverlayHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
 `;
 
 export const OverlayTitle = styled.h2`
@@ -75,7 +74,7 @@ export const Description = styled.p`
 export const Option = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   padding: 14px 16px;
   border-radius: 12px;
   background: ${({ theme }) => theme.colors.neutral100};
@@ -89,14 +88,32 @@ export const Option = styled.div`
 `;
 
 export const OptionIcon = styled.div`
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 14px;
+
+  background: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.colors.primary600} 0%,
+    ${({ theme }) => theme.colors.primary200} 100%
+  );
+
+  & svg {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 export const OptionText = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 export const OptionTitle = styled.div`
@@ -109,4 +126,18 @@ export const OptionSubtitle = styled.small`
   font-size: 13px;
   font-weight: 400;
   color: ${({ theme }) => theme.semantic.textSecondary};
+`;
+
+export const OptionRight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 14px;
+
+  & svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.5;
+    color: ${({ theme }) => theme.semantic.textTertiary};
+  }
 `;

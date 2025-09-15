@@ -1,11 +1,9 @@
 import React from 'react';
+import * as S from './MainWidget.styled';
 
 import { BalanceCard } from '@/features/balance-information/BalanceInformation';
 import { AdBanner } from '@/features/ad-banner/AdBanner';
 import { type CryptoItemData, CryptoList } from '@/features/crypto-list/CryptoList';
-import * as S from './MainWidget.styled';
-import { NotificationsModal } from '@/features/notifications'
-import useApplicationStore from '@/shared/stores/application'
 
 const cryptoData: CryptoItemData[] = [
   {
@@ -34,34 +32,40 @@ const cryptoData: CryptoItemData[] = [
   },
 ];
 
-export const MainWidget: React.FC = () => {
-  const { modal, openModal, closeModal } = useApplicationStore();
+interface MainWidgetProps {
+  onTopUp: () => void;
+  onSend: () => void;
+  onPay: () => void;
+  onNotifications: () => void;
+}
 
+export const MainWidget: React.FC<MainWidgetProps> = ({
+                                                        onTopUp,
+                                                        onSend,
+                                                        onPay,
+                                                        onNotifications,
+                                                      }) => {
   return (
     <S.Wrapper>
       <BalanceCard
         balance={12500.5}
         currency="₽"
-        hasNotifications={true}
-        onTopUp={() => console.log('Пополнить')}
-        onSend={() => console.log('Отправить')}
-        onPay={() => console.log('Оплатить')}
-        onNotificationsClick={() => openModal('notifications')}
+        hasNotifications
+        onTopUp={onTopUp}
+        onSend={onSend}
+        onPay={onPay}
+        onNotificationsClick={onNotifications}
       />
 
       <S.CryptoWrapper>
         <AdBanner level={3} />
-
         <CryptoList
           cryptos={cryptoData}
           onCryptoClick={(crypto) => console.log('Clicked:', crypto)}
         />
       </S.CryptoWrapper>
-
-      <NotificationsModal
-        isOpen={modal === 'notifications'}
-        onClose={closeModal}
-      />
     </S.Wrapper>
   );
 };
+
+export default MainWidget;

@@ -1,11 +1,23 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { WelcomeScreen } from '@/pages/WelcomeScreen';
+import AccountsPage from '@/pages/AccountsPage';
+import BonusPage from '@/pages/BonusPage';
+import CurrencyPage from '@/pages/CurrencyPage';
+import HistoryPage from '@/pages/HistoryPage';
+import InfoPage from '@/pages/InfoPage';
+import LanguagePage from '@/pages/LanguagePage';
 import { MainPage } from '@/pages/MainPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ReferralProgramPage } from '@/pages/ReferralProgramPage';
-import HistoryPage from '@/pages/HistoryPage'
-import CurrencyPage from '@/pages/CurrencyPage'
+import { WelcomeScreen } from '@/pages/WelcomeScreen';
+import { createBrowserRouter } from 'react-router-dom'
+
+
+
+import { ErrorBoundary } from './components/ErrorBoundary';
+import SecurityPage from '@/pages/SecurityPage'
+
+
+
+
 
 export const router = createBrowserRouter([
   {
@@ -37,5 +49,30 @@ export const router = createBrowserRouter([
     path: '/currency',
     element: <CurrencyPage />,
     errorElement: <ErrorBoundary />
+  },
+  {
+    path: '/bonus',
+    element: <BonusPage />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: '/info',
+    element: <InfoPage />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: '/accounts',
+    element: <AccountsPage />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: "/language",
+    element: <LanguagePage />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: "/security",
+    element: <SecurityPage />,
+    errorElement: <ErrorBoundary />,
   }
 ]);
