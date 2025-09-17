@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import {
   miniApp,
   viewport,
   mainButton,
-  secondaryButton
+  secondaryButton,
 } from "@telegram-apps/sdk-react";
 
 import { router } from "@/app/router";
@@ -19,6 +19,8 @@ const App = () => {
     fullscreenCentered,
     setFullscreen,
   } = useApplicationStore();
+
+  const [safeAreaBottom, setSafeAreaBottom] = useState(0);
 
   useEffect(() => {
     if (mainButton.mount.isAvailable()) mainButton.mount();
@@ -35,6 +37,10 @@ const App = () => {
       viewport.mount();
       setFullscreen(viewport.isFullscreen());
     }
+
+    const bottom = parseInt(getComputedStyle(document.documentElement)
+      .getPropertyValue("--safe-area-bottom"), 10);
+    setSafeAreaBottom(bottom);
   }, [setFullscreen]);
 
   return (
@@ -42,6 +48,7 @@ const App = () => {
       fullscreen={fullscreen}
       fullscreenCentered={fullscreenCentered}
       noHeaderOffset={!headerOffset}
+      style={{ paddingBottom: safeAreaBottom }}
     >
       <WrapperRoot>
         <RouterProvider router={router} />
