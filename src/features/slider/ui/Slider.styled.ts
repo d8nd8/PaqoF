@@ -65,7 +65,7 @@ export const Description = styled.p(({ theme }) => ({
 }));
 
 export const BottomSection = styled.div({
-  padding: "34px 14px 0",
+  padding: "30px 14px 0",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
