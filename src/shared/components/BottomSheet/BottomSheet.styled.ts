@@ -12,7 +12,7 @@ export const Overlay = styled.div<OverlayProps>((props) => ({
   right: '0',
   bottom: '0',
   backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  zIndex: 1000,
+  zIndex: 5000,
   display: props.$isVisible ? 'block' : 'none',
   opacity: props.$isClosing ? 0 : 1,
   transition: 'opacity 300ms ease-out'
@@ -124,6 +124,8 @@ export const Title = styled.h2(({ theme }) => ({
   fontWeight: '600',
   color: theme.colors.neutral900,
   margin: 0,
+  whiteSpace: 'nowrap',
+  maxWidth: '70%',
 
   position: 'absolute',
   left: '50%',

@@ -8,6 +8,7 @@ import { WalletDepositOverlay, type WalletDepositMode } from '@/features/overlay
 import { WalletAddressOverlay } from '@/features/overlay-wallet-address/WalletAddressOverlay'
 import { WalletTransferOverlay } from '@/features/overlay-wallet-transfer/WalletTransferOverlay'
 import { OverlayCommission } from '@/features/overlay-commission/OverlayCommission'
+import QRScanner from '@/features/qr-scanner/QRScanner'
 
 import useApplicationStore from '@/shared/stores/application'
 import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
@@ -16,37 +17,44 @@ export const MainPage: React.FC = () => {
   const { modal, openModal, closeModal } = useApplicationStore()
 
   const [showDeposit, setShowDeposit] = useState(false)
-  const [showWalletDeposit, setShowWalletDeposit] = useState<WalletDepositMode | null>(null) // 👈 теперь хранит режим
+  const [showWalletDeposit, setShowWalletDeposit] = useState<WalletDepositMode | null>(null)
   const [showWalletAddress, setShowWalletAddress] = useState(false)
   const [showWalletTransfer, setShowWalletTransfer] = useState(false)
   const [showCommission, setShowCommission] = useState(false)
+  const [showScanner, setShowScanner] = useState(false)
 
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<string>('')
 
   const hideNavbar =
-    showDeposit || !!showWalletDeposit || showWalletAddress || showWalletTransfer || showCommission
+    showDeposit ||
+    !!showWalletDeposit ||
+    showWalletAddress ||
+    showWalletTransfer ||
+    showCommission ||
+    showScanner
+
+  const handlePay = () => {
+    setShowScanner(false)
+  }
 
   return (
     <BaseLayout showNavbar={!hideNavbar}>
       <MainWidget
         onTopUp={() => setShowDeposit(true)}
-        onSend={() => setShowWalletDeposit("transfer")}
-        onPay={() => console.log('Оплатить')}
+        onSend={() => setShowWalletDeposit('transfer')}
+        onPay={() => setShowScanner(true)}
         onNotifications={() => openModal('notifications')}
       />
 
-      <NotificationsModal
-        isOpen={modal === 'notifications'}
-        onClose={closeModal}
-      />
+      <NotificationsModal isOpen={modal === 'notifications'} onClose={closeModal} />
 
       {showDeposit && (
         <DepositOverlay
           onClose={() => setShowDeposit(false)}
           onSelectWallet={() => {
             setShowDeposit(false)
-            setShowWalletDeposit("deposit")
+            setShowWalletDeposit('deposit')
           }}
         />
       )}
@@ -61,9 +69,9 @@ export const MainPage: React.FC = () => {
             setSelectedNetwork(network)
             setShowWalletDeposit(null)
 
-            if (mode === "deposit") {
+            if (mode === 'deposit') {
               setShowWalletAddress(true)
-            } else if (mode === "transfer") {
+            } else if (mode === 'transfer') {
               setShowWalletTransfer(true)
             }
           }}
@@ -101,6 +109,12 @@ export const MainPage: React.FC = () => {
         title="Почему комиссия?"
         description="Комиссия списывается для покрытия расходов на сеть. Она фиксирована и отображается перед отправкой."
         buttonText="Понятно"
+      />
+
+      <QRScanner
+        isVisible={showScanner}
+        onScan={handlePay}
+        onClose={() => setShowScanner(false)}
       />
     </BaseLayout>
   )

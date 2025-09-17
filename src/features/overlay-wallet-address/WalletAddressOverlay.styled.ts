@@ -12,11 +12,16 @@ export const OverlayWrapper = styled.div(({ theme }) => ({
 export const Header = styled.div({
   display: "flex",
   alignItems: "center",
-  gap: "12px",
-  padding: "16px",
+  paddingTop: "70px",
+  paddingBottom: "25px",
+  paddingLeft: "16px",
+  paddingRight: "16px",
+  position: "relative",
 });
 
 export const BackButton = styled.button(({ theme }) => ({
+  position: "absolute",
+  left: "16px",
   border: "none",
   background: "transparent",
   cursor: "pointer",
@@ -28,8 +33,12 @@ export const BackButton = styled.button(({ theme }) => ({
 }));
 
 export const Title = styled.h2(({ theme }) => ({
-  fontSize: "18px",
+  flex: 1,
+  textAlign: "center",
+  fontSize: "16px",
   fontWeight: 600,
+  lineHeight: "21px",
+  letterSpacing: "-0.31px",
   color: theme.colors.textPrimary,
   margin: 0,
 }));
@@ -39,18 +48,20 @@ export const Content = styled.div({
   padding: "0 16px",
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
   gap: "16px",
 });
 
 export const SectionTitle = styled.div(({ theme }) => ({
-  fontSize: "14px",
-  fontWeight: 500,
-  color: theme.colors.textSecondary,
+  width: "100%",
+  textAlign: "left",
+  fontSize: "15px",
+  fontWeight: 600,
+  lineHeight: "20px",
+  color: theme.colors.textPrimary,
 }));
 
 export const QRCard = styled.div(({ theme }) => ({
-  background: theme.colors.neutral100,
+  background: theme.colors.systemElevatedBackground,
   borderRadius: "12px",
   padding: "16px",
   display: "flex",
@@ -60,47 +71,91 @@ export const QRCard = styled.div(({ theme }) => ({
   boxShadow: theme.semantic.shadowLight,
 }));
 
+export const AddressLabel = styled.div(({ theme }) => ({
+  fontSize: "12px",
+  fontWeight: 400,
+  lineHeight: "16px",
+  color: theme.colors.textSecondary,
+  textAlign: "center",
+}));
+
+export const AddressRow = styled.div({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "8px",
+});
+
 export const Address = styled.div(({ theme }) => ({
-  fontSize: "14px",
-  fontWeight: 500,
+  fontSize: "13px",
+  fontWeight: 600,
+  lineHeight: "18px",
+  letterSpacing: "-0.08px",
   wordBreak: "break-all",
   color: theme.colors.textPrimary,
+  textAlign: "center",
+}));
+
+export const CopyIconButton = styled.button(({ theme }) => ({
+  border: "none",
+  background: "transparent",
+  cursor: "pointer",
+  padding: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  "& svg": {
+    width: "16px",
+    height: "16px",
+    fill: theme.colors.neutral400,
+  },
 }));
 
 export const AddressHint = styled.p(({ theme }) => ({
   fontSize: "12px",
   color: theme.colors.textSecondary,
   textAlign: "center",
-  margin: "0",
+  margin: 0,
 }));
 
-// Кнопка-комиссия
 export const CommissionButton = styled.button(({ theme }) => ({
-  marginTop: "8px",
+  marginTop: theme.spacing.sm,
   width: "100%",
   height: "50px",
-  borderRadius: "10px",
-  border: `1px solid ${theme.colors.warning500}`,
-  background: "#FFF9E6",
+  borderRadius: theme.borderRadius.md,
+  border: "none",
+  background: theme.colors.warning100,
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: "0 15px",
-  gap: "10px",
+  padding: `0 ${theme.spacing.lg}`,
   cursor: "pointer",
 
   "& .left": {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-    fontSize: "13px",
-    fontWeight: 500,
-    color: theme.colors.warning500,
+    gap: theme.spacing.sm,
+    fontSize: "11px",
+    lineHeight: "13px",
+    fontWeight: theme.typography.fontWeight.normal,
+    color: theme.colors.textPrimary,
+
+    "& strong": {
+      fontWeight: theme.typography.fontWeight.semibold,
+    },
   },
 
-  "& svg": {
-    flexShrink: 0,
+  "& .icon": {
+    width: "16px",
+    height: "16px",
     color: theme.colors.warning500,
+    flexShrink: 0,
+  },
+
+  "& .chevron": {
+    flexShrink: 0,
+    color: theme.colors.warning400,
   },
 }));
 
@@ -108,44 +163,88 @@ export const BottomActions = styled.div({
   display: "flex",
   flexDirection: "column",
   gap: "12px",
-  padding: "16px",
+  padding: "30px 14px 40px",
 });
 
-export const CopyButton = styled.button(({ theme }) => ({
-  background: theme.colors.primary600,
-  color: theme.colors.systemElevatedBackground,
-  padding: "14px",
-  borderRadius: "12px",
+export const MainButton = styled.button(({ theme }) => ({
+  width: "100%",
+  height: "44px",
+  background: theme.colors.primary500,
+  color: theme.colors.textPrimary,
   border: "none",
-  fontSize: "16px",
+  borderRadius: "10px",
   fontWeight: 600,
+  fontSize: "16px",
+  lineHeight: "20px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: "8px",
+
+  "& svg": {
+    width: "18px",
+    height: "18px",
+    stroke: "currentColor",
+  },
 }));
 
-export const HomeButton = styled.button(({ theme }) => ({
-  background: theme.colors.neutral200,
+export const SecondaryButton = styled.button(({ theme }) => ({
+  width: "100%",
+  height: "44px",
+  background: theme.colors.neutral100,
   color: theme.colors.textPrimary,
-  padding: "14px",
-  borderRadius: "12px",
   border: "none",
-  fontSize: "16px",
+  borderRadius: "10px",
   fontWeight: 600,
+  fontSize: "16px",
+  lineHeight: "20px",
   cursor: "pointer",
+  transition: theme.transition.fast,
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  "&:hover": {
+    background: theme.colors.neutral200,
+  },
+  "&:active": {
+    background: theme.colors.neutral300,
+  },
 }));
 
-export const Toast = styled.div(({ theme }) => ({
+
+
+
+export const CopyNotification = styled.div(({ theme }) => ({
   position: "absolute",
-  top: "20px",
+  top: "45px",
   left: "50%",
   transform: "translateX(-50%)",
-  background: theme.colors.success500,
-  color: theme.colors.systemElevatedBackground,
-  padding: "8px 16px",
-  borderRadius: "20px",
-  fontSize: "14px",
-  fontWeight: 500,
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing.sm,
+  background: theme.colors.systemElevatedBackground,
+  padding: "8px 12px",
+  borderRadius: "12px",
+  boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+  fontSize: theme.typography.fontSize.sm,
+  color: theme.colors.textPrimary,
+  zIndex: 10,
+  opacity: 1,
+  animation: "fadeInOut 1.5s ease",
+
+  svg: {
+    fill: theme.colors.success600,
+    width: "16px",
+    height: "16px",
+  },
+
+  "@keyframes fadeInOut": {
+    "0%": { opacity: 0, transform: "translateX(-50%) translateY(-10px)" },
+    "10%": { opacity: 1, transform: "translateX(-50%) translateY(0)" },
+    "90%": { opacity: 1, transform: "translateX(-50%) translateY(0)" },
+    "100%": { opacity: 0, transform: "translateX(-50%) translateY(-10px)" },
+  },
 }));

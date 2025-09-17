@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import * as S from "./WalletAddressOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
-import CopyIcon from "@icons/copy.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
-
+import CopyIcon from "@icons/copy.svg?react";
+import CheckIcon from "@icons/check.svg?react";
+import ExclamationIcon from "@icons/exclamation-circle.svg?react";
 import { QRCodeSVG } from "qrcode.react";
+
+import TetherIcon from "@/assets/icons/usdt-icon.svg?url";
+import TronIcon from "@/assets/icons/tron-icon.svg?url";
+import TonIcon from "@/assets/icons/ton-icon.svg?url";
+import BtcIcon from "@/assets/icons/bitcoin-icon.svg?url";
 
 interface WalletAddressOverlayProps {
   isOpen: boolean;
@@ -16,6 +22,13 @@ interface WalletAddressOverlayProps {
   commission: string;
   onCommissionClick?: () => void;
 }
+
+const cryptoIcons: Record<string, string> = {
+  USDT: TetherIcon,
+  TRC20: TronIcon,
+  TON: TonIcon,
+  BTC: BtcIcon,
+};
 
 export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
                                                                             isOpen,
@@ -53,30 +66,55 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
         <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
 
         <S.QRCard>
-          <QRCodeSVG value={address} size={180} />
-          <S.Address>{address}</S.Address>
+          <QRCodeSVG
+            value={address}
+            size={170}
+            imageSettings={{
+              src: cryptoIcons[cryptoName] || cryptoIcons[network],
+              height: 55,
+              width: 55,
+              excavate: true,
+            }}
+          />
+
+          <S.AddressLabel>
+            Ваш адрес {cryptoName} {network}
+          </S.AddressLabel>
+
+          <S.AddressRow>
+            <S.Address>{address}</S.Address>
+            <S.CopyIconButton onClick={handleCopy}>
+              <CopyIcon />
+            </S.CopyIconButton>
+          </S.AddressRow>
+
           <S.AddressHint>
             Данный адрес предназначен только для получения {cryptoName} в сети{" "}
-            {network}. Отправка через другие сети приведёт к потере активов!
+            {network}. Отправка через другие сети приведёт к безвозвратной потере активов!
           </S.AddressHint>
 
           <S.CommissionButton onClick={onCommissionClick}>
             <div className="left">
-              <span>Фиксированная комиссия {commission}</span>
+              <ExclamationIcon className="icon" />
+              <span>
+                Фиксированная комиссия <strong>{commission}</strong>
+              </span>
             </div>
-            <ChevronRightIcon />
+            <ChevronRightIcon className="chevron" />
           </S.CommissionButton>
+
+          {copied && (
+            <S.CopyNotification>
+              <CheckIcon />
+              Адрес скопирован
+            </S.CopyNotification>
+          )}
         </S.QRCard>
       </S.Content>
 
-      {copied && <S.Toast>Адрес скопирован</S.Toast>}
-
       <S.BottomActions>
-        <S.CopyButton onClick={handleCopy}>
-          <CopyIcon />
-          Копировать адрес
-        </S.CopyButton>
-        <S.HomeButton onClick={onClose}>На главную</S.HomeButton>
+        <S.MainButton onClick={handleCopy}>Копировать адрес</S.MainButton>
+        <S.SecondaryButton onClick={onClose}>На главную</S.SecondaryButton>
       </S.BottomActions>
     </S.OverlayWrapper>
   );

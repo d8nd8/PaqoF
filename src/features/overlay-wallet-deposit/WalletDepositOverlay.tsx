@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import * as S from "./WalletDepositOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
-import CheckIcon from "@icons/check.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
+import { Check } from "lucide-react";
 
 import TetherIcon from "@/assets/icons/usdt-icon.svg?react";
+import TronIcon from "@/assets/icons/tron-icon.svg?react";
 import TonIcon from "@/assets/icons/ton-icon.svg?react";
 import BtcIcon from "@/assets/icons/bitcoin-icon.svg?react";
 
@@ -17,7 +18,11 @@ export type WalletDepositMode = "deposit" | "transfer";
 interface WalletDepositOverlayProps {
   isOpen: boolean;
   onClose: () => void;
-  onContinue?: (crypto: CryptoItemData, network: string, mode: WalletDepositMode) => void;
+  onContinue?: (
+    crypto: CryptoItemData,
+    network: string,
+    mode: WalletDepositMode
+  ) => void;
   title?: string;
   mode?: WalletDepositMode;
 }
@@ -93,11 +98,13 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
           <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
           <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
             <div className="left">
-              <TetherIcon width={28} height={28} />
-              <span>{selectedCrypto.name}</span>
+              <TetherIcon width={38} height={38} />
+              <div className="info">
+                <span className="name">{selectedCrypto.name}</span>
+                <span className="amount">{selectedCrypto.amount}</span>
+              </div>
             </div>
             <div className="right">
-              <small>{selectedCrypto.amount}</small>
               <ChevronRightIcon />
             </div>
           </S.CryptoCard>
@@ -108,46 +115,54 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             $selected={selectedNetwork === "TRC20"}
             onClick={() => setSelectedNetwork("TRC20")}
           >
-            <S.NetworkLeft>
-              <TetherIcon width={28} height={28} />
-              <span>TRC20</span>
-            </S.NetworkLeft>
-            <S.NetworkRight>
-              <small>Комиссия 2.75 USDT</small>
-              {selectedNetwork === "TRC20" && <CheckIcon />}
-            </S.NetworkRight>
+            <div className="left">
+              <TronIcon width={28} height={28} />
+              <div className="info">
+                <span className="name">TRC20</span>
+                <span className="commission">Комиссия 2.75 USDT</span>
+              </div>
+            </div>
+            <S.RadioWrapper $active={selectedNetwork === "TRC20"}>
+              {selectedNetwork === "TRC20" && <Check size={14} />}
+            </S.RadioWrapper>
           </S.NetworkOption>
 
           <S.NetworkOption
             $selected={selectedNetwork === "TON"}
             onClick={() => setSelectedNetwork("TON")}
           >
-            <S.NetworkLeft>
+            <div className="left">
               <TonIcon width={28} height={28} />
-              <span>TON</span>
-            </S.NetworkLeft>
-            <S.NetworkRight>
-              <small>Комиссия 0.5 USDT</small>
-              {selectedNetwork === "TON" && <CheckIcon />}
-            </S.NetworkRight>
+              <div className="info">
+                <span className="name">TON</span>
+                <span className="commission">Комиссия 0.5 USDT</span>
+              </div>
+            </div>
+            <S.RadioWrapper $active={selectedNetwork === "TON"}>
+              {selectedNetwork === "TON" && <Check size={14} />}
+            </S.RadioWrapper>
           </S.NetworkOption>
 
           <S.NetworkOption
             $selected={selectedNetwork === "BEP20"}
             onClick={() => setSelectedNetwork("BEP20")}
           >
-            <S.NetworkLeft>
+            <div className="left">
               <BtcIcon width={28} height={28} />
-              <span>BEP20</span>
-            </S.NetworkLeft>
-            <S.NetworkRight>
-              <small>Комиссия 2.75 USDT</small>
-              {selectedNetwork === "BEP20" && <CheckIcon />}
-            </S.NetworkRight>
+              <div className="info">
+                <span className="name">BEP20</span>
+                <span className="commission">Комиссия 2.75 USDT</span>
+              </div>
+            </div>
+            <S.RadioWrapper $active={selectedNetwork === "BEP20"}>
+              {selectedNetwork === "BEP20" && <Check size={14} />}
+            </S.RadioWrapper>
           </S.NetworkOption>
         </S.Content>
 
-        <S.BottomButton onClick={handleContinue}>Продолжить</S.BottomButton>
+        <S.BottomSection>
+          <S.MainButton onClick={handleContinue}>Продолжить</S.MainButton>
+        </S.BottomSection>
       </S.OverlayWrapper>
 
       <OverlayCryptoSelection
