@@ -13,24 +13,28 @@ import { LanguageSwitcher } from '@/features/language-switcher/LanguageSwitcher'
 import { SecurityPinCode } from '@/features/security-pin-code/SecurityPinCode';
 import { useNavigate } from 'react-router-dom'
 
+
+import homeImg1 from '@/assets/images/home1.png'
+import homeImg2 from '@/assets/images/home2.png'
+
 const slides = [
   {
     title: "Как крипто-карта, только крипто-СБП",
     description: "Пополняйте кошелёк удобными для вас криптовалютами",
     buttonText: "Перейти в кошелёк",
-    image: "src/assets/images/home2.png",
+    image: homeImg2,
   },
   {
     title: "Быстрое пополнение счёта",
     description: "Пополняйте кошелёк удобными для вас криптовалютами",
     buttonText: "Перейти в кошелёк",
-    image: "src/assets/images/home1.png",
+    image: homeImg1,
   },
   {
     title: "Удобный вывод средств",
     description: "Моментальные переводы на карты и счета",
     buttonText: "Перейти в кошелёк",
-    image: "src/assets/images/home1.png",
+    image: homeImg1,
   },
 ];
 
