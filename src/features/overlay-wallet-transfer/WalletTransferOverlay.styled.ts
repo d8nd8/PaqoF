@@ -102,6 +102,11 @@ export const PresetButton = styled.button(({ theme }) => ({
   fontSize: theme.typography.fontSize.sm,
   padding: "5px 10px",
   cursor: "pointer",
+  color: theme.colors.textPrimary,
+  fontWeight: 500,
+  textDecoration: "none",
+  appearance: "none",
+  WebkitAppearance: "none",
 }));
 
 export const AmountValue = styled.div<{ insufficient?: boolean }>(({ theme, insufficient }) => ({
