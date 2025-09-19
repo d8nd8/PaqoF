@@ -53,3 +53,12 @@ export const AccountIcon = styled.div(({ theme }) => ({
     height: "20px",
   },
 }));
+
+export const AccountTitle = styled.span(({ theme }) => ({
+  fontSize: "15px",
+  fontWeight: 500,
+  color: theme.colors.textPrimary + " !important",
+  textDecoration: "none !important",
+  pointerEvents: "none",
+  userSelect: "none",
+}));

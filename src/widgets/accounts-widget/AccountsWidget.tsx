@@ -14,6 +14,7 @@ import {
   AccountItem,
   AccountContent,
   AccountIcon,
+  AccountTitle,
 } from "./AccountsWidget.styled";
 
 import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
@@ -22,11 +23,13 @@ import VkIcon from "@/assets/icons/vk-icon.svg?react";
 import InstagramIcon from "@/assets/icons/instagram-icon.svg?react";
 import XIcon from "@/assets/icons/x-icon.svg?react";
 
+const safeText = (text: string) => text.split("").join("\u200B");
+
 const accounts = [
-  { id: "telegram", title: "Telegram", icon: <TelegramIcon /> },
-  { id: "vk", title: "VK", icon: <VkIcon /> },
-  { id: "instagram", title: "Instagram", icon: <InstagramIcon /> },
-  { id: "x", title: "X", icon: <XIcon /> },
+  { id: "telegram", title: safeText("Telegram"), icon: <TelegramIcon /> },
+  { id: "vk", title: safeText("VK"), icon: <VkIcon /> },
+  { id: "instagram", title: safeText("Instagram"), icon: <InstagramIcon /> },
+  { id: "x", title: safeText("X"), icon: <XIcon /> },
 ];
 
 type Props = {
@@ -57,14 +60,12 @@ export const AccountsWidget: React.FC<Props> = ({ onBack }) => {
         <Title>Официальные аккаунты</Title>
       </Header>
 
-
-
       <AccountsList>
         {accounts.map((acc) => (
           <AccountItem key={acc.id} onClick={() => handleClick(acc.id)}>
             <AccountContent>
               <AccountIcon>{acc.icon}</AccountIcon>
-              {acc.title}
+              <AccountTitle>{acc.title}</AccountTitle>
             </AccountContent>
             <ChevronRight size={18} strokeWidth={1.5} />
           </AccountItem>
