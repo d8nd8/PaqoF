@@ -38,27 +38,9 @@ const App = () => {
       setFullscreen(viewport.isFullscreen());
     }
 
-    const bottom = parseInt(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--safe-area-bottom"
-      ),
-      10
-    );
+    const bottom = parseInt(getComputedStyle(document.documentElement)
+      .getPropertyValue("--safe-area-bottom"), 10);
     setSafeAreaBottom(bottom);
-
-    const setAppHeight = () => {
-      document.documentElement.style.setProperty(
-        "--app-height",
-        `${window.innerHeight}px`
-      );
-    };
-
-    setAppHeight();
-    window.addEventListener("resize", setAppHeight);
-
-    return () => {
-      window.removeEventListener("resize", setAppHeight);
-    };
   }, [setFullscreen]);
 
   return (
