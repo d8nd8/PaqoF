@@ -15,7 +15,25 @@ export const Header = styled.div(({ theme }) => ({
   justifyContent: "center",
   position: "relative",
   marginTop: theme.spacing.xxl,
-  marginBottom: theme.spacing.lg,
+  marginBottom: theme.spacing.xxl,
+}));
+
+export const BackButton = styled.button(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  border: "none",
+  background: "transparent",
+  cursor: "pointer",
+  padding: "8px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  "& svg": {
+    width: "24px",
+    height: "24px",
+    stroke: theme.colors.textPrimary,
+  },
 }));
 
 export const Title = styled.h2(({ theme }) => ({

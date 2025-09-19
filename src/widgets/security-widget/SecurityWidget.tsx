@@ -3,6 +3,7 @@ import {
   SecurityWrapper,
   Header,
   Title,
+  BackButton,
   SectionTitle,
   SecurityList,
   SecurityItem,
@@ -10,13 +11,32 @@ import {
   SecurityIcon,
 } from "./SecurityWidget.styled";
 
+import { useNavigate } from "react-router-dom";
+import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 import KeyIcon from "@/assets/icons/key-icon.svg?react";
-import PinToggle from '@/features/pin-toggle/PinToggle'
+import PinToggle from "@/features/pin-toggle/PinToggle";
 
-export const SecurityWidget: React.FC = () => {
+type Props = {
+  onBack?: () => void;
+};
+
+export const SecurityWidget: React.FC<Props> = ({ onBack }) => {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
     <SecurityWrapper>
       <Header>
+        <BackButton onClick={handleBack}>
+          <ChevronLeft />
+        </BackButton>
         <Title>Безопасность</Title>
       </Header>
 

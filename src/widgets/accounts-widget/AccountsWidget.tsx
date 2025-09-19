@@ -1,11 +1,12 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import {
   InfoWrapper,
   Header,
   Title,
-  SectionTitle,
+  BackButton,
 } from "@/widgets/info/info-widget/InfoWidget.styled";
 
 import {
@@ -15,6 +16,7 @@ import {
   AccountIcon,
 } from "./AccountsWidget.styled";
 
+import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 import TelegramIcon from "@/assets/icons/telegram-icon.svg?react";
 import VkIcon from "@/assets/icons/vk-icon.svg?react";
 import InstagramIcon from "@/assets/icons/instagram-icon.svg?react";
@@ -27,18 +29,35 @@ const accounts = [
   { id: "x", title: "X", icon: <XIcon /> },
 ];
 
-export const AccountsWidget: React.FC = () => {
+type Props = {
+  onBack?: () => void;
+};
+
+export const AccountsWidget: React.FC<Props> = ({ onBack }) => {
+  const navigate = useNavigate();
+
   const handleClick = (id: string) => {
     console.log("Открыть аккаунт:", id);
+  };
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
     <InfoWrapper>
       <Header>
+        <BackButton onClick={handleBack}>
+          <ChevronLeft />
+        </BackButton>
         <Title>Официальные аккаунты</Title>
       </Header>
 
-      <SectionTitle>Соцсети</SectionTitle>
+
 
       <AccountsList>
         {accounts.map((acc) => (

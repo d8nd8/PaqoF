@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   CurrencyWrapper,
   Header,
   Title,
+  BackButton,
   BalanceWrapper,
   BalanceSection,
   BalanceAmount,
@@ -29,6 +31,7 @@ import BtcIcon from "@/assets/icons/bitcoin-icon.svg?react";
 import CopyIcon from "@/assets/icons/copy.svg?react";
 import QrIcon from "@/assets/icons/qr.svg?react";
 import CheckIcon from "@icons/check.svg?react";
+import ChevronLeftIcon from "@icons/chevron-left.svg?react";
 
 import PlusCircleIcon from "@icons/plus-circle.svg?react";
 import SendIcon from "@icons/send.svg?react";
@@ -40,8 +43,8 @@ import { ActionItem } from "@/shared/components/ActionItem/ActionItem";
 interface CurrencyWidgetProps {
   symbol: string;
   onShowScanner?: () => void;
-  onTopUp?: () => void;   // 👈 добавлено
-  onSend?: () => void;    // 👈 добавлено
+  onTopUp?: () => void;
+  onSend?: () => void;
 }
 
 const NETWORK_BADGE = "TRC20";
@@ -112,6 +115,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
                                                                 onSend,
                                                               }) => {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
   const data = CURRENCY_DATA[symbol] || CURRENCY_DATA["USDT"];
 
@@ -128,6 +132,9 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
     <>
       <CurrencyWrapper>
         <Header>
+          <BackButton onClick={() => navigate(-1)}>
+            <ChevronLeftIcon />
+          </BackButton>
           <Title>{data.name}</Title>
         </Header>
 
@@ -149,13 +156,13 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
           <ActionItem
             icon={<PlusCircleIcon />}
             label="Пополнить"
-            onClick={onTopUp} // 👈 теперь коллбэк приходит сверху
+            onClick={onTopUp}
             variant="secondary"
           />
           <ActionItem
             icon={<SendIcon />}
             label="Отправить"
-            onClick={onSend} // 👈 теперь коллбэк приходит сверху
+            onClick={onSend}
             variant="secondary"
           />
           <ActionItem

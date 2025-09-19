@@ -8,22 +8,37 @@ export const CurrencyWrapper = styled.div`
   background: ${({ theme }) => theme.colors.systemBackground};
 `;
 
-export const Header = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: ${({ theme }) => theme.spacing.xxl};
-  margin-bottom: 0;
-`;
+export const Header = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  padding: "16px",
+}));
+
+export const BackButton = styled.button(({ theme }) => ({
+  position: "absolute",
+  left: "16px",
+  top: "50%",
+  transform: "translateY(-50%)",
+  border: "none",
+  background: "transparent",
+  cursor: "pointer",
+
+  "& svg": {
+    width: "24px",
+    height: "24px",
+    stroke: theme.colors.textPrimary,
+  },
+}));
 
 export const Title = styled.h2(({ theme }) => ({
-  fontFamily: theme.typography.fontFamily,
-  fontSize: theme.typography.fontSize.md,
-  fontWeight: theme.typography.fontWeight.semibold,
+  margin: 0,
+  fontSize: "16px",
+  fontWeight: 600,
   lineHeight: "21px",
   letterSpacing: "-0.31px",
   color: theme.colors.textPrimary,
-  margin: 0,
-  textAlign: "center",
 }));
 
 export const BalanceWrapper = styled.div`
@@ -173,7 +188,7 @@ export const ChainAddress = styled.div`
 `;
 
 export const ChainFee = styled.div`
-  margin-top: 2px; // небольшой отступ от адреса
+  margin-top: 2px; 
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
@@ -211,3 +226,4 @@ export const CopyButton = styled.div`
     fill: ${({ theme }) => theme.colors.reverseBackgroundPrimary};
   }
 `;
+

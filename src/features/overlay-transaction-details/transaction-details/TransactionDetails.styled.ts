@@ -63,9 +63,9 @@ export const TransactionTitle = styled.div(({ theme }) => ({
   lineHeight: '20px',
   fontWeight: 400,
   color: theme.colors.neutral950,
+  marginTop: '8px',   // 👈 добавил отступ сверху
   marginBottom: '10px',
 }));
-
 export interface TransactionAmountProps {
   $type: TransactionIconProps['$type'];
 }
@@ -97,6 +97,7 @@ export const StatusBadge = styled.div<StatusBadgeProps>(({ theme }) => ({
   padding: '5px 10px',
   borderRadius: '8px',
   backgroundColor: theme.colors.systemElevatedBackground,
+  marginTop: '10px',
 }));
 
 export interface StatusIconProps {

@@ -14,7 +14,26 @@ export const Header = styled.div(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   marginTop: theme.spacing.xxl,
-  marginBottom: theme.spacing.lg,
+  marginBottom: theme.spacing.xxl,
+  position: "relative",
+}));
+
+export const BackButton = styled.button(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  border: "none",
+  background: "transparent",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "4px",
+
+  "& svg": {
+    width: "24px",
+    height: "24px",
+    stroke: theme.colors.textPrimary,
+  },
 }));
 
 export const Title = styled.h2(({ theme }) => ({
@@ -53,12 +72,6 @@ export const SecurityItem = styled.div({
   justifyContent: "space-between",
   height: "44px",
   padding: "0 16px",
-});
-
-export const SecurityContent = styled.div({
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
 });
 
 export const SecurityIcon = styled.div(({ theme }) => ({

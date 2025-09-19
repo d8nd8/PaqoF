@@ -1,6 +1,9 @@
 import React from 'react';
 import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet';
-import { TransactionDetails,type TransactionData } from '@/features/overlay-transaction-details/transaction-details/TransactionDetails';
+import {
+  TransactionDetails,
+  type TransactionData,
+} from '@/features/overlay-transaction-details/transaction-details/TransactionDetails';
 import * as S from './OverlayTransactionDetails.styled';
 
 export interface OverlayTransactionDetailsProps {
@@ -14,16 +17,18 @@ export interface OverlayTransactionDetailsProps {
   showBottomButton?: boolean;
 }
 
-export const OverlayTransactionDetails: React.FC<OverlayTransactionDetailsProps> = ({
-                                                                                      isOpen,
-                                                                                      onClose,
-                                                                                      transaction,
-                                                                                      onCopyClick,
-                                                                                      onAMLClick,
-                                                                                      bottomButtonText = 'Открыть в обозревателе',
-                                                                                      onBottomButtonClick,
-                                                                                      showBottomButton = true,
-                                                                                    }) => {
+export const OverlayTransactionDetails: React.FC<
+  OverlayTransactionDetailsProps
+> = ({
+       isOpen,
+       onClose,
+       transaction,
+       onCopyClick,
+       onAMLClick,
+       bottomButtonText = 'Открыть в обозревателе',
+       onBottomButtonClick,
+       showBottomButton = true,
+     }) => {
   const handleBottomButtonClick = () => {
     if (onBottomButtonClick) {
       onBottomButtonClick();
@@ -32,8 +37,15 @@ export const OverlayTransactionDetails: React.FC<OverlayTransactionDetailsProps>
     }
   };
 
-
-
+  const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+    .format(new Date(transaction.timestamp))
+    .replace(',', ' •');
 
   return (
     <BottomSheet
@@ -45,6 +57,7 @@ export const OverlayTransactionDetails: React.FC<OverlayTransactionDetailsProps>
       closeButtonType="icon"
       showCloseButton={true}
       showHeader={true}
+      title={formattedDate}
     >
       <S.TransactionDetailsWrapper>
         <TransactionDetails

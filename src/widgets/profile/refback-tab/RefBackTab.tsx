@@ -6,6 +6,9 @@ import { ReferralList } from '@/features/referral-list/ReferralList'
 
 import { RefBackWrapper } from './RefBackTab.styled';
 
+import avatar1 from "@/assets/images/avatar1.png";
+
+
 type ReferralData = {
   id: string;
   username: string;
@@ -32,31 +35,31 @@ export const RefBackTab: React.FC<Props> = ({
                                               referralCode = "dko777ka",
                                               referralLink = "https://t.me/papagowallet",
                                               referrals = [
-                                                {
-                                                  id: "1",
-                                                  username: "@curlyhunter",
-                                                  avatar: "/images/avatar1.jpg",
-                                                  earnings: "+100.00000 USDT"
-                                                },
-                                                {
-                                                  id: "2",
-                                                  username: "@curlypaster",
-                                                  avatar: "/images/avatar2.jpg",
-                                                  earnings: "+45 USDT"
-                                                },
-                                                {
-                                                  id: "3",
-                                                  username: "@oscar",
-                                                  avatar: "/images/avatar3.jpg",
-                                                  earnings: "+45 USDT"
-                                                },
-                                                {
-                                                  id: "4",
-                                                  username: "@valerysmolenka",
-                                                  avatar: "/images/avatar4.jpg",
-                                                  earnings: "+5 USDT"
-                                                }
-                                              ],
+    {
+      id: "1",
+      username: "@curlyhunter",
+      avatar: avatar1,
+      earnings: "+100.00000 USDT",
+    },
+    {
+      id: "2",
+      username: "@curlypaster",
+      avatar: avatar1,
+      earnings: "+45 USDT",
+    },
+    {
+      id: "3",
+      username: "@oscar",
+      avatar: avatar1,
+      earnings: "+45 USDT",
+    },
+    {
+      id: "4",
+      username: "@valerysmolenka",
+      avatar: avatar1,
+      earnings: "+5 USDT",
+    },
+  ],
                                               referralsCount = 105,
                                               onWithdraw,
                                               onCopyCode,

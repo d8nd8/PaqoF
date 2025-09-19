@@ -42,7 +42,7 @@ export const ReferralItem: React.FC<ReferralItemProps> = ({
         {showProgress && data.progress !== undefined && (
           <CircularProgress
             progress={data.progress}
-            size={30}
+            size={35}
             strokeWidth={3}
             color="#00B347"
           />
