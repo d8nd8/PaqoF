@@ -30,12 +30,12 @@ const slides = [
     buttonText: "Перейти в кошелёк",
     image: homeImg1,
   },
-  {
-    title: "Удобный вывод средств",
-    description: "Моментальные переводы на карты и счета",
-    buttonText: "Перейти в кошелёк",
-    image: homeImg1,
-  },
+  // {
+  //   title: "Удобный вывод средств",
+  //   description: "Моментальные переводы на карты и счета",
+  //   buttonText: "Перейти в кошелёк",
+  //   image: homeImg1,
+  // },
 ];
 
 export const WelcomeSlider: React.FC = () => {
