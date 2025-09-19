@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as S from "./WalletSuccessOverlay.styled";
 
 import CopyIconSvg from "@icons/copy.svg?react";
+import { miniApp } from '@telegram-apps/sdk-react'
 
 
 interface WalletSuccessOverlayProps {
@@ -28,7 +29,15 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
   if (!isOpen) return null;
 
   const handleGoHome = () => {
-    navigate(0); // перезагружает текущую страницу
+    try {
+      if (miniApp.isMounted()) {
+        navigate("/main", { replace: true });
+      } else {
+        window.location.reload();
+      }
+    } catch {
+      navigate("/main", { replace: true });
+    }
   };
 
   const handleCopy = (value: string) => {

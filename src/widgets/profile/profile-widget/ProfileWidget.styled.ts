@@ -140,9 +140,13 @@ export const IconBox = styled.div(({ theme }) => ({
   borderRadius: "6px",
   marginRight: "10px",
 
-  "& img": {
+  "& img, & svg": {
     width: 16,
     height: 16,
+    fill: theme.colors.neutral950 + " !important",
+    stroke: theme.colors.neutral950 + " !important",
+    color: theme.colors.neutral950 + " !important",
+    flexShrink: 0,
   },
 }));
 
