@@ -32,25 +32,13 @@ export const OverlayTransactionDetails: React.FC<OverlayTransactionDetailsProps>
     }
   };
 
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const day = date.getDate();
-    const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
-      'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
-    const month = months[date.getMonth()];
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
 
-    return `${day} ${month} • ${hours}:${minutes}`;
-  };
 
-  const title = transaction.timestamp ? formatDate(transaction.timestamp) : '';
 
   return (
     <BottomSheet
       isOpen={isOpen}
       onClose={onClose}
-      title={title}
       showBottomButton={showBottomButton}
       bottomButtonText={bottomButtonText}
       onBottomButtonClick={handleBottomButtonClick}

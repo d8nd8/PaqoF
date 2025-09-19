@@ -2,7 +2,10 @@ import ReplenishmentHistoryICon from '@icons/replenishment-history.svg?react';
 import CopyIcon from '@icons/copy.svg?react';
 import React from 'react';
 import * as S from './TransactionDetails.styled';
-import { type AMLStatusItem, AmlStatusList } from '@/features/overlay-transaction-details/aml-status-list/AmlStatusList'
+import {
+  type AMLStatusItem,
+  AmlStatusList,
+} from '@/features/overlay-transaction-details/aml-status-list/AmlStatusList';
 
 export interface TransactionData {
   id: string;
@@ -29,6 +32,33 @@ export interface TransactionDetailsProps {
   onAMLClick?: () => void;
 }
 
+const formatAmount = (value: string): string => {
+  if (!value) return '';
+  const parts = value.trim().split(' ');
+  const num = parseFloat(parts[0].replace(/,/g, '').replace(/\s/g, ''));
+  if (isNaN(num)) return value;
+
+  const formatted = new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 8,
+  }).format(num);
+
+  return parts.length > 1
+    ? `${formatted} ${parts.slice(1).join(' ')}`
+    : formatted;
+};
+
+const formatDateTime = (timestamp: string): string => {
+  const date = new Date(timestamp);
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date).replace(',', ' •');
+};
+
 export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
                                                                         transaction,
                                                                         onCopyClick,
@@ -36,21 +66,31 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
                                                                       }) => {
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'success': return 'Успешно';
-      case 'pending': return 'В процессе';
-      case 'failed':  return 'Отменено';
-      case 'problem': return 'Возникла проблема';
-      default:        return status;
+      case 'success':
+        return 'Успешно';
+      case 'pending':
+        return 'В процессе';
+      case 'failed':
+        return 'Отменено';
+      case 'problem':
+        return 'Возникла проблема';
+      default:
+        return status;
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'success': return '✓';
-      case 'pending': return '•';
-      case 'failed':  return '✕';
-      case 'problem': return '!';
-      default:        return '?';
+      case 'success':
+        return '✓';
+      case 'pending':
+        return '•';
+      case 'failed':
+        return '✕';
+      case 'problem':
+        return '!';
+      default:
+        return '?';
     }
   };
 
@@ -110,22 +150,32 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
 
   return (
     <S.Container>
+      <S.TransactionDate>
+        {formatDateTime(transaction.timestamp)}
+      </S.TransactionDate>
+
       <S.Header>
-        {transaction.type === 'withdraw' ?
-          <S.TransactionIcon $type={transaction.type} $status={transaction.status}>
+        {transaction.type === 'withdraw' ? (
+          <S.TransactionIcon
+            $type={transaction.type}
+            $status={transaction.status}
+          >
             ВВ
-          </S.TransactionIcon> : <ReplenishmentHistoryICon />
-        }
+          </S.TransactionIcon>
+        ) : (
+          <ReplenishmentHistoryICon />
+        )}
 
         <S.TransactionTitle>
           {transaction.type === 'withdraw' ? 'ВкусВилл' : 'Пополнение'}
         </S.TransactionTitle>
+
         <S.TransactionAmount $type={transaction.type}>
-          {transaction.type === 'withdraw' ? '−' : '+'} {transaction.amount}
+          {transaction.type === 'withdraw' ? '−' : '+'}{' '}
+          {formatAmount(transaction.amount)}
+          {transaction.type === 'deposit' && ' USDT'}
         </S.TransactionAmount>
-        <S.TransactionAmountUSD>
-          {transaction.type === 'withdraw' ? '−' : ''} {transaction.amountUSD}
-        </S.TransactionAmountUSD>
+
         <S.StatusBadge $status={transaction.status}>
           <S.StatusIcon $status={transaction.status}>
             {getStatusIcon(transaction.status)}
@@ -137,25 +187,12 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
       </S.Header>
 
       <S.DetailsSection>
-        {transaction.type === 'withdraw' && (
+        {transaction.type === 'withdraw' && transaction.exchangeRate && (
           <S.Block>
-            {transaction.transactionId && (
-              <S.DetailRow>
-                <S.DetailLabel>ID транзакции</S.DetailLabel>
-                <S.DetailValueWithCopy>
-                  <S.HashValue>{formatHash(transaction.transactionId)}</S.HashValue>
-                  <S.CopyButton onClick={() => handleCopy(transaction.transactionId!)}>
-                    <CopyIcon />
-                  </S.CopyButton>
-                </S.DetailValueWithCopy>
-              </S.DetailRow>
-            )}
-            {transaction.exchangeRate && (
-              <S.DetailRow>
-                <S.DetailLabel>Курс обмена</S.DetailLabel>
-                <S.DetailValue>{transaction.exchangeRate}</S.DetailValue>
-              </S.DetailRow>
-            )}
+            <S.DetailRow>
+              <S.DetailLabel>Курс обмена</S.DetailLabel>
+              <S.DetailValue>{transaction.exchangeRate}</S.DetailValue>
+            </S.DetailRow>
           </S.Block>
         )}
 
@@ -163,19 +200,25 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
           {transaction.creditAmount && (
             <S.DetailRow>
               <S.DetailLabel>Сумма к зачислению</S.DetailLabel>
-              <S.DetailValue>{transaction.creditAmount}</S.DetailValue>
+              <S.DetailValue>
+                {formatAmount(transaction.creditAmount)}
+              </S.DetailValue>
             </S.DetailRow>
           )}
           {transaction.receivedAmount && (
             <S.DetailRow>
               <S.DetailLabel>Полученная сумма</S.DetailLabel>
-              <S.DetailValue>{transaction.receivedAmount}</S.DetailValue>
+              <S.DetailValue>
+                {formatAmount(transaction.receivedAmount)}
+              </S.DetailValue>
             </S.DetailRow>
           )}
           {transaction.commission && (
             <S.DetailRow>
               <S.DetailLabel>Комиссия</S.DetailLabel>
-              <S.DetailValue>{transaction.commission}</S.DetailValue>
+              <S.DetailValue>
+                {formatAmount(transaction.commission)}
+              </S.DetailValue>
             </S.DetailRow>
           )}
         </S.Block>
@@ -186,12 +229,31 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
               <S.DetailLabel>Хэш транзакции</S.DetailLabel>
               <S.DetailValueWithCopy>
                 <S.HashValue>{formatHash(transaction.hash)}</S.HashValue>
-                <S.CopyButton onClick={() => handleCopy(transaction.hash!)}>
+                <S.CopyButton
+                  onClick={() => handleCopy(transaction.hash!)}
+                >
                   <CopyIcon />
                 </S.CopyButton>
               </S.DetailValueWithCopy>
             </S.DetailRow>
           )}
+
+          {transaction.transactionId && (
+            <S.DetailRow>
+              <S.DetailLabel>ID транзакции</S.DetailLabel>
+              <S.DetailValueWithCopy>
+                <S.HashValue>
+                  {formatHash(transaction.transactionId)}
+                </S.HashValue>
+                <S.CopyButton
+                  onClick={() => handleCopy(transaction.transactionId!)}
+                >
+                  <CopyIcon />
+                </S.CopyButton>
+              </S.DetailValueWithCopy>
+            </S.DetailRow>
+          )}
+
           {transaction.network && (
             <S.DetailRow>
               <S.DetailLabel>Сеть</S.DetailLabel>
@@ -206,7 +268,9 @@ export const TransactionDetails: React.FC<TransactionDetailsProps> = ({
               <S.DetailLabel>Отправитель</S.DetailLabel>
               <S.DetailValueWithCopy>
                 <S.HashValue>{formatHash(transaction.sender)}</S.HashValue>
-                <S.CopyButton onClick={() => handleCopy(transaction.sender!)}>
+                <S.CopyButton
+                  onClick={() => handleCopy(transaction.sender!)}
+                >
                   <CopyIcon />
                 </S.CopyButton>
               </S.DetailValueWithCopy>

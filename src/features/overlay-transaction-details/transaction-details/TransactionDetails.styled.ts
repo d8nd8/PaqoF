@@ -48,6 +48,16 @@ export const TransactionIcon = styled.div<TransactionIconProps>(({ theme, $type,
   marginBottom: '10px',
 }));
 
+export const TransactionDate = styled.div(({ theme }) => ({
+  fontSize: '13px',
+  lineHeight: '18px',
+  fontWeight: 400,
+  color: theme.colors.textPrimary,
+  textAlign: 'center',
+  marginTop: 0,
+  marginBottom: '16px',
+}));
+
 export const TransactionTitle = styled.div(({ theme }) => ({
   fontSize: '15px',
   lineHeight: '20px',
@@ -59,14 +69,16 @@ export const TransactionTitle = styled.div(({ theme }) => ({
 export interface TransactionAmountProps {
   $type: TransactionIconProps['$type'];
 }
-export const TransactionAmount = styled.div<TransactionAmountProps>(({ theme }) => ({
+
+export const TransactionAmount = styled.div<TransactionAmountProps>(({ theme, $type }) => ({
   fontSize: '22px',
   lineHeight: '28px',
   fontWeight: 700,
-  color: theme.colors.neutral950,
   letterSpacing: '-0.3px',
+  color: $type === 'deposit'
+    ? theme.colors.success500
+    : theme.colors.neutral950,
 }));
-
 export const TransactionAmountUSD = styled.div(({ theme }) => ({
   fontSize: '15px',
   lineHeight: '20px',
