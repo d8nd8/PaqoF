@@ -93,7 +93,18 @@ export const AmountSub = styled.div(({ theme }) => ({
 export const PresetRow = styled.div({
   display: "flex",
   gap: "10px",
+  flexWrap: "nowrap",
+  overflowX: "auto",
+  padding: "0 16px",
+  margin: "0 -16px",
+  scrollbarWidth: "none",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+
+  scrollSnapType: "x mandatory",
 });
+
 
 export const PresetButton = styled.button(({ theme }) => ({
   borderRadius: "8px",
@@ -107,6 +118,7 @@ export const PresetButton = styled.button(({ theme }) => ({
   textDecoration: "none",
   appearance: "none",
   WebkitAppearance: "none",
+  whiteSpace: "nowrap",
 }));
 
 export const AmountValue = styled.div<{ insufficient?: boolean }>(({ theme, insufficient }) => ({
