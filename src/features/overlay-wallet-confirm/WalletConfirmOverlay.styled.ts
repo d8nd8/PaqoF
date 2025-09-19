@@ -193,3 +193,25 @@ export const BottomButton = styled.button(({ theme }) => ({
   "&:hover": { opacity: 0.9 },
   "&:active": { transform: "scale(0.98)" },
 }));
+
+
+export const BottomSection = styled.div({
+  padding: "30px 14px 40px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+export const MainButton = styled.button<{ disabled?: boolean }>(({ theme, disabled }) => ({
+  width: "100%",
+  height: "44px",
+  background: disabled ? theme.colors.neutral300 : theme.colors.primary500,
+  color: theme.colors.textPrimary,
+  border: "none",
+  borderRadius: "10px",
+  fontWeight: 600,
+  fontSize: "16px",
+  lineHeight: "20px",
+  cursor: disabled ? "not-allowed" : "pointer",
+  opacity: disabled ? 0.7 : 1,
+}));

@@ -9,7 +9,7 @@ import SwapIcon from "@icons/swap-icon.svg?react";
 
 import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoList";
 import { QRScanner } from "@/features/qr-scanner/QRScanner";
-import { WalletConfirmOverlay } from '@/features/overlay-wallet-confirm/WalletConfirmOverlay'
+import { WalletConfirmOverlay } from "@/features/overlay-wallet-confirm/WalletConfirmOverlay";
 
 interface WalletTransferOverlayProps {
   isOpen: boolean;
@@ -33,8 +33,6 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const [showScanner, setShowScanner] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [hasAddressError, setHasAddressError] = useState(false);
-
-  // 👉 новый стейт для подтверждения
   const [showConfirm, setShowConfirm] = useState(false);
 
   if (!isOpen) return null;
@@ -52,7 +50,6 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     } else {
       setHasError(false);
       setHasAddressError(false);
-      // вместо onContinue → открываем confirm
       setShowConfirm(true);
     }
   };
@@ -70,11 +67,8 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
         <S.Content>
           <S.Card>
             <S.CardTitle>Сумма к отправке</S.CardTitle>
-
             <S.AmountRow>
-              <S.AmountValue insufficient={hasError}>
-                {amount} USDT
-              </S.AmountValue>
+              <S.AmountValue insufficient={hasError}>{amount} USDT</S.AmountValue>
               <S.SwapButton>
                 <SwapIcon />
               </S.SwapButton>
@@ -82,8 +76,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
             {hasError ? (
               <S.ErrorSub>
-                Недостаточно средств.{" "}
-                <span onClick={onTopUpClick}>Пополнить баланс.</span>
+                Недостаточно средств. <span onClick={onTopUpClick}>Пополнить баланс.</span>
               </S.ErrorSub>
             ) : (
               <S.AmountSub>≈ 1 390 ₽</S.AmountSub>
@@ -93,7 +86,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
               <S.PresetButton>Отправить всё</S.PresetButton>
               <S.PresetButton>1 000 ₽</S.PresetButton>
               <S.PresetButton>5 000 ₽</S.PresetButton>
-              <S.PresetButton>10 000</S.PresetButton>
+              <S.PresetButton>10 000 ₽</S.PresetButton>
             </S.PresetRow>
           </S.Card>
 
@@ -124,7 +117,9 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
           </S.CommissionButton>
         </S.Content>
 
-        <S.BottomButton onClick={handleContinue}>Продолжить</S.BottomButton>
+        <S.BottomSection>
+          <S.MainButton onClick={handleContinue}>Продолжить</S.MainButton>
+        </S.BottomSection>
 
         <QRScanner
           isVisible={showScanner}

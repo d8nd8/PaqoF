@@ -8,7 +8,7 @@ import CheckIcon from "@icons/check.svg?react";
 import ExclamationIcon from "@icons/exclamation-circle.svg?react";
 import { QRCodeSVG } from "qrcode.react";
 
-import TetherIcon from "@/assets/icons/usdt-icon.svg?url";
+import TetherTrc20Icon from "@/assets/icons/thether-trc20-icon.svg?url";
 import TronIcon from "@/assets/icons/tron-icon.svg?url";
 import TonIcon from "@/assets/icons/ton-icon.svg?url";
 import BtcIcon from "@/assets/icons/bitcoin-icon.svg?url";
@@ -24,7 +24,7 @@ interface WalletAddressOverlayProps {
 }
 
 const cryptoIcons: Record<string, string> = {
-  USDT: TetherIcon,
+  USDT: TetherTrc20Icon,
   TRC20: TronIcon,
   TON: TonIcon,
   BTC: BtcIcon,

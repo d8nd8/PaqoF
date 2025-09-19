@@ -13,7 +13,6 @@ import { OverlayCommission } from "@/features/overlay-commission/OverlayCommissi
 import QRScanner from "@/features/qr-scanner/QRScanner";
 import { type CryptoItemData } from "@/features/crypto-list/CryptoList";
 
-// 🔹 данные по валютам для CurrencyPage
 const CURRENCY_MAP: Record<string, CryptoItemData> = {
   USDT: {
     id: "usdt-1",

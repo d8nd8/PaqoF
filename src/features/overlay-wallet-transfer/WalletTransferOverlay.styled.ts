@@ -264,3 +264,23 @@ export const CommissionButton = styled.button(({ theme }) => ({
     color: theme.colors.warning400,
   },
 }));
+
+export const BottomSection = styled.div({
+  padding: "30px 14px 40px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+export const MainButton = styled.button(({ theme }) => ({
+  width: "100%",
+  height: "44px",
+  background: theme.colors.primary500,
+  color: theme.colors.textPrimary,
+  border: "none",
+  borderRadius: "10px",
+  fontWeight: 600,
+  fontSize: "16px",
+  lineHeight: "20px",
+  cursor: "pointer",
+}));

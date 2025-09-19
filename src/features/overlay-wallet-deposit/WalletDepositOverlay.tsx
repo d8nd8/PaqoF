@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { type JSX, useState } from 'react'
 import * as S from "./WalletDepositOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
@@ -25,8 +25,15 @@ interface WalletDepositOverlayProps {
   ) => void;
   title?: string;
   mode?: WalletDepositMode;
-  preselectedCrypto?: CryptoItemData | null; // 👈 новая пропса
+  preselectedCrypto?: CryptoItemData | null;
 }
+
+
+const ICON_MAP: Record<string, JSX.Element> = {
+  USDT: <TetherIcon width={38} height={38} />,
+  TON: <TonIcon width={38} height={38} />,
+  BTC: <BtcIcon width={38} height={38} />,
+};
 
 export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
                                                                             isOpen,
@@ -86,6 +93,9 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     }
   };
 
+
+  const renderIcon = (symbol: string) => ICON_MAP[symbol] || <TetherIcon width={38} height={38} />;
+
   return (
     <>
       <S.OverlayWrapper>
@@ -104,7 +114,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
               <S.SectionTitle>Криптовалюта</S.SectionTitle>
               <S.CryptoCard $disabled>
                 <div className="left">
-                  <TetherIcon width={38} height={38} />
+                  {renderIcon(preselectedCrypto.symbol)}
                   <div className="info">
                     <span className="name">{preselectedCrypto.name}</span>
                     <span className="amount">{preselectedCrypto.amount}</span>
@@ -117,7 +127,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
               <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
               <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
                 <div className="left">
-                  <TetherIcon width={38} height={38} />
+                  {renderIcon(selectedCrypto.symbol)}
                   <div className="info">
                     <span className="name">{selectedCrypto.name}</span>
                     <span className="amount">{selectedCrypto.amount}</span>

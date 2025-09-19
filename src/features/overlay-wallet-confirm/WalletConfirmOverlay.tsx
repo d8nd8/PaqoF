@@ -3,8 +3,7 @@ import * as S from "./WalletConfirmOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
 import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoList";
-import { WalletSuccessOverlay } from '@/features/overaly-wallet-success/WalletSuccessOverlay'
-
+import { WalletSuccessOverlay } from "@/features/overaly-wallet-success/WalletSuccessOverlay";
 
 interface WalletConfirmOverlayProps {
   isOpen: boolean;
@@ -106,9 +105,11 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
           />
         </S.Content>
 
-        <S.BottomButton onClick={handleConfirm} disabled={loading}>
-          {loading ? <S.Spinner /> : "Подтвердить и отправить"}
-        </S.BottomButton>
+        <S.BottomSection>
+          <S.MainButton onClick={handleConfirm} disabled={loading}>
+            {loading ? <S.Spinner /> : "Подтвердить и отправить"}
+          </S.MainButton>
+        </S.BottomSection>
       </S.OverlayWrapper>
 
       <WalletSuccessOverlay
