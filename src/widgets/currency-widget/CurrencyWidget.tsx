@@ -13,7 +13,6 @@ import {
   ChainIcon,
   ChainContent,
   ChainRow,
-  ChainInfo,
   ChainHeader,
   ChainTitle,
   ChainBadge,
@@ -36,11 +35,13 @@ import SendIcon from "@icons/send.svg?react";
 import QRPayIcon from "@icons/qr.svg?react";
 
 import HistoryWidget from "@/widgets/history-widget/HistoryWidget";
-import { DepositOverlay } from "@/features/deposit-overlay/DepositOverlay";
 import { ActionItem } from "@/shared/components/ActionItem/ActionItem";
 
 interface CurrencyWidgetProps {
   symbol: string;
+  onShowScanner?: () => void;
+  onTopUp?: () => void;   // 👈 добавлено
+  onSend?: () => void;    // 👈 добавлено
 }
 
 const NETWORK_BADGE = "TRC20";
@@ -104,9 +105,13 @@ const CURRENCY_DATA: Record<
   },
 };
 
-export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({ symbol }) => {
+export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
+                                                                symbol,
+                                                                onShowScanner,
+                                                                onTopUp,
+                                                                onSend,
+                                                              }) => {
   const [copied, setCopied] = useState(false);
-  const [showDeposit, setShowDeposit] = useState(false);
 
   const data = CURRENCY_DATA[symbol] || CURRENCY_DATA["USDT"];
 
@@ -144,19 +149,19 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({ symbol }) => {
           <ActionItem
             icon={<PlusCircleIcon />}
             label="Пополнить"
-            onClick={() => setShowDeposit(true)}
+            onClick={onTopUp} // 👈 теперь коллбэк приходит сверху
             variant="secondary"
           />
           <ActionItem
             icon={<SendIcon />}
             label="Отправить"
-            onClick={() => console.log("send")}
+            onClick={onSend} // 👈 теперь коллбэк приходит сверху
             variant="secondary"
           />
           <ActionItem
             icon={<QRPayIcon />}
             label="Оплатить"
-            onClick={() => console.log("pay")}
+            onClick={onShowScanner}
             variant="secondary"
           />
         </ActionsRow>
@@ -172,7 +177,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({ symbol }) => {
                     <ChainBadge>{NETWORK_BADGE}</ChainBadge>
                   </ChainHeader>
                   <CopyGroup>
-                    <CopyButton onClick={() => handleCopy(chain.address)}>
+                    <CopyButton onClick={onShowScanner}>
                       <QrIcon width={20} height={20} />
                     </CopyButton>
                     <CopyButton onClick={() => handleCopy(chain.address)}>
@@ -186,8 +191,6 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({ symbol }) => {
             </ChainTypeCard>
           ))}
         </ChainList>
-
-        {showDeposit && <DepositOverlay onClose={() => setShowDeposit(false)} />}
       </CurrencyWrapper>
       <HistoryWidget variant="card" />
     </>

@@ -136,7 +136,7 @@ export const CommissionButton = styled.button(({ theme }) => ({
     display: "flex",
     alignItems: "center",
     gap: theme.spacing.sm,
-    fontSize: "11px",
+    fontSize: "13px",
     lineHeight: "13px",
     fontWeight: theme.typography.fontWeight.normal,
     color: theme.colors.textPrimary,

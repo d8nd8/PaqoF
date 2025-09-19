@@ -17,9 +17,10 @@ import lvl5Img from '@images/pagogoch-lvl-5.webp';
 
 export interface AdBannerProps {
   level: 1 | 2 | 3 | 4 | 5;
+  onClick?: () => void; // 👈 добавляем обработчик клика
 }
 
-export const AdBanner: React.FC<AdBannerProps> = ({ level }) => {
+export const AdBanner: React.FC<AdBannerProps> = ({ level, onClick }) => {
   const images: Record<AdBannerProps['level'], string> = {
     1: lvl1Img,
     2: lvl2Img,
@@ -62,7 +63,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({ level }) => {
   };
 
   return (
-    <BannerContainer>
+    <BannerContainer onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
       <BannerContent>
         <BannerTitleWrapper>
           <BannerTitle>Пакогочи</BannerTitle>

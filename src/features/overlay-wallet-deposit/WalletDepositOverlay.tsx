@@ -25,6 +25,7 @@ interface WalletDepositOverlayProps {
   ) => void;
   title?: string;
   mode?: WalletDepositMode;
+  preselectedCrypto?: CryptoItemData | null; // 👈 новая пропса
 }
 
 export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
@@ -33,17 +34,20 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
                                                                             onContinue,
                                                                             title,
                                                                             mode = "deposit",
+                                                                            preselectedCrypto,
                                                                           }) => {
   const [selectedNetwork, setSelectedNetwork] = useState("TRC20");
 
-  const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData>({
-    id: "usdt-1",
-    name: "USDT",
-    symbol: "USDT",
-    amount: "1 290.53 USDT",
-    amountInRubles: "110 323.99 ₽",
-    iconColor: "#26A17B",
-  });
+  const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData>(
+    preselectedCrypto || {
+      id: "usdt-1",
+      name: "USDT",
+      symbol: "USDT",
+      amount: "1 290.53 USDT",
+      amountInRubles: "110 323.99 ₽",
+      iconColor: "#26A17B",
+    }
+  );
 
   const [showCryptoSelection, setShowCryptoSelection] = useState(false);
 
@@ -95,19 +99,36 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
         </S.Header>
 
         <S.Content>
-          <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
-          <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
-            <div className="left">
-              <TetherIcon width={38} height={38} />
-              <div className="info">
-                <span className="name">{selectedCrypto.name}</span>
-                <span className="amount">{selectedCrypto.amount}</span>
-              </div>
-            </div>
-            <div className="right">
-              <ChevronRightIcon />
-            </div>
-          </S.CryptoCard>
+          {preselectedCrypto ? (
+            <>
+              <S.SectionTitle>Криптовалюта</S.SectionTitle>
+              <S.CryptoCard $disabled>
+                <div className="left">
+                  <TetherIcon width={38} height={38} />
+                  <div className="info">
+                    <span className="name">{preselectedCrypto.name}</span>
+                    <span className="amount">{preselectedCrypto.amount}</span>
+                  </div>
+                </div>
+              </S.CryptoCard>
+            </>
+          ) : (
+            <>
+              <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
+              <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
+                <div className="left">
+                  <TetherIcon width={38} height={38} />
+                  <div className="info">
+                    <span className="name">{selectedCrypto.name}</span>
+                    <span className="amount">{selectedCrypto.amount}</span>
+                  </div>
+                </div>
+                <div className="right">
+                  <ChevronRightIcon />
+                </div>
+              </S.CryptoCard>
+            </>
+          )}
 
           <S.SectionTitle>Выберите сеть</S.SectionTitle>
 
@@ -165,14 +186,16 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
         </S.BottomSection>
       </S.OverlayWrapper>
 
-      <OverlayCryptoSelection
-        isOpen={showCryptoSelection}
-        onClose={() => setShowCryptoSelection(false)}
-        cryptos={cryptoOptions}
-        selectedCryptoId={selectedCrypto.id}
-        onCryptoSelect={(crypto) => setSelectedCrypto(crypto)}
-        title="Выберите криптовалюту"
-      />
+      {!preselectedCrypto && (
+        <OverlayCryptoSelection
+          isOpen={showCryptoSelection}
+          onClose={() => setShowCryptoSelection(false)}
+          cryptos={cryptoOptions}
+          selectedCryptoId={selectedCrypto.id}
+          onCryptoSelect={(crypto) => setSelectedCrypto(crypto)}
+          title="Выберите криптовалюту"
+        />
+      )}
     </>
   );
 };

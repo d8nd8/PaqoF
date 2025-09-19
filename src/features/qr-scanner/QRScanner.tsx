@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TorchlightIcon from '@icons/scanner/torchlight.svg?react';
 import AttachmentIcon from '@icons/scanner/attachment.svg?react';
 import type { QRScannerProps } from './QRScanner.types';
+
 import {
   Overlay,
   Header,
@@ -14,8 +15,9 @@ import {
   ScanButton,
   Footer,
   FooterHint,
-  CameraFeed
+  CameraFeed,
 } from './QrScanner.styled';
+
 import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
 import { PaymentInfoOverlay } from '@/features/qr-scanner/payment-info-overlay';
 import { PaymentOverlay } from '@/features/payment-overlay/PaymentOverlay';
@@ -28,7 +30,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '1 290.53 USDT',
     amountInRubles: '110 323.99 ₽',
-    iconColor: '#4CAF50'
+    iconColor: '#4CAF50',
   },
   {
     id: 'toncoin-1',
@@ -37,7 +39,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     amount: '590.00 TON',
     amountInRubles: '144 426.19 ₽',
     icon: '◆',
-    iconColor: '#0088CC'
+    iconColor: '#0088CC',
   },
   {
     id: 'bitcoin-1',
@@ -46,7 +48,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     amount: '1.18234 BTC',
     amountInRubles: '34 880.61 ₽',
     icon: '₿',
-    iconColor: '#F7931A'
+    iconColor: '#F7931A',
   },
   {
     id: 'usdc-1',
@@ -55,8 +57,8 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     amount: '850.00 USDC',
     amountInRubles: '77 650.00 ₽',
     icon: 'U',
-    iconColor: '#2775CA'
-  }
+    iconColor: '#2775CA',
+  },
 ];
 
 export const QRScanner: React.FC<QRScannerProps> = ({
@@ -67,14 +69,14 @@ export const QRScanner: React.FC<QRScannerProps> = ({
                                                     }) => {
   const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false);
   const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(AVAILABLE_CURRENCIES[0]);
+  const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
+    AVAILABLE_CURRENCIES[0],
+  );
 
-  const {
-    closeScanner,
-    retryScanner,
-    toggleTorch,
-    containerId,
-  } = useQRScanner(isVisible, onScan);
+  const { closeScanner, retryScanner, toggleTorch, containerId } = useQRScanner(
+    isVisible,
+    onScan,
+  );
 
   const handleClose = (): void => {
     closeScanner();
@@ -89,11 +91,13 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
+
       try {
         const { Html5Qrcode } = await import('html5-qrcode');
         const scanner = new Html5Qrcode('gallery-scan-temp');
         const result = await scanner.scanFile(file, true);
         await scanner.clear();
+
         if (result) {
           onScan(result);
           handleClose();
@@ -133,6 +137,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           <ScannerOverlay />
           <div id="gallery-scan-temp" style={{ display: 'none' }} />
 
+
           <BottomActions>
             <ActionButton onClick={toggleTorch} title="Фонарик">
               <TorchlightIcon />
@@ -153,6 +158,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         </CameraContainer>
       </Overlay>
 
+      {/* Подсказки и оверлеи */}
       <PaymentInfoOverlay
         isOpen={isPaymentInfoOpen}
         onClose={() => setIsPaymentInfoOpen(false)}

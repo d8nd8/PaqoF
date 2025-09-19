@@ -4,6 +4,7 @@ import * as S from './MainWidget.styled';
 import { BalanceCard } from '@/features/balance-information/BalanceInformation';
 import { AdBanner } from '@/features/ad-banner/AdBanner';
 import { type CryptoItemData, CryptoList } from '@/features/crypto-list/CryptoList';
+import { useNavigate } from 'react-router-dom';
 
 const cryptoData: CryptoItemData[] = [
   {
@@ -45,6 +46,8 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
                                                         onPay,
                                                         onNotifications,
                                                       }) => {
+  const navigate = useNavigate(); // 👈 подключаем навигацию
+
   return (
     <S.Wrapper>
       <BalanceCard
@@ -58,7 +61,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
       />
 
       <S.CryptoWrapper>
-        <AdBanner level={3} />
+        <AdBanner level={3} onClick={() => navigate('/referral')} />
         <CryptoList
           cryptos={cryptoData}
           onCryptoClick={(crypto) => console.log('Clicked:', crypto)}

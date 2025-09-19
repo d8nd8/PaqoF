@@ -12,21 +12,39 @@ export const OverlayWrapper = styled.div(({ theme }) => ({
 export const Header = styled.div({
   display: "flex",
   alignItems: "center",
-  gap: "12px",
-  padding: "16px",
+  justifyContent: "center",
+  position: "relative",
+  paddingTop: "70px",
+  paddingBottom: "10px",
 });
 
-export const BackButton = styled.button({
+export const BackButton = styled.button(({ theme }) => ({
+  position: "absolute",
+  left: "16px",
   border: "none",
   background: "transparent",
   cursor: "pointer",
-});
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "21px",
+  "& svg": {
+    width: "24px",
+    height: "24px",
+    display: "block",
+    stroke: theme.colors.textPrimary,
+  },
+}));
 
 export const Title = styled.h2(({ theme }) => ({
-  fontSize: theme.typography.fontSize.lg,
-  fontWeight: theme.typography.fontWeight.semibold,
-  margin: 0,
+  flex: 1,
+  textAlign: "center",
+  fontSize: "16px",
+  fontWeight: 600,
+  lineHeight: "21px",
+  letterSpacing: "-0.31px",
   color: theme.colors.textPrimary,
+  margin: 0,
 }));
 
 export const Content = styled.div({
@@ -38,11 +56,12 @@ export const Content = styled.div({
 });
 
 export const SectionTitle = styled.div(({ theme }) => ({
-  fontSize: theme.typography.fontSize.sm,
-  fontWeight: theme.typography.fontWeight.medium,
+  fontSize: "15px",
+  lineHeight: "20px",
+  fontWeight: theme.typography.fontWeight.semibold,
+  letterSpacing: "-0.23px",
   color: theme.colors.textPrimary,
 }));
-
 
 export const Card = styled.div(({ theme }) => ({
   width: "100%",
@@ -60,38 +79,68 @@ export const AmountRow = styled.div({
   alignItems: "center",
 });
 
-export const AmountValue = styled.div(({ theme }) => ({
-  fontSize: "20px",
-  fontWeight: theme.typography.fontWeight.bold,
-}));
+
 
 export const AmountSub = styled.div(({ theme }) => ({
-  fontSize: theme.typography.fontSize.sm,
-  color: theme.colors.textSecondary,
+  fontSize: "13px",
+  lineHeight: "18px",
+  fontWeight: theme.typography.fontWeight.normal,
+  letterSpacing: "-0.08px",
+  color: theme.colors.textPrimary,
 }));
+
 
 export const PresetRow = styled.div({
   display: "flex",
-  gap: "8px",
+  gap: "10px",
 });
 
 export const PresetButton = styled.button(({ theme }) => ({
   borderRadius: "8px",
   border: `1px solid ${theme.colors.neutral300}`,
-  background: theme.colors.neutral100,
+  background: theme.colors.textQuaternary,
   fontSize: theme.typography.fontSize.sm,
   padding: "5px 10px",
   cursor: "pointer",
 }));
 
-export const InputWrapper = styled.div(({ theme }) => ({
+export const AmountValue = styled.div<{ insufficient?: boolean }>(({ theme, insufficient }) => ({
+  fontSize: "34px",
+  fontWeight: theme.typography.fontWeight.bold,
+  lineHeight: "41px",
+  letterSpacing: "0.4px",
+  color: insufficient ? theme.colors.error500 : theme.colors.textPrimary,
+  display: "flex",
+  alignItems: "baseline",
+  gap: "4px",
+  marginBottom: "-10px",
+}));
+
+export const ErrorSub = styled.div(({ theme }) => ({
+  fontSize: "13px",
+  lineHeight: "18px",
+  fontWeight: theme.typography.fontWeight.normal,
+  letterSpacing: "-0.08px",
+  color: theme.colors.error500,
+  marginTop: "4px",
+
+  "& span": {
+    color: theme.colors.blueberry,
+    cursor: "pointer",
+    textDecoration: "none",
+
+  },
+}));
+
+export const InputWrapper = styled.div<{ hasError?: boolean }>(({ theme, hasError }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "13px",
   padding: "10px",
   background: theme.colors.neutral100,
-  border: `1px solid ${theme.colors.systemElevatedBackground}`,
+  border: `1px solid ${hasError ? theme.colors.error500 : theme.colors.systemElevatedBackground}`,
 }));
+
 
 export const AddressInput = styled.input(({ theme }) => ({
   flex: 1,
@@ -111,15 +160,102 @@ export const IconButton = styled.button({
   justifyContent: "center",
 });
 
+export const SwapButton = styled.button(({ theme }) => ({
+  width: "40px",
+  height: "40px",
+  borderRadius: "50%",
+  border: "none",
+  background: theme.colors.primary400,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+
+  "& svg": {
+    width: "40px",
+    height: "40px",
+    color: theme.colors.textPrimary,
+  },
+}));
+
+export const ErrorMessage = styled.div(({ theme }) => ({
+  marginTop: "6px",
+  fontSize: "13px",
+  lineHeight: "18px",
+  color: theme.colors.error500,
+}));
+
+
+export const CardTitle = styled.div(({ theme }) => ({
+  fontSize: "13px",
+  lineHeight: "18px",
+  fontWeight: theme.typography.fontWeight.normal,
+  color: theme.colors.textPrimary,
+  marginBottom: "-10px"
+}));
+
 
 export const BottomButton = styled.button(({ theme }) => ({
-  margin: "16px",
+  margin: "0 16px 40px",
   height: "44px",
-  borderRadius: "8px",
-  background: theme.colors.primary600,
-  color: theme.colors.systemElevatedBackground,
-  fontSize: theme.typography.fontSize.md,
-  fontWeight: theme.typography.fontWeight.semibold,
+  borderRadius: "10px",
+  background: theme.colors.primary500,
+  color: theme.colors.textPrimary,
+  fontSize: "15px",
+  fontWeight: 600,
   border: "none",
   cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  transition: "opacity 0.2s ease",
+  "&:hover": {
+    opacity: 0.9,
+  },
+  "&:active": {
+    transform: "scale(0.98)",
+  },
+}));
+
+
+
+
+export const CommissionButton = styled.button(({ theme }) => ({
+  marginTop: theme.spacing.sm,
+  width: "100%",
+  height: "50px",
+  borderRadius: theme.borderRadius.md,
+  border: "none",
+  background: theme.colors.warning100,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: `0 ${theme.spacing.lg}`,
+  cursor: "pointer",
+
+  "& .left": {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing.sm,
+    fontSize: "13px",
+    lineHeight: "13px",
+    fontWeight: theme.typography.fontWeight.normal,
+    color: theme.colors.textPrimary,
+
+    "& strong": {
+      fontWeight: theme.typography.fontWeight.semibold,
+    },
+  },
+
+  "& .icon": {
+    width: "16px",
+    height: "16px",
+    color: theme.colors.warning500,
+    flexShrink: 0,
+  },
+
+  "& .chevron": {
+    flexShrink: 0,
+    color: theme.colors.warning400,
+  },
 }));

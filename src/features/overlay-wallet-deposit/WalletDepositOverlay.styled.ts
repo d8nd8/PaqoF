@@ -62,7 +62,7 @@ export const SectionTitle = styled.div(({ theme }) => ({
   color: theme.colors.textPrimary,
 }));
 
-export const CryptoCard = styled.div(({ theme }) => ({
+export const CryptoCard = styled.div<{ $disabled?: boolean }>(({ theme, $disabled }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -70,7 +70,8 @@ export const CryptoCard = styled.div(({ theme }) => ({
   padding: "14px",
   borderRadius: "13px",
   background: theme.colors.systemElevatedBackground,
-  cursor: "pointer",
+  cursor: $disabled ? "default" : "pointer",
+  opacity: $disabled ? 0.6 : 1,
 
   "& > .left": {
     display: "flex",
@@ -105,7 +106,7 @@ export const CryptoCard = styled.div(({ theme }) => ({
   },
 
   "& > .right": {
-    display: "flex",
+    display: $disabled ? "none" : "flex",
     alignItems: "center",
     gap: "8px",
 

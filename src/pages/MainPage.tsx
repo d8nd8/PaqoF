@@ -97,9 +97,6 @@ export const MainPage: React.FC = () => {
           crypto={selectedCrypto}
           commission="2.75 USDT"
           onCommissionClick={() => setShowCommission(true)}
-          onContinue={() => {
-            setShowWalletTransfer(false)
-          }}
         />
       )}
 
