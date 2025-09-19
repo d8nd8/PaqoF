@@ -237,6 +237,8 @@ export const CommissionButton = styled.button(({ theme }) => ({
   justifyContent: "space-between",
   padding: `0 ${theme.spacing.lg}`,
   cursor: "pointer",
+  textDecoration: "none",
+  color: "inherit",
 
   "& .left": {
     display: "flex",
@@ -249,6 +251,7 @@ export const CommissionButton = styled.button(({ theme }) => ({
 
     "& strong": {
       fontWeight: theme.typography.fontWeight.semibold,
+      color: theme.colors.textPrimary,
     },
   },
 
@@ -264,6 +267,7 @@ export const CommissionButton = styled.button(({ theme }) => ({
     color: theme.colors.warning400,
   },
 }));
+
 
 export const BottomSection = styled.div({
   padding: "30px 14px 40px",
