@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 
 export const WelcomeSliderWrapper = styled.div(({ theme }) => ({
   position: "relative",
-  maxWidth: "100%",
-  height: "100%",
+  width: "100%",
+  height: "var(--app-height)",
   boxSizing: "border-box",
   background: theme.colors.systemBackground,
   display: "flex",
