@@ -66,11 +66,11 @@ export const Description = styled.p(({ theme }) => ({
 }));
 
 export const BottomSection = styled.div({
-  padding: "30px 14px 0",
+  padding: "16px 14px 24px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "space-between",
+  gap: "16px",
 });
 
 export const MainButton = styled.button(({ theme }) => ({
@@ -80,6 +80,7 @@ export const MainButton = styled.button(({ theme }) => ({
   border: "none",
   borderRadius: 8,
   padding: "10px",
+  marginTop: "70px",
   fontWeight: 400,
   fontSize: "14px",
   cursor: "pointer"
