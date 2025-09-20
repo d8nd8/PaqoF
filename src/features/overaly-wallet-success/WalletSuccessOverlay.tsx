@@ -30,16 +30,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
   if (!isOpen) return null;
 
   const handleGoHome = () => {
-    try {
-      if (miniApp.isMounted()) {
-        navigate("/main", { replace: true });
-        window.location.reload();
-      } else {
-        window.location.reload();
-      }
-    } catch {
-      navigate("/main", { replace: true });
-    }
+    window.location.href = "/main";
   };
 
   const handleCopy = (value: string) => {
