@@ -33,6 +33,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
     try {
       if (miniApp.isMounted()) {
         navigate("/main", { replace: true });
+        window.location.reload();
       } else {
         window.location.reload();
       }
