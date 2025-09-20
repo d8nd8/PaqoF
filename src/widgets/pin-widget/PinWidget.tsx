@@ -12,6 +12,7 @@ import {
   ErrorText,
 } from "./PinWidget.styled";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const PinWidget: React.FC = () => {
   const [step, setStep] = useState<"create" | "confirm" | "done">("create");
@@ -19,6 +20,7 @@ export const PinWidget: React.FC = () => {
   const [firstPin, setFirstPin] = useState<string[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleNumberClick = (num: string) => {
     if (pin.length >= 4) return;
@@ -34,9 +36,9 @@ export const PinWidget: React.FC = () => {
         if (newPin.join("") === firstPin.join("")) {
           localStorage.setItem("pin", newPin.join(""));
           setStep("done");
-          navigate("/security"); // возвращаемся назад
+          navigate("/security");
         } else {
-          setError("Пин-коды не совпадают");
+          setError(t("pin.errors.mismatch"));
           setPin([]);
         }
       }
@@ -52,15 +54,13 @@ export const PinWidget: React.FC = () => {
       <PinHeader>
         {step === "create" && (
           <>
-            <PinTitle>Добавить пин-код</PinTitle>
-            <PinSubtitle>
-              Никто, кроме вас, не сможет зайти в приложение
-            </PinSubtitle>
+            <PinTitle>{t("pin.create.title")}</PinTitle>
+            <PinSubtitle>{t("pin.create.subtitle")}</PinSubtitle>
           </>
         )}
         {step === "confirm" && (
           <>
-            <PinTitle>Повторите пин-код</PinTitle>
+            <PinTitle>{t("pin.confirm.title")}</PinTitle>
             {error && <ErrorText>{error}</ErrorText>}
           </>
         )}

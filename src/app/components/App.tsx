@@ -9,18 +9,19 @@ import {
 
 import { router } from "@/app/router";
 import useApplicationStore from "@/shared/stores/application";
+import useUserStore from "@/shared/stores/user";
 import Preloader from "@/shared/components/Preloader/Preloader";
-import { Wrapper, WrapperRoot } from "./App.styled";
+import { Wrapper, WrapperRoot } from "@/app/components/App.styled";
+import { useSafeInitData } from "@/shared/hooks/useSafeInitData";
 
 const App = () => {
-  const {
-    headerOffset,
-    fullscreen,
-    fullscreenCentered,
-    setFullscreen,
-  } = useApplicationStore();
+  const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
+    useApplicationStore();
 
+  const setUserData = useUserStore((s) => s.setUserData);
   const [safeAreaBottom, setSafeAreaBottom] = useState(0);
+
+  const rawInitData = useSafeInitData();
 
   useEffect(() => {
     if (mainButton.mount.isAvailable()) mainButton.mount();
@@ -38,10 +39,16 @@ const App = () => {
       setFullscreen(viewport.isFullscreen());
     }
 
-    const bottom = parseInt(getComputedStyle(document.documentElement)
-      .getPropertyValue("--safe-area-bottom"), 10);
+    setUserData(rawInitData);
+
+    const bottom = parseInt(
+      getComputedStyle(document.documentElement).getPropertyValue(
+        "--safe-area-bottom"
+      ),
+      10
+    );
     setSafeAreaBottom(bottom);
-  }, [setFullscreen]);
+  }, [setFullscreen, setUserData, rawInitData]);
 
   return (
     <Wrapper

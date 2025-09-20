@@ -1,23 +1,62 @@
 import { create } from 'zustand';
 import * as userApi from '@/api/services/user/user.service';
 import type IUserStore from './types';
+import type { TelegramUser } from '@/shared/types/user'
 
-const TELEGRAM_INIT_DATA =
-  'user=%7B%22id%22%3A1888095988%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Rays%22%2C%22username%22%3A%22RaysRU%22%2C%22language_code%22%3A%22ru%22%2C%22is_premium%22%3Atrue%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2F0hS8FCr_WPj1HTJsXxly8-Evow22PKuuy2kMarWbVB4.svg%22%7D&chat_instance=-211613851202680421&chat_type=private&auth_date=1758118778&signature=-qX9VSJ5RfT4NEXE1rwUMsmaDf-QQKVlQ9O-hrQNrM7WBaOHKKK-ypC_M8I90fnpT2uYEzCzhwvKLWpRgB1YDw&hash=b6a392c7503c7b3cb41772a5175d5eb7938fb560fae3d28cbfd3e68e8596917a';
+
+function parseTelegramUser(initData: string): TelegramUser | null {
+  try {
+    const params = new URLSearchParams(initData);
+    const rawUser = params.get('user');
+    if (!rawUser) return null;
+
+    const parsed = JSON.parse(rawUser);
+    return {
+      id: parsed.id,
+      firstName: parsed.first_name,
+      lastName: parsed.last_name,
+      username: parsed.username,
+      languageCode: parsed.language_code,
+      isPremium: parsed.is_premium,
+      photoUrl: parsed.photo_url,
+    } as TelegramUser;
+  } catch  {
+    return null;
+  }
+}
 
 const useUserStore = create<IUserStore>((set) => ({
   isAuthenticated: !!localStorage.getItem('access-token'),
   loading: false,
   operations: null,
+  token: localStorage.getItem('access-token'),
+  user: localStorage.getItem('telegram-user')
+    ? JSON.parse(localStorage.getItem('telegram-user')!)
+    : null,
+
+
+  setUserData: (initData: string) => {
+    const user = parseTelegramUser(initData);
+    console.log('user', user);
+
+    localStorage.setItem('access-token', initData);
+    localStorage.setItem('authentication-method', 'Bearer');
+    if (user) {
+      localStorage.setItem('telegram-user', JSON.stringify(user));
+    }
+
+    set({
+      isAuthenticated: true,
+      token: initData,
+      user,
+    });
+  },
+
 
   login: async (payload) => {
     set({ loading: true });
     try {
       await userApi.login(payload);
-
-      localStorage.setItem('access-token', TELEGRAM_INIT_DATA);
-      localStorage.setItem('authentication-method', 'Bearer');
-
       set({ isAuthenticated: true });
     } finally {
       set({ loading: false });
@@ -47,7 +86,13 @@ const useUserStore = create<IUserStore>((set) => ({
   logout: () => {
     localStorage.removeItem('access-token');
     localStorage.removeItem('authentication-method');
-    set({ isAuthenticated: false, operations: null });
+    localStorage.removeItem('telegram-user');
+    set({
+      isAuthenticated: false,
+      operations: null,
+      token: null,
+      user: null,
+    });
   },
 }));
 

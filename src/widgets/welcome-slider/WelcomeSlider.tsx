@@ -23,7 +23,6 @@ import { useTranslation } from 'react-i18next'
 export const WelcomeSlider: React.FC = () => {
   const navigate = useNavigate();
   const [isLangOpen, setIsLangOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("ru");
   const [isPinVisible, setIsPinVisible] = useState(false);
   const { t } = useTranslation();
 
@@ -44,7 +43,6 @@ export const WelcomeSlider: React.FC = () => {
 
   const handleOpenLang = () => setIsLangOpen(true);
   const handleCloseLang = () => setIsLangOpen(false);
-  const handleLanguageChange = (lang: string) => setSelectedLanguage(lang);
   const handleGoToWallet = () => {
     navigate("/main", { state: { openPin: true } });
   };
@@ -68,8 +66,6 @@ export const WelcomeSlider: React.FC = () => {
       <LanguageSwitcher
         isOpen={isLangOpen}
         onClose={handleCloseLang}
-        selectedLanguage={selectedLanguage}
-        onLanguageChange={handleLanguageChange}
       />
 
       {isPinVisible && (

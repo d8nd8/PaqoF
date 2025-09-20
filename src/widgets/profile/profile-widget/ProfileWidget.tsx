@@ -26,10 +26,9 @@ import QuestionIcon from '@/assets/icons/profile/question-mark-circle.svg?react'
 import SendIcon from '@/assets/icons/profile/send.svg?react';
 import { useAppNavigation } from '@/shared/hooks/useAppNavigation';
 import { useTranslation } from 'react-i18next';
+import useUserStore from '@/shared/stores/user';
 
 type Props = {
-  username?: string;
-  avatarSrc?: string;
   onReferralClick?: () => void;
   onKycClick?: () => void;
   onSecurityClick?: () => void;
@@ -41,8 +40,6 @@ type Props = {
 };
 
 export const ProfileWidget: React.FC<Props> = ({
-                                                 username = '@twixmaster',
-                                                 avatarSrc,
                                                  onReferralClick,
                                                  onKycClick,
                                                  onSecurityClick,
@@ -54,6 +51,7 @@ export const ProfileWidget: React.FC<Props> = ({
                                                }) => {
   const { goToReferral } = useAppNavigation();
   const { t } = useTranslation();
+  const user = useUserStore((s) => s.user);
 
   const handleReferralClick = () => {
     if (onReferralClick) {
@@ -68,19 +66,22 @@ export const ProfileWidget: React.FC<Props> = ({
     return cleanUsername.slice(0, 2).toUpperCase();
   };
 
+  const displayUsername = user?.username ? `@${user.username}` : '@anonymous';
+  const displayInitials = user?.firstName
+    ? user.firstName.slice(0, 2).toUpperCase()
+    : getInitials(displayUsername);
+
   return (
     <ProfileWrapper>
       <ProfileTop>
-        <Username>{username}</Username>
+        <Username>{displayUsername}</Username>
       </ProfileTop>
 
       <AvatarWrapper>
-        {avatarSrc ? (
-          <Avatar src={avatarSrc} alt="Avatar" />
+        {user?.photoUrl ? (
+          <Avatar src={user.photoUrl} alt="Avatar" />
         ) : (
-          <AvatarPlaceholder>
-            {getInitials(username)}
-          </AvatarPlaceholder>
+          <AvatarPlaceholder>{displayInitials}</AvatarPlaceholder>
         )}
       </AvatarWrapper>
 

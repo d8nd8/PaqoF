@@ -10,7 +10,6 @@ export const ProfilePage: React.FC = () => {
   return (
     <BaseLayout showNavbar>
       <ProfileWidget
-        username="@twixmaster"
         //avatarSrc="src/assets/images/profile/user-picture.png"
         onReferralClick={goToReferral}
         onInfoClick={goToInfo}

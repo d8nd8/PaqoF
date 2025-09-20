@@ -198,6 +198,10 @@
       "subtitle": "Here you will find answers to popular questions"
     }
   },
+  "languageSwitcher": {
+    "title": "Select language",
+    "save": "Save"
+  },
   "notifications": {
     "details": {
       "cta": "Acknowledge"
@@ -220,6 +224,25 @@
     "gallery": "From gallery",
     "footerHint": "What can be paid?",
     "commissionSeconds": "{{value}} sec"
+  },
+  "pin": {
+    "errors": {
+      "mismatch": "PIN codes do not match"
+    },
+    "create": {
+      "title": "Add a PIN code",
+      "repeatTitle": "Repeat your PIN code",
+      "subtitle": "Only you will be able to enter the app",
+      "repeatSubtitle": "Checking that you remember the code"
+    },
+    "confirm": {
+      "title": "Enter your PIN code"
+    },
+    "remove": {
+      "title": "Remove PIN code",
+      "subtitle": "You are disabling app entry protection"
+    },
+    "delete": "Delete digit"
   },
   "Something went wrong": "Something went wrong",
   "accounts": {

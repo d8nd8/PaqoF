@@ -9,11 +9,9 @@ import QRIcon from '@icons/qr.svg?react';
 import NotificationIcon from '@icons/notification.svg?react';
 import { ActionItem } from '@/shared/components/ActionItem/ActionItem';
 import { useTranslation } from 'react-i18next';
+import useUserStore from '@/shared/stores/user';
 
 interface BalanceCardProps {
-  avatarUrl?: string;
-  username?: string;
-  greeting?: string;
   hasNotifications?: boolean;
   balance: number;
   currency?: string;
@@ -25,9 +23,6 @@ interface BalanceCardProps {
 }
 
 export const BalanceCard: React.FC<BalanceCardProps> = ({
-                                                          avatarUrl = '',
-                                                          username = '',
-                                                          greeting,
                                                           hasNotifications = false,
                                                           balance,
                                                           currency = '₽',
@@ -35,10 +30,11 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
                                                           onTopUp,
                                                           onSend,
                                                           onPay,
-                                                          onNotificationsClick
+                                                          onNotificationsClick,
                                                         }) => {
   const [isVisible, setIsVisible] = useState(initialVisibility);
   const { t } = useTranslation();
+  const user = useUserStore((s) => s.user);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -54,10 +50,12 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
     <S.BalanceCardContainer>
       <S.TopRow>
         <S.UserInfo>
-          <S.Avatar src={avatarUrl} alt={username} />
+          <S.Avatar src={user?.photoUrl || ''} alt={user?.username || 'user'} />
           <S.UserText>
-            <S.Greeting>{greeting || t('main.greeting')}</S.Greeting>
-            <S.Username>@{username}</S.Username>
+            <S.Greeting>
+              {t('main.greeting')}, {user?.firstName || 'Guest'}
+            </S.Greeting>
+            <S.Username>@{user?.username || 'anonymous'}</S.Username>
           </S.UserText>
         </S.UserInfo>
         <S.NotificationButton onClick={onNotificationsClick}>

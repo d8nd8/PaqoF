@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as S from './SecurityPinCode.styled'
-
-import DeleteIcon from '@icons/backspace.svg?react';
+import DeleteIcon from '@icons/backspace.svg?react'
+import { useTranslation } from 'react-i18next'
 
 type PinStatus = 'default' | 'success' | 'error'
 type Mode = 'create' | 'confirm' | 'remove'
@@ -10,30 +10,15 @@ interface SecurityPinCodeProps {
   mode?: Mode
   maxLength?: number
   onComplete: (pin: string) => void
-
-  titleCreate?: string
-  titleRepeat?: string
-  titleConfirm?: string
-  titleRemove?: string
-  subtitleCreate?: string
-  subtitleRepeat?: string
-  subtitleRemove?: string
-  errorText?: string
 }
 
 export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
                                                                   mode = 'create',
                                                                   maxLength = 4,
                                                                   onComplete,
-                                                                  titleCreate = 'Добавить пин-код',
-                                                                  titleRepeat = 'Повторите пин-код',
-                                                                  titleConfirm = 'Введите пин-код',
-                                                                  titleRemove = 'Удалите пин-код',
-                                                                  subtitleCreate = 'Никто, кроме вас, не сможет зайти в приложение',
-                                                                  subtitleRepeat = 'Проверяем, что вы точно запомнили код',
-                                                                  subtitleRemove = 'Снимаете защиту со входа в приложение',
-                                                                  errorText = 'Пин-коды не совпадают',
                                                                 }) => {
+  const { t } = useTranslation()
+
   const [pin, setPin] = useState('')
   const [firstPin, setFirstPin] = useState('')
   const [step, setStep] = useState(1)
@@ -70,15 +55,10 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
           }, 300)
         } else {
           setStatus('error')
-          setHelper(errorText)
+          setHelper(t('pin.errors.mismatch'))
           setIsLocked(true)
           setTimeout(() => {
-            setPin('')
-            setFirstPin('')
-            setStep(1)
-            setStatus('default')
-            setHelper('')
-            setIsLocked(false)
+            reset()
           }, 1500)
         }
       }
@@ -103,17 +83,17 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
 
   const renderTitle = () => {
     if (mode === 'create') {
-      return step === 1 ? titleCreate : titleRepeat
+      return step === 1 ? t('pin.create.title') : t('pin.create.repeatTitle')
     }
-    if (mode === 'confirm') return titleConfirm
-    if (mode === 'remove') return titleRemove
+    if (mode === 'confirm') return t('pin.confirm.title')
+    if (mode === 'remove') return t('pin.remove.title')
     return ''
   }
 
   const renderSubtitle = () => {
-    if (mode === 'create' && step === 1) return subtitleCreate
-    if (mode === 'create' && step === 2) return subtitleRepeat
-    if (mode === 'remove') return subtitleRemove
+    if (mode === 'create' && step === 1) return t('pin.create.subtitle')
+    if (mode === 'create' && step === 2) return t('pin.create.repeatSubtitle')
+    if (mode === 'remove') return t('pin.remove.subtitle')
     return ''
   }
 
@@ -143,8 +123,8 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
         </S.Key>
         <S.Key
           onClick={handleDelete}
-          aria-label="Удалить символ"
-          title="Удалить"
+          aria-label={t('pin.delete')}
+          title={t('pin.delete')}
           disabled={isLocked}
         >
           <DeleteIcon />

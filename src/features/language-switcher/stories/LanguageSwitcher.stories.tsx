@@ -3,10 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/internal/actions';
 import styled from 'styled-components';
 
-
-
-import { LanguageSwitcher } from '../LanguageSwitcher'
-
+import { LanguageSwitcher } from '../LanguageSwitcher';
 
 const DemoContainer = styled.div({
   minHeight: '100vh',
@@ -16,14 +13,14 @@ const DemoContainer = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '20px'
+  gap: '20px',
 });
 
 const StatusText = styled.p({
   color: 'white',
   fontSize: '18px',
   margin: '0 0 20px 0',
-  textAlign: 'center'
+  textAlign: 'center',
 });
 
 const TriggerButton = styled.button({
@@ -39,12 +36,12 @@ const TriggerButton = styled.button({
 
   '&:hover': {
     transform: 'translateY(-2px)',
-    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)'
+    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
   },
 
   '&:active': {
-    transform: 'translateY(0)'
-  }
+    transform: 'translateY(0)',
+  },
 });
 
 const meta: Meta<typeof LanguageSwitcher> = {
@@ -54,24 +51,25 @@ const meta: Meta<typeof LanguageSwitcher> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Компонент для переключения языка приложения с использованием BottomSheet'
-      }
-    }
+        component:
+          'Компонент для переключения языка приложения с использованием BottomSheet',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    selectedLanguage: {
-      control: { type: 'select' },
-      options: ['ru', 'en'],
-      description: 'Текущий выбранный язык'
-    },
     languages: {
-      description: 'Массив доступных языков'
-    }
+      description: 'Массив доступных языков',
+    },
   },
   decorators: [
-    (Story) => React.createElement(DemoContainer, {}, React.createElement(Story))
-  ]
+    (Story) =>
+      React.createElement(
+        DemoContainer,
+        {},
+        React.createElement(Story, {})
+      ),
+  ],
 };
 
 export default meta;
@@ -83,7 +81,7 @@ export const Default: Story = {
     const [selectedLanguage, setSelectedLanguage] = useState('ru');
 
     const getLanguageName = (code: string) => {
-      const language = args.languages?.find(lang => lang.code === code);
+      const language = args.languages?.find((lang) => lang.code === code);
       return language?.name || code;
     };
 
@@ -92,35 +90,33 @@ export const Default: Story = {
       action('language-changed')(language);
     };
 
-    return React.createElement('div', {}, [
-      React.createElement(StatusText, {
-        key: 'status'
-      }, `Текущий язык: ${getLanguageName(selectedLanguage)}`),
+    return (
+      <div>
+        <StatusText>
+          Текущий язык: {getLanguageName(selectedLanguage)}
+        </StatusText>
 
-      React.createElement(TriggerButton, {
-        key: 'trigger',
-        onClick: () => setIsOpen(true)
-      }, 'Изменить язык'),
+        <TriggerButton onClick={() => setIsOpen(true)}>
+          Изменить язык
+        </TriggerButton>
 
-      React.createElement(LanguageSwitcher, {
-        key: 'Switcher',
-        ...args,
-        isOpen: isOpen,
-        onClose: () => {
-          setIsOpen(false);
-          action('close')();
-        },
-        selectedLanguage: selectedLanguage,
-        onLanguageChange: handleLanguageChange
-      })
-    ]);
+        <LanguageSwitcher
+          {...args}
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            action('close')();
+          }}
+        />
+      </div>
+    );
   },
   args: {
     languages: [
       { code: 'ru', name: 'Русский' },
-      { code: 'en', name: 'English' }
-    ]
-  }
+      { code: 'en', name: 'English' },
+    ],
+  },
 };
 
 export const WithMoreLanguages: Story = {
@@ -129,7 +125,7 @@ export const WithMoreLanguages: Story = {
     const [selectedLanguage, setSelectedLanguage] = useState('ru');
 
     const getLanguageName = (code: string) => {
-      const language = args.languages?.find(lang => lang.code === code);
+      const language = args.languages?.find((lang) => lang.code === code);
       return language?.name || code;
     };
 
@@ -138,28 +134,26 @@ export const WithMoreLanguages: Story = {
       action('language-changed')(language);
     };
 
-    return React.createElement('div', {}, [
-      React.createElement(StatusText, {
-        key: 'status'
-      }, `Текущий язык: ${getLanguageName(selectedLanguage)}`),
+    return (
+      <div>
+        <StatusText>
+          Текущий язык: {getLanguageName(selectedLanguage)}
+        </StatusText>
 
-      React.createElement(TriggerButton, {
-        key: 'trigger',
-        onClick: () => setIsOpen(true)
-      }, 'Выбрать язык'),
+        <TriggerButton onClick={() => setIsOpen(true)}>
+          Выбрать язык
+        </TriggerButton>
 
-      React.createElement(LanguageSwitcher, {
-        key: 'Switcher',
-        ...args,
-        isOpen: isOpen,
-        onClose: () => {
-          setIsOpen(false);
-          action('close')();
-        },
-        selectedLanguage: selectedLanguage,
-        onLanguageChange: handleLanguageChange
-      })
-    ]);
+        <LanguageSwitcher
+          {...args}
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            action('close')();
+          }}
+        />
+      </div>
+    );
   },
   args: {
     languages: [
@@ -167,7 +161,7 @@ export const WithMoreLanguages: Story = {
       { code: 'en', name: 'English' },
       { code: 'es', name: 'Español' },
       { code: 'fr', name: 'Français' },
-      { code: 'de', name: 'Deutsch' }
-    ]
-  }
+      { code: 'de', name: 'Deutsch' },
+    ],
+  },
 };
