@@ -10,13 +10,15 @@ export const OverlayBackground = styled.div`
   z-index: ${({ theme }) => theme.zIndex.modal};
 `;
 
-export const OverlayContainer = styled.div`
+export const OverlayContainer = styled.div<{ $isVisible?: boolean }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.systemBackground};
   border-top-left-radius: 13px;
   border-top-right-radius: 13px;
   padding: 24px 20px 10vh;
   box-shadow: ${({ theme }) => theme.semantic.shadowLight};
+  transition: transform 0.3s ease-out;
+  transform: translateY(${(props) => (props.$isVisible ? "0" : "100%")});
 `;
 
 export const OverlayHeaderTop = styled.div`
