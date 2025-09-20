@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FullscreenModal } from '@/shared/ui/fullscreen-modal/FullscreenModal';
 import * as S from './NotificationDetailsModal.styled';
 
@@ -18,21 +19,30 @@ export const NotificationDetailsModal: React.FC<NotificationDetailsModalProps> =
                                                                                     onClose,
                                                                                     notification,
                                                                                   }) => {
+  const { t } = useTranslation();
+
   return (
     <FullscreenModal
       isOpen={isOpen}
-      title={notification?.date || ''}
+      title={notification ? t(notification.date) : ''}
       onClose={onClose}
     >
       {notification && (
         <S.NotificationContainer>
           <S.NotificationWrapper>
-            <S.NotificationImage src={notification.imageUrl || undefined} alt={notification.title} />
-            <S.NotificationTitle>{notification.title}</S.NotificationTitle>
-            <S.NotificationText>{notification.text}</S.NotificationText>
+            {notification.imageUrl && (
+              <S.NotificationImage
+                src={notification.imageUrl}
+                alt={t(notification.title)}
+              />
+            )}
+            <S.NotificationTitle>{t(notification.title)}</S.NotificationTitle>
+            <S.NotificationText>{t(notification.text)}</S.NotificationText>
           </S.NotificationWrapper>
           <S.ButtonWrapper>
-            <S.ActionButton onClick={onClose}>Ознакомиться</S.ActionButton>
+            <S.ActionButton onClick={onClose}>
+              {t('notifications.details.cta')}
+            </S.ActionButton>
           </S.ButtonWrapper>
         </S.NotificationContainer>
       )}

@@ -1,10 +1,11 @@
-import React from 'react';
-import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet';
+import React from "react";
+import { BottomSheet } from "@/shared/components/BottomSheet/BottomSheet";
 import {
   TransactionDetails,
   type TransactionData,
-} from '@/features/overlay-transaction-details/transaction-details/TransactionDetails';
-import * as S from './OverlayTransactionDetails.styled';
+} from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
+import * as S from "./OverlayTransactionDetails.styled";
+import { useTranslation } from "react-i18next";
 
 export interface OverlayTransactionDetailsProps {
   isOpen: boolean;
@@ -25,10 +26,12 @@ export const OverlayTransactionDetails: React.FC<
        transaction,
        onCopyClick,
        onAMLClick,
-       bottomButtonText = 'Открыть в обозревателе',
+       bottomButtonText = "currency.openInExplorer",
        onBottomButtonClick,
        showBottomButton = true,
      }) => {
+  const { i18n, t } = useTranslation();
+
   const handleBottomButtonClick = () => {
     if (onBottomButtonClick) {
       onBottomButtonClick();
@@ -37,22 +40,22 @@ export const OverlayTransactionDetails: React.FC<
     }
   };
 
-  const formattedDate = new Intl.DateTimeFormat('ru-RU', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  const formattedDate = new Intl.DateTimeFormat(i18n.language, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   })
     .format(new Date(transaction.timestamp))
-    .replace(',', ' •');
+    .replace(",", " •");
 
   return (
     <BottomSheet
       isOpen={isOpen}
       onClose={onClose}
       showBottomButton={showBottomButton}
-      bottomButtonText={bottomButtonText}
+      bottomButtonText={t(bottomButtonText)}
       onBottomButtonClick={handleBottomButtonClick}
       closeButtonType="icon"
       showCloseButton={true}

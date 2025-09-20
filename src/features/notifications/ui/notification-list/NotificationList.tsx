@@ -20,7 +20,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
 
   const handleNotificationClick = (notification: NotificationProps) => {
     setSelectedNotification(notification);
-    onNotificationClick?.(notification.id); // вызов внешнего обработчика, если есть
+    onNotificationClick?.(notification.id);
   };
 
   const handleCloseModal = () => {

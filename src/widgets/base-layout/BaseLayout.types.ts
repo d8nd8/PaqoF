@@ -1,14 +1,13 @@
 import type { NavbarItemConfig } from '@/features/navbar'
-import HomeIcon        from '@icons/home.svg?react'
-import HomeActiveIcon  from '@icons/home-active.svg?react'
-import ClockIcon       from '@icons/clock.svg?react'
+import HomeIcon from '@icons/home.svg?react'
+import HomeActiveIcon from '@icons/home-active.svg?react'
+import ClockIcon from '@icons/clock.svg?react'
 import ClockActiveIcon from '@icons/clock-active.svg?react'
-import QRIcon          from '@icons/qr.svg?react'
-import BonusIcon       from '@icons/bonus.svg?react'
+import QRIcon from '@icons/qr.svg?react'
+import BonusIcon from '@icons/bonus.svg?react'
 import BonusActiveIcon from '@icons/bonus-active.svg?react'
-import UserIcon        from '@icons/user.svg?react'
-import UserActiveIcon  from '@icons/user-active.svg?react'
-
+import UserIcon from '@icons/user.svg?react'
+import UserActiveIcon from '@icons/user-active.svg?react'
 
 export interface IBaseLayoutProps {
   children: React.ReactNode
@@ -18,7 +17,7 @@ export interface IBaseLayoutProps {
   disableBackButton?: boolean
   showNavbar?: boolean
   centered?: boolean
-  title?: string;
+  title?: string
 }
 
 export type NavbarItemState = 'default' | 'active' | 'history'
@@ -26,14 +25,14 @@ export type NavbarItemState = 'default' | 'active' | 'history'
 export const NavbarItems: NavbarItemConfig[] = [
   {
     id: 'home',
-    label: 'Главная',
+    label: 'common.navbar.home',
     icon: HomeIcon,
     activeIcon: HomeActiveIcon,
     to: '/main',
   },
   {
     id: 'history',
-    label: 'История',
+    label: 'common.navbar.history',
     icon: ClockIcon,
     activeIcon: ClockActiveIcon,
     to: '/history',
@@ -46,14 +45,14 @@ export const NavbarItems: NavbarItemConfig[] = [
   },
   {
     id: 'bonus',
-    label: 'Бонусы',
+    label: 'common.navbar.bonus',
     icon: BonusIcon,
     activeIcon: BonusActiveIcon,
     to: '/bonus',
   },
   {
     id: 'profile',
-    label: 'Профиль',
+    label: 'common.navbar.profile',
     icon: UserIcon,
     activeIcon: UserActiveIcon,
     to: '/profile',

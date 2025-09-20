@@ -7,13 +7,15 @@ import LanguagePage from '@/pages/LanguagePage';
 import { MainPage } from '@/pages/MainPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ReferralProgramPage } from '@/pages/ReferralProgramPage';
-import { WelcomeScreen } from '@/pages/WelcomeScreen';
+import { WelcomePage } from '@/pages/WelcomePage';
 import { createBrowserRouter } from 'react-router-dom'
 
 
 
 import { ErrorBoundary } from './components/ErrorBoundary';
 import SecurityPage from '@/pages/SecurityPage'
+import KycPage from '@/pages/KycPage'
+import FaqPage from '@/pages/FaqPage'
 
 
 
@@ -22,7 +24,7 @@ import SecurityPage from '@/pages/SecurityPage'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <WelcomeScreen />,
+    element: <WelcomePage />,
     errorElement: <ErrorBoundary />
   },
   {
@@ -73,6 +75,16 @@ export const router = createBrowserRouter([
   {
     path: "/security",
     element: <SecurityPage />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: "/kyc",
+    element: <KycPage />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: "/faq",
+    element: <FaqPage />,
     errorElement: <ErrorBoundary />,
   }
 ]);

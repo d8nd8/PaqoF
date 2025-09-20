@@ -9,6 +9,8 @@ import {
   BannerImage,
 } from './AdBanner.styled';
 
+import { Trans, useTranslation } from 'react-i18next';
+
 import lvl1Img from '@images/pagogoch-lvl-1.webp';
 import lvl2Img from '@images/pagogoch-lvl-2.webp';
 import lvl3Img from '@images/pagogoch-lvl-3.webp';
@@ -17,10 +19,12 @@ import lvl5Img from '@images/pagogoch-lvl-5.webp';
 
 export interface AdBannerProps {
   level: 1 | 2 | 3 | 4 | 5;
-  onClick?: () => void; // 👈 добавляем обработчик клика
+  onClick?: () => void;
 }
 
 export const AdBanner: React.FC<AdBannerProps> = ({ level, onClick }) => {
+  const { t } = useTranslation();
+
   const images: Record<AdBannerProps['level'], string> = {
     1: lvl1Img,
     2: lvl2Img,
@@ -29,49 +33,20 @@ export const AdBanner: React.FC<AdBannerProps> = ({ level, onClick }) => {
     5: lvl5Img,
   };
 
-  const descriptions: Record<AdBannerProps['level'], React.ReactNode> = {
-    1: (
-      <>
-        Улучшай своего Пакогочи<br />
-        и <strong>зарабатывай USDT</strong>
-      </>
-    ),
-    2: (
-      <>
-        Улучшай своего Пакогочи<br />
-        и <strong>зарабатывай USDT</strong>
-      </>
-    ),
-    3: (
-      <>
-        Улучшай своего Пакогочи<br />
-        и <strong>зарабатывай USDT</strong>
-      </>
-    ),
-    4: (
-      <>
-        Улучшай своего Пакогочи<br />
-        и <strong>зарабатывай USDT</strong>
-      </>
-    ),
-    5: (
-      <>
-        Пакогочи на максимуме,<br />
-        получай еще <strong>больше USDT</strong>
-      </>
-    ),
-  };
-
   return (
     <BannerContainer onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
       <BannerContent>
         <BannerTitleWrapper>
-          <BannerTitle>Пакогочи</BannerTitle>
+          <BannerTitle>{t('referral.banner.title')}</BannerTitle>
           <LevelBadge>Lvl {level}</LevelBadge>
         </BannerTitleWrapper>
-        <BannerSubtitle>{descriptions[level]}</BannerSubtitle>
+        <BannerSubtitle>
+          <Trans i18nKey={`referral.banner.levels.${level}`} components={{ strong: <strong /> }} />
+        </BannerSubtitle>
       </BannerContent>
-      <BannerImage src={images[level]} alt={`Пакогочи lvl ${level}`} />
+      <BannerImage src={images[level]} alt={`${t('referral.banner.title')} lvl ${level}`} />
     </BannerContainer>
   );
 };
+
+export default AdBanner;

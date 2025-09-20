@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   InfoWrapper,
@@ -17,9 +18,9 @@ import {
 import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 
 const documents = [
-  { id: "aml", title: "AML" },
-  { id: "terms", title: "Условия пользования" },
-  { id: "privacy", title: "Политика конфиденциальности" },
+  { id: "aml", token: "info.documents.aml" },
+  { id: "terms", token: "info.documents.terms" },
+  { id: "privacy", token: "info.documents.privacy" },
 ];
 
 type Props = {
@@ -28,6 +29,7 @@ type Props = {
 
 export const InfoWidget: React.FC<Props> = ({ onBack }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = (id: string) => {
     console.log("Открыть документ:", id);
@@ -47,15 +49,15 @@ export const InfoWidget: React.FC<Props> = ({ onBack }) => {
         <BackButton onClick={handleBack}>
           <ChevronLeft />
         </BackButton>
-        <Title>Информация</Title>
+        <Title>{t("info.title")}</Title>
       </Header>
 
-      <SectionTitle>Документы</SectionTitle>
+      <SectionTitle>{t("info.sectionTitle")}</SectionTitle>
 
       <InfoList>
         {documents.map((doc) => (
           <InfoItem key={doc.id} onClick={() => handleClick(doc.id)}>
-            <InfoText>{doc.title}</InfoText>
+            <InfoText>{t(doc.token)}</InfoText>
             <RightIcon>
               <ChevronRight size={18} strokeWidth={1.5} />
             </RightIcon>

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as S from './Notification.styled';
 import type { NotificationProps } from '@/features/notifications/model/mockNotifications';
+import { useTranslation } from "react-i18next";
 
 export const Notification: React.FC<NotificationProps> = ({
                                                             id,
@@ -11,6 +12,8 @@ export const Notification: React.FC<NotificationProps> = ({
                                                             imageUrl,
                                                             onClick
                                                           }) => {
+  const { t } = useTranslation();
+
   const handleClick = () => {
     onClick?.(id);
   };
@@ -20,15 +23,15 @@ export const Notification: React.FC<NotificationProps> = ({
       <S.NotificationContent>
         <S.NotificationHeader>
           {!isRead && <S.NotificationDot isRead={isRead} />}
-          <S.NotificationTitle>{title}</S.NotificationTitle>
-          <S.NotificationDate>{date}</S.NotificationDate>
+          <S.NotificationTitle>{t(title)}</S.NotificationTitle>
+          <S.NotificationDate>{t(date)}</S.NotificationDate>
         </S.NotificationHeader>
 
         <S.NotificationBody>
-          <S.NotificationDescription>{description}</S.NotificationDescription>
+          <S.NotificationDescription>{t(description)}</S.NotificationDescription>
 
           {imageUrl && (
-            <S.NotificationImage src={imageUrl} alt={title} />
+            <S.NotificationImage src={imageUrl} alt={t(title)} />
           )}
         </S.NotificationBody>
       </S.NotificationContent>

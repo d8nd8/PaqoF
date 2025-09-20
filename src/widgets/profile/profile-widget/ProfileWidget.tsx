@@ -24,7 +24,8 @@ import GlobeAltIcon from '@/assets/icons/profile/globe-alt.svg?react';
 import InfoIcon from '@/assets/icons/profile/information-circle.svg?react';
 import QuestionIcon from '@/assets/icons/profile/question-mark-circle.svg?react';
 import SendIcon from '@/assets/icons/profile/send.svg?react';
-import { useAppNavigation } from '@/shared/hooks/useAppNavigation'
+import { useAppNavigation } from '@/shared/hooks/useAppNavigation';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   username?: string;
@@ -52,6 +53,7 @@ export const ProfileWidget: React.FC<Props> = ({
                                                  onLogout,
                                                }) => {
   const { goToReferral } = useAppNavigation();
+  const { t } = useTranslation();
 
   const handleReferralClick = () => {
     if (onReferralClick) {
@@ -74,7 +76,7 @@ export const ProfileWidget: React.FC<Props> = ({
 
       <AvatarWrapper>
         {avatarSrc ? (
-          <Avatar src={avatarSrc} alt="Аватар" />
+          <Avatar src={avatarSrc} alt="Avatar" />
         ) : (
           <AvatarPlaceholder>
             {getInitials(username)}
@@ -89,21 +91,21 @@ export const ProfileWidget: React.FC<Props> = ({
               <IconBox>
                 <UsersIcon width={16} height={16} />
               </IconBox>
-              <ItemText>Реферальная программа</ItemText>
+              <ItemText>{t('profile.referral')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
         </Section>
 
         <Section>
-          <SectionTitle>Параметры</SectionTitle>
+          <SectionTitle>{t('profile.settings')}</SectionTitle>
 
           <SectionItem onClick={onKycClick}>
             <ItemContent>
               <IconBox>
                 <ShieldIcon width={16} height={16} />
               </IconBox>
-              <ItemText>KYC</ItemText>
+              <ItemText>{t('profile.kyc')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
@@ -113,7 +115,7 @@ export const ProfileWidget: React.FC<Props> = ({
               <IconBox>
                 <LockClosedIcon width={16} height={16} />
               </IconBox>
-              <ItemText>Безопасность</ItemText>
+              <ItemText>{t('profile.security')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
@@ -123,21 +125,21 @@ export const ProfileWidget: React.FC<Props> = ({
               <IconBox>
                 <GlobeAltIcon width={16} height={16} />
               </IconBox>
-              <ItemText>Язык</ItemText>
+              <ItemText>{t('profile.language')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
         </Section>
 
         <Section>
-          <SectionTitle>О нас</SectionTitle>
+          <SectionTitle>{t('profile.about')}</SectionTitle>
 
           <SectionItem onClick={onOfficialClick}>
             <ItemContent>
               <IconBox>
                 <SendIcon width={16} height={16} />
               </IconBox>
-              <ItemText>Официальные аккаунты</ItemText>
+              <ItemText>{t('profile.official')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
@@ -147,7 +149,7 @@ export const ProfileWidget: React.FC<Props> = ({
               <IconBox>
                 <QuestionIcon width={16} height={16} />
               </IconBox>
-              <ItemText>Часто задаваемые вопросы</ItemText>
+              <ItemText>{t('profile.faq')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
@@ -157,13 +159,13 @@ export const ProfileWidget: React.FC<Props> = ({
               <IconBox>
                 <InfoIcon width={16} height={16} />
               </IconBox>
-              <ItemText>Информация</ItemText>
+              <ItemText>{t('profile.info')}</ItemText>
             </ItemContent>
             <Chevron>›</Chevron>
           </SectionItem>
         </Section>
 
-        <LogoutButton onClick={onLogout}>Выйти из аккаунта</LogoutButton>
+        <LogoutButton onClick={onLogout}>{t('profile.logout')}</LogoutButton>
       </Content>
     </ProfileWrapper>
   );

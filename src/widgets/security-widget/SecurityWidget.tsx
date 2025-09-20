@@ -12,6 +12,8 @@ import {
 } from "./SecurityWidget.styled";
 
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 import KeyIcon from "@/assets/icons/key-icon.svg?react";
 import PinToggle from "@/features/pin-toggle/PinToggle";
@@ -22,6 +24,7 @@ type Props = {
 
 export const SecurityWidget: React.FC<Props> = ({ onBack }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleBack = () => {
     if (onBack) {
@@ -37,17 +40,17 @@ export const SecurityWidget: React.FC<Props> = ({ onBack }) => {
         <BackButton onClick={handleBack}>
           <ChevronLeft />
         </BackButton>
-        <Title>Безопасность</Title>
+        <Title>{t("security.title")}</Title>
       </Header>
 
-      <SectionTitle>Авторизация</SectionTitle>
+      <SectionTitle>{t("security.sectionTitle")}</SectionTitle>
 
       <SecurityList>
         <SecurityItem>
           <SecurityIcon>
             <KeyIcon />
           </SecurityIcon>
-          <SecurityText>Пин-код</SecurityText>
+          <SecurityText>{t("security.pinCode")}</SecurityText>
           <PinToggle />
         </SecurityItem>
       </SecurityList>

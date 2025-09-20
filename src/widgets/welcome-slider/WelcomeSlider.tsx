@@ -16,33 +16,31 @@ import { useNavigate } from 'react-router-dom'
 
 import homeImg1 from '@/assets/images/home1.png'
 import homeImg2 from '@/assets/images/home2.png'
+import { useTranslation } from 'react-i18next'
 
-const slides = [
-  {
-    title: "Как крипто-карта, только крипто-СБП",
-    description: "Пополняйте кошелёк удобными для вас криптовалютами",
-    buttonText: "Перейти в кошелёк",
-    image: homeImg2,
-  },
-  {
-    title: "Быстрое пополнение счёта",
-    description: "Пополняйте кошелёк удобными для вас криптовалютами",
-    buttonText: "Перейти в кошелёк",
-    image: homeImg1,
-  },
-  // {
-  //   title: "Удобный вывод средств",
-  //   description: "Моментальные переводы на карты и счета",
-  //   buttonText: "Перейти в кошелёк",
-  //   image: homeImg1,
-  // },
-];
+
 
 export const WelcomeSlider: React.FC = () => {
   const navigate = useNavigate();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("ru");
   const [isPinVisible, setIsPinVisible] = useState(false);
+  const { t } = useTranslation();
+
+  const slides = [
+    {
+      title: t("welcome.slide1.title"),
+      description: t("welcome.slide1.description"),
+      buttonText: t("welcome.slide1.buttonText"),
+      image: homeImg2,
+    },
+    {
+      title: t("welcome.slide2.title"),
+      description: t("welcome.slide2.description"),
+      buttonText: t("welcome.slide2.buttonText"),
+      image: homeImg1,
+    },
+  ];
 
   const handleOpenLang = () => setIsLangOpen(true);
   const handleCloseLang = () => setIsLangOpen(false);

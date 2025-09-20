@@ -1,14 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as S from './ProgressStep.styled';
-import type { PakogochiProgressProps } from '@/features/profile/progress-step/ProgressStep.types'
+import type { PakogochiProgressProps } from '@/features/profile/progress-step/ProgressStep.types';
 
 export const ProgressStep: React.FC<PakogochiProgressProps> = ({
                                                                  currentProgress,
                                                                  level = 1,
                                                                  maxLevel = 5,
                                                                  referralsNeeded,
-                                                                 className
+                                                                 className,
                                                                }) => {
+  const { t } = useTranslation();
   const progressSteps = [0, 20, 30, 40, 50];
   const isMaxLevel = level >= maxLevel || currentProgress >= 50;
 
@@ -25,20 +27,16 @@ export const ProgressStep: React.FC<PakogochiProgressProps> = ({
 
   return (
     <S.ProgressContainer className={className}>
-      <S.ProgressTitle>Прогресс</S.ProgressTitle>
-      <S.ProgressDescription>
-        Пригласи друзей и получай кешбэк с их покупок:
-        чем больше приглашённых — тем выше процент
-        возврата комиссии и уровень Пакогочи!
-      </S.ProgressDescription>
+      <S.ProgressTitle>{t('referral.progress.title')}</S.ProgressTitle>
+      <S.ProgressDescription>{t('referral.progress.description')}</S.ProgressDescription>
 
       <S.ProgressTrack>
         <S.ProgressLine progress={currentProgress} />
         <S.ProgressSteps>
-          {progressSteps.map((stepValue, index) => (
+          {progressSteps.map((stepValue) => (
             <S.ProgressStep
               key={stepValue}
-              active={false}
+              active={currentStepIndex === stepValue}
               completed={currentProgress >= stepValue}
             >
               {stepValue}%
@@ -48,14 +46,14 @@ export const ProgressStep: React.FC<PakogochiProgressProps> = ({
       </S.ProgressTrack>
 
       {isMaxLevel ? (
-        <S.MaxLevelBadge>
-          Максимальный уровень!
-        </S.MaxLevelBadge>
+        <S.MaxLevelBadge>{t('referral.progress.maxLevel')}</S.MaxLevelBadge>
       ) : (
         <S.NextLevelInfo>
-          <S.NextLevelText>До следующего уровня:</S.NextLevelText>
+          <S.NextLevelText>{t('referral.progress.nextLevel')}</S.NextLevelText>
           <S.NextLevelValue>
-            {referralsNeeded ? `${referralsNeeded} рефералов` : 'Загрузка...'}
+            {referralsNeeded
+              ? t('referral.progress.referralsNeeded', { count: referralsNeeded })
+              : t('referral.progress.loading')}
           </S.NextLevelValue>
         </S.NextLevelInfo>
       )}

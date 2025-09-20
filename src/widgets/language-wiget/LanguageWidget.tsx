@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   LanguageWrapper,
@@ -16,8 +17,8 @@ import {
 import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 
 const languages = [
-  { id: "ru", label: "Русский" },
-  { id: "en", label: "English" },
+  { id: "ru", token: "language.list.ru" },
+  { id: "en", token: "language.list.en" },
 ];
 
 type Props = {
@@ -25,12 +26,13 @@ type Props = {
 };
 
 export const LanguageWidget: React.FC<Props> = ({ onBack }) => {
-  const [selected, setSelected] = useState("ru");
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const [selected, setSelected] = useState(i18n.language || "ru");
 
   const handleSelect = (id: string) => {
     setSelected(id);
-    console.log("Выбран язык:", id);
+    i18n.changeLanguage(id);
   };
 
   const handleBack = () => {
@@ -47,13 +49,13 @@ export const LanguageWidget: React.FC<Props> = ({ onBack }) => {
         <BackButton onClick={handleBack}>
           <ChevronLeft />
         </BackButton>
-        <Title>Язык</Title>
+        <Title>{t("language.title")}</Title>
       </Header>
 
       <LanguageList>
         {languages.map((lang) => (
           <LanguageItem key={lang.id} onClick={() => handleSelect(lang.id)}>
-            <LanguageText>{lang.label}</LanguageText>
+            <LanguageText>{t(lang.token)}</LanguageText>
             <RadioWrapper $active={selected === lang.id}>
               {selected === lang.id && <Check size={16} strokeWidth={2} />}
             </RadioWrapper>

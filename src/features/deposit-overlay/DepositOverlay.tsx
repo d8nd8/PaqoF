@@ -17,6 +17,7 @@ import {
 
 import WalletIcon from "@/assets/icons/wallet-icon.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onClose: () => void;
@@ -24,28 +25,28 @@ interface Props {
 }
 
 export const DepositOverlay: React.FC<Props> = ({ onClose, onSelectWallet }) => {
+  const { t } = useTranslation();
+
   return (
     <OverlayBackground onClick={onClose}>
       <OverlayContainer onClick={(e) => e.stopPropagation()}>
         <OverlayHeaderTop>
-          <CloseButton onClick={onClose}>Закрыть</CloseButton>
+          <CloseButton onClick={onClose}>{t("currency.overlays.deposit.close")}</CloseButton>
         </OverlayHeaderTop>
 
         <OverlayHeader>
-          <OverlayTitle>Пополнить</OverlayTitle>
+          <OverlayTitle>{t("currency.overlays.deposit.title")}</OverlayTitle>
         </OverlayHeader>
 
-        <Description>
-          Выберите способ внесения криптовалюты на <br /> Paqo Wallet
-        </Description>
+        <Description>{t("currency.overlays.deposit.description")}</Description>
 
         <Option onClick={onSelectWallet}>
           <OptionIcon>
             <WalletIcon />
           </OptionIcon>
           <OptionText>
-            <OptionTitle>Внешний кошелёк</OptionTitle>
-            <OptionSubtitle>Перевод с другого кошелька</OptionSubtitle>
+            <OptionTitle>{t("currency.overlays.deposit.wallet.title")}</OptionTitle>
+            <OptionSubtitle>{t("currency.overlays.deposit.wallet.subtitle")}</OptionSubtitle>
           </OptionText>
           <OptionRight>
             <ChevronRightIcon />

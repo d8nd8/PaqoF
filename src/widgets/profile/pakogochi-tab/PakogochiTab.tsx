@@ -5,6 +5,7 @@ import ReferralCodes from '@/features/profile/referral-codes';
 import type { ReferralItemData } from '@/features/referral-list/ReferralItem';
 import ReferralList from '@/features/referral-list/ReferralList'
 import { PakogochiWrapper } from "./PakogochiTab.styled";
+import { useTranslation } from "react-i18next";
 
 type ReferralData = {
   id: string;
@@ -63,6 +64,8 @@ export const PakogochiTab: React.FC<Props> = ({
                                                 onCopyCode,
                                                 onReferralClick,
                                               }) => {
+  const { t } = useTranslation();
+
   const referralItemsData: ReferralItemData[] = referrals.map(referral => ({
     ...referral,
     level: Math.floor(Math.random() * 15) + 1
@@ -75,19 +78,21 @@ export const PakogochiTab: React.FC<Props> = ({
         referralLink={referralLink}
         onCopyCode={onCopyCode}
       />
+
       <ProgressStep
         currentProgress={currentProgress}
         level={level}
         maxLevel={5}
         referralsNeeded={referralsNeeded}
       />
+
       <PayoutsCard
-        title="Вывод"
-        description="Рефбэк автоматически поступит на ваш реферальный баланс в течение 14 дней после каждой транзакции, совершённой рефералом."
+        title={t("referral.payouts.title")}
+        description={t("referral.payouts.description")}
         balance={balance}
         balanceUSD={balanceUSD}
         currency="USDT"
-        withdrawButtonText="Вывод"
+        withdrawButtonText={t("referral.payouts.withdraw")}
         minWithdrawAmount={5}
         onWithdraw={onWithdraw}
       />
@@ -95,9 +100,11 @@ export const PakogochiTab: React.FC<Props> = ({
       <ReferralList
         referrals={referralItemsData}
         referralsCount={referralsCount}
-        title="Рефералы"
+        title={t("referral.list.title")}
         onReferralClick={onReferralClick}
       />
     </PakogochiWrapper>
   );
 };
+
+export default PakogochiTab;

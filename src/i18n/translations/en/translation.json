@@ -1,4 +1,281 @@
 {
   "App Title": "App Title",
-  "Something went wrong": "Something went wrong"
+  "referral": {
+    "banner": {
+      "title": "Pagogochi"
+    },
+    "badge": {
+      "progress": {
+        "label": "Badge progress",
+        "upgradeText": "Until upgrade",
+        "upgradeAmount": "{{amount}}"
+      }
+    },
+    "pakogochi": {
+      "cardTitle": "Earn with Pagogochi",
+      "actions": {
+        "invite": "Invite your friends",
+        "cashback": "Get cashback from their purchases",
+        "upgrade": "Upgrade Pagogochi"
+      }
+    },
+    "payouts": {
+      "minWithdraw": "Withdraw from {{amount}} {{currency}}",
+      "withdrawButton": "referral.payouts.withdrawButton",
+      "title": "Withdraw",
+      "description": "Refback will be automatically credited to your referral balance within 14 days after each transaction made by your referral.",
+      "withdraw": "Withdraw"
+    },
+    "progress": {
+      "title": "Progress",
+      "description": "Invite friends and get cashback from their purchases: the more you invite — the higher your commission refund and Pagogochi level!",
+      "maxLevel": "Maximum level!",
+      "nextLevel": "To the next level:",
+      "referralsNeeded_one": "referral.progress.referralsNeeded",
+      "referralsNeeded_other": "referral.progress.referralsNeeded",
+      "loading": "Loading..."
+    },
+    "codes": {
+      "code": "Referral Code",
+      "link": "Referral Link"
+    },
+    "list": {
+      "title": "Referrals"
+    },
+    "title": "Referral Program",
+    "tabs": {
+      "pakogochi": "Pagogochi",
+      "refback": "Refback"
+    },
+    "overlays": {
+      "close": "Close"
+    }
+  },
+  "main": {
+    "greeting": "Good day!",
+    "balanceTitle": "Available balance",
+    "actions": {
+      "topUp": "Top up",
+      "send": "Send",
+      "pay": "Pay"
+    },
+    "overlays": {
+      "commission": {
+        "title": "Why commission?",
+        "description": "The commission is charged to cover network costs. It is fixed and displayed before sending.",
+        "button": "Got it"
+      }
+    }
+  },
+  "currency": {
+    "overlays": {
+      "deposit": {
+        "close": "Close",
+        "title": "Deposit",
+        "description": "Choose a way to deposit cryptocurrency to Paqo Wallet",
+        "wallet": {
+          "title": "External Wallet",
+          "subtitle": "Transfer from another wallet"
+        }
+      },
+      "success": {
+        "title": "Transfer {{crypto}}",
+        "date": "{{date}}",
+        "amount": "- {{amount}} {{crypto}}",
+        "transactionHash": "Transaction Hash",
+        "transactionId": "Transaction ID",
+        "network": "Network",
+        "receivedAmount": "Received amount",
+        "recipientAddress": "Recipient address",
+        "comment": "Comment, tag or memo",
+        "commentMissing": "None",
+        "button": "Go to main"
+      },
+      "walletAddress": {
+        "title": "Deposit {{crypto}}",
+        "sectionTitle": "Select cryptocurrency",
+        "addressLabel": "Your {{crypto}} {{network}} address",
+        "addressHint": "This address is intended only for receiving {{crypto}} on the {{network}} network. Sending via other networks will result in irreversible loss of assets!",
+        "commission": "Fixed commission <strong>{{value}}</strong>",
+        "copied": "Address copied",
+        "buttons": {
+          "copy": "Copy address",
+          "home": "Go to main"
+        }
+      },
+      "confirm": {
+        "title": "Transfer confirmation",
+        "amount": {
+          "title": "Amount to send"
+        },
+        "comment": {
+          "placeholder": "Comment, tag or memo",
+          "paste": "Paste"
+        },
+        "recipient": "Recipient address",
+        "commission": {
+          "label": "Commission"
+        },
+        "total": {
+          "label": "Total to pay"
+        },
+        "balanceAfter": "Balance after sending",
+        "confirmButton": "Confirm and send"
+      },
+      "walletDeposit": {
+        "titleDeposit": "Deposit from wallet",
+        "titleTransfer": "Transfer",
+        "crypto": "Cryptocurrency",
+        "selectCrypto": "Select cryptocurrency",
+        "selectNetwork": "Select network",
+        "networks": {
+          "trc20": "Fee 2.75 USDT",
+          "ton": "Fee 0.5 USDT",
+          "bep20": "Fee 2.75 USDT"
+        },
+        "continue": "Continue"
+      },
+      "transfer": {
+        "title": "Transfer",
+        "amount": {
+          "title": "Amount to send",
+          "insufficient": "Insufficient funds.",
+          "topUp": "Top up balance.",
+          "subApprox": "≈ {{value}}",
+          "presets": {
+            "1000": "1 000 ₽",
+            "5000": "5 000 ₽",
+            "10000": "10 000 ₽",
+            "all": "Send all"
+          }
+        },
+        "balance": "Balance",
+        "address": {
+          "title": "Address",
+          "placeholder": "Address in TRC20 network",
+          "error": "Enter address"
+        },
+        "commission": "Fixed commission <strong>{{value}}</strong>",
+        "continue": "Continue"
+      }
+    },
+    "transactions": {
+      "status": {
+        "success": "Successful",
+        "pending": "In progress",
+        "failed": "Cancelled",
+        "problem": "Problem occurred"
+      },
+      "aml": {
+        "completed": "AML check successfully completed",
+        "suspicious": "Suspicious payment. Contact support to complete",
+        "pending": "AML check in progress",
+        "failed": "AML check failed"
+      },
+      "withdrawTitle": "Withdrawal",
+      "depositTitle": "Deposit",
+      "exchangeRate": "Exchange rate",
+      "creditAmount": "Credit amount",
+      "receivedAmount": "Received amount",
+      "commission": "Commission",
+      "hash": "Transaction hash",
+      "txId": "Transaction ID",
+      "network": "Network",
+      "sender": "Sender"
+    },
+    "copyNotification": "Address copied",
+    "actions": {
+      "topUp": "Top up",
+      "send": "Send",
+      "pay": "Pay"
+    },
+    "fee": "Fee: {{value}}"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "placeholder": {
+      "title": "FAQ coming soon",
+      "subtitle": "Here you will find answers to popular questions"
+    }
+  },
+  "notifications": {
+    "details": {
+      "cta": "Acknowledge"
+    },
+    "title": "Notifications"
+  },
+  "common": {
+    "close": "Close",
+    "unknownNavItem": "Unknown menu item: {{id}}"
+  },
+  "qrScanner": {
+    "info": {
+      "button": "Start scanning",
+      "close": "Close",
+      "title": "Via SBP anywhere",
+      "description": "At the checkout or on the website, point your camera at the SBP QR code and complete the payment in seconds"
+    },
+    "title": "QR Payment",
+    "torch": "Flashlight",
+    "gallery": "From gallery",
+    "footerHint": "What can be paid?",
+    "commissionSeconds": "{{value}} sec"
+  },
+  "Something went wrong": "Something went wrong",
+  "accounts": {
+    "title": "Official Accounts"
+  },
+  "bonus": {
+    "title": "Bonuses",
+    "placeholder": {
+      "title": "Something beautiful will appear here soon",
+      "subtitle": "But for now, there is nothing here"
+    }
+  },
+  "history": {
+    "title": "Transaction History"
+  },
+  "info": {
+    "title": "Information",
+    "sectionTitle": "Documents"
+  },
+  "kyc": {
+    "title": "KYC",
+    "placeholder": {
+      "title": "Verification coming soon",
+      "subtitle": "Here you will be able to pass identity verification"
+    }
+  },
+  "language": {
+    "title": "Language"
+  },
+  "profile": {
+    "referral": "Referral Program",
+    "settings": "Settings",
+    "kyc": "KYC",
+    "security": "Security",
+    "language": "Language",
+    "about": "About Us",
+    "official": "Official Accounts",
+    "faq": "Frequently Asked Questions",
+    "info": "Information",
+    "logout": "Log out"
+  },
+  "security": {
+    "title": "Security",
+    "sectionTitle": "Authorization",
+    "pinCode": "PIN code"
+  },
+  "welcome": {
+    "slide1": {
+      "title": "Like a crypto card, only crypto-SBP",
+      "description": "Top up your wallet with the cryptocurrencies convenient for you",
+      "buttonText": "Go to wallet"
+    },
+    "slide2": {
+      "title": "Fast account top-up",
+      "description": "Top up your wallet with the cryptocurrencies convenient for you",
+      "buttonText": "Go to wallet"
+    }
+  }
 }

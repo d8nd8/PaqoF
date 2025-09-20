@@ -1,4 +1,4 @@
-export type RoutePath = '/' | '/main' | '/profile' | '/referral' | '/info' | '/accounts' |'/language' | '/security'
+export type RoutePath = '/' | '/main' | '/profile' | '/referral' | '/info' | '/accounts' |'/language' | '/security' |'/kyc' |'/faq'
 
 export const ROUTES = {
   HOME: '/' as RoutePath,
@@ -9,4 +9,6 @@ export const ROUTES = {
   ACCOUNTS: '/accounts' as RoutePath,
   LANGUAGES: '/language' as RoutePath,
   SECURITY: '/security' as RoutePath,
+  KYC: '/kyc' as RoutePath,
+  FAQ: '/faq' as RoutePath,
 } as const;

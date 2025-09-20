@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TorchlightIcon from '@icons/scanner/torchlight.svg?react';
 import AttachmentIcon from '@icons/scanner/attachment.svg?react';
 import type { QRScannerProps } from './QRScanner.types';
+import { useTranslation } from 'react-i18next';
 
 import {
   Overlay,
@@ -65,8 +66,9 @@ export const QRScanner: React.FC<QRScannerProps> = ({
                                                       isVisible,
                                                       onScan,
                                                       onClose,
-                                                      title = 'Оплата по QR',
+                                                      title,
                                                     }) => {
+  const { t } = useTranslation();
   const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false);
   const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
@@ -130,35 +132,33 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           <CameraFeed id={containerId} />
 
           <Header>
-            <Title>{title}</Title>
+            <Title>{title || t('qrScanner.title')}</Title>
             <CloseButton onClick={handleClose}>✕</CloseButton>
           </Header>
 
           <ScannerOverlay />
           <div id="gallery-scan-temp" style={{ display: 'none' }} />
 
-
           <BottomActions>
-            <ActionButton onClick={toggleTorch} title="Фонарик">
+            <ActionButton onClick={toggleTorch} title={t('qrScanner.torch')}>
               <TorchlightIcon />
             </ActionButton>
 
             <ScanButton onClick={() => setIsPaymentOverlayOpen(true)} />
 
-            <ActionButton onClick={handleGalleryOpen} title="Из галереи">
+            <ActionButton onClick={handleGalleryOpen} title={t('qrScanner.gallery')}>
               <AttachmentIcon />
             </ActionButton>
           </BottomActions>
 
           <Footer>
             <FooterHint onClick={() => setIsPaymentInfoOpen(true)}>
-              Что можно оплатить?
+              {t('qrScanner.footerHint')}
             </FooterHint>
           </Footer>
         </CameraContainer>
       </Overlay>
 
-      {/* Подсказки и оверлеи */}
       <PaymentInfoOverlay
         isOpen={isPaymentInfoOpen}
         onClose={() => setIsPaymentInfoOpen(false)}
@@ -172,7 +172,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         onCurrencySelect={setSelectedCurrency}
         amount="15.095 USDT"
         exchangeRate="85.49 USDT"
-        commission="20 сек"
+        commission={t('qrScanner.commissionSeconds', { value: 20 })}
         onPayment={handlePayment}
       />
     </>

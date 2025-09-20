@@ -9,13 +9,13 @@ import TransferIcon from "@/assets/icons/transfer.svg?react";
 export const MOCK_TRANSACTIONS: TransactionGroup[] = [
   {
     id: 1,
-    date: "26 Октября",
+    date: "history.dates.oct26",
     items: [
       {
         id: 101,
         icon: <VkusvillIcon />,
-        title: "ВкусВилл",
-        category: "Продукты",
+        title: "history.transactions.vkusvill",
+        category: "history.categories.groceries",
         amount: "-110 323.99 ₽",
         amountUsd: "-1 290.49 USDT",
         type: "expense",
@@ -24,8 +24,8 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       {
         id: 102,
         icon: <ShopIcon />,
-        title: "Неопознанный магазин",
-        category: "Покупка",
+        title: "history.transactions.unknownShop",
+        category: "history.categories.purchase",
         amount: "-110 323.99 ₽",
         amountUsd: "-1 290.49 USDT",
         type: "expense",
@@ -34,8 +34,8 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       {
         id: 103,
         icon: <DepositIcon />,
-        title: "Пополнение с карты",
-        category: "Пополнение",
+        title: "history.transactions.depositCard",
+        category: "history.categories.deposit",
         amount: "+110 323.99 ₽",
         type: "income",
         status: "pending",
@@ -44,13 +44,13 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
   },
   {
     id: 2,
-    date: "25 Октября",
+    date: "history.dates.oct25",
     items: [
       {
         id: 201,
         icon: <MvideoIcon />,
-        title: "М.Видео",
-        category: "Электроника",
+        title: "history.transactions.mvideo",
+        category: "history.categories.electronics",
         amount: "-110 323.99 ₽",
         amountUsd: "-1 290.49 USDT",
         type: "expense",
@@ -59,8 +59,8 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       {
         id: 202,
         icon: <DepositIcon />,
-        title: "Поступление на кошелек",
-        category: "Пополнение",
+        title: "history.transactions.walletDeposit",
+        category: "history.categories.deposit",
         amount: "+110 323.99 USDT",
         type: "income",
         status: "warning",
@@ -68,8 +68,8 @@ export const MOCK_TRANSACTIONS: TransactionGroup[] = [
       {
         id: 203,
         icon: <TransferIcon />,
-        title: "Перевод USDT TRC20",
-        category: "Перевод",
+        title: "history.transactions.usdtTransfer",
+        category: "history.categories.transfer",
         amount: "-1 290.99 USDT",
         type: "expense",
         status: "completed",

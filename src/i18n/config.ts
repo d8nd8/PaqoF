@@ -2,19 +2,28 @@ import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
 import en from './translations/en/translation.json'
+import ru from './translations/ru/translation.json'
 
-i18next.use(initReactI18next).init({
-  lng: 'en', // if you're using a language detector, do not define the lng option
-  debug: import.meta.env.MODE !== 'production' && import.meta.env.VITE_DEBUG !== 'false',
-  resources: {
-    en: {
-      key: 'en',
-      translation: en,
+i18next
+  .use(initReactI18next)
+  .init({
+    lng: localStorage.getItem('lang') || 'en',
+    fallbackLng: 'en',
+    debug: true,
+    resources: {
+      en: { translation: en },
+      ru: { translation: ru },
     },
-  },
-  // if you see an error like: "Argument of type 'DefaultTFuncReturn' is not assignable to parameter of type xyz"
-  // set returnNull to false (and also in the i18next.d.ts options)
-  // returnNull: false,
+    defaultNS: 'translation',
+    interpolation: {
+      escapeValue: false,
+    },
+    returnNull: false,
+  })
+
+
+i18next.on('languageChanged', (lng) => {
+  localStorage.setItem('lang', lng)
 })
 
 export { i18next as i18n }

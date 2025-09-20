@@ -39,6 +39,7 @@ import QRPayIcon from "@icons/qr.svg?react";
 
 import HistoryWidget from "@/widgets/history-widget/HistoryWidget";
 import { ActionItem } from "@/shared/components/ActionItem/ActionItem";
+import { useTranslation } from "react-i18next";
 
 interface CurrencyWidgetProps {
   symbol: string;
@@ -116,6 +117,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
                                                               }) => {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const data = CURRENCY_DATA[symbol] || CURRENCY_DATA["USDT"];
 
@@ -142,7 +144,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
           {copied && (
             <CopyNotification>
               <CheckIcon />
-              Адрес скопирован
+              {t("currency.copyNotification")}
             </CopyNotification>
           )}
           <BalanceSection>
@@ -155,19 +157,19 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
         <ActionsRow>
           <ActionItem
             icon={<PlusCircleIcon />}
-            label="Пополнить"
+            label={t("currency.actions.topUp")}
             onClick={onTopUp}
             variant="secondary"
           />
           <ActionItem
             icon={<SendIcon />}
-            label="Отправить"
+            label={t("currency.actions.send")}
             onClick={onSend}
             variant="secondary"
           />
           <ActionItem
             icon={<QRPayIcon />}
-            label="Оплатить"
+            label={t("currency.actions.pay")}
             onClick={onShowScanner}
             variant="secondary"
           />
@@ -193,7 +195,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
                   </CopyGroup>
                 </ChainRow>
                 <ChainAddress>{chain.address}</ChainAddress>
-                <ChainFee>Комиссия: {chain.fee}</ChainFee>
+                <ChainFee>{t("currency.fee", { value: chain.fee })}</ChainFee>
               </ChainContent>
             </ChainTypeCard>
           ))}

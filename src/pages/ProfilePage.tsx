@@ -5,7 +5,7 @@ import { useAppNavigation } from '@/shared/hooks/useAppNavigation'
 
 
 export const ProfilePage: React.FC = () => {
-  const { goToReferral, goToInfo, goToAccounts, goToLang,goToSecurity } = useAppNavigation();
+  const { goToReferral, goToInfo, goToAccounts, goToLang,goToSecurity, goToKyc, goToFaq } = useAppNavigation();
 
   return (
     <BaseLayout showNavbar>
@@ -17,6 +17,8 @@ export const ProfilePage: React.FC = () => {
         onOfficialClick={goToAccounts}
         onLanguageClick={goToLang}
         onSecurityClick={goToSecurity}
+        onKycClick={goToKyc}
+        onFaqClick={goToFaq}
       />
     </BaseLayout>
   );

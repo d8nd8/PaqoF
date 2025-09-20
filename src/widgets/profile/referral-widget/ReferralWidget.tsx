@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 добавили
+import { useNavigate } from "react-router-dom";
 import RefBackTab from "../refback-tab/RefBackTab";
 import * as S from "./ReferralWidget.styled";
 import { Switcher, type SwitcherOption } from "@/shared/components/Switcher/Switcher";
@@ -9,6 +9,7 @@ import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 import InfoIcon from "@/assets/icons/profile/information-circle.svg?react";
 import { PakogochiTab } from "@/widgets/profile/pakogochi-tab/PakogochiTab";
 import { InfoOverlay } from "@/features/profile/info-overlay/InfoOverlay";
+import { useTranslation } from "react-i18next";
 
 type TabType = "pakogochi" | "refback";
 
@@ -32,7 +33,7 @@ type Props = {
   maxExperience?: number;
   upgradeAmount?: string;
   upgradeText?: string;
-  onBack?: () => void; // пробрасывается сверху
+  onBack?: () => void;
   onInfo?: () => void;
   onWithdraw?: () => void;
   onCopyCode?: (text: string) => void;
@@ -40,32 +41,12 @@ type Props = {
   initialTab?: TabType;
 };
 
-const switcherOptions: SwitcherOption[] = [
-  { key: "pakogochi", label: "Пакогочи" },
-  { key: "refback", label: "Рефбэк" },
-];
-
 const levelBackgrounds = {
   1: "linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
   2: "linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
   3: "linear-gradient(225deg, #BACFFF 0%, #132F55 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
   4: "linear-gradient(225deg, #FFCEBA 0%, #441355 100%)",
   5: "linear-gradient(225deg, #5E5E5E 0%, #0B0B0B 100%)",
-};
-
-const overlayConfigs = {
-  refback: {
-    title: "Выгодней с Рефбэком",
-    description:
-      "Рефбэк гарантирует 150 USDT за каждые потраченные 150 USDT вашими рефералами. Ваш рефбэк автоматически зачисляется на реферальный баланс в течение 14 дней после каждой транзакции реферала.",
-    cardColor: "linear-gradient(135deg, #FF4444 0%, #CC0000 100%)",
-  },
-  pakogochi: {
-    title: "Кто такой Пакогочи?",
-    description:
-      "Пакогочи — простой способ зарабатывать вместе с друзьями. Ваши друзья совершают покупки, а вы получаете до 50 % комиссии с их транзакций. С каждым новым уровнем Пакогочи эволюционирует, гарантируя вам ещё больший доход",
-    cardColor: "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)",
-  },
 };
 
 export const ReferralWidget: React.FC<Props> = ({
@@ -88,6 +69,8 @@ export const ReferralWidget: React.FC<Props> = ({
                                                   initialTab = "refback",
                                                 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<TabType>(initialTab);
   const [isInfoOverlayOpen, setIsInfoOverlayOpen] = useState(false);
 
@@ -95,9 +78,7 @@ export const ReferralWidget: React.FC<Props> = ({
     onOverlayStateChange?.(isInfoOverlayOpen);
   }, [isInfoOverlayOpen, onOverlayStateChange]);
 
-  const handleTabChange = (key: string) => {
-    setActiveTab(key as TabType);
-  };
+  const handleTabChange = (key: string) => setActiveTab(key as TabType);
 
   const getCurrentLevel = () => {
     if (progress >= 50) return 5;
@@ -127,21 +108,15 @@ export const ReferralWidget: React.FC<Props> = ({
     }
   };
 
-  const handleOverlayClose = () => {
-    setIsInfoOverlayOpen(false);
-  };
+  const handleOverlayClose = () => setIsInfoOverlayOpen(false);
 
   const handleBackClick = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1);
-    }
+    if (onBack) onBack();
+    else navigate(-1);
   };
 
   const currentLevel = getCurrentLevel();
   const backgroundGradient = levelBackgrounds[currentLevel as keyof typeof levelBackgrounds];
-  const currentOverlayConfig = overlayConfigs[activeTab];
 
   return (
     <>
@@ -151,7 +126,7 @@ export const ReferralWidget: React.FC<Props> = ({
             <S.BackButton onClick={handleBackClick} level={currentLevel}>
               <ChevronLeft />
             </S.BackButton>
-            <S.PageTitle level={currentLevel}>Реферальная программа</S.PageTitle>
+            <S.PageTitle level={currentLevel}>{t("referral.title")}</S.PageTitle>
             <S.InfoButton onClick={handleInfoClick} level={currentLevel}>
               <InfoIcon />
             </S.InfoButton>
@@ -159,7 +134,10 @@ export const ReferralWidget: React.FC<Props> = ({
 
           <S.SwitcherContainer>
             <Switcher
-              options={switcherOptions}
+              options={[
+                { key: "pakogochi", label: t("referral.tabs.pakogochi") },
+                { key: "refback", label: t("referral.tabs.refback") },
+              ]}
               activeKey={activeTab}
               onChange={handleTabChange}
               level={currentLevel}
@@ -169,11 +147,7 @@ export const ReferralWidget: React.FC<Props> = ({
           {activeTab === "refback" ? (
             <>
               <S.PlaceholderBox />
-              <BadgeProgress
-                progress={progress}
-                upgradeAmount={upgradeAmount}
-                upgradeText={upgradeText}
-              />
+              <BadgeProgress progress={progress} upgradeAmount={upgradeAmount} upgradeText={upgradeText} />
             </>
           ) : (
             <PakogochiDisplay level={currentLevel} progress={progress} />
@@ -203,9 +177,9 @@ export const ReferralWidget: React.FC<Props> = ({
         isOpen={isInfoOverlayOpen}
         onClose={handleOverlayClose}
         onConfirm={handleOverlayConfirm}
-        title={currentOverlayConfig.title}
-        description={currentOverlayConfig.description}
-        buttonText="Закрыть"
+        title={t(`referral.overlays.${activeTab}.title`)}
+        description={t(`referral.overlays.${activeTab}.description`)}
+        buttonText={t("referral.overlays.close")}
       />
     </>
   );

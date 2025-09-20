@@ -12,9 +12,11 @@ import QRScanner from '@/features/qr-scanner/QRScanner'
 
 import useApplicationStore from '@/shared/stores/application'
 import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
+import { useTranslation } from 'react-i18next'
 
 export const MainPage: React.FC = () => {
   const { modal, openModal, closeModal } = useApplicationStore()
+  const { t } = useTranslation()
 
   const [showDeposit, setShowDeposit] = useState(false)
   const [showWalletDeposit, setShowWalletDeposit] = useState<WalletDepositMode | null>(null)
@@ -103,9 +105,9 @@ export const MainPage: React.FC = () => {
       <OverlayCommission
         isOpen={showCommission}
         onClose={() => setShowCommission(false)}
-        title="Почему комиссия?"
-        description="Комиссия списывается для покрытия расходов на сеть. Она фиксирована и отображается перед отправкой."
-        buttonText="Понятно"
+        title={t('main.overlays.commission.title')}
+        description={t('main.overlays.commission.description')}
+        buttonText={t('main.overlays.commission.button')}
       />
 
       <QRScanner

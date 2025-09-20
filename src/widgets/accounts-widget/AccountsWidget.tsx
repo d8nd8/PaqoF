@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   InfoWrapper,
@@ -23,13 +24,11 @@ import VkIcon from "@/assets/icons/vk-icon.svg?react";
 import InstagramIcon from "@/assets/icons/instagram-icon.svg?react";
 import XIcon from "@/assets/icons/x-icon.svg?react";
 
-const safeText = (text: string) => text.split("").join("\u200B");
-
 const accounts = [
-  { id: "telegram", title: safeText("Telegram"), icon: <TelegramIcon /> },
-  { id: "vk", title: safeText("VK"), icon: <VkIcon /> },
-  { id: "instagram", title: safeText("Instagram"), icon: <InstagramIcon /> },
-  { id: "x", title: safeText("X"), icon: <XIcon /> },
+  { id: "telegram", icon: <TelegramIcon /> },
+  { id: "vk", icon: <VkIcon /> },
+  { id: "instagram", icon: <InstagramIcon /> },
+  { id: "x", icon: <XIcon /> },
 ];
 
 type Props = {
@@ -38,6 +37,7 @@ type Props = {
 
 export const AccountsWidget: React.FC<Props> = ({ onBack }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = (id: string) => {
     console.log("Открыть аккаунт:", id);
@@ -57,7 +57,7 @@ export const AccountsWidget: React.FC<Props> = ({ onBack }) => {
         <BackButton onClick={handleBack}>
           <ChevronLeft />
         </BackButton>
-        <Title>Официальные аккаунты</Title>
+        <Title>{t("accounts.title")}</Title>
       </Header>
 
       <AccountsList>
@@ -65,7 +65,7 @@ export const AccountsWidget: React.FC<Props> = ({ onBack }) => {
           <AccountItem key={acc.id} onClick={() => handleClick(acc.id)}>
             <AccountContent>
               <AccountIcon>{acc.icon}</AccountIcon>
-              <AccountTitle>{acc.title}</AccountTitle>
+              <AccountTitle>{t(`accounts.list.${acc.id}`)}</AccountTitle>
             </AccountContent>
             <ChevronRight size={18} strokeWidth={1.5} />
           </AccountItem>

@@ -13,6 +13,8 @@ import TronIcon from "@/assets/icons/tron-icon.svg?url";
 import TonIcon from "@/assets/icons/ton-icon.svg?url";
 import BtcIcon from "@/assets/icons/bitcoin-icon.svg?url";
 
+import { useTranslation } from "react-i18next";
+
 interface WalletAddressOverlayProps {
   isOpen: boolean;
   onClose: () => void;
@@ -39,6 +41,7 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
                                                                             commission,
                                                                             onCommissionClick,
                                                                           }) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
@@ -59,11 +62,15 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
         <S.BackButton onClick={onClose}>
           <BackIcon />
         </S.BackButton>
-        <S.Title>Пополнение {cryptoName}</S.Title>
+        <S.Title>
+          {t("currency.overlays.walletAddress.title", { crypto: cryptoName })}
+        </S.Title>
       </S.Header>
 
       <S.Content>
-        <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
+        <S.SectionTitle>
+          {t("currency.overlays.walletAddress.sectionTitle")}
+        </S.SectionTitle>
 
         <S.QRCard>
           <QRCodeSVG
@@ -78,7 +85,10 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
           />
 
           <S.AddressLabel>
-            Ваш адрес {cryptoName} {network}
+            {t("currency.overlays.walletAddress.addressLabel", {
+              crypto: cryptoName,
+              network,
+            })}
           </S.AddressLabel>
 
           <S.AddressRow>
@@ -89,16 +99,22 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
           </S.AddressRow>
 
           <S.AddressHint>
-            Данный адрес предназначен только для получения {cryptoName} в сети{" "}
-            {network}. Отправка через другие сети приведёт к безвозвратной потере активов!
+            {t("currency.overlays.walletAddress.addressHint", {
+              crypto: cryptoName,
+              network,
+            })}
           </S.AddressHint>
 
           <S.CommissionButton onClick={onCommissionClick}>
             <div className="left">
               <ExclamationIcon className="icon" />
-              <span>
-                Фиксированная комиссия <strong>{commission}</strong>
-              </span>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t("currency.overlays.walletAddress.commission", {
+                    value: commission,
+                  }),
+                }}
+              />
             </div>
             <ChevronRightIcon className="chevron" />
           </S.CommissionButton>
@@ -106,16 +122,22 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
           {copied && (
             <S.CopyNotification>
               <CheckIcon />
-              Адрес скопирован
+              {t("currency.overlays.walletAddress.copied")}
             </S.CopyNotification>
           )}
         </S.QRCard>
       </S.Content>
 
       <S.BottomActions>
-        <S.MainButton onClick={handleCopy}>Копировать адрес</S.MainButton>
-        <S.SecondaryButton onClick={onClose}>На главную</S.SecondaryButton>
+        <S.MainButton onClick={handleCopy}>
+          {t("currency.overlays.walletAddress.buttons.copy")}
+        </S.MainButton>
+        <S.SecondaryButton onClick={onClose}>
+          {t("currency.overlays.walletAddress.buttons.home")}
+        </S.SecondaryButton>
       </S.BottomActions>
     </S.OverlayWrapper>
   );
 };
+
+export default WalletAddressOverlay;

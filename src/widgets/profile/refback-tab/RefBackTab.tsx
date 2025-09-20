@@ -1,13 +1,14 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 import PayoutsCard from "@/features/profile/payouts-card";
 import ReferralCodes from "@/features/profile/referral-codes";
-import type { ReferralItemData } from '@/features/referral-list/ReferralItem';
-import { ReferralList } from '@/features/referral-list/ReferralList'
+import type { ReferralItemData } from "@/features/referral-list/ReferralItem";
+import { ReferralList } from "@/features/referral-list/ReferralList";
 
-import { RefBackWrapper } from './RefBackTab.styled';
+import { RefBackWrapper } from "./RefBackTab.styled";
 
 import avatar1 from "@/assets/images/avatar1.png";
-
 
 type ReferralData = {
   id: string;
@@ -35,54 +36,56 @@ export const RefBackTab: React.FC<Props> = ({
                                               referralCode = "dko777ka",
                                               referralLink = "https://t.me/papagowallet",
                                               referrals = [
-    {
-      id: "1",
-      username: "@curlyhunter",
-      avatar: avatar1,
-      earnings: "+100.00000 USDT",
-    },
-    {
-      id: "2",
-      username: "@curlypaster",
-      avatar: avatar1,
-      earnings: "+45 USDT",
-    },
-    {
-      id: "3",
-      username: "@oscar",
-      avatar: avatar1,
-      earnings: "+45 USDT",
-    },
-    {
-      id: "4",
-      username: "@valerysmolenka",
-      avatar: avatar1,
-      earnings: "+5 USDT",
-    },
-  ],
+                                                {
+                                                  id: "1",
+                                                  username: "@curlyhunter",
+                                                  avatar: avatar1,
+                                                  earnings: "+100.00000 USDT",
+                                                },
+                                                {
+                                                  id: "2",
+                                                  username: "@curlypaster",
+                                                  avatar: avatar1,
+                                                  earnings: "+45 USDT",
+                                                },
+                                                {
+                                                  id: "3",
+                                                  username: "@oscar",
+                                                  avatar: avatar1,
+                                                  earnings: "+45 USDT",
+                                                },
+                                                {
+                                                  id: "4",
+                                                  username: "@valerysmolenka",
+                                                  avatar: avatar1,
+                                                  earnings: "+5 USDT",
+                                                },
+                                              ],
                                               referralsCount = 105,
                                               onWithdraw,
                                               onCopyCode,
                                               onReferralClick,
                                             }) => {
+  const { t } = useTranslation();
+
   const referralItemsData: ReferralItemData[] = referrals.map((referral, index) => {
     const progressValues = [90, 50, 20, 0];
     return {
       ...referral,
       level: Math.floor(Math.random() * 20) + 1,
-      progress: progressValues[index] || Math.floor(Math.random() * 100)
+      progress: progressValues[index] || Math.floor(Math.random() * 100),
     };
   });
 
   return (
     <RefBackWrapper>
       <PayoutsCard
-        title="Вывод"
-        description="Рефбэк автоматически поступит на ваш реферальный баланс в течение 14 дней после каждой транзакции, совершённой рефералом."
+        title={t("referral.payouts.title")}
+        description={t("referral.payouts.description")}
         balance={balance}
         balanceUSD={balanceUSD}
         currency="USDT"
-        withdrawButtonText="Вывод"
+        withdrawButtonText={t("referral.payouts.withdraw")}
         minWithdrawAmount={5}
         onWithdraw={onWithdraw}
       />
@@ -96,7 +99,7 @@ export const RefBackTab: React.FC<Props> = ({
       <ReferralList
         referrals={referralItemsData}
         referralsCount={referralsCount}
-        title="Рефералы"
+        title={t("referral.list.title")}
         showLevel={false}
         onReferralClick={onReferralClick}
       />

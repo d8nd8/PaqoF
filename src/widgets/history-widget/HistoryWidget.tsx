@@ -30,11 +30,12 @@ import useApplicationStore from "@/shared/stores/application";
 
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
+import { useTranslation } from "react-i18next";
 
 const TABS = [
-  { id: "all", label: "Все" },
-  { id: "payment", label: "Оплата" },
-  { id: "deposit", label: "Пополнения" },
+  { id: "all", token: "history.tabs.all" },
+  { id: "payment", token: "history.tabs.payment" },
+  { id: "deposit", token: "history.tabs.deposit" },
 ];
 
 interface HistoryWidgetProps {
@@ -47,6 +48,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
   const [selectedTx, setSelectedTx] = useState<TransactionData | null>(null);
 
   const { openModal, closeModal } = useApplicationStore();
+  const { t } = useTranslation();
 
   const handleCardClick = (tx: any) => {
     const mapped = mapTransactionToDetails(tx);
@@ -97,7 +99,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
   return (
     <HistoryWrapper $variant={variant}>
       <Header>
-        <Title $variant={variant}>История транзакций</Title>
+        <Title $variant={variant}>{t("history.title")}</Title>
         <Tabs>
           {TABS.map((tab) => (
             <TabButton
@@ -105,7 +107,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
               $active={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id)}
             >
-              {tab.label}
+              {t(tab.token)}
             </TabButton>
           ))}
         </Tabs>
@@ -122,7 +124,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
         return (
           <div key={group.id}>
             <DateHeader>
-              <DateTitle>{group.date}</DateTitle>
+              <DateTitle>{t(group.date)}</DateTitle>
               <DateTotalWrapper>
                 <DateTotalMain>
                   {total >= 0 ? "+" : "−"} {Math.abs(total).toLocaleString("ru-RU")} ₽
@@ -139,13 +141,21 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
                   <TransactionLeft>
                     <IconCircle>{tx.icon}</IconCircle>
                     <TransactionInfo>
-                      <TransactionTitle>{truncateText(tx.title, 20)}</TransactionTitle>
-                      <TransactionCategory>{tx.category}</TransactionCategory>
+                      <TransactionTitle>
+                        {truncateText(t(tx.title), 20)}
+                      </TransactionTitle>
+                      <TransactionCategory>{t(tx.category)}</TransactionCategory>
                     </TransactionInfo>
                   </TransactionLeft>
                   <TransactionRight>
-                    <Amount type={tx.type}>{renderStatusIcon(tx)} {tx.amount}</Amount>
-                    {tx.amountUsd && <Amount type={tx.type} secondary>{tx.amountUsd}</Amount>}
+                    <Amount type={tx.type}>
+                      {renderStatusIcon(tx)} {tx.amount}
+                    </Amount>
+                    {tx.amountUsd && (
+                      <Amount type={tx.type} secondary>
+                        {tx.amountUsd}
+                      </Amount>
+                    )}
                   </TransactionRight>
                 </TransactionItem>
               ))}

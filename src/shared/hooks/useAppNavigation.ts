@@ -44,10 +44,19 @@ export const useAppNavigation = () => {
     navigate(ROUTES.SECURITY)
   }
 
+  const goToKyc=() =>{
+    navigate(ROUTES.KYC)
+  }
+
+  const goToFaq= () => {
+    navigate(ROUTES.FAQ)
+  }
+
 
 
   return {
     goTo,
+    goToFaq,
     goToAccounts,
     goToSecurity,
     goToLang,
@@ -56,6 +65,7 @@ export const useAppNavigation = () => {
     goToMain,
     goToProfile,
     goToReferral,
-    goToInfo
+    goToInfo,
+    goToKyc
   };
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet';
 import WhyCommissionImage from '@images/why-comission.webp';
 import * as S from './OverlayCommission.styled';
+import { useTranslation } from 'react-i18next';
 
 export interface OverlayCommissionProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ export const OverlayCommission: React.FC<OverlayCommissionProps> = ({
                                                                       onButtonClick,
                                                                       image = WhyCommissionImage,
                                                                     }) => {
+  const { t } = useTranslation();
+
   const handleButtonClick = () => {
     if (onButtonClick) {
       onButtonClick();
@@ -38,7 +41,7 @@ export const OverlayCommission: React.FC<OverlayCommissionProps> = ({
       showBottomButton={true}
       bottomButtonText={buttonText}
       onBottomButtonClick={handleButtonClick}
-      closeButtonText="Закрыть"
+      closeButtonText={t('common.close')}
     >
       <S.OverlayCommissionContent>
         <S.ImageContainer>

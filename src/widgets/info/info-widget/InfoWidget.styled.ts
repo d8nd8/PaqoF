@@ -48,14 +48,14 @@ export const Title = styled.h2(({ theme }) => ({
 }));
 
 export const SectionTitle = styled.p(({ theme }) => ({
-  fontFamily: "Inter, sans-serif",
+  fontFamily: theme.typography.fontFamily,
   fontSize: "15px",
   lineHeight: "20px",
   fontWeight: theme.typography.fontWeight.normal,
   letterSpacing: "-0.23px",
   color: theme.colors.textSecondary,
   margin: "0 0 8px 0",
-  paddingLeft: "16px",
+  paddingLeft: theme.spacing.lg,
 }));
 
 export const InfoList = styled.div(({ theme }) => ({

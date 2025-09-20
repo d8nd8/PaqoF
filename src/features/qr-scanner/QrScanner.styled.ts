@@ -33,7 +33,6 @@ export const CameraFeed = styled.div({
   height: '100%',
 
   '&::after': {
-    content: '"Предпросмотр камеры (тестовый фон)"',
     position: 'absolute',
     left: '50%',
     top: '50%',

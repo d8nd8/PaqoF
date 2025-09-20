@@ -214,4 +214,8 @@ export const MainButton = styled.button<{ disabled?: boolean }>(({ theme, disabl
   lineHeight: "20px",
   cursor: disabled ? "not-allowed" : "pointer",
   opacity: disabled ? 0.7 : 1,
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }));

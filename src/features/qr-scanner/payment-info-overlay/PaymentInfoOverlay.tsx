@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet';
 import QrCodeScannerImage from '@images/scanner/qr-code-scanner.png';
 import * as S from './PaymentInfoOverlay.styled';
+import { useTranslation } from 'react-i18next';
 
 export interface OverlayScannerProps {
   isOpen: boolean;
@@ -16,14 +16,16 @@ export interface OverlayScannerProps {
 }
 
 export const PaymentInfoOverlay: React.FC<OverlayScannerProps> = ({
-                                                                isOpen,
-                                                                onClose,
-                                                                title = 'По СБП в любом месте',
-                                                                description = 'На кассе или на сайте наведите камеру на СБП QR-код и произведите оплату в считанные секунды',
-                                                                buttonText = 'Приступить к сканированию',
-                                                                onButtonClick,
-                                                                image = QrCodeScannerImage,
-                                                              }) => {
+                                                                    isOpen,
+                                                                    onClose,
+                                                                    title,
+                                                                    description,
+                                                                    buttonText,
+                                                                    onButtonClick,
+                                                                    image = QrCodeScannerImage,
+                                                                  }) => {
+  const { t } = useTranslation();
+
   const handleButtonClick = () => {
     if (onButtonClick) {
       onButtonClick();
@@ -37,21 +39,28 @@ export const PaymentInfoOverlay: React.FC<OverlayScannerProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       showBottomButton={true}
-      bottomButtonText={buttonText}
+      bottomButtonText={buttonText || t('qrScanner.info.button')}
       onBottomButtonClick={handleButtonClick}
-      closeButtonText="Закрыть"
+      closeButtonText={t('qrScanner.info.close')}
       showHeader
       background={'#121218'}
       closeButtonColor={'#FFFFFF'}
     >
       <S.OverlayScannerContent>
         <S.ImageContainer>
-          <S.ScannerImage src={image} alt={title} />
+          <S.ScannerImage
+            src={image}
+            alt={title || t('qrScanner.info.title')}
+          />
         </S.ImageContainer>
 
         <S.TextSection>
-          <S.ScannerTitle>{title}</S.ScannerTitle>
-          <S.ScannerDescription>{description}</S.ScannerDescription>
+          <S.ScannerTitle>
+            {title || t('qrScanner.info.title')}
+          </S.ScannerTitle>
+          <S.ScannerDescription>
+            {description || t('qrScanner.info.description')}
+          </S.ScannerDescription>
         </S.TextSection>
       </S.OverlayScannerContent>
     </BottomSheet>

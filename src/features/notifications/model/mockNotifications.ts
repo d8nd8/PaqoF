@@ -13,22 +13,21 @@ export interface NotificationProps {
   onClick?: (id: string) => void;
 }
 
-
 export const mockNotifications: NotificationProps[] = [
   {
     id: '1',
-    title: 'Вкусный партнёр сервиса',
-    description: 'Кошелёк + ВкусВилл = бонусы, скидки и приятные сюрпризы...',
-    date: '26 Октября',
+    title: 'notifications.list.partner.title',
+    description: 'notifications.list.partner.description',
+    date: 'notifications.dates.oct26',
     isRead: false,
     imageUrl: VkusvillImage,
     detailImageUrl: VkusvillDetailedImage,
   },
   {
     id: '2',
-    title: 'Время приглашать друзей!',
-    description: 'У нас теперь есть реферальная программа...',
-    date: '5 Мая',
+    title: 'notifications.list.referral.title',
+    description: 'notifications.list.referral.description',
+    date: 'notifications.dates.may5',
     isRead: true,
     imageUrl: ReferralImage,
     detailImageUrl: VkusvillDetailedImage,

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import * as S from './BalanceInformation.styled';
 
-import EyeOpenIcon from '@icons/eye.svg?react'
-import EyeClosedIcon from '@icons/close-eye.svg?react'
-import PlusCircleIcon from '@icons/plus-circle.svg?react'
-import SendIcon from '@icons/send.svg?react'
-import QRIcon from '@icons/qr.svg?react'
-import NotificationIcon from '@icons/notification.svg?react'
-import { ActionItem } from '@/shared/components/ActionItem/ActionItem'
-
+import EyeOpenIcon from '@icons/eye.svg?react';
+import EyeClosedIcon from '@icons/close-eye.svg?react';
+import PlusCircleIcon from '@icons/plus-circle.svg?react';
+import SendIcon from '@icons/send.svg?react';
+import QRIcon from '@icons/qr.svg?react';
+import NotificationIcon from '@icons/notification.svg?react';
+import { ActionItem } from '@/shared/components/ActionItem/ActionItem';
+import { useTranslation } from 'react-i18next';
 
 interface BalanceCardProps {
   avatarUrl?: string;
@@ -27,7 +27,7 @@ interface BalanceCardProps {
 export const BalanceCard: React.FC<BalanceCardProps> = ({
                                                           avatarUrl = '',
                                                           username = '',
-                                                          greeting = 'Добрый день!',
+                                                          greeting,
                                                           hasNotifications = false,
                                                           balance,
                                                           currency = '₽',
@@ -38,6 +38,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
                                                           onNotificationsClick
                                                         }) => {
   const [isVisible, setIsVisible] = useState(initialVisibility);
+  const { t } = useTranslation();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -55,7 +56,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
         <S.UserInfo>
           <S.Avatar src={avatarUrl} alt={username} />
           <S.UserText>
-            <S.Greeting>{greeting}</S.Greeting>
+            <S.Greeting>{greeting || t('main.greeting')}</S.Greeting>
             <S.Username>@{username}</S.Username>
           </S.UserText>
         </S.UserInfo>
@@ -66,7 +67,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       </S.TopRow>
 
       <S.BalanceHeader>
-        <S.BalanceTitle>Доступный баланс</S.BalanceTitle>
+        <S.BalanceTitle>{t('main.balanceTitle')}</S.BalanceTitle>
         <S.EyeButton onClick={toggleVisibility}>
           {isVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
         </S.EyeButton>
@@ -86,9 +87,21 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       )}
 
       <S.ActionButtons>
-        <ActionItem icon={<PlusCircleIcon />} label="Пополнить" onClick={onTopUp} />
-        <ActionItem icon={<SendIcon />} label="Отправить" onClick={onSend} />
-        <ActionItem icon={<QRIcon />} label="Оплатить" onClick={onPay} />
+        <ActionItem
+          icon={<PlusCircleIcon />}
+          label={t('main.actions.topUp')}
+          onClick={onTopUp}
+        />
+        <ActionItem
+          icon={<SendIcon />}
+          label={t('main.actions.send')}
+          onClick={onSend}
+        />
+        <ActionItem
+          icon={<QRIcon />}
+          label={t('main.actions.pay')}
+          onClick={onPay}
+        />
       </S.ActionButtons>
     </S.BalanceCardContainer>
   );

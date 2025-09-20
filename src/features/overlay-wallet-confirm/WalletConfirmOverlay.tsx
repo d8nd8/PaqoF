@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import * as S from "./WalletConfirmOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
@@ -28,6 +29,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
                                                                             total,
                                                                             balanceAfter,
                                                                           }) => {
+  const { t } = useTranslation();
   const [comment, setComment] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [showSuccess, setShowSuccess] = React.useState(false);
@@ -41,7 +43,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
         setComment(text);
       }
     } catch (err) {
-      console.error("Ошибка при чтении буфера обмена:", err);
+      console.error("Clipboard read error:", err);
     }
   };
 
@@ -60,14 +62,16 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
           <S.BackButton onClick={onClose}>
             <BackIcon />
           </S.BackButton>
-          <S.Title>Перевод</S.Title>
+          <S.Title>{t("currency.overlays.confirm.title")}</S.Title>
         </S.Header>
 
         <S.Content>
           <S.Card>
-            <S.CardTitle>Сумма к отправке</S.CardTitle>
+            <S.CardTitle>{t("currency.overlays.confirm.amount.title")}</S.CardTitle>
             <S.AmountRow>
-              <S.AmountValue>{amount} USDT</S.AmountValue>
+              <S.AmountValue>
+                {amount} {crypto.symbol}
+              </S.AmountValue>
             </S.AmountRow>
             <S.AmountSub>{amountFiat}</S.AmountSub>
           </S.Card>
@@ -76,29 +80,31 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
             <S.AddressInput
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Комментарий, тег или memo"
+              placeholder={t("currency.overlays.confirm.comment.placeholder")}
             />
-            <S.InsertButton onClick={handlePaste}>Вставить</S.InsertButton>
+            <S.InsertButton onClick={handlePaste}>
+              {t("currency.overlays.confirm.comment.paste")}
+            </S.InsertButton>
           </S.InputWrapper>
 
           <S.Card>
             <div>
-              <S.CardLabel>Адрес получателя</S.CardLabel>
+              <S.CardLabel>{t("currency.overlays.confirm.recipient")}</S.CardLabel>
               <S.AddressValue>{address}</S.AddressValue>
             </div>
 
             <div>
-              <S.CardLabel>Комиссия</S.CardLabel>
+              <S.CardLabel>{t("currency.overlays.confirm.commission.label")}</S.CardLabel>
               <S.InfoText>{commission}</S.InfoText>
             </div>
 
             <div>
-              <S.CardLabel>Итого к оплате</S.CardLabel>
+              <S.CardLabel>{t("currency.overlays.confirm.total.label")}</S.CardLabel>
               <S.InfoText isTotal>{total}</S.InfoText>
             </div>
           </S.Card>
 
-          <S.SectionTitle>Баланс после отправки</S.SectionTitle>
+          <S.SectionTitle>{t("currency.overlays.confirm.balanceAfter")}</S.SectionTitle>
           <CryptoItem
             data={{ ...crypto, amount: balanceAfter }}
             showRightSection={false}
@@ -107,7 +113,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
 
         <S.BottomSection>
           <S.MainButton onClick={handleConfirm} disabled={loading}>
-            {loading ? <S.Spinner /> : "Подтвердить и отправить"}
+            {loading ? <S.Spinner /> : t("currency.overlays.confirm.confirmButton")}
           </S.MainButton>
         </S.BottomSection>
       </S.OverlayWrapper>

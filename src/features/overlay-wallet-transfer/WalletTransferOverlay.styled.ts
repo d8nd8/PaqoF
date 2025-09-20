@@ -199,7 +199,7 @@ export const ErrorMessage = styled.div(({ theme }) => ({
   marginTop: "6px",
   fontSize: "13px",
   lineHeight: "18px",
-  color: theme.colors.error500,
+  color: `${theme.colors.error500} !important`,
 }));
 
 

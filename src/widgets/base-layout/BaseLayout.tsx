@@ -8,6 +8,7 @@ import { WrapperPage } from "./BaseLayout.styled";
 import { type IBaseLayoutProps, NavbarItems, type NavbarItemState } from "./BaseLayout.types";
 import { useSafeAreaInsets } from "@/shared/hooks/useSafeAreaInsets";
 import QRScanner from "@/features/qr-scanner/QRScanner";
+import { useTranslation } from "react-i18next";
 
 const BaseLayout = ({
                       children,
@@ -23,6 +24,7 @@ const BaseLayout = ({
   const navigate = useNavigate();
   const { top, bottom } = useSafeAreaInsets();
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const { t } = useTranslation();
 
   const isModalOpened = useMemo(() => modal !== null, [modal]);
 
@@ -35,9 +37,13 @@ const BaseLayout = ({
       if (item.id === "bonus" && location.pathname.startsWith("/bonus")) state = "active";
       if (item.id === "profile" && location.pathname.startsWith("/profile")) state = "active";
 
-      return { ...item, state };
+      return {
+        ...item,
+        label: item.label ? t(item.label) : "",
+        state,
+      };
     });
-  }, [location.pathname]);
+  }, [location.pathname, t]);
 
   const transitions = useTransition(location, {
     from: { opacity: 0 },
@@ -68,7 +74,7 @@ const BaseLayout = ({
         navigate("/profile");
         break;
       default:
-        console.warn(`Неизвестный пункт меню: ${itemId}`);
+        console.warn(t("common.unknownNavItem", { id: itemId }));
     }
   };
 
@@ -77,8 +83,7 @@ const BaseLayout = ({
   };
 
   const handlePay = (qrValue: string): void => {
-    console.log("QR-код для оплаты:", qrValue);
-    // Тут можно добавить отправку запроса или навигацию
+    console.log("QR-code for payment:", qrValue);
     setIsScannerOpen(false);
   };
 

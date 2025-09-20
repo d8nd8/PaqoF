@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from './ReferralCodes.styled';
 import { Input } from '@/shared/components/Input'
 import CopyIcon from '@/assets/icons/profile/copy-outline.svg?react';
-
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   referralCode?: string;
@@ -17,6 +17,8 @@ export const ReferralCodes: React.FC<Props> = ({
                                                  onCopyCode,
                                                  className
                                                }) => {
+  const { t } = useTranslation();
+
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     onCopyCode?.(text);
@@ -25,7 +27,7 @@ export const ReferralCodes: React.FC<Props> = ({
   return (
     <S.CodesSection className={className}>
       <Input
-        label="Реферальный код"
+        label={t('referral.codes.code')}
         value={referralCode}
         readOnly
         rightIcon={<CopyIcon />}
@@ -33,7 +35,7 @@ export const ReferralCodes: React.FC<Props> = ({
       />
 
       <Input
-        label="Реферальная ссылка"
+        label={t('referral.codes.link')}
         value={referralLink}
         readOnly
         rightIcon={<CopyIcon />}

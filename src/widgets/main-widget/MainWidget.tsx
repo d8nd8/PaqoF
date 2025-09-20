@@ -46,7 +46,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
                                                         onPay,
                                                         onNotifications,
                                                       }) => {
-  const navigate = useNavigate(); // 👈 подключаем навигацию
+  const navigate = useNavigate();
 
   return (
     <S.Wrapper>

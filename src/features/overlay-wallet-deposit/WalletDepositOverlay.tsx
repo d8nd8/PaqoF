@@ -1,4 +1,4 @@
-import React, { type JSX, useState } from 'react'
+import React, { type JSX, useState } from 'react';
 import * as S from "./WalletDepositOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
@@ -12,6 +12,7 @@ import BtcIcon from "@/assets/icons/bitcoin-icon.svg?react";
 
 import { OverlayCryptoSelection } from "@/features/overlay-crypto-selection/OverlayCryptoSelection";
 import { type CryptoItemData } from "@/features/crypto-list/CryptoList";
+import { useTranslation } from "react-i18next";
 
 export type WalletDepositMode = "deposit" | "transfer";
 
@@ -28,7 +29,6 @@ interface WalletDepositOverlayProps {
   preselectedCrypto?: CryptoItemData | null;
 }
 
-
 const ICON_MAP: Record<string, JSX.Element> = {
   USDT: <TetherIcon width={38} height={38} />,
   TON: <TonIcon width={38} height={38} />,
@@ -43,8 +43,9 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
                                                                             mode = "deposit",
                                                                             preselectedCrypto,
                                                                           }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState("TRC20");
+  const { t } = useTranslation();
 
+  const [selectedNetwork, setSelectedNetwork] = useState("TRC20");
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData>(
     preselectedCrypto || {
       id: "usdt-1",
@@ -55,7 +56,6 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
       iconColor: "#26A17B",
     }
   );
-
   const [showCryptoSelection, setShowCryptoSelection] = useState(false);
 
   const cryptoOptions: CryptoItemData[] = [
@@ -93,8 +93,8 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     }
   };
 
-
-  const renderIcon = (symbol: string) => ICON_MAP[symbol] || <TetherIcon width={38} height={38} />;
+  const renderIcon = (symbol: string) =>
+    ICON_MAP[symbol] || <TetherIcon width={38} height={38} />;
 
   return (
     <>
@@ -104,14 +104,17 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             <BackIcon />
           </S.BackButton>
           <S.Title>
-            {title || (mode === "deposit" ? "Пополнить с кошелька" : "Перевод")}
+            {title ||
+              (mode === "deposit"
+                ? t("currency.overlays.walletDeposit.titleDeposit")
+                : t("currency.overlays.walletDeposit.titleTransfer"))}
           </S.Title>
         </S.Header>
 
         <S.Content>
           {preselectedCrypto ? (
             <>
-              <S.SectionTitle>Криптовалюта</S.SectionTitle>
+              <S.SectionTitle>{t("currency.overlays.walletDeposit.crypto")}</S.SectionTitle>
               <S.CryptoCard $disabled>
                 <div className="left">
                   {renderIcon(preselectedCrypto.symbol)}
@@ -124,7 +127,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             </>
           ) : (
             <>
-              <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
+              <S.SectionTitle>{t("currency.overlays.walletDeposit.selectCrypto")}</S.SectionTitle>
               <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
                 <div className="left">
                   {renderIcon(selectedCrypto.symbol)}
@@ -140,7 +143,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             </>
           )}
 
-          <S.SectionTitle>Выберите сеть</S.SectionTitle>
+          <S.SectionTitle>{t("currency.overlays.walletDeposit.selectNetwork")}</S.SectionTitle>
 
           <S.NetworkOption
             $selected={selectedNetwork === "TRC20"}
@@ -150,7 +153,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
               <TronIcon width={28} height={28} />
               <div className="info">
                 <span className="name">TRC20</span>
-                <span className="commission">Комиссия 2.75 USDT</span>
+                <span className="commission">{t("currency.overlays.walletDeposit.networks.trc20")}</span>
               </div>
             </div>
             <S.RadioWrapper $active={selectedNetwork === "TRC20"}>
@@ -166,7 +169,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
               <TonIcon width={28} height={28} />
               <div className="info">
                 <span className="name">TON</span>
-                <span className="commission">Комиссия 0.5 USDT</span>
+                <span className="commission">{t("currency.overlays.walletDeposit.networks.ton")}</span>
               </div>
             </div>
             <S.RadioWrapper $active={selectedNetwork === "TON"}>
@@ -182,7 +185,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
               <BtcIcon width={28} height={28} />
               <div className="info">
                 <span className="name">BEP20</span>
-                <span className="commission">Комиссия 2.75 USDT</span>
+                <span className="commission">{t("currency.overlays.walletDeposit.networks.bep20")}</span>
               </div>
             </div>
             <S.RadioWrapper $active={selectedNetwork === "BEP20"}>
@@ -192,7 +195,9 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
         </S.Content>
 
         <S.BottomSection>
-          <S.MainButton onClick={handleContinue}>Продолжить</S.MainButton>
+          <S.MainButton onClick={handleContinue}>
+            {t("currency.overlays.walletDeposit.continue")}
+          </S.MainButton>
         </S.BottomSection>
       </S.OverlayWrapper>
 
@@ -203,7 +208,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
           cryptos={cryptoOptions}
           selectedCryptoId={selectedCrypto.id}
           onCryptoSelect={(crypto) => setSelectedCrypto(crypto)}
-          title="Выберите криптовалюту"
+          title={t("currency.overlays.walletDeposit.selectCrypto")}
         />
       )}
     </>
