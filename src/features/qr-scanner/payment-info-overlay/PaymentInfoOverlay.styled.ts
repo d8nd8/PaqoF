@@ -37,9 +37,9 @@ export const ScannerTitle = styled.h2(({ theme }) => ({
 }));
 
 export const ScannerDescription = styled.p(({ theme }) => ({
-  fontSize: '16px',
-  fontWeight: '400',
-  color: theme.colors.systemBlurryOverlay,
-  lineHeight: '22px',
-  letterSpacing: '0.2px'
+  fontSize: '15px !important',
+  fontWeight: '400 !important',
+  color: `${theme.semantic.textLight} !important`,
+  lineHeight: '20px !important',
+  letterSpacing: '-0.23px !important',
 }));

@@ -419,6 +419,23 @@
   "languageSwitcher": {
     "title": "Выбор языка",
     "save": "Сохранить"
+  },
+  "payment": {
+    "overlay": {
+      "amount": "Сумма",
+      "exchangeRate": "Курс обмена",
+      "refreshIn": "Обновится через",
+      "total": "Итого:",
+      "commissionNote": "комиссия 0%",
+      "successTitle": "Транзакция выполнена",
+      "errorTitle": "Возникла проблема",
+      "errorSubtitle": "Что-то не так с QR-кодом",
+      "errorDescription": "Этот QR-код не сработал. Попробуйте ещё раз или запросите новый для оплаты",
+      "pay": "Оплатить",
+      "retry": "Отсканировать снова",
+      "toMain": "На главную",
+      "currencyTitle": "Счёт оплаты"
+    }
   }
   }
 

@@ -5,6 +5,7 @@ import { CurrencyButton } from './CurrencyButton';
 import * as S from './PaymentOverlay.styled';
 import type { CryptoItemData } from '@/features/crypto-list/CryptoList'
 import ErrorIcon from '@icons/scanner/qr-error.svg?react'
+import { useTranslation } from 'react-i18next';
 
 export type PaymentStep = 'form' | 'processing' | 'success' | 'error';
 
@@ -35,13 +36,12 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
                                                                 step = 'form',
                                                                 error
                                                               }) => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<PaymentStep>(step);
   const [showCurrencySelector, setShowCurrencySelector] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCurrencyButtonClick = () => {
-    setShowCurrencySelector(true);
-  };
+  const handleCurrencyButtonClick = () => setShowCurrencySelector(true);
 
   const handleCurrencySelect = (currency: CryptoItemData) => {
     onCurrencySelect(currency);
@@ -50,36 +50,32 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
 
   const handlePayment = async () => {
     if (!selectedCurrency) return;
-
     setIsLoading(true);
-
     try {
       await onPayment(selectedCurrency, amount);
       setCurrentStep('success');
-    } catch (error) {
+    } catch {
       setCurrentStep('error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleRetry = () => {
-    setCurrentStep('form');
-  };
+  const handleRetry = () => setCurrentStep('form');
 
   const renderFormStep = () => (
     <S.PaymentFormContainer>
       <S.PaymentDetails>
         <S.DetailRow>
-          <S.DetailLabel>Сумма</S.DetailLabel>
+          <S.DetailLabel>{t('payment.overlay.amount')}</S.DetailLabel>
           <S.DetailValue>{amount}</S.DetailValue>
         </S.DetailRow>
         <S.DetailRow>
-          <S.DetailLabel>Курс обмена</S.DetailLabel>
+          <S.DetailLabel>{t('payment.overlay.exchangeRate')}</S.DetailLabel>
           <S.DetailValue>{exchangeRate}</S.DetailValue>
         </S.DetailRow>
         <S.DetailRow>
-          <S.DetailLabel>Обновится через</S.DetailLabel>
+          <S.DetailLabel>{t('payment.overlay.refreshIn')}</S.DetailLabel>
           <S.DetailValue>{commission}</S.DetailValue>
         </S.DetailRow>
       </S.PaymentDetails>
@@ -94,8 +90,8 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
 
       <S.TotalSection>
         <S.TotalLabel>
-          Итого:
-          <S.CommissionNote>комиссия 0%</S.CommissionNote>
+          {t('payment.overlay.total')}
+          <S.CommissionNote>{t('payment.overlay.commissionNote')}</S.CommissionNote>
         </S.TotalLabel>
         <S.TotalAmount>{amount}</S.TotalAmount>
       </S.TotalSection>
@@ -105,20 +101,19 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
   const renderSuccessStep = () => (
     <S.StatusContainer>
       <S.StatusHeader success>
-        Транзакция выполнена
+        {t('payment.overlay.successTitle')}
         <S.StatusDate>20.05.2024, 17:41</S.StatusDate>
       </S.StatusHeader>
-
 
       <S.StatusAmount>{amount}</S.StatusAmount>
 
       <S.StatusDetails>
         <S.DetailRow>
-          <S.DetailLabel>Сумма</S.DetailLabel>
+          <S.DetailLabel>{t('payment.overlay.amount')}</S.DetailLabel>
           <S.DetailValue>{amount}</S.DetailValue>
         </S.DetailRow>
         <S.DetailRow>
-          <S.DetailLabel>Курс обмена</S.DetailLabel>
+          <S.DetailLabel>{t('payment.overlay.exchangeRate')}</S.DetailLabel>
           <S.DetailValue>{exchangeRate}</S.DetailValue>
         </S.DetailRow>
       </S.StatusDetails>
@@ -127,14 +122,10 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
 
   const renderErrorStep = () => (
     <S.StatusContainer>
-      <S.StatusHeader>Возникла проблема</S.StatusHeader>
-
+      <S.StatusHeader>{t('payment.overlay.errorTitle')}</S.StatusHeader>
       <ErrorIcon />
-
-      <S.ErrorTitle>Что-то не так с QR-кодом</S.ErrorTitle>
-      <S.ErrorDescription>
-        Этот QR-код не сработал. Попробуйте ещё раз или запросите новый для оплаты
-      </S.ErrorDescription>
+      <S.ErrorTitle>{t('payment.overlay.errorSubtitle')}</S.ErrorTitle>
+      <S.ErrorDescription>{t('payment.overlay.errorDescription')}</S.ErrorDescription>
     </S.StatusContainer>
   );
 
@@ -152,13 +143,13 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
   const getButtonText = () => {
     switch (currentStep) {
       case 'processing':
-        return 'На главную';
+        return t('payment.overlay.toMain');
       case 'success':
-        return 'На главную';
+        return t('payment.overlay.toMain');
       case 'error':
-        return 'Отсканировать снова';
+        return t('payment.overlay.retry');
       default:
-        return 'Оплатить';
+        return t('payment.overlay.pay');
     }
   };
 
@@ -186,7 +177,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
         bottomButtonText={getButtonText()}
         onBottomButtonClick={handleButtonClick}
         isBottomButtonDisabled={isLoading}
-        closeButtonText="Закрыть"
+        closeButtonText={t('common.close')}
         status={['processing','success'].includes(currentStep) ? 'success' : 'default'}
         showCloseButton={currentStep !== 'success'}
         showHeader={currentStep === 'form'}
@@ -200,7 +191,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
         cryptos={availableCurrencies}
         selectedCryptoId={selectedCurrency?.id}
         onCryptoSelect={handleCurrencySelect}
-        title="Счёт оплаты"
+        title={t('payment.overlay.currencyTitle')}
       />
     </>
   );
