@@ -27,7 +27,6 @@ export const NavbarContainer = styled.div(({ theme }) => ({
 export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
   const base = {
     display: 'flex',
-    alignSelf: 'flex-end',
     flexDirection: 'column' as const,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
@@ -97,4 +96,12 @@ export const NavbarLabel = styled.span({
   lineHeight: '13px',
   textAlign: 'center',
   whiteSpace: 'nowrap',
+})
+
+export const NavbarIconWrapper = styled.div({
+  width: '24px',
+  height: '24px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 })

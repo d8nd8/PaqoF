@@ -4,6 +4,7 @@ import {
   NavbarContainer,
   NavbarItem,
   NavbarLabel,
+  NavbarIconWrapper,
 } from './Navbar.styled'
 
 export interface NavbarItemConfig {
@@ -43,7 +44,9 @@ export const Navbar: React.FC<NavbarProps> = ({ items, onItemClick }) => {
               }
             }}
           >
-            <Icon />
+            <NavbarIconWrapper>
+              <Icon width={24} height={24} />
+            </NavbarIconWrapper>
             {item.label && <NavbarLabel>{item.label}</NavbarLabel>}
           </NavbarItem>
         )
