@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BaseLayout } from "@/widgets/base-layout";
 import { CurrencyWidget } from "@/widgets/currency-widget/CurrencyWidget";
@@ -11,40 +11,19 @@ import { WalletAddressOverlay } from "@/features/overlay-wallet-address/WalletAd
 import { WalletTransferOverlay } from "@/features/overlay-wallet-transfer/WalletTransferOverlay";
 import { OverlayCommission } from "@/features/overlay-commission/OverlayCommission";
 import QRScanner from "@/features/qr-scanner/QRScanner";
+
+import useWalletStore from "@/shared/stores/wallet";
 import { type CryptoItemData } from "@/features/crypto-list/CryptoList";
 
-const CURRENCY_MAP: Record<string, CryptoItemData> = {
-  USDT: {
-    id: "usdt-1",
-    name: "USDT",
-    symbol: "USDT",
-    amount: "1 290.53 USDT",
-    amountInRubles: "110 323.99 ₽",
-    iconColor: "#26A17B",
-  },
-  TON: {
-    id: "ton-1",
-    name: "Toncoin",
-    symbol: "TON",
-    amount: "590.00 TON",
-    amountInRubles: "144 426.19 ₽",
-    iconColor: "#0088CC",
-  },
-  BTC: {
-    id: "btc-1",
-    name: "Bitcoin",
-    symbol: "BTC",
-    amount: "0.0041 BTC",
-    amountInRubles: "34 880.61 ₽",
-    iconColor: "#F7931A",
-  },
-};
 
 export const CurrencyPage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const symbol = searchParams.get("symbol") || "USDT";
+  const walletId = searchParams.get("walletId");
 
-  const preselectedCrypto = CURRENCY_MAP[symbol] || CURRENCY_MAP["USDT"];
+  const {
+    selectedWallet,
+    fetchWalletById,
+  } = useWalletStore();
 
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWalletDeposit, setShowWalletDeposit] =
@@ -66,14 +45,26 @@ export const CurrencyPage: React.FC = () => {
     showCommission ||
     showScanner;
 
+  useEffect(() => {
+    if (walletId) {
+      fetchWalletById(walletId);
+    }
+  }, [walletId, fetchWalletById]);
+
   const handlePay = () => {
     setShowScanner(false);
   };
 
+
+
+  if (!selectedWallet) {
+    return <div>Кошелёк не найден</div>;
+  }
+
   return (
     <BaseLayout showNavbar={!hideNavbar}>
       <CurrencyWidget
-        symbol={symbol}
+        wallet={selectedWallet}
         onShowScanner={() => setShowScanner(true)}
         onTopUp={() => setShowDeposit(true)}
         onSend={() => setShowWalletDeposit("transfer")}
@@ -94,7 +85,19 @@ export const CurrencyPage: React.FC = () => {
           isOpen={!!showWalletDeposit}
           onClose={() => setShowWalletDeposit(null)}
           mode={showWalletDeposit}
-          preselectedCrypto={preselectedCrypto}
+          preselectedCrypto={{
+            id: selectedWallet.walletId,
+            name: selectedWallet.currency,
+            symbol: selectedWallet.currency,
+            amount: `${selectedWallet.balance} ${selectedWallet.currency}`,
+            amountInRubles: "",
+            iconColor:
+              selectedWallet.currency === "USDT"
+                ? "#26A17B"
+                : selectedWallet.currency === "TON"
+                  ? "#0088CC"
+                  : "#F7931A",
+          }}
           onContinue={(crypto, network, mode) => {
             setSelectedCrypto(crypto);
             setSelectedNetwork(network);
@@ -115,7 +118,10 @@ export const CurrencyPage: React.FC = () => {
           onClose={() => setShowWalletAddress(false)}
           cryptoName={selectedCrypto.name}
           network={selectedNetwork}
-          address="TQK32pDx2EkZrNWbi8dFSNTjS87FV2uH4"
+          address={
+            selectedWallet.addresses.find((a) => a.network === selectedNetwork)
+              ?.address || ""
+          }
           commission="2.75 USDT"
           onCommissionClick={() => setShowCommission(true)}
         />
@@ -134,9 +140,9 @@ export const CurrencyPage: React.FC = () => {
       <OverlayCommission
         isOpen={showCommission}
         onClose={() => setShowCommission(false)}
-        title="Почему комиссия?"
-        description="Комиссия списывается для покрытия расходов на сеть. Она фиксирована и отображается перед отправкой."
-        buttonText="Понятно"
+        titleKey="commission.title"
+        descriptionKey="commission.description"
+        buttonTextKey="common.ok"
       />
 
       <QRScanner

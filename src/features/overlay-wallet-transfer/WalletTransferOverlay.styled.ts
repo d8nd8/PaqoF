@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+
 export const OverlayWrapper = styled.div(({ theme }) => ({
   position: "fixed",
   inset: 0,
@@ -35,6 +36,24 @@ export const BackButton = styled.button(({ theme }) => ({
     stroke: theme.colors.textPrimary,
   },
 }));
+
+
+export const AmountInput = styled.input<{ $length: number; $hasError?: boolean }>(
+  ({ theme, $length, $hasError }) => ({
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    fontSize: "34px",
+    fontWeight: 700,
+    lineHeight: "41px",
+    letterSpacing: "0.4px",
+    color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
+    minWidth: "2ch",
+    width: `${Math.min(Math.max(2, $length), 7)}ch`,
+    textAlign: "left",
+    padding: 0,
+  })
+);
 
 export const Title = styled.h2(({ theme }) => ({
   flex: 1,
@@ -79,16 +98,13 @@ export const AmountRow = styled.div({
   alignItems: "center",
 });
 
-
-
-export const AmountSub = styled.div(({ theme }) => ({
+export const AmountSub = styled.div<{ $hasError?: boolean }>(({ theme, $hasError }) => ({
   fontSize: "13px",
   lineHeight: "18px",
   fontWeight: theme.typography.fontWeight.normal,
   letterSpacing: "-0.08px",
-  color: theme.colors.textPrimary,
+  color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
 }));
-
 
 export const PresetRow = styled.div({
   display: "flex",
@@ -98,13 +114,9 @@ export const PresetRow = styled.div({
   padding: "0 16px",
   margin: "0 -16px",
   scrollbarWidth: "none",
-  "&::-webkit-scrollbar": {
-    display: "none",
-  },
-
+  "&::-webkit-scrollbar": { display: "none" },
   scrollSnapType: "x mandatory",
 });
-
 
 export const PresetButton = styled.button(({ theme }) => ({
   borderRadius: "8px",
@@ -121,34 +133,44 @@ export const PresetButton = styled.button(({ theme }) => ({
   whiteSpace: "nowrap",
 }));
 
-export const AmountValue = styled.div<{ insufficient?: boolean }>(({ theme, insufficient }) => ({
+
+export const AmountValue = styled.div<{ $hasError?: boolean }>(({ theme, $hasError }) => ({
   fontSize: "34px",
-  fontWeight: theme.typography.fontWeight.bold,
+  fontWeight: 700,
   lineHeight: "41px",
   letterSpacing: "0.4px",
-  color: insufficient ? theme.colors.error500 : theme.colors.textPrimary,
+  color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
   display: "flex",
   alignItems: "baseline",
   gap: "4px",
   marginBottom: "-10px",
+  transition: "color 0.2s ease",
 }));
+
+export const CurrencySymbol = styled.span<{ $hasError?: boolean }>(
+  ({ theme, $hasError }) => ({
+    fontSize: "22px",
+    fontWeight: 700,
+    lineHeight: "28px",
+    letterSpacing: "-0.26px",
+    color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
+  })
+);
+
 
 export const ErrorSub = styled.div(({ theme }) => ({
   fontSize: "13px",
   lineHeight: "18px",
-  fontWeight: theme.typography.fontWeight.normal,
+  fontWeight: 400,
   letterSpacing: "-0.08px",
-  color: theme.colors.error500,
+  color: `${theme.colors.error500} !important`,
   marginTop: "4px",
-
   "& span": {
-    color: theme.colors.blueberry,
+    color: `${theme.colors.blueberry} !important`,
     cursor: "pointer",
     textDecoration: "none",
-
   },
 }));
-
 export const InputWrapper = styled.div<{ hasError?: boolean }>(({ theme, hasError }) => ({
   display: "flex",
   alignItems: "center",
@@ -157,7 +179,6 @@ export const InputWrapper = styled.div<{ hasError?: boolean }>(({ theme, hasErro
   background: theme.colors.neutral100,
   border: `1px solid ${hasError ? theme.colors.error500 : theme.colors.systemElevatedBackground}`,
 }));
-
 
 export const AddressInput = styled.input(({ theme }) => ({
   flex: 1,
@@ -187,7 +208,6 @@ export const SwapButton = styled.button(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   cursor: "pointer",
-
   "& svg": {
     width: "40px",
     height: "40px",
@@ -202,13 +222,12 @@ export const ErrorMessage = styled.div(({ theme }) => ({
   color: `${theme.colors.error500} !important`,
 }));
 
-
 export const CardTitle = styled.div(({ theme }) => ({
   fontSize: "13px",
   lineHeight: "18px",
   fontWeight: theme.typography.fontWeight.normal,
   color: theme.colors.textPrimary,
-  marginBottom: "-10px"
+  marginBottom: "-10px",
 }));
 
 
@@ -226,16 +245,9 @@ export const BottomButton = styled.button(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   transition: "opacity 0.2s ease",
-  "&:hover": {
-    opacity: 0.9,
-  },
-  "&:active": {
-    transform: "scale(0.98)",
-  },
+  "&:hover": { opacity: 0.9 },
+  "&:active": { transform: "scale(0.98)" },
 }));
-
-
-
 
 export const CommissionButton = styled.button(({ theme }) => ({
   marginTop: theme.spacing.sm,
@@ -249,9 +261,6 @@ export const CommissionButton = styled.button(({ theme }) => ({
   justifyContent: "space-between",
   padding: `0 ${theme.spacing.lg}`,
   cursor: "pointer",
-  textDecoration: "none",
-  color: "inherit",
-
   "& .left": {
     display: "flex",
     alignItems: "center",
@@ -260,26 +269,22 @@ export const CommissionButton = styled.button(({ theme }) => ({
     lineHeight: "13px",
     fontWeight: theme.typography.fontWeight.normal,
     color: theme.colors.textPrimary,
-
     "& strong": {
       fontWeight: theme.typography.fontWeight.semibold,
       color: theme.colors.textPrimary,
     },
   },
-
   "& .icon": {
     width: "16px",
     height: "16px",
     color: theme.colors.warning500,
     flexShrink: 0,
   },
-
   "& .chevron": {
     flexShrink: 0,
     color: theme.colors.warning400,
   },
 }));
-
 
 export const BottomSection = styled.div({
   padding: "30px 14px 40px",

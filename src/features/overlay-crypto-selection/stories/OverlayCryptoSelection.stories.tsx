@@ -29,6 +29,7 @@ const sampleCryptos: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '1 290.53 USDT',
     amountInRubles: '110 323.99 ₽',
+    priceInRubles: '85.50 ₽',  // добавил
     iconColor: '#4CAF50'
   },
   {
@@ -37,6 +38,7 @@ const sampleCryptos: CryptoItemData[] = [
     symbol: 'TON',
     amount: '590.00 TON',
     amountInRubles: '144 426.19 ₽',
+    priceInRubles: '244.80 ₽',
     icon: '◆',
     iconColor: '#0088CC'
   },
@@ -46,6 +48,7 @@ const sampleCryptos: CryptoItemData[] = [
     symbol: 'BTC',
     amount: '0.18234 BTC',
     amountInRubles: '34 880.61 ₽',
+    priceInRubles: '191 302.00 ₽',
     icon: '₿',
     iconColor: '#F7931A'
   }

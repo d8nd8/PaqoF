@@ -36,8 +36,6 @@ export const OverlayCryptoSelection: React.FC<OverlayCryptoSelectionProps> = ({
     );
   };
 
-
-
   return (
     <BottomSheet
       isOpen={isOpen}
@@ -53,6 +51,7 @@ export const OverlayCryptoSelection: React.FC<OverlayCryptoSelectionProps> = ({
           showRightSection={true}
           renderRightSection={renderRightSection}
           disableNavigation
+          infoVariant="amount"
         />
       </S.OverlayCryptoSelectionContent>
     </BottomSheet>

@@ -1,12 +1,17 @@
 import { create } from 'zustand';
 import * as walletApi from '@/api/services/wallet/wallet.service';
+import * as rapiraApi from '@/api/services/rapira/rapira.service';
 import type IWalletStore from './types';
+import type { Rate } from '@/api/services/rapira/schemes/rates.schema';
+import type { Wallet } from '@/api/services/wallet/schemes/wallet.schemas';
 
 const useWalletStore = create<IWalletStore>((set, get) => ({
   wallets: [],
   currencies: null,
   operations: {},
   loading: false,
+  rates: [],
+  selectedWallet: null,
 
   fetchWallets: async () => {
     const { wallets } = get();
@@ -24,8 +29,15 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
     }
   },
 
-  fetchWalletById: async (walletId) => {
-    return await walletApi.getWalletById(walletId);
+  fetchWalletById: async (walletId: string) => {
+    set({ loading: true });
+    try {
+      const wallet: Wallet = await walletApi.getWalletById(walletId);
+      set({ selectedWallet: wallet });
+      return wallet;
+    } finally {
+      set({ loading: false });
+    }
   },
 
   fetchWalletCurrencies: async () => {
@@ -56,6 +68,30 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
 
   createPayment: async (walletId, payload) => {
     return await walletApi.createSbpPayment(walletId, payload);
+  },
+
+  fetchRates: async (): Promise<Rate[]> => {
+    const rates = await rapiraApi.getRates();
+    set({ rates });
+    return rates;
+  },
+
+  getRateToRub: (currency: string): number | null => {
+    const { rates } = get();
+    if (!rates.length) return null;
+
+    if (currency === 'RUB') return 1;
+
+    const direct = rates.find((r) => r.symbol === `${currency}/RUB`);
+    if (direct) return direct.close;
+
+    const viaUsdt = rates.find((r) => r.symbol === `${currency}/USDT`);
+    const usdtRub = rates.find((r) => r.symbol === 'USDT/RUB');
+    if (viaUsdt && usdtRub) {
+      return viaUsdt.close * usdtRub.close;
+    }
+
+    return null;
   },
 }));
 

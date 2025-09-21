@@ -149,6 +149,7 @@
       "transfer": {
         "title": "Transfer",
         "amount": {
+          "enterAmount": "Enter amount",
           "title": "Amount to send",
           "insufficient": "Insufficient funds.",
           "topUp": "Top up balance.",
@@ -268,6 +269,7 @@
     },
     "unknownNavItem": "Unknown menu item: {{id}}",
     "close": "Close",
+    "ok": "Return",
     "save": "Save"
   },
 
@@ -434,5 +436,18 @@
       "toMain": "Go to main",
       "currencyTitle": "Payment account"
     }
+  },
+  "walletDepositOverlay": {
+    "titleDeposit": "Deposit from wallet",
+    "titleTransfer": "Transfer",
+    "cryptoTitle": "Cryptocurrency",
+    "selectCrypto": "Select cryptocurrency",
+    "selectNetwork": "Select network",
+    "commission": "Fee {{value}}",
+    "continue": "Continue"
+  },
+  "commission": {
+    "title": "Why is the commission 2.75$?",
+    "description": "The Tron network charges a 2.5$ fee for each transfer. An additional 0.25$ covers the cost of the AML check, which ensures security."
   }
 }

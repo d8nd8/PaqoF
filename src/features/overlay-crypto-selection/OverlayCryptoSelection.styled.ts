@@ -26,3 +26,31 @@ export const SelectionIndicator = styled.div<{ $isSelected: boolean }>(
     },
   })
 );
+
+
+
+
+
+export const RightWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+});
+
+export const AmountBlock = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-end',
+});
+
+export const AmountValue = styled.div(({ theme }) => ({
+  fontSize: '13px',
+  fontWeight: 500,
+  color: theme.colors.textPrimary,
+}));
+
+export const AmountRubles = styled.div(({ theme }) => ({
+  fontSize: '12px',
+  color: theme.colors.textSecondary,
+}));
+

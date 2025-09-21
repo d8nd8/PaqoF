@@ -24,9 +24,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isOpen: true,
-    title: 'Почему комиссия 2.75$?',
-    description: 'Сеть Tron взимает комиссию за каждый перевод 2.5$. Дополнительные 0.25$ покрывают себестоимость AML-проверки, которая гарантирует безопасность.',
-    buttonText: 'Вернуться',
     onClose: () => console.log('Close commission overlay'),
     onButtonClick: () => console.log('Button clicked'),
     isInStorybook: true
@@ -36,9 +33,6 @@ export const Default: Story = {
 export const TelegramMiniApp: Story = {
   args: {
     isOpen: true,
-    title: 'Почему комиссия 2.75$?',
-    description: 'Сеть Tron взимает комиссию за каждый перевод 2.5$. Дополнительные 0.25$ покрывают себестоимость AML-проверки, которая гарантирует безопасность.',
-    buttonText: 'Понятно',
     onClose: () => console.log('Close from Telegram'),
     onButtonClick: () => console.log('Understood in Telegram'),
     isInStorybook: true
@@ -48,9 +42,6 @@ export const TelegramMiniApp: Story = {
 export const LongContent: Story = {
   args: {
     isOpen: true,
-    title: 'Подробная информация о комиссиях в сети Tron',
-    description: 'Сеть Tron взимает комиссию за каждый перевод 2.5$. Дополнительные 0.25$ покрывают себестоимость AML-проверки, которая гарантирует безопасность.',
-    buttonText: 'Закрыть',
     onClose: () => console.log('Close long content'),
     onButtonClick: () => console.log('Close long content clicked'),
     isInStorybook: true
@@ -60,8 +51,6 @@ export const LongContent: Story = {
 export const Closed: Story = {
   args: {
     isOpen: false,
-    title: 'Почему комиссия 2.75$?',
-    description: 'Сеть Tron взимает комиссию за каждый перевод 2.5$. Дополнительные 0.25$ покрывают себестоимость AML-проверки, которая гарантирует безопасность.',
     onClose: () => console.log('Close commission overlay'),
     isInStorybook: true
   }

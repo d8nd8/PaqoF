@@ -1,4 +1,4 @@
-import React, { type JSX, useState } from 'react'
+import React, { type JSX, useEffect, useState } from "react";
 import * as S from "./WalletDepositOverlay.styled";
 
 import BackIcon from "@icons/chevron-left.svg?react";
@@ -6,12 +6,15 @@ import ChevronRightIcon from "@icons/chevron-right.svg?react";
 import { Check } from "lucide-react";
 
 import TetherIcon from "@/assets/icons/usdt-icon.svg?react";
-import TronIcon from "@/assets/icons/tron-icon.svg?react";
 import TonIcon from "@/assets/icons/ton-icon.svg?react";
 import BtcIcon from "@/assets/icons/bitcoin-icon.svg?react";
+import TronIcon from "@/assets/icons/tron-icon.svg?react";
 
 import { OverlayCryptoSelection } from "@/features/overlay-crypto-selection/OverlayCryptoSelection";
 import { type CryptoItemData } from "@/features/crypto-list/CryptoList";
+import { useTranslation } from "react-i18next";
+import useWalletStore from "@/shared/stores/wallet";
+import type { Wallet } from "@/api/services/wallet/schemes/wallet.schemas";
 
 export type WalletDepositMode = "deposit" | "transfer";
 
@@ -21,13 +24,13 @@ interface WalletDepositOverlayProps {
   onContinue?: (
     crypto: CryptoItemData,
     network: string,
-    mode: WalletDepositMode
+    mode: WalletDepositMode,
+    address: string
   ) => void;
   title?: string;
   mode?: WalletDepositMode;
   preselectedCrypto?: CryptoItemData | null;
 }
-
 
 const ICON_MAP: Record<string, JSX.Element> = {
   USDT: <TetherIcon width={38} height={38} />,
@@ -43,58 +46,84 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
                                                                             mode = "deposit",
                                                                             preselectedCrypto,
                                                                           }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState("TRC20");
+  const { t } = useTranslation();
+  const { wallets, fetchWallets, getRateToRub } = useWalletStore();
 
-  const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData>(
-    preselectedCrypto || {
-      id: "usdt-1",
-      name: "USDT",
-      symbol: "USDT",
-      amount: "1 290.53 USDT",
-      amountInRubles: "110 323.99 ₽",
-      iconColor: "#26A17B",
-    }
+  const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
+  const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(
+    preselectedCrypto || null
   );
-
+  const [selectedNetwork, setSelectedNetwork] = useState<string>("");
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [showCryptoSelection, setShowCryptoSelection] = useState(false);
 
-  const cryptoOptions: CryptoItemData[] = [
-    {
-      id: "usdt-1",
-      name: "USDT",
-      symbol: "USDT",
-      amount: "1 290.53 USDT",
-      amountInRubles: "110 323.99 ₽",
-      iconColor: "#26A17B",
-    },
-    {
-      id: "ton-1",
-      name: "Toncoin",
-      symbol: "TON",
-      amount: "590.00 TON",
-      amountInRubles: "144 426.19 ₽",
-      iconColor: "#0088CC",
-    },
-    {
-      id: "btc-1",
-      name: "Bitcoin",
-      symbol: "BTC",
-      amount: "0.18234 BTC",
-      amountInRubles: "34 880.61 ₽",
-      iconColor: "#F7931A",
-    },
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      fetchWallets();
+    }
+  }, [isOpen, fetchWallets]);
+
+
+  const cryptoOptions: CryptoItemData[] = wallets.map((wallet) => {
+    const rateToRub = getRateToRub(wallet.currency) ?? 0;
+    return {
+      id: wallet.walletId,
+      name: wallet.currency,
+      symbol: wallet.currency,
+      amount: `${wallet.balance} ${wallet.currency}`,
+      amountInRubles: `${(Number(wallet.balance) * rateToRub).toFixed(2)} ₽`,
+      iconColor:
+        wallet.currency === "USDT"
+          ? "#26A17B"
+          : wallet.currency === "TON"
+            ? "#0088CC"
+            : wallet.currency === "BTC"
+              ? "#F7931A"
+              : "#999999",
+    };
+  });
+
+  useEffect(() => {
+    if (!selectedCrypto && cryptoOptions.length > 0) {
+      setSelectedCrypto(cryptoOptions[0]);
+    }
+  }, [cryptoOptions, selectedCrypto]);
+
+
+  useEffect(() => {
+    if (selectedCrypto) {
+      const wallet = wallets.find((w) => w.currency === selectedCrypto.symbol);
+      setSelectedWallet(wallet || null);
+
+      if (wallet?.addresses?.length) {
+        setSelectedNetwork(wallet.addresses[0].network);
+        setSelectedAddress(wallet.addresses[0].address);
+      }
+    }
+  }, [selectedCrypto, wallets]);
+
+
+  const handleSelectNetwork = (network: string) => {
+    if (!selectedWallet) return;
+    const addrObj = selectedWallet.addresses.find(
+      (a) => a.network === network
+    );
+    if (addrObj) {
+      setSelectedNetwork(addrObj.network);
+      setSelectedAddress(addrObj.address);
+    }
+  };
 
   if (!isOpen) return null;
 
   const handleContinue = () => {
-    if (onContinue) {
-      onContinue(selectedCrypto, selectedNetwork, mode);
+    if (onContinue && selectedCrypto && selectedNetwork && selectedAddress) {
+      onContinue(selectedCrypto, selectedNetwork, mode, selectedAddress);
     }
   };
 
-
-  const renderIcon = (symbol: string) => ICON_MAP[symbol] || <TetherIcon width={38} height={38} />;
+  const renderIcon = (symbol: string) =>
+    ICON_MAP[symbol] || <TetherIcon width={38} height={38} />;
 
   return (
     <>
@@ -104,27 +133,19 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             <BackIcon />
           </S.BackButton>
           <S.Title>
-            {title || (mode === "deposit" ? "Пополнить с кошелька" : "Перевод")}
+            {title ||
+              (mode === "deposit"
+                ? t("walletDepositOverlay.titleDeposit")
+                : t("walletDepositOverlay.titleTransfer"))}
           </S.Title>
         </S.Header>
 
         <S.Content>
-          {preselectedCrypto ? (
+          {selectedCrypto && (
             <>
-              <S.SectionTitle>Криптовалюта</S.SectionTitle>
-              <S.CryptoCard $disabled>
-                <div className="left">
-                  {renderIcon(preselectedCrypto.symbol)}
-                  <div className="info">
-                    <span className="name">{preselectedCrypto.name}</span>
-                    <span className="amount">{preselectedCrypto.amount}</span>
-                  </div>
-                </div>
-              </S.CryptoCard>
-            </>
-          ) : (
-            <>
-              <S.SectionTitle>Выберите криптовалюту</S.SectionTitle>
+              <S.SectionTitle>
+                {t("walletDepositOverlay.selectCrypto")}
+              </S.SectionTitle>
               <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
                 <div className="left">
                   {renderIcon(selectedCrypto.symbol)}
@@ -140,70 +161,49 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             </>
           )}
 
-          <S.SectionTitle>Выберите сеть</S.SectionTitle>
+          <S.SectionTitle>
+            {t("walletDepositOverlay.selectNetwork")}
+          </S.SectionTitle>
 
-          <S.NetworkOption
-            $selected={selectedNetwork === "TRC20"}
-            onClick={() => setSelectedNetwork("TRC20")}
-          >
-            <div className="left">
-              <TronIcon width={28} height={28} />
-              <div className="info">
-                <span className="name">TRC20</span>
-                <span className="commission">Комиссия 2.75 USDT</span>
+          {selectedWallet?.addresses?.map((addr) => (
+            <S.NetworkOption
+              key={addr.network}
+              $selected={selectedNetwork === addr.network}
+              onClick={() => handleSelectNetwork(addr.network)}
+            >
+              <div className="left">
+                {addr.network === "TRC20" && <TronIcon width={28} height={28} />}
+                {addr.network === "TON" && <TonIcon width={28} height={28} />}
+                {addr.network === "BEP20" && <BtcIcon width={28} height={28} />}
+                <div className="info">
+                  <span className="name">{addr.network}</span>
+                  <span className="commission">
+                    {t("walletDepositOverlay.commission", { value: "2.75 USDT" })}
+                  </span>
+                </div>
               </div>
-            </div>
-            <S.RadioWrapper $active={selectedNetwork === "TRC20"}>
-              {selectedNetwork === "TRC20" && <Check size={14} />}
-            </S.RadioWrapper>
-          </S.NetworkOption>
-
-          <S.NetworkOption
-            $selected={selectedNetwork === "TON"}
-            onClick={() => setSelectedNetwork("TON")}
-          >
-            <div className="left">
-              <TonIcon width={28} height={28} />
-              <div className="info">
-                <span className="name">TON</span>
-                <span className="commission">Комиссия 0.5 USDT</span>
-              </div>
-            </div>
-            <S.RadioWrapper $active={selectedNetwork === "TON"}>
-              {selectedNetwork === "TON" && <Check size={14} />}
-            </S.RadioWrapper>
-          </S.NetworkOption>
-
-          <S.NetworkOption
-            $selected={selectedNetwork === "BEP20"}
-            onClick={() => setSelectedNetwork("BEP20")}
-          >
-            <div className="left">
-              <BtcIcon width={28} height={28} />
-              <div className="info">
-                <span className="name">BEP20</span>
-                <span className="commission">Комиссия 2.75 USDT</span>
-              </div>
-            </div>
-            <S.RadioWrapper $active={selectedNetwork === "BEP20"}>
-              {selectedNetwork === "BEP20" && <Check size={14} />}
-            </S.RadioWrapper>
-          </S.NetworkOption>
+              <S.RadioWrapper $active={selectedNetwork === addr.network}>
+                {selectedNetwork === addr.network && <Check size={14} />}
+              </S.RadioWrapper>
+            </S.NetworkOption>
+          ))}
         </S.Content>
 
         <S.BottomSection>
-          <S.MainButton onClick={handleContinue}>Продолжить</S.MainButton>
+          <S.MainButton onClick={handleContinue}>
+            {t("walletDepositOverlay.continue")}
+          </S.MainButton>
         </S.BottomSection>
       </S.OverlayWrapper>
 
-      {!preselectedCrypto && (
+      {!preselectedCrypto && selectedCrypto && (
         <OverlayCryptoSelection
           isOpen={showCryptoSelection}
           onClose={() => setShowCryptoSelection(false)}
           cryptos={cryptoOptions}
           selectedCryptoId={selectedCrypto.id}
           onCryptoSelect={(crypto) => setSelectedCrypto(crypto)}
-          title="Выберите криптовалюту"
+          title={t("walletDepositOverlay.selectCrypto")}
         />
       )}
     </>

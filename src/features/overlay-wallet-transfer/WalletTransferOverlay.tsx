@@ -8,7 +8,10 @@ import ExclamationIcon from "@icons/exclamation-circle.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
 import SwapIcon from "@icons/swap-icon.svg?react";
 
-import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoList";
+import {
+  CryptoItem,
+  type CryptoItemData,
+} from "@/features/crypto-list/CryptoList";
 import { QRScanner } from "@/features/qr-scanner/QRScanner";
 import { WalletConfirmOverlay } from "@/features/overlay-wallet-confirm/WalletConfirmOverlay";
 
@@ -21,6 +24,8 @@ interface WalletTransferOverlayProps {
   onTopUpClick?: () => void;
 }
 
+type ErrorType = "none" | "insufficient" | "invalidAmount" | "invalidAddress";
+
 export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                                                                               isOpen,
                                                                               onClose,
@@ -30,31 +35,31 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                                                                               onTopUpClick,
                                                                             }) => {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState("17.42");
+  const [amount, setAmount] = useState("0");
   const [address, setAddress] = useState("");
   const [showScanner, setShowScanner] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [hasAddressError, setHasAddressError] = useState(false);
+  const [errorType, setErrorType] = useState<ErrorType>("none");
   const [showConfirm, setShowConfirm] = useState(false);
 
   if (!isOpen) return null;
 
   const balance = parseFloat(crypto.amount.replace(/[^\d.]/g, ""));
-  const sendAmount = parseFloat(amount.replace(",", "."));
+  const sendAmount = parseFloat(amount.replace(",", ".")) || 0;
 
   const handleContinue = () => {
-    if (sendAmount > balance) {
-      setHasError(true);
-      setHasAddressError(false);
+    if (sendAmount <= 0) {
+      setErrorType("invalidAmount");
+    } else if (sendAmount > balance) {
+      setErrorType("insufficient");
     } else if (!address.trim()) {
-      setHasError(false);
-      setHasAddressError(true);
+      setErrorType("invalidAddress");
     } else {
-      setHasError(false);
-      setHasAddressError(false);
+      setErrorType("none");
       setShowConfirm(true);
     }
   };
+
+  const hasError = errorType !== "none";
 
   return (
     <>
@@ -69,41 +74,77 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
         <S.Content>
           <S.Card>
             <S.CardTitle>{t("currency.overlays.transfer.amount.title")}</S.CardTitle>
+
             <S.AmountRow>
-              <S.AmountValue insufficient={hasError}>
-                {amount} {crypto.symbol}
+              <S.AmountValue $hasError={hasError}>
+                <S.AmountInput
+                  type="text"
+                  value={amount}
+                  onChange={(e) => {
+                    let val = e.target.value.replace(/[^0-9.,]/g, "");
+                    if (val.length > 7) {
+                      val = val.slice(0, 7);
+                    }
+                    setAmount(val);
+                  }}
+                  placeholder="0"
+                  $length={amount.length}
+                  $hasError={hasError}
+                />
+                <S.CurrencySymbol $hasError={hasError}>
+                  {crypto.symbol}
+                </S.CurrencySymbol>
               </S.AmountValue>
+
               <S.SwapButton>
                 <SwapIcon />
               </S.SwapButton>
             </S.AmountRow>
 
-            {hasError ? (
+            {errorType === "insufficient" && (
               <S.ErrorSub>
                 {t("currency.overlays.transfer.amount.insufficient")}{" "}
                 <span onClick={onTopUpClick}>
                   {t("currency.overlays.transfer.amount.topUp")}
                 </span>
               </S.ErrorSub>
-            ) : (
+            )}
+
+            {errorType === "invalidAmount" && (
+              <S.ErrorSub>
+                {t("currency.overlays.transfer.amount.enterAmount")}
+              </S.ErrorSub>
+            )}
+
+            {errorType === "none" && (
               <S.AmountSub>
-                {t("currency.overlays.transfer.amount.subApprox", { value: "1 390 ₽" })}
+                {t("currency.overlays.transfer.amount.subApprox", {
+                  value: "1 390 ₽",
+                })}
               </S.AmountSub>
             )}
 
             <S.PresetRow>
-              <S.PresetButton>{t("currency.overlays.transfer.amount.presets.all")}</S.PresetButton>
-              <S.PresetButton>{t("currency.overlays.transfer.amount.presets.1000")}</S.PresetButton>
-              <S.PresetButton>{t("currency.overlays.transfer.amount.presets.5000")}</S.PresetButton>
-              <S.PresetButton>{t("currency.overlays.transfer.amount.presets.10000")}</S.PresetButton>
+              <S.PresetButton>
+                {t("currency.overlays.transfer.amount.presets.all")}
+              </S.PresetButton>
+              <S.PresetButton>
+                {t("currency.overlays.transfer.amount.presets.1000")}
+              </S.PresetButton>
+              <S.PresetButton>
+                {t("currency.overlays.transfer.amount.presets.5000")}
+              </S.PresetButton>
+              <S.PresetButton>
+                {t("currency.overlays.transfer.amount.presets.10000")}
+              </S.PresetButton>
             </S.PresetRow>
           </S.Card>
 
           <S.SectionTitle>{t("currency.overlays.transfer.balance")}</S.SectionTitle>
-          <CryptoItem data={crypto} showRightSection={false} />
+          <CryptoItem data={crypto} showRightSection={false} infoVariant="amount" />
 
           <S.SectionTitle>{t("currency.overlays.transfer.address.title")}</S.SectionTitle>
-          <S.InputWrapper hasError={hasAddressError}>
+          <S.InputWrapper hasError={errorType === "invalidAddress"}>
             <S.AddressInput
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -113,7 +154,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
               <QrIcon />
             </S.IconButton>
           </S.InputWrapper>
-          {hasAddressError && (
+          {errorType === "invalidAddress" && (
             <S.ErrorMessage>{t("currency.overlays.transfer.address.error")}</S.ErrorMessage>
           )}
 
@@ -122,7 +163,9 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
               <ExclamationIcon className="icon" />
               <span
                 dangerouslySetInnerHTML={{
-                  __html: t("currency.overlays.transfer.commission", { value: commission }),
+                  __html: t("currency.overlays.transfer.commission", {
+                    value: commission,
+                  }),
                 }}
               />
             </div>
@@ -155,8 +198,8 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
         amount={amount}
         address={address}
         commission={commission}
-        total="17.42 USDT ≈ 1 390 ₽"
-        balanceAfter="1 273.21 USDT"
+        total={`${amount} ${crypto.symbol} ≈ 1 390 ₽`}
+        balanceAfter={`${(balance - sendAmount).toFixed(2)} ${crypto.symbol}`}
       />
     </>
   );

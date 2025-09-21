@@ -27,6 +27,7 @@ const usdtData: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '1 290.49 USDT',
     amountInRubles: '110 323.99 ₽',
+    priceInRubles: '85.49 ₽',
     iconColor: '#4CAF50'
   },
   {
@@ -35,6 +36,7 @@ const usdtData: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '850.00 USDT',
     amountInRubles: '72 675.00 ₽',
+    priceInRubles: '85.50 ₽',
     iconColor: '#4CAF50'
   },
   {
@@ -43,6 +45,7 @@ const usdtData: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '2 500.75 USDT',
     amountInRubles: '213 814.13 ₽',
+    priceInRubles: '85.55 ₽',
     iconColor: '#4CAF50'
   }
 ];

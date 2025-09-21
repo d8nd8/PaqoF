@@ -12,11 +12,9 @@ import QRScanner from '@/features/qr-scanner/QRScanner'
 
 import useApplicationStore from '@/shared/stores/application'
 import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
-import { useTranslation } from 'react-i18next'
 
 export const MainPage: React.FC = () => {
   const { modal, openModal, closeModal } = useApplicationStore()
-  const { t } = useTranslation()
 
   const [showDeposit, setShowDeposit] = useState(false)
   const [showWalletDeposit, setShowWalletDeposit] = useState<WalletDepositMode | null>(null)
@@ -27,6 +25,7 @@ export const MainPage: React.FC = () => {
 
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<string>('')
+  const [selectedAddress, setSelectedAddress] = useState<string>('')
 
   const hideNavbar =
     showDeposit ||
@@ -66,9 +65,10 @@ export const MainPage: React.FC = () => {
           isOpen={!!showWalletDeposit}
           onClose={() => setShowWalletDeposit(null)}
           mode={showWalletDeposit}
-          onContinue={(crypto, network, mode) => {
+          onContinue={(crypto, network, mode, address) => {
             setSelectedCrypto(crypto)
             setSelectedNetwork(network)
+            setSelectedAddress(address)
             setShowWalletDeposit(null)
 
             if (mode === 'deposit') {
@@ -86,7 +86,7 @@ export const MainPage: React.FC = () => {
           onClose={() => setShowWalletAddress(false)}
           cryptoName={selectedCrypto.name}
           network={selectedNetwork}
-          address="TQK32pDx2EkZrNWbi8dFSNTjS87FV2uH4"
+          address={selectedAddress}
           commission="2.75 USDT"
           onCommissionClick={() => setShowCommission(true)}
         />
@@ -105,9 +105,6 @@ export const MainPage: React.FC = () => {
       <OverlayCommission
         isOpen={showCommission}
         onClose={() => setShowCommission(false)}
-        title={t('main.overlays.commission.title')}
-        description={t('main.overlays.commission.description')}
-        buttonText={t('main.overlays.commission.button')}
       />
 
       <QRScanner

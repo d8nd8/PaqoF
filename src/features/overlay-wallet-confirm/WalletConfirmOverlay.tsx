@@ -106,6 +106,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
 
           <S.SectionTitle>{t("currency.overlays.confirm.balanceAfter")}</S.SectionTitle>
           <CryptoItem
+            infoVariant='amount'
             data={{ ...crypto, amount: balanceAfter }}
             showRightSection={false}
           />

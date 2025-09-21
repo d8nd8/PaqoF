@@ -31,6 +31,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '1 290.53 USDT',
     amountInRubles: '110 323.99 ₽',
+    priceInRubles: '85.50 ₽', // добавлено
     iconColor: '#4CAF50',
   },
   {
@@ -39,6 +40,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     symbol: 'TON',
     amount: '590.00 TON',
     amountInRubles: '144 426.19 ₽',
+    priceInRubles: '244.80 ₽',
     icon: '◆',
     iconColor: '#0088CC',
   },
@@ -48,6 +50,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     symbol: 'BTC',
     amount: '1.18234 BTC',
     amountInRubles: '34 880.61 ₽',
+    priceInRubles: '29 500.00 ₽',
     icon: '₿',
     iconColor: '#F7931A',
   },
@@ -57,10 +60,12 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     symbol: 'USDC',
     amount: '850.00 USDC',
     amountInRubles: '77 650.00 ₽',
+    priceInRubles: '91.35 ₽',
     icon: 'U',
     iconColor: '#2775CA',
   },
 ];
+
 
 export const QRScanner: React.FC<QRScannerProps> = ({
                                                       isVisible,

@@ -1,37 +1,11 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import * as S from './MainWidget.styled';
 
 import { BalanceCard } from '@/features/balance-information/BalanceInformation';
 import { AdBanner } from '@/features/ad-banner/AdBanner';
-import { type CryptoItemData, CryptoList } from '@/features/crypto-list/CryptoList';
+import { CryptoList, type CryptoItemData } from '@/features/crypto-list/CryptoList';
 import { useNavigate } from 'react-router-dom';
-
-const cryptoData: CryptoItemData[] = [
-  {
-    id: "usdt-1",
-    name: "USDT",
-    symbol: "USDT",
-    amount: "1 290.49 USDT",
-    amountInRubles: "110 323.99 ₽",
-    iconColor: "#26A17B",
-  },
-  {
-    id: "ton-1",
-    name: "Toncoin",
-    symbol: "TON",
-    amount: "580.00 TON",
-    amountInRubles: "144 426.19 ₽",
-    iconColor: "#0088CC",
-  },
-  {
-    id: "btc-1",
-    name: "Bitcoin",
-    symbol: "BTC",
-    amount: "0.0041 BTC",
-    amountInRubles: "34 880.61 ₽",
-    iconColor: "#F7931A",
-  },
-];
+import useWalletStore from '@/shared/stores/wallet';
 
 interface MainWidgetProps {
   onTopUp: () => void;
@@ -47,11 +21,71 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
                                                         onNotifications,
                                                       }) => {
   const navigate = useNavigate();
+  const { wallets, fetchWallets, fetchRates, getRateToRub, loading } = useWalletStore();
+
+  useEffect(() => {
+    fetchWallets();
+    fetchRates();
+  }, [fetchWallets, fetchRates]);
+
+  const cryptos: CryptoItemData[] = useMemo(() => {
+    return wallets.map((w) => {
+      const rate = getRateToRub(w.currency);
+
+      if (!rate) {
+        return {
+          id: w.walletId,
+          name: w.currency,
+          symbol: w.currency,
+          amount: `${w.balance} ${w.currency}`,
+          amountInRubles: '-',
+          priceInRubles: '-',
+          iconColor:
+            w.currency === 'USDT'
+              ? '#26A17B'
+              : w.currency === 'TON'
+                ? '#0088CC'
+                : '#F7931A',
+        };
+      }
+
+      const formatter = new Intl.NumberFormat('ru-RU', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      const priceRub = formatter.format(rate);
+      const totalRub = formatter.format(parseFloat(w.balance) * rate);
+
+      return {
+        id: w.walletId,
+        name: w.currency,
+        symbol: w.currency,
+        amount: `${w.balance} ${w.currency}`,
+        amountInRubles: `${totalRub} ₽`,
+        priceInRubles: `${priceRub} ₽`,
+        iconColor:
+          w.currency === 'USDT'
+            ? '#26A17B'
+            : w.currency === 'TON'
+              ? '#0088CC'
+              : '#F7931A',
+      };
+    });
+  }, [wallets, getRateToRub]);
+
+  const totalBalanceRub = useMemo(() => {
+    return wallets.reduce((sum, w) => {
+      const rate = getRateToRub(w.currency);
+      if (!rate) return sum;
+      return sum + parseFloat(w.balance) * rate;
+    }, 0);
+  }, [wallets, getRateToRub]);
 
   return (
     <S.Wrapper>
       <BalanceCard
-        balance={12500.5}
+        balance={totalBalanceRub}
         currency="₽"
         hasNotifications
         onTopUp={onTopUp}
@@ -62,10 +96,14 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
 
       <S.CryptoWrapper>
         <AdBanner level={3} onClick={() => navigate('/referral')} />
-        <CryptoList
-          cryptos={cryptoData}
-          onCryptoClick={(crypto) => console.log('Clicked:', crypto)}
-        />
+        {loading ? (
+          <div>-</div>
+        ) : (
+          <CryptoList
+            cryptos={cryptos}
+            onCryptoClick={(crypto) => console.log('Clicked:', crypto)}
+          />
+        )}
       </S.CryptoWrapper>
     </S.Wrapper>
   );

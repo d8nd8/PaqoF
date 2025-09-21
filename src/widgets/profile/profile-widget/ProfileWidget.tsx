@@ -14,7 +14,6 @@ import {
   ItemText,
   ItemContent,
   Chevron,
-  LogoutButton,
 } from './ProfileWidget.styled';
 
 import UsersIcon from '@/assets/icons/profile/users.svg?react';
@@ -47,7 +46,7 @@ export const ProfileWidget: React.FC<Props> = ({
                                                  onOfficialClick,
                                                  onFaqClick,
                                                  onInfoClick,
-                                                 onLogout,
+
                                                }) => {
   const { goToReferral } = useAppNavigation();
   const { t } = useTranslation();
@@ -165,8 +164,6 @@ export const ProfileWidget: React.FC<Props> = ({
             <Chevron>›</Chevron>
           </SectionItem>
         </Section>
-
-        <LogoutButton onClick={onLogout}>{t('profile.logout')}</LogoutButton>
       </Content>
     </ProfileWrapper>
   );

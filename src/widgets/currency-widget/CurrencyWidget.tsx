@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   CurrencyWrapper,
@@ -41,76 +41,18 @@ import HistoryWidget from "@/widgets/history-widget/HistoryWidget";
 import { ActionItem } from "@/shared/components/ActionItem/ActionItem";
 import { useTranslation } from "react-i18next";
 
+import { type Wallet } from "@/api/services/wallet/schemes/wallet.schemas";
+import useWalletStore from "@/shared/stores/wallet";
+
 interface CurrencyWidgetProps {
-  symbol: string;
+  wallet: Wallet;
   onShowScanner?: () => void;
   onTopUp?: () => void;
   onSend?: () => void;
 }
 
-const NETWORK_BADGE = "TRC20";
-
-const CURRENCY_DATA: Record<
-  string,
-  {
-    name: string;
-    amount: string;
-    fiat: string;
-    chains: {
-      address: string;
-      icon: React.ReactNode;
-      chainTitle: string;
-      badge: string;
-      fee: string;
-    }[];
-  }
-> = {
-  USDT: {
-    name: "USDT",
-    amount: "1 290.49 USDT",
-    fiat: "110 323.99 ₽",
-    chains: [
-      {
-        address: "Zafa74A...FqfQv123",
-        icon: <TetherIcon width={64} height={64} />,
-        chainTitle: "USDT",
-        badge: NETWORK_BADGE,
-        fee: "2.75 USDT",
-      },
-    ],
-  },
-  TON: {
-    name: "TON",
-    amount: "580.00 TON",
-    fiat: "144 426.19 ₽",
-    chains: [
-      {
-        address: "Ton123...abcd567",
-        icon: <TonIcon width={64} height={64} />,
-        chainTitle: "TON",
-        badge: NETWORK_BADGE,
-        fee: "0.5 TON",
-      },
-    ],
-  },
-  BTC: {
-    name: "Bitcoin",
-    amount: "0.0041 BTC",
-    fiat: "34 880.61 ₽",
-    chains: [
-      {
-        address: "bc1qxy2...ncsw354",
-        icon: <BtcIcon width={64} height={64} />,
-        chainTitle: "BTC",
-        badge: NETWORK_BADGE,
-        fee: "0.0001 BTC",
-      },
-    ],
-  },
-};
-
 export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
-                                                                symbol,
+                                                                wallet,
                                                                 onShowScanner,
                                                                 onTopUp,
                                                                 onSend,
@@ -119,7 +61,22 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const data = CURRENCY_DATA[symbol] || CURRENCY_DATA["USDT"];
+  const { getRateToRub, fetchRates } = useWalletStore();
+
+  useEffect(() => {
+    fetchRates();
+  }, [fetchRates]);
+
+  const balanceRub = useMemo(() => {
+    const rate = getRateToRub(wallet.currency);
+    if (!rate) return null;
+    return parseFloat(wallet.balance) * rate;
+  }, [wallet, getRateToRub]);
+
+  const formatter = new Intl.NumberFormat("ru-RU", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   const handleCopy = (address: string) => {
     navigator.clipboard.writeText(address);
@@ -127,8 +84,24 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const chainsToRender =
-    data.chains.length === 1 ? [...data.chains, ...data.chains] : data.chains;
+  const shortenAddress = (address: string, start = 6, end = 6) => {
+    if (!address) return "";
+    if (address.length <= start + end) return address;
+    return `${address.slice(0, start)}...${address.slice(-end)}`;
+  };
+
+  const renderIcon = () => {
+    switch (wallet.currency) {
+      case "USDT":
+        return <TetherIcon width={64} height={64} />;
+      case "TON":
+        return <TonIcon width={64} height={64} />;
+      case "BTC":
+        return <BtcIcon width={64} height={64} />;
+      default:
+        return <TetherIcon width={64} height={64} />;
+    }
+  };
 
   return (
     <>
@@ -137,7 +110,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
           <BackButton onClick={() => navigate(-1)}>
             <ChevronLeftIcon />
           </BackButton>
-          <Title>{data.name}</Title>
+          <Title>{wallet.currency}</Title>
         </Header>
 
         <BalanceWrapper>
@@ -148,9 +121,13 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
             </CopyNotification>
           )}
           <BalanceSection>
-            {data.chains[0].icon}
-            <BalanceAmount>{data.amount}</BalanceAmount>
-            <BalanceFiat>{data.fiat}</BalanceFiat>
+            {renderIcon()}
+            <BalanceAmount>
+              {wallet.balance} {wallet.currency}
+            </BalanceAmount>
+            <BalanceFiat>
+              {balanceRub ? `${formatter.format(balanceRub)} ₽` : "-"}
+            </BalanceFiat>
           </BalanceSection>
         </BalanceWrapper>
 
@@ -176,26 +153,26 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
         </ActionsRow>
 
         <ChainList>
-          {chainsToRender.map((chain, index) => (
-            <ChainTypeCard key={`${chain.address}-${index}`}>
-              <ChainIcon>{chain.icon}</ChainIcon>
+          {wallet.addresses.map((addr, index) => (
+            <ChainTypeCard key={`${addr.address}-${index}`}>
+              <ChainIcon>{renderIcon()}</ChainIcon>
               <ChainContent>
                 <ChainRow>
                   <ChainHeader>
-                    <ChainTitle>{chain.chainTitle}</ChainTitle>
-                    <ChainBadge>{NETWORK_BADGE}</ChainBadge>
+                    <ChainTitle>{wallet.currency}</ChainTitle>
+                    <ChainBadge>{addr.network}</ChainBadge>
                   </ChainHeader>
                   <CopyGroup>
                     <CopyButton onClick={onShowScanner}>
                       <QrIcon width={20} height={20} />
                     </CopyButton>
-                    <CopyButton onClick={() => handleCopy(chain.address)}>
+                    <CopyButton onClick={() => handleCopy(addr.address)}>
                       <CopyIcon width={20} height={20} />
                     </CopyButton>
                   </CopyGroup>
                 </ChainRow>
-                <ChainAddress>{chain.address}</ChainAddress>
-                <ChainFee>{t("currency.fee", { value: chain.fee })}</ChainFee>
+                <ChainAddress>{shortenAddress(addr.address)}</ChainAddress>
+                <ChainFee>{t("currency.fee", { value: "2.75 USDT" })}</ChainFee>
               </ChainContent>
             </ChainTypeCard>
           ))}
@@ -205,3 +182,5 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
     </>
   );
 };
+
+export default CurrencyWidget;

@@ -14,6 +14,7 @@ import { WithdrawRequestSchema, type WithdrawRequest } from './schemes/withdraw.
 import { type WalletCurrencyList, WalletCurrencyListSchema } from '@/api/services/wallet/schemes/currency.schema'
 
 
+
 export const getWalletCurrencies = async (
   options?: AxiosRequestConfig,
 ): Promise<WalletCurrencyList> => {
@@ -101,3 +102,4 @@ export const createSbpPayment = async (
     },
   )
 }
+

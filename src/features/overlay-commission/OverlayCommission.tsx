@@ -7,20 +7,20 @@ import { useTranslation } from 'react-i18next';
 export interface OverlayCommissionProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
-  description: string;
-  buttonText?: string;
+  titleKey?: string;
+  descriptionKey?: string;
+  buttonTextKey?: string;
   onButtonClick?: () => void;
   image?: string;
-  isInStorybook?: boolean
+  isInStorybook?: boolean;
 }
 
 export const OverlayCommission: React.FC<OverlayCommissionProps> = ({
                                                                       isOpen,
                                                                       onClose,
-                                                                      title,
-                                                                      description,
-                                                                      buttonText = 'Вернуться',
+                                                                      titleKey = 'commission.title',
+                                                                      descriptionKey = 'commission.description',
+                                                                      buttonTextKey = 'common.ok',
                                                                       onButtonClick,
                                                                       image = WhyCommissionImage,
                                                                     }) => {
@@ -39,18 +39,18 @@ export const OverlayCommission: React.FC<OverlayCommissionProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       showBottomButton={true}
-      bottomButtonText={buttonText}
+      bottomButtonText={t(buttonTextKey)}
       onBottomButtonClick={handleButtonClick}
       closeButtonText={t('common.close')}
     >
       <S.OverlayCommissionContent>
         <S.ImageContainer>
-          <S.InfoImage src={image} alt={title} />
+          <S.InfoImage src={image} alt={t(titleKey)} />
         </S.ImageContainer>
 
         <S.TextSection>
-          <S.InfoTitle>{title}</S.InfoTitle>
-          <S.InfoDescription>{description}</S.InfoDescription>
+          <S.InfoTitle>{t(titleKey)}</S.InfoTitle>
+          <S.InfoDescription>{t(descriptionKey)}</S.InfoDescription>
         </S.TextSection>
       </S.OverlayCommissionContent>
     </BottomSheet>

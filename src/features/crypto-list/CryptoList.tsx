@@ -10,11 +10,14 @@ export interface CryptoItemData {
   name: string;
   symbol: string;
   amount: string;
-  amountInRubles: string;
+  amountInRubles?: string;
+  priceInRubles?:string;
   icon?: string | React.ReactNode;
   iconColor?: string;
   useCustomIcon?: boolean;
 }
+
+type InfoVariant = 'price' | 'amount' | 'both';
 
 interface CryptoItemProps {
   data: CryptoItemData;
@@ -22,22 +25,23 @@ interface CryptoItemProps {
   showRightSection?: boolean;
   rightSection?: React.ReactNode;
   disableNavigation?: boolean;
+  infoVariant?: InfoVariant;
 }
 
 export const CryptoItem: React.FC<CryptoItemProps> = ({
-                                                 data,
-                                                 onClick,
-                                                 showRightSection = true,
-                                                 rightSection,
-                                                 disableNavigation = false,
-                                               }) => {
+                                                        data,
+                                                        onClick,
+                                                        showRightSection = true,
+                                                        rightSection,
+                                                        disableNavigation = false,
+                                                        infoVariant = 'price',
+                                                      }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     onClick?.(data);
-
     if (!disableNavigation) {
-      navigate(`/currency?symbol=${data.symbol}`);
+      navigate(`/currency?walletId=${data.id}`);
     }
   };
 
@@ -57,6 +61,24 @@ export const CryptoItem: React.FC<CryptoItemProps> = ({
     }
   };
 
+  const renderInfo = () => {
+    switch (infoVariant) {
+      case 'price':
+        return <S.CryptoRubles>{data.priceInRubles}</S.CryptoRubles>;
+      case 'amount':
+        return <S.CryptoRubles>{data.amount}</S.CryptoRubles>;
+      case 'both':
+        return (
+          <>
+            <S.CryptoRubles>{data.amount}</S.CryptoRubles>
+            <S.CryptoRubles>{data.priceInRubles}</S.CryptoRubles>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <S.CryptoItemContainer onClick={handleClick}>
       <S.CryptoIcon color={data.iconColor} isUSDT={data.symbol === 'USDT'}>
@@ -65,7 +87,7 @@ export const CryptoItem: React.FC<CryptoItemProps> = ({
 
       <S.CryptoInfo>
         <S.CryptoName>{data.name}</S.CryptoName>
-        <S.CryptoRubles>{data.amountInRubles}</S.CryptoRubles>
+        {renderInfo()}
       </S.CryptoInfo>
 
       {showRightSection &&
@@ -85,6 +107,7 @@ interface CryptoListProps {
   showRightSection?: boolean;
   renderRightSection?: (crypto: CryptoItemData) => React.ReactNode;
   disableNavigation?: boolean;
+  infoVariant?: InfoVariant;
 }
 
 export const CryptoList: React.FC<CryptoListProps> = ({
@@ -93,6 +116,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
                                                         showRightSection = true,
                                                         renderRightSection,
                                                         disableNavigation = false,
+                                                        infoVariant = 'price',
                                                       }) => {
   return (
     <S.CryptoListContainer>
@@ -104,6 +128,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
           showRightSection={showRightSection}
           rightSection={renderRightSection?.(crypto)}
           disableNavigation={disableNavigation}
+          infoVariant={infoVariant}
         />
       ))}
     </S.CryptoListContainer>
