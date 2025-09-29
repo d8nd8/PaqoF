@@ -34,15 +34,23 @@ const useUserStore = create<IUserStore>((set) => ({
     : null,
 
   setUserData: (initData: string) => {
-    const user = parseTelegramUser(initData);
-    localStorage.setItem('access-token', initData);
-    localStorage.setItem('authentication-method', 'Bearer');
+    const params = new URLSearchParams(initData);
+    params.delete("query_id");
+
+    const filteredInitData = params.toString();
+
+    const user = parseTelegramUser(filteredInitData);
+
+    localStorage.setItem("access-token", filteredInitData);
+    localStorage.setItem("authentication-method", "Bearer");
+
     if (user) {
-      localStorage.setItem('telegram-user', JSON.stringify(user));
+      localStorage.setItem("telegram-user", JSON.stringify(user));
     }
+
     set({
       isAuthenticated: true,
-      token: initData,
+      token: filteredInitData,
       user,
     });
   },
