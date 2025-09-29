@@ -449,5 +449,12 @@
   "commission": {
     "title": "Why is the commission 2.75$?",
     "description": "The Tron network charges a 2.5$ fee for each transfer. An additional 0.25$ covers the cost of the AML check, which ensures security."
+  },
+
+  "errors": {
+    "NetworkNotFoundError": "Network not found for this address",
+    "InsufficientFundsError": "Insufficient funds to complete the operation",
+    "InvalidAddressError": "Invalid recipient address entered",
+    "unknown": "An unknown error occurred. Please try again"
   }
 }

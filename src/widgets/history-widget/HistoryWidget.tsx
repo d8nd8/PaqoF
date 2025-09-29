@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
   HistoryWrapper,
-  Header,
-  Title,
   Tabs,
   TabButton,
   DateHeader,
@@ -31,6 +29,7 @@ import useApplicationStore from "@/shared/stores/application";
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
 import { useTranslation } from "react-i18next";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 const TABS = [
   { id: "all", token: "history.tabs.all" },
@@ -98,20 +97,19 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
 
   return (
     <HistoryWrapper $variant={variant}>
-      <Header>
-        <Title $variant={variant}>{t("history.title")}</Title>
-        <Tabs>
-          {TABS.map((tab) => (
-            <TabButton
-              key={tab.id}
-              $active={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {t(tab.token)}
-            </TabButton>
-          ))}
-        </Tabs>
-      </Header>
+      <PageHeader title={t("history.title")}   showBackButton={false}/>
+
+      <Tabs>
+        {TABS.map((tab) => (
+          <TabButton
+            key={tab.id}
+            $active={activeTab === tab.id}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {t(tab.token)}
+          </TabButton>
+        ))}
+      </Tabs>
 
       {filtered.map((group) => {
         const total = group.items.reduce((acc, tx) => {

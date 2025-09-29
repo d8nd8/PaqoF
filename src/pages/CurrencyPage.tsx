@@ -58,7 +58,7 @@ export const CurrencyPage: React.FC = () => {
 
 
   if (!selectedWallet) {
-    return <div>Кошелёк не найден</div>;
+    return <div></div>;
   }
 
   return (

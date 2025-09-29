@@ -1,7 +1,7 @@
 import React from 'react';
 import * as S from './FullscreenModal.styled';
-import { HeaderOverlay } from '@/features/header-overlay';
 import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 
 interface FullscreenModalProps {
   isOpen: boolean;
@@ -23,10 +23,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   return (
     <S.Overlay $top={top} $bottom={bottom}>
       <S.ModalContent>
-        <HeaderOverlay
+        <PageHeader
           title={title}
-          showLeftChevron
-          onLeftChevronClick={onClose}
+          onBack={onClose}
         />
         <S.ContentArea>{children}</S.ContentArea>
       </S.ModalContent>

@@ -15,7 +15,7 @@ interface SwitchableContentProps {
 export const SwitchableContent = styled.div<SwitchableContentProps>(({ background }) => ({
   display: 'flex',
   flexDirection: 'column',
-  padding: '14px 14px',
+  padding: '45px 14px',
   background: background,
   borderBottomLeftRadius: '13px',
   borderBottomRightRadius: '13px',
@@ -23,12 +23,7 @@ export const SwitchableContent = styled.div<SwitchableContentProps>(({ backgroun
   maxHeight: '693px',
 }));
 
-export const PageHeader = styled.div({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginBottom: "14px",
-});
+
 
 interface HeaderElementProps {
   level?: number;

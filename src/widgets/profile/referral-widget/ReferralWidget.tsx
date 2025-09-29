@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RefBackTab from "../refback-tab/RefBackTab";
 import * as S from "./ReferralWidget.styled";
-import { Switcher, type SwitcherOption } from "@/shared/components/Switcher/Switcher";
+import { Switcher } from "@/shared/components/Switcher/Switcher";
 import { BadgeProgress } from "@/features/profile/badge-progress";
 import { PakogochiDisplay } from "@/features/profile/pakogochi-display/PakogochiDisplay";
-import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 import InfoIcon from "@/assets/icons/profile/information-circle.svg?react";
 import { PakogochiTab } from "@/widgets/profile/pakogochi-tab/PakogochiTab";
 import { InfoOverlay } from "@/features/profile/info-overlay/InfoOverlay";
 import { useTranslation } from "react-i18next";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 type TabType = "pakogochi" | "refback";
 
@@ -117,20 +117,17 @@ export const ReferralWidget: React.FC<Props> = ({
 
   const currentLevel = getCurrentLevel();
   const backgroundGradient = levelBackgrounds[currentLevel as keyof typeof levelBackgrounds];
+  const headerColor = currentLevel === 3 || currentLevel === 5 ? "#FFFFFF" : undefined;
 
   return (
     <>
       <S.WidgetWrapper>
         <S.SwitchableContent background={backgroundGradient}>
-          <S.PageHeader>
-            <S.BackButton onClick={handleBackClick} level={currentLevel}>
-              <ChevronLeft />
-            </S.BackButton>
-            <S.PageTitle level={currentLevel}>{t("referral.title")}</S.PageTitle>
-            <S.InfoButton onClick={handleInfoClick} level={currentLevel}>
-              <InfoIcon />
-            </S.InfoButton>
-          </S.PageHeader>
+          <PageHeader
+            title={t("referral.title")}
+            onBack={handleBackClick}
+            rightSlot={<InfoIcon onClick={handleInfoClick} />}
+          />
 
           <S.SwitcherContainer>
             <Switcher
@@ -147,7 +144,11 @@ export const ReferralWidget: React.FC<Props> = ({
           {activeTab === "refback" ? (
             <>
               <S.PlaceholderBox />
-              <BadgeProgress progress={progress} upgradeAmount={upgradeAmount} upgradeText={upgradeText} />
+              <BadgeProgress
+                progress={progress}
+                upgradeAmount={upgradeAmount}
+                upgradeText={upgradeText}
+              />
             </>
           ) : (
             <PakogochiDisplay level={currentLevel} progress={progress} />
@@ -168,7 +169,11 @@ export const ReferralWidget: React.FC<Props> = ({
               onCopyCode={onCopyCode}
             />
           ) : (
-            <PakogochiTab level={currentLevel} experience={experience} maxExperience={maxExperience} />
+            <PakogochiTab
+              level={currentLevel}
+              experience={experience}
+              maxExperience={maxExperience}
+            />
           )}
         </S.TabContent>
       </S.WidgetWrapper>

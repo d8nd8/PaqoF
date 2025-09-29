@@ -3,7 +3,6 @@ import * as userApi from '@/api/services/user/user.service';
 import type IUserStore from './types';
 import type { TelegramUser } from '@/shared/types/user'
 
-
 function parseTelegramUser(initData: string): TelegramUser | null {
   try {
     const params = new URLSearchParams(initData);
@@ -20,7 +19,7 @@ function parseTelegramUser(initData: string): TelegramUser | null {
       isPremium: parsed.is_premium,
       photoUrl: parsed.photo_url,
     } as TelegramUser;
-  } catch  {
+  } catch {
     return null;
   }
 }
@@ -34,17 +33,13 @@ const useUserStore = create<IUserStore>((set) => ({
     ? JSON.parse(localStorage.getItem('telegram-user')!)
     : null,
 
-
   setUserData: (initData: string) => {
     const user = parseTelegramUser(initData);
-    console.log('user', user);
-
     localStorage.setItem('access-token', initData);
     localStorage.setItem('authentication-method', 'Bearer');
     if (user) {
       localStorage.setItem('telegram-user', JSON.stringify(user));
     }
-
     set({
       isAuthenticated: true,
       token: initData,
@@ -52,12 +47,20 @@ const useUserStore = create<IUserStore>((set) => ({
     });
   },
 
-
   login: async (payload) => {
     set({ loading: true });
     try {
       await userApi.login(payload);
       set({ isAuthenticated: true });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  setEntryCode: async (payload) => {
+    set({ loading: true });
+    try {
+      await userApi.setEntryCode(payload);
     } finally {
       set({ loading: false });
     }

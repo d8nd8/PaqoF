@@ -1,7 +1,22 @@
-import {type Rate, RatesResponseSchema } from './schemes/rates.schema';
-import { rapiraClient } from '@/shared/api/rapira.client';
+import { type Rate, RateSchema } from '@/api/services/rapira/schemes/rates.schema'
+import { apiClient } from '@/shared/api';
+import type { AxiosRequestConfig } from 'axios';
 
-export const getRates = async (): Promise<Rate[]> => {
-  const parsed = await rapiraClient.get('/open/market/rates', RatesResponseSchema);
-  return parsed.data;
-};
+
+
+
+
+
+export const getRates = async (
+  params?: { currency?: string },
+  options?: AxiosRequestConfig,
+): Promise<Rate> => {
+  return apiClient.get(
+    '/api/v1/rates',
+    params,
+    {
+      model: RateSchema,
+      ...options,
+    },
+  )
+}

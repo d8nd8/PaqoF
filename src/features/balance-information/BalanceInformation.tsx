@@ -53,7 +53,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
           <S.Avatar src={user?.photoUrl || ''} alt={user?.username || 'user'} />
           <S.UserText>
             <S.Greeting>
-              {t('main.greeting')}, {user?.firstName || 'Guest'}
+              {t('main.greeting')}
             </S.Greeting>
             <S.Username>@{user?.username || 'anonymous'}</S.Username>
           </S.UserText>

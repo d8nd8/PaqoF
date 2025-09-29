@@ -23,31 +23,24 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
   const navigate = useNavigate();
   const { wallets, fetchWallets, fetchRates, getRateToRub, loading } = useWalletStore();
 
+
   useEffect(() => {
-    fetchWallets();
-    fetchRates();
+    const loadData = async () => {
+      const walletsList = await fetchWallets();
+      const uniqueCurrencies = Array.from(new Set(walletsList.map((w) => w.currency)));
+
+      for (const cur of uniqueCurrencies) {
+        await fetchRates(cur);
+      }
+    };
+
+    loadData();
   }, [fetchWallets, fetchRates]);
+
 
   const cryptos: CryptoItemData[] = useMemo(() => {
     return wallets.map((w) => {
-      const rate = getRateToRub(w.currency);
-
-      if (!rate) {
-        return {
-          id: w.walletId,
-          name: w.currency,
-          symbol: w.currency,
-          amount: `${w.balance} ${w.currency}`,
-          amountInRubles: '-',
-          priceInRubles: '-',
-          iconColor:
-            w.currency === 'USDT'
-              ? '#26A17B'
-              : w.currency === 'TON'
-                ? '#0088CC'
-                : '#F7931A',
-        };
-      }
+      const rate = getRateToRub(w.currency) ?? 0;
 
       const formatter = new Intl.NumberFormat('ru-RU', {
         minimumFractionDigits: 2,
@@ -73,6 +66,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
       };
     });
   }, [wallets, getRateToRub]);
+
 
   const totalBalanceRub = useMemo(() => {
     return wallets.reduce((sum, w) => {

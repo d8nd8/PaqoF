@@ -20,6 +20,6 @@ export default interface IWalletStore {
   fetchWalletOperations: (walletId: string, limit?: number, offset?: number) => Promise<OperationList>;
   createPayment: (walletId: string, payload: SbpPaymentCreateRequest) => Promise<SbpPaymentResponse>;
 
-  fetchRates: () => Promise<Rate[]>;
+  fetchRates: (currency:string) =>Promise<number | null>;
   getRateToRub: (currency: string) => number | null;
 }

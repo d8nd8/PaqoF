@@ -1,9 +1,16 @@
+import { OperationListSchema, type OperationList } from '@/api/services/operation/schemes/operation.schemas';
 import { LoginRequestSchema, type LoginRequest } from '@/api/services/user/schemas/login.schema';
-import { apiClient } from '@/shared/api';
-import type { AxiosRequestConfig } from 'axios'
+import { apiClient } from '@/shared/api'
+import type { AxiosRequestConfig } from 'axios';
 
-import { type ChangeEntryCodeRequest, ChangeEntryCodeSchema } from './schemas/change-code.schema'
-import { type OperationList, OperationListSchema } from '@/api/services/operation/schemes/operation.schemas'
+
+
+import {
+  ChangeEntryCodeSchema,
+  SetEntryCodeSchema,
+  type ChangeEntryCodeRequest,
+  type SetEntryCodeRequest
+} from './schemas/change-code.schema'
 
 
 export const login = async (
@@ -15,6 +22,21 @@ export const login = async (
     payload,
     {
       requestSchema: LoginRequestSchema,
+      ...options,
+    },
+  )
+}
+
+
+export const setEntryCode = async (
+  payload: SetEntryCodeRequest,
+  options?: AxiosRequestConfig,
+): Promise<void> => {
+  return apiClient.post(
+    '/api/v1/user/entry_code',
+    payload,
+    {
+      requestSchema: SetEntryCodeSchema,
       ...options,
     },
   )
@@ -34,7 +56,6 @@ export const changeEntryCode = async (
     },
   )
 }
-
 
 export const getUserOperations = async (
   params?: { limit?: number; offset?: number },

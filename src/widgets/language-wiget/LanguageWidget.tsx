@@ -5,16 +5,13 @@ import { useTranslation } from "react-i18next";
 
 import {
   LanguageWrapper,
-  Header,
-  Title,
-  BackButton,
   LanguageList,
   LanguageItem,
   LanguageText,
   RadioWrapper,
 } from "./LanguageWidget.styled";
 
-import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 const languages = [
   { id: "ru", token: "language.list.ru" },
@@ -36,21 +33,13 @@ export const LanguageWidget: React.FC<Props> = ({ onBack }) => {
   };
 
   const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1);
-    }
+    if (onBack) onBack();
+    else navigate(-1);
   };
 
   return (
     <LanguageWrapper>
-      <Header>
-        <BackButton onClick={handleBack}>
-          <ChevronLeft />
-        </BackButton>
-        <Title>{t("language.title")}</Title>
-      </Header>
+      <PageHeader title={t("language.title")} onBack={handleBack} />
 
       <LanguageList>
         {languages.map((lang) => (

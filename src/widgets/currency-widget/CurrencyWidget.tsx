@@ -1,10 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   CurrencyWrapper,
-  Header,
-  Title,
-  BackButton,
   BalanceWrapper,
   BalanceSection,
   BalanceAmount,
@@ -31,7 +28,6 @@ import BtcIcon from "@/assets/icons/bitcoin-icon.svg?react";
 import CopyIcon from "@/assets/icons/copy.svg?react";
 import QrIcon from "@/assets/icons/qr.svg?react";
 import CheckIcon from "@icons/check.svg?react";
-import ChevronLeftIcon from "@icons/chevron-left.svg?react";
 
 import PlusCircleIcon from "@icons/plus-circle.svg?react";
 import SendIcon from "@icons/send.svg?react";
@@ -39,6 +35,7 @@ import QRPayIcon from "@icons/qr.svg?react";
 
 import HistoryWidget from "@/widgets/history-widget/HistoryWidget";
 import { ActionItem } from "@/shared/components/ActionItem/ActionItem";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 import { useTranslation } from "react-i18next";
 
 import { type Wallet } from "@/api/services/wallet/schemes/wallet.schemas";
@@ -58,20 +55,23 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
                                                                 onSend,
                                                               }) => {
   const [copied, setCopied] = useState(false);
+  const [rate, setRate] = useState<number | null>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { getRateToRub, fetchRates } = useWalletStore();
+  const { fetchRates } = useWalletStore();
 
   useEffect(() => {
-    fetchRates();
-  }, [fetchRates]);
+    const loadRate = async () => {
+      if (wallet?.currency) {
+        const r = await fetchRates(wallet.currency);
+        setRate(r);
+      }
+    };
+    loadRate();
+  }, [fetchRates, wallet?.currency]);
 
-  const balanceRub = useMemo(() => {
-    const rate = getRateToRub(wallet.currency);
-    if (!rate) return null;
-    return parseFloat(wallet.balance) * rate;
-  }, [wallet, getRateToRub]);
+  const balanceRub = rate ? parseFloat(wallet.balance) * rate : null;
 
   const formatter = new Intl.NumberFormat("ru-RU", {
     minimumFractionDigits: 2,
@@ -106,12 +106,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
   return (
     <>
       <CurrencyWrapper>
-        <Header>
-          <BackButton onClick={() => navigate(-1)}>
-            <ChevronLeftIcon />
-          </BackButton>
-          <Title>{wallet.currency}</Title>
-        </Header>
+        <PageHeader title={wallet.currency} onBack={() => navigate(-1)} />
 
         <BalanceWrapper>
           {copied && (
@@ -126,7 +121,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
               {wallet.balance} {wallet.currency}
             </BalanceAmount>
             <BalanceFiat>
-              {balanceRub ? `${formatter.format(balanceRub)} ₽` : "-"}
+              {balanceRub !== null ? `${formatter.format(balanceRub)} ₽` : "-"}
             </BalanceFiat>
           </BalanceSection>
         </BalanceWrapper>
@@ -178,6 +173,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
           ))}
         </ChainList>
       </CurrencyWrapper>
+
       <HistoryWidget variant="card" />
     </>
   );

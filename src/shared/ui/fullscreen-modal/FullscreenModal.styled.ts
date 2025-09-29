@@ -21,7 +21,9 @@ export const ModalContent = styled.div({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  gap: '14px'
+  gap: '14px',
+  paddingLeft: '14px',
+  paddingRight: '14px',
 });
 
 export const ContentArea = styled.div({

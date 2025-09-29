@@ -5,9 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import {
   InfoWrapper,
-  Header,
-  Title,
-  BackButton,
   SectionTitle,
   InfoList,
   InfoItem,
@@ -15,7 +12,7 @@ import {
   RightIcon,
 } from "./InfoWidget.styled";
 
-import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 const documents = [
   { id: "aml", token: "info.documents.aml" },
@@ -36,21 +33,13 @@ export const InfoWidget: React.FC<Props> = ({ onBack }) => {
   };
 
   const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1);
-    }
+    if (onBack) onBack();
+    else navigate(-1);
   };
 
   return (
     <InfoWrapper>
-      <Header>
-        <BackButton onClick={handleBack}>
-          <ChevronLeft />
-        </BackButton>
-        <Title>{t("info.title")}</Title>
-      </Header>
+      <PageHeader title={t("info.title")} onBack={handleBack} />
 
       <SectionTitle>{t("info.sectionTitle")}</SectionTitle>
 

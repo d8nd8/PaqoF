@@ -5,9 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import {
   InfoWrapper,
-  Header,
-  Title,
-  BackButton,
 } from "@/widgets/info/info-widget/InfoWidget.styled";
 
 import {
@@ -18,11 +15,11 @@ import {
   AccountTitle,
 } from "./AccountsWidget.styled";
 
-import ChevronLeft from "@/assets/icons/chevron-left.svg?react";
 import TelegramIcon from "@/assets/icons/telegram-icon.svg?react";
 import VkIcon from "@/assets/icons/vk-icon.svg?react";
 import InstagramIcon from "@/assets/icons/instagram-icon.svg?react";
 import XIcon from "@/assets/icons/x-icon.svg?react";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 const accounts = [
   { id: "telegram", icon: <TelegramIcon /> },
@@ -44,21 +41,13 @@ export const AccountsWidget: React.FC<Props> = ({ onBack }) => {
   };
 
   const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1);
-    }
+    if (onBack) onBack();
+    else navigate(-1);
   };
 
   return (
     <InfoWrapper>
-      <Header>
-        <BackButton onClick={handleBack}>
-          <ChevronLeft />
-        </BackButton>
-        <Title>{t("accounts.title")}</Title>
-      </Header>
+      <PageHeader title={t("accounts.title")} onBack={handleBack} />
 
       <AccountsList>
         {accounts.map((acc) => (

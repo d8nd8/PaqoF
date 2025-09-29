@@ -18,6 +18,8 @@ export interface IBaseLayoutProps {
   showNavbar?: boolean
   centered?: boolean
   title?: string
+  showBackButton?: boolean
+  onBack?: () => void
 }
 
 export type NavbarItemState = 'default' | 'active' | 'history'
