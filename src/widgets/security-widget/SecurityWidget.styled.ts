@@ -47,6 +47,12 @@ export const Title = styled.h2(({ theme }) => ({
   textAlign: "center",
 }));
 
+export const SecurityContent = styled.div({
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+});
+
 export const SectionTitle = styled.p(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
   fontSize: "15px",

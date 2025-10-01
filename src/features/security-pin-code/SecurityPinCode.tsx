@@ -4,7 +4,7 @@ import DeleteIcon from '@icons/backspace.svg?react'
 import { useTranslation } from 'react-i18next'
 
 type PinStatus = 'default' | 'success' | 'error'
-type Mode = 'create' | 'confirm' | 'remove'
+type Mode = 'create' | 'createNew' | 'confirm' | 'remove'
 
 interface SecurityPinCodeProps {
   mode?: Mode
@@ -39,7 +39,7 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
   useEffect(() => {
     if (pin.length !== maxLength || isLocked) return
 
-    if (mode === 'create') {
+    if (mode === 'create' || mode === 'createNew') {
       if (step === 1) {
         setFirstPin(pin)
         setPin('')
@@ -85,14 +85,25 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
     if (mode === 'create') {
       return step === 1 ? t('pin.create.title') : t('pin.create.repeatTitle')
     }
+    if (mode === 'createNew') {
+      return step === 1 ? t('pin.change.title') : t('pin.change.repeatTitle')
+    }
     if (mode === 'confirm') return t('pin.confirm.title')
     if (mode === 'remove') return t('pin.remove.title')
     return ''
   }
 
   const renderSubtitle = () => {
-    if (mode === 'create' && step === 1) return t('pin.create.subtitle')
-    if (mode === 'create' && step === 2) return t('pin.create.repeatSubtitle')
+    if (mode === 'create') {
+      return step === 1
+        ? t('pin.create.subtitle')
+        : t('pin.create.repeatSubtitle')
+    }
+    if (mode === 'createNew') {
+      return step === 1
+        ? t('pin.change.subtitle')
+        : t('pin.change.repeatSubtitle')
+    }
     if (mode === 'remove') return t('pin.remove.subtitle')
     return ''
   }

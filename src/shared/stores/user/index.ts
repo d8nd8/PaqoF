@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import * as userApi from '@/api/services/user/user.service';
 import type IUserStore from './types';
-import type { TelegramUser } from '@/shared/types/user'
+import type { TelegramUser } from '@/shared/types/user';
 
 function parseTelegramUser(initData: string): TelegramUser | null {
   try {
@@ -38,7 +38,6 @@ const useUserStore = create<IUserStore>((set) => ({
     params.delete("query_id");
 
     const filteredInitData = params.toString();
-
     const user = parseTelegramUser(filteredInitData);
 
     localStorage.setItem("access-token", filteredInitData);
@@ -78,6 +77,15 @@ const useUserStore = create<IUserStore>((set) => ({
     set({ loading: true });
     try {
       await userApi.changeEntryCode(payload);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  deleteEntryCode: async (payload) => {
+    set({ loading: true });
+    try {
+      await userApi.deleteEntryCode(payload);
     } finally {
       set({ loading: false });
     }

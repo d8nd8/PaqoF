@@ -9,7 +9,7 @@ interface Props {
   color?: string;
   onBack?: () => void;
   rightSlot?: React.ReactNode;
-  showBackButton?: boolean; // добавили пропс
+  showBackButton?: boolean;
 }
 
 export const PageHeader: React.FC<Props> = ({

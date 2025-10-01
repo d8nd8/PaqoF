@@ -403,6 +403,12 @@
       "repeatTitle": "Repeat your PIN code",
       "repeatSubtitle": "Checking that you remember the code"
     },
+    "change": {
+      "title": "Enter a new PIN code",
+      "subtitle": "Come up with a new code for app entry",
+      "repeatTitle": "Repeat your new PIN code",
+      "repeatSubtitle": "Checking that you remember the new code"
+    },
     "confirm": {
       "title": "Enter your PIN code"
     },

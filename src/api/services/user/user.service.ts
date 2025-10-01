@@ -11,6 +11,7 @@ import {
   type ChangeEntryCodeRequest,
   type SetEntryCodeRequest
 } from './schemas/change-code.schema'
+import { type DeleteEntryCodeRequest, DeleteEntryCodeSchema } from '@/api/services/user/schemas/delete-code.schema'
 
 
 export const login = async (
@@ -52,6 +53,20 @@ export const changeEntryCode = async (
     payload,
     {
       requestSchema: ChangeEntryCodeSchema,
+      ...options,
+    },
+  )
+}
+
+export const deleteEntryCode = async (
+  payload: DeleteEntryCodeRequest,
+  options?: AxiosRequestConfig,
+): Promise<void> => {
+  return apiClient.delete(
+    '/api/v1/user/entry_code',
+    {
+      data: payload,
+      requestSchema: DeleteEntryCodeSchema,
       ...options,
     },
   )
