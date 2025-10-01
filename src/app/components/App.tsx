@@ -13,16 +13,15 @@ import useUserStore from "@/shared/stores/user";
 import Preloader from "@/shared/components/Preloader/Preloader";
 import { Wrapper, WrapperRoot } from "@/app/components/App.styled";
 import { useSafeInitData } from "@/shared/hooks/useSafeInitData";
-import { SecurityPinCode } from "@/features/security-pin-code";
-import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
+// import { SecurityPinCode } from "@/features/security-pin-code";
+// import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
 
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
     useApplicationStore();
 
-  const { login, setUserData, user } = useUserStore();
+  const { login, setUserData } = useUserStore();
   const [safeAreaBottom, setSafeAreaBottom] = useState(0);
-  const [lockOpen, setLockOpen] = useState(false);
 
   const rawInitData = useSafeInitData();
 
@@ -53,23 +52,7 @@ const App = () => {
       10
     );
     setSafeAreaBottom(bottom);
-
-    if (localStorage.getItem("pin")) {
-      setLockOpen(true);
-    }
   }, [setFullscreen, setUserData, rawInitData]);
-
-  const handlePinComplete = async (pin: string) => {
-    const savedPin = localStorage.getItem("pin");
-    if (!savedPin) return;
-    if (savedPin === pin && user?.id) {
-      await login({
-        entryCode: pin,
-        telegramId: user.id,
-      });
-      setLockOpen(false);
-    }
-  };
 
   return (
     <Wrapper
@@ -82,9 +65,12 @@ const App = () => {
         <RouterProvider router={router} />
       </WrapperRoot>
 
+      {/* Пин-код временно отключен */}
+      {/*
       <FullOverlay isOpen={lockOpen} onClose={() => null}>
         <SecurityPinCode mode="confirm" onComplete={handlePinComplete} />
       </FullOverlay>
+      */}
 
       <Preloader />
     </Wrapper>
