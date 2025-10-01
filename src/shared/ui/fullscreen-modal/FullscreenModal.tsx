@@ -24,6 +24,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     <S.Overlay $top={top} $bottom={bottom}>
       <S.ModalContent>
         <PageHeader
+          customTopInset={20}
           title={title}
           onBack={onClose}
         />

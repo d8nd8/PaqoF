@@ -70,7 +70,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={20}
+          customTopInset={40}
           title={t("currency.overlays.confirm.title")}
           onBack={onClose}
           rightSlot={null}
