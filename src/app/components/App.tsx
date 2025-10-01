@@ -42,7 +42,9 @@ const App = () => {
       setFullscreen(viewport.isFullscreen());
     }
 
-    setUserData(rawInitData);
+    if (rawInitData) {
+      setUserData(rawInitData);
+    }
 
     const bottom = parseInt(
       getComputedStyle(document.documentElement).getPropertyValue(

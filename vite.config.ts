@@ -1,7 +1,7 @@
 import path, { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import  storybookTest  from '@storybook/addon-vitest/vitest-plugin';
-import react from '@vitejs/plugin-react-swc'
+import storybookTest from '@storybook/addon-vitest/vitest-plugin'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import svgr from 'vite-plugin-svgr'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -32,7 +32,20 @@ export default defineConfig({
     },
   },
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [
+          [
+            '@emotion/babel-plugin',
+            {
+              autoLabel: 'dev-only',   // в dev читаемые имена
+              labelFormat: '[local]',  // .SecurityWrapper и т.п.
+              cssPropOptimization: true,
+            },
+          ],
+        ],
+      },
+    }),
     tsconfigPaths(),
     svgr({
       svgrOptions: {
@@ -42,7 +55,7 @@ export default defineConfig({
         titleProp: true,
       },
       include: '**/*.svg?react',
-    })
+    }),
   ],
   server: {
     port: 3000,
@@ -65,9 +78,7 @@ export default defineConfig({
             headless: true,
             provider: 'playwright',
             instances: [
-              {
-                browser: 'chromium',
-              },
+              { browser: 'chromium' },
             ],
           },
           setupFiles: ['.storybook/vitest.setup.ts'],
