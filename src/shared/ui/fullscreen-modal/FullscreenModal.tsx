@@ -2,6 +2,7 @@ import React from 'react';
 import * as S from './FullscreenModal.styled';
 import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import useApplicationStore from '@/shared/stores/application'
 
 interface FullscreenModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                                                                   children,
                                                                 }) => {
   const { top, bottom } = useSafeAreaInsets();
+  const { fullscreen } = useApplicationStore();
 
   if (!isOpen) return null;
 
@@ -24,7 +26,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     <S.Overlay $top={top} $bottom={bottom}>
       <S.ModalContent>
         <PageHeader
-          customTopInset={40}
+          customTopInset={fullscreen ? 40 : top || 0}
           title={title}
           onBack={onClose}
         />
