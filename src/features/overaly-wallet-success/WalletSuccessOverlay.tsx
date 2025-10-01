@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import * as S from "./WalletSuccessOverlay.styled";
 
 import CopyIconSvg from "@icons/copy.svg?react";
-import { miniApp } from "@telegram-apps/sdk-react";
 import { useTranslation } from "react-i18next";
 
 interface WalletSuccessOverlayProps {

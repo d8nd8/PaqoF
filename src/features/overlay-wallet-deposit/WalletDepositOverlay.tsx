@@ -1,7 +1,6 @@
 import React, { type JSX, useEffect, useState } from "react";
 import * as S from "./WalletDepositOverlay.styled";
 
-import BackIcon from "@icons/chevron-left.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
 import { Check } from "lucide-react";
 
@@ -15,6 +14,7 @@ import { type CryptoItemData } from "@/features/crypto-list/CryptoList";
 import { useTranslation } from "react-i18next";
 import useWalletStore from "@/shared/stores/wallet";
 import type { Wallet } from "@/api/services/wallet/schemes/wallet.schemas";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 export type WalletDepositMode = "deposit" | "transfer";
 
@@ -63,7 +63,6 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     }
   }, [isOpen, fetchWallets]);
 
-
   const cryptoOptions: CryptoItemData[] = wallets.map((wallet) => {
     const rateToRub = getRateToRub(wallet.currency) ?? 0;
     return {
@@ -89,7 +88,6 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     }
   }, [cryptoOptions, selectedCrypto]);
 
-
   useEffect(() => {
     if (selectedCrypto) {
       const wallet = wallets.find((w) => w.currency === selectedCrypto.symbol);
@@ -101,7 +99,6 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
       }
     }
   }, [selectedCrypto, wallets]);
-
 
   const handleSelectNetwork = (network: string) => {
     if (!selectedWallet) return;
@@ -128,66 +125,76 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
   return (
     <>
       <S.OverlayWrapper>
-        <S.Header>
-          <S.BackButton onClick={onClose}>
-            <BackIcon />
-          </S.BackButton>
-          <S.Title>
-            {title ||
-              (mode === "deposit"
-                ? t("walletDepositOverlay.titleDeposit")
-                : t("walletDepositOverlay.titleTransfer"))}
-          </S.Title>
-        </S.Header>
+        <PageHeader
+          customTopInset={20}
+          title={
+            title ||
+            (mode === "deposit"
+              ? t("walletDepositOverlay.titleDeposit")
+              : t("walletDepositOverlay.titleTransfer"))
+          }
+          onBack={onClose}
+          rightSlot={null}
+        />
 
-        <S.Content>
-          {selectedCrypto && (
-            <>
-              <S.SectionTitle>
-                {t("walletDepositOverlay.selectCrypto")}
-              </S.SectionTitle>
-              <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
+        <S.ContentWrapper>
+          <S.Content>
+            {selectedCrypto && (
+              <>
+                <S.SectionTitle>
+                  {t("walletDepositOverlay.selectCrypto")}
+                </S.SectionTitle>
+                <S.CryptoCard onClick={() => setShowCryptoSelection(true)}>
+                  <div className="left">
+                    {renderIcon(selectedCrypto.symbol)}
+                    <div className="info">
+                      <span className="name">{selectedCrypto.name}</span>
+                      <span className="amount">{selectedCrypto.amount}</span>
+                    </div>
+                  </div>
+                  <div className="right">
+                    <ChevronRightIcon />
+                  </div>
+                </S.CryptoCard>
+              </>
+            )}
+
+            <S.SectionTitle>
+              {t("walletDepositOverlay.selectNetwork")}
+            </S.SectionTitle>
+
+            {selectedWallet?.addresses?.map((addr) => (
+              <S.NetworkOption
+                key={addr.network}
+                $selected={selectedNetwork === addr.network}
+                onClick={() => handleSelectNetwork(addr.network)}
+              >
                 <div className="left">
-                  {renderIcon(selectedCrypto.symbol)}
+                  {addr.network === "TRC20" && (
+                    <TronIcon width={28} height={28} />
+                  )}
+                  {addr.network === "TON" && (
+                    <TonIcon width={28} height={28} />
+                  )}
+                  {addr.network === "BEP20" && (
+                    <BtcIcon width={28} height={28} />
+                  )}
                   <div className="info">
-                    <span className="name">{selectedCrypto.name}</span>
-                    <span className="amount">{selectedCrypto.amount}</span>
+                    <span className="name">{addr.network}</span>
+                    <span className="commission">
+                      {t("walletDepositOverlay.commission", {
+                        value: "2.75 USDT",
+                      })}
+                    </span>
                   </div>
                 </div>
-                <div className="right">
-                  <ChevronRightIcon />
-                </div>
-              </S.CryptoCard>
-            </>
-          )}
-
-          <S.SectionTitle>
-            {t("walletDepositOverlay.selectNetwork")}
-          </S.SectionTitle>
-
-          {selectedWallet?.addresses?.map((addr) => (
-            <S.NetworkOption
-              key={addr.network}
-              $selected={selectedNetwork === addr.network}
-              onClick={() => handleSelectNetwork(addr.network)}
-            >
-              <div className="left">
-                {addr.network === "TRC20" && <TronIcon width={28} height={28} />}
-                {addr.network === "TON" && <TonIcon width={28} height={28} />}
-                {addr.network === "BEP20" && <BtcIcon width={28} height={28} />}
-                <div className="info">
-                  <span className="name">{addr.network}</span>
-                  <span className="commission">
-                    {t("walletDepositOverlay.commission", { value: "2.75 USDT" })}
-                  </span>
-                </div>
-              </div>
-              <S.RadioWrapper $active={selectedNetwork === addr.network}>
-                {selectedNetwork === addr.network && <Check size={14} />}
-              </S.RadioWrapper>
-            </S.NetworkOption>
-          ))}
-        </S.Content>
+                <S.RadioWrapper $active={selectedNetwork === addr.network}>
+                  {selectedNetwork === addr.network && <Check size={14} />}
+                </S.RadioWrapper>
+              </S.NetworkOption>
+            ))}
+          </S.Content>
+        </S.ContentWrapper>
 
         <S.BottomSection>
           <S.MainButton onClick={handleContinue}>

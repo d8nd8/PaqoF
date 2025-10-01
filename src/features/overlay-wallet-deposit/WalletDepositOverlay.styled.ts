@@ -13,7 +13,6 @@ export const OverlayWrapper = styled.div(({ theme }) => ({
 export const Header = styled.div({
   display: "flex",
   alignItems: "center",
-  paddingTop: "70px",
   paddingBottom: "25px",
   paddingLeft: "16px",
   paddingRight: "16px",
@@ -44,6 +43,14 @@ export const Title = styled.h2(({ theme }) => ({
   color: theme.colors.textPrimary,
   margin: 0,
 }));
+
+export const ContentWrapper = styled.div(({ theme }) => ({
+  flex: 1,
+  padding: theme.spacing.lg,
+  display: "flex",
+  flexDirection: "column",
+}));
+
 
 export const Content = styled.div({
   flex: 1,

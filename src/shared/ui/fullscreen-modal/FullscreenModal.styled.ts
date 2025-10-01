@@ -13,7 +13,7 @@ export const Overlay = styled.div<OverlayProps>(({ $top, $bottom }) => ({
   backgroundColor: theme.colors.systemBackground,
   display: 'flex',
   flexDirection: 'column',
-  paddingTop: `${$top + 60}px`,
+  padding: theme.spacing.lg ,
   paddingBottom: `${$bottom}px`,
 }));
 

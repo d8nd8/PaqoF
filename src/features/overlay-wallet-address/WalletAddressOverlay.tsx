@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as S from "./WalletAddressOverlay.styled";
 
-import BackIcon from "@icons/chevron-left.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
 import CopyIcon from "@icons/copy.svg?react";
 import CheckIcon from "@icons/check.svg?react";
@@ -14,6 +13,7 @@ import TonIcon from "@/assets/icons/ton-icon.svg?url";
 import BtcIcon from "@/assets/icons/bitcoin-icon.svg?url";
 
 import { useTranslation } from "react-i18next";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 
 interface WalletAddressOverlayProps {
   isOpen: boolean;
@@ -58,14 +58,12 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
 
   return (
     <S.OverlayWrapper>
-      <S.Header>
-        <S.BackButton onClick={onClose}>
-          <BackIcon />
-        </S.BackButton>
-        <S.Title>
-          {t("currency.overlays.walletAddress.title", { crypto: cryptoName })}
-        </S.Title>
-      </S.Header>
+      <PageHeader
+        customTopInset={20}
+        title={t("currency.overlays.walletAddress.title", { crypto: cryptoName })}
+        onBack={onClose}
+        rightSlot={null}
+      />
 
       <S.Content>
         <S.SectionTitle>

@@ -2,10 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import * as S from "./WalletConfirmOverlay.styled";
 
-import BackIcon from "@icons/chevron-left.svg?react";
 import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoList";
 import { WalletSuccessOverlay } from "@/features/overaly-wallet-success/WalletSuccessOverlay";
 import useWalletStore from "@/shared/stores/wallet";
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
 
 interface WalletConfirmOverlayProps {
   isOpen: boolean;
@@ -69,12 +69,12 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
   return (
     <>
       <S.OverlayWrapper>
-        <S.Header>
-          <S.BackButton onClick={onClose}>
-            <BackIcon />
-          </S.BackButton>
-          <S.Title>{t("currency.overlays.confirm.title")}</S.Title>
-        </S.Header>
+        <PageHeader
+          customTopInset={20}
+          title={t("currency.overlays.confirm.title")}
+          onBack={onClose}
+          rightSlot={null}
+        />
 
         <S.Content>
           <S.Card>

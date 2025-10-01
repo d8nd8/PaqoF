@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import * as S from "./WalletTransferOverlay.styled";
 
-import BackIcon from "@icons/chevron-left.svg?react";
 import QrIcon from "@icons/qr.svg?react";
 import ExclamationIcon from "@icons/exclamation-circle.svg?react";
 import ChevronRightIcon from "@icons/chevron-right.svg?react";
@@ -15,6 +14,7 @@ import {
 import { QRScanner } from "@/features/qr-scanner/QRScanner";
 import { WalletConfirmOverlay } from "@/features/overlay-wallet-confirm/WalletConfirmOverlay";
 import useWalletStore from "@/shared/stores/wallet";
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
 
 interface WalletTransferOverlayProps {
   isOpen: boolean;
@@ -105,12 +105,12 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   return (
     <>
       <S.OverlayWrapper>
-        <S.Header>
-          <S.BackButton onClick={onClose}>
-            <BackIcon />
-          </S.BackButton>
-          <S.Title>{t("currency.overlays.transfer.title")}</S.Title>
-        </S.Header>
+        <PageHeader
+          customTopInset={20}
+          title={t("currency.overlays.transfer.title")}
+          onBack={onClose}
+          rightSlot={null}
+        />
 
         <S.Content>
           <S.Card>

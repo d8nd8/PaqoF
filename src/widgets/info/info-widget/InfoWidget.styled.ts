@@ -5,8 +5,7 @@ export const InfoWrapper = styled.div(({ theme }) => ({
   flexDirection: "column",
   minHeight: "100%",
   background: theme.colors.systemBackground,
-  padding: `0 ${theme.spacing.page}`,
-  paddingTop: theme.spacing.header,
+  padding: theme.spacing.lg,
 }));
 
 export const Header = styled.div(({ theme }) => ({

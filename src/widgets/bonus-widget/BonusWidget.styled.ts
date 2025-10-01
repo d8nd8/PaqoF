@@ -6,7 +6,6 @@ export const BonusWrapper = styled.div(({ theme }) => ({
   minHeight: "100%",
   background: theme.colors.systemBackground,
   padding: theme.spacing.lg,
-  paddingTop: theme.spacing.header,
 }));
 
 export const Header = styled.div(({ theme }) => ({

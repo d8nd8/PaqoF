@@ -10,6 +10,7 @@ interface Props {
   onBack?: () => void;
   rightSlot?: React.ReactNode;
   showBackButton?: boolean;
+  customTopInset?: number;
 }
 
 export const PageHeader: React.FC<Props> = ({
@@ -18,6 +19,7 @@ export const PageHeader: React.FC<Props> = ({
                                               onBack,
                                               rightSlot,
                                               showBackButton = true,
+                                              customTopInset,
                                             }) => {
   const navigate = useNavigate();
   const { top } = useSafeAreaInsets();
@@ -28,7 +30,7 @@ export const PageHeader: React.FC<Props> = ({
   };
 
   return (
-    <HeaderWrapper insetTop={top}>
+    <HeaderWrapper insetTop={customTopInset ?? top}>
       {showBackButton && (
         <BackButton onClick={handleBack} color={color}>
           <ChevronLeft />
