@@ -110,7 +110,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={fullscreen ? 80 : 20}
+          customTopInset={fullscreen ? 80 : 0}
           title={t("currency.overlays.transfer.title")}
           onBack={onClose}
           rightSlot={null}

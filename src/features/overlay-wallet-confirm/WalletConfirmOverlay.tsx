@@ -61,10 +61,8 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
         amount: parseFloat(amount),
       };
 
-      // запрос в API
       const op = await withdraw(walletId, payload);
 
-      // сохраняем данные операции
       setOperation(op);
       setShowSuccess(true);
     } finally {
@@ -76,7 +74,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={fullscreen ? 80 : 20}
+          customTopInset={fullscreen ? 80 : 0}
           title={t("currency.overlays.confirm.title")}
           onBack={onClose}
           rightSlot={null}

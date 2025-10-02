@@ -63,7 +63,7 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
   return (
     <S.OverlayWrapper>
       <PageHeader
-        customTopInset={fullscreen ? 80 : 20}
+        customTopInset={fullscreen ? 80 : 0}
         title={t("currency.overlays.walletAddress.title", { crypto: cryptoName })}
         onBack={onClose}
         rightSlot={null}
