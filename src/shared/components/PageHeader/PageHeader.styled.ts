@@ -6,7 +6,7 @@ export const HeaderWrapper = styled.div<{ insetTop: number }>(({ theme, insetTop
   justifyContent: "center",
   position: "relative",
   marginBottom: theme.spacing.xxl,
-  paddingTop: `calc(${theme.spacing.sm} + ${insetTop}px)`,
+  paddingTop: `${insetTop}px`,
 }));
 
 export const BackButton = styled.button<{ color?: string }>(({ theme, color }) => ({
