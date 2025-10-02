@@ -32,7 +32,7 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     symbol: 'USDT',
     amount: '1 290.53 USDT',
     amountInRubles: '110 323.99 ₽',
-    priceInRubles: '85.50 ₽', // добавлено
+    priceInRubles: '85.50 ₽',
     iconColor: '#4CAF50',
   },
   {
@@ -75,7 +75,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
                                                       title,
                                                     }) => {
   const { t } = useTranslation();
-  const { bottom } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
   const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false);
   const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
@@ -135,7 +135,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   return (
     <>
       <Overlay>
-        <CameraContainer $insetBottom={bottom}>
+        <CameraContainer $insetTop={top} $insetBottom={bottom}>
           <CameraFeed id={containerId} />
 
           <Header>
