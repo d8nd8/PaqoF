@@ -13,6 +13,8 @@ interface WalletSuccessOverlayProps {
   txId: string;
   network: string;
   receivedAmount: string;
+  crypto: string;
+  createdAt: string;
 }
 
 export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
@@ -23,6 +25,8 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
                                                                             txId,
                                                                             network,
                                                                             receivedAmount,
+                                                                            crypto,
+                                                                            createdAt,
                                                                           }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -36,15 +40,23 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
     navigator.clipboard.writeText(value);
   };
 
+  const formattedDate = new Date(createdAt).toLocaleString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <S.OverlayWrapper>
       <S.SuccessHeader>
         <S.SuccessTitle>
-          {t("currency.overlays.success.title", { crypto: "USDT" })}
+          {t("currency.overlays.success.title", { crypto })}
         </S.SuccessTitle>
         <S.Date>
           {t("currency.overlays.success.date", {
-            date: "20.05.2024, 17:20",
+            date: formattedDate,
           })}
         </S.Date>
       </S.SuccessHeader>
@@ -53,7 +65,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
         <S.Amount>
           {t("currency.overlays.success.amount", {
             amount,
-            crypto: "USDT",
+            crypto,
           })}
         </S.Amount>
 

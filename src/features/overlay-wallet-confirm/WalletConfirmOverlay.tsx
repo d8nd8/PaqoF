@@ -5,8 +5,10 @@ import * as S from "./WalletConfirmOverlay.styled";
 import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoList";
 import { WalletSuccessOverlay } from "@/features/overaly-wallet-success/WalletSuccessOverlay";
 import useWalletStore from "@/shared/stores/wallet";
-import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
-import useApplicationStore from '@/shared/stores/application'
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
+import useApplicationStore from "@/shared/stores/application";
+import type { Operation } from '@/api/services/operation/schemes/operation.schemas'
+
 
 interface WalletConfirmOverlayProps {
   isOpen: boolean;
@@ -34,17 +36,17 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
   const { t } = useTranslation();
   const { withdraw } = useWalletStore();
   const { fullscreen } = useApplicationStore();
+
   const [comment, setComment] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [showSuccess, setShowSuccess] = React.useState(false);
-  const [txHash, setTxHash] = React.useState<string | null>(null);
-  const [txId, setTxId] = React.useState<string | null>(null);
+  const [operation, setOperation] = React.useState<Operation | null>(null);
 
   if (!isOpen) return null;
 
   const handlePaste = async () => {
-      const text = await navigator.clipboard.readText();
-      if (text) setComment(text);
+    const text = await navigator.clipboard.readText();
+    if (text) setComment(text);
   };
 
   const handleConfirm = async () => {
@@ -57,11 +59,11 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
         amount: parseFloat(amount),
       };
 
+      // запрос в API
       const op = await withdraw(walletId, payload);
 
-      setTxHash(op.operationId);
-      setTxId(op.walletId);
-
+      // сохраняем данные операции
+      setOperation(op);
       setShowSuccess(true);
     } finally {
       setLoading(false);
@@ -132,15 +134,19 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
         </S.BottomSection>
       </S.OverlayWrapper>
 
-      <WalletSuccessOverlay
-        isOpen={showSuccess}
-        amount={amount}
-        address={address}
-        txHash={txHash ?? "-"}
-        txId={txId ?? "-"}
-        network="TRC 20"
-        receivedAmount={`${amount} ${crypto.symbol}`}
-      />
+      {operation && (
+        <WalletSuccessOverlay
+          isOpen={showSuccess}
+          amount={operation.amount}
+          address={address}
+          txHash={operation.operationId}
+          txId={operation.walletId}
+          network={operation.operationType}
+          receivedAmount={`${operation.totalAmount} ${crypto.symbol}`}
+          crypto={crypto.symbol}
+          createdAt={operation.createdAt}
+        />
+      )}
     </>
   );
 };
