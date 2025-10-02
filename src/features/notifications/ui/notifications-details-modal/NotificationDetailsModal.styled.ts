@@ -34,7 +34,7 @@ export const NotificationText = styled.p(({theme}) => ({
 export const ButtonWrapper = styled.div<{ $insetBottom?: number }>(({ $insetBottom = 0 }) => ({
   display: 'flex',
   justifyContent: 'center',
-  paddingBottom: `${$insetBottom}px`,
+  paddingBottom: `calc(${$insetBottom}px + 10px)`,
 }));
 
 export const ActionButton = styled.button({
