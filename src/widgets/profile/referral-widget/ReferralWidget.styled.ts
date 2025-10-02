@@ -15,6 +15,7 @@ interface SwitchableContentProps {
 export const SwitchableContent = styled.div<SwitchableContentProps>(({ background }) => ({
   display: 'flex',
   flexDirection: 'column',
+  padding: '14px',
   background: background,
   borderBottomLeftRadius: '13px',
   borderBottomRightRadius: '13px',
