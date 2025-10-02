@@ -14,6 +14,7 @@ import BtcIcon from "@/assets/icons/bitcoin-icon.svg?url";
 
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
+import useApplicationStore from '@/shared/stores/application'
 
 interface WalletAddressOverlayProps {
   isOpen: boolean;
@@ -43,6 +44,7 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
                                                                           }) => {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+  const { fullscreen } = useApplicationStore();
 
   if (!isOpen) return null;
 
@@ -59,7 +61,7 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
   return (
     <S.OverlayWrapper>
       <PageHeader
-        customTopInset={20}
+        customTopInset={fullscreen ? 80 : 20}
         title={t("currency.overlays.walletAddress.title", { crypto: cryptoName })}
         onBack={onClose}
         rightSlot={null}

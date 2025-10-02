@@ -15,6 +15,7 @@ import { QRScanner } from "@/features/qr-scanner/QRScanner";
 import { WalletConfirmOverlay } from "@/features/overlay-wallet-confirm/WalletConfirmOverlay";
 import useWalletStore from "@/shared/stores/wallet";
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
+import useApplicationStore from '@/shared/stores/application'
 
 interface WalletTransferOverlayProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                                                                               onTopUpClick,
                                                                             }) => {
   const { t } = useTranslation();
+  const { fullscreen } = useApplicationStore();
   const [amount, setAmount] = useState("0");
   const [rubPreset, setRubPreset] = useState<number | null>(null);
   const [address, setAddress] = useState("");
@@ -106,7 +108,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={20}
+          customTopInset={fullscreen ? 80 : 20}
           title={t("currency.overlays.transfer.title")}
           onBack={onClose}
           rightSlot={null}

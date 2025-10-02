@@ -6,6 +6,7 @@ import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoLi
 import { WalletSuccessOverlay } from "@/features/overaly-wallet-success/WalletSuccessOverlay";
 import useWalletStore from "@/shared/stores/wallet";
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
+import useApplicationStore from '@/shared/stores/application'
 
 interface WalletConfirmOverlayProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
                                                                           }) => {
   const { t } = useTranslation();
   const { withdraw } = useWalletStore();
+  const { fullscreen } = useApplicationStore();
   const [comment, setComment] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [showSuccess, setShowSuccess] = React.useState(false);
@@ -70,7 +72,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={40}
+          customTopInset={fullscreen ? 80 : 20}
           title={t("currency.overlays.confirm.title")}
           onBack={onClose}
           rightSlot={null}

@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import useWalletStore from "@/shared/stores/wallet";
 import type { Wallet } from "@/api/services/wallet/schemes/wallet.schemas";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
+import useApplicationStore from '@/shared/stores/application'
 
 export type WalletDepositMode = "deposit" | "transfer";
 
@@ -47,6 +48,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
                                                                             preselectedCrypto,
                                                                           }) => {
   const { t } = useTranslation();
+  const { fullscreen } = useApplicationStore();
   const { wallets, fetchWallets, getRateToRub } = useWalletStore();
 
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
@@ -126,7 +128,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={20}
+          customTopInset={fullscreen ? 80 : 20}
           title={
             title ||
             (mode === "deposit"
