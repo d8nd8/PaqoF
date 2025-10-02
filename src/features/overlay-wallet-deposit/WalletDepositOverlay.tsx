@@ -130,7 +130,6 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     <>
       <S.OverlayWrapper>
         <PageHeader
-          customTopInset={fullscreen ? 80 : 20}
           title={
             title ||
             (mode === "deposit"
