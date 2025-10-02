@@ -12,12 +12,12 @@ export const Overlay = styled.div({
   paddingBottom: '60px',
 });
 
-export const CameraContainer = styled.div({
+export const CameraContainer = styled.div<{ $insetBottom: number }>(({ $insetBottom }) => ({
   position: 'relative',
   width: '100%',
-  height: '78vh',
+  height: `calc(100vh - ${140 + $insetBottom}px)`,
   background: '#000',
-});
+}));
 
 export const CameraFeed = styled.div({
   position: 'absolute',
