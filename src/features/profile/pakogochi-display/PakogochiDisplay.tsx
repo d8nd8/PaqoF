@@ -6,6 +6,12 @@ import InviteIcon from '@/assets/icons/profile/invite.svg?react';
 import CashBackIcon from '@/assets/icons/profile/sell.svg?react';
 import UpgradeIcon from '@/assets/icons/profile/arrow-up-circle.svg?react';
 
+import paco1 from "@/assets/images/profile/paco1.png";
+import paco2 from "@/assets/images/profile/paco2.png";
+import paco3 from "@/assets/images/profile/paco3.png";
+import paco4 from "@/assets/images/profile/paco4.png";
+import paco5 from "@/assets/images/profile/paco5.png";
+
 interface PakogochiDisplayProps {
   level: number;
   progress: number;
@@ -14,35 +20,34 @@ interface PakogochiDisplayProps {
 
 const levelConfig = {
   1: {
-    image: '/src/assets/images/profile/paco1.png',
-    background: 'linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
-    title: 'referral.pakogochi.levels.1',
+    image: paco1,
+    background: "linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
+    title: "referral.pakogochi.levels.1",
   },
   2: {
-    image: '/src/assets/images/profile/paco2.png',
+    image: paco2,
     background:
-      'linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
-    title: 'referral.pakogochi.levels.2',
+      "linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
+    title: "referral.pakogochi.levels.2",
   },
   3: {
-    image: '/src/assets/images/profile/paco3.png',
+    image: paco3,
     background:
-      'linear-gradient(225deg, #BACFFF 0%, #132F55 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
-    title: 'referral.pakogochi.levels.3',
+      "linear-gradient(225deg, #BACFFF 0%, #132F55 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
+    title: "referral.pakogochi.levels.3",
   },
   4: {
-    image: '/src/assets/images/profile/paco4.png',
-    background: 'linear-gradient(225deg, #FFCEBA 0%, #441355 100%)',
-    title: 'referral.pakogochi.levels.4',
+    image: paco4,
+    background: "linear-gradient(225deg, #FFCEBA 0%, #441355 100%)",
+    title: "referral.pakogochi.levels.4",
   },
   5: {
-    image: '/src/assets/images/profile/paco5.png',
+    image: paco5,
     background:
-      'linear-gradient(225deg, #5E5E5E 0%, #0B0B0B 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
-    title: 'referral.pakogochi.levels.5',
+      "linear-gradient(225deg, #5E5E5E 0%, #0B0B0B 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
+    title: "referral.pakogochi.levels.5",
   },
 };
-
 export const PakogochiDisplay: React.FC<PakogochiDisplayProps> = ({
                                                                     level = 1,
                                                                     progress = 0,
