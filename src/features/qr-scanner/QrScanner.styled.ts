@@ -14,6 +14,10 @@ export const Overlay = styled.div({
 
 export const CameraContainer = styled.div<{ $insetBottom: number }>(({ $insetBottom }) => ({
   position: 'relative',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: `${100 + $insetBottom}px`,
   width: '100%',
   height: `calc(100vh - ${140 + $insetBottom}px)`,
   background: '#000',
