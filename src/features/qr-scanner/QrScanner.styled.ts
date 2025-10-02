@@ -12,12 +12,15 @@ export const Overlay = styled.div({
   paddingBottom: '60px',
 });
 
-export const CameraContainer = styled.div({
-  position: 'relative',
-  width: '100%',
-  height: 'calc(100vh - 120px)',
-  background: '#000',
-});
+export const CameraContainer = styled.div<{ $insetBottom?: number }>(
+  ({ $insetBottom = 0 }) => ({
+    position: 'relative',
+    width: '100%',
+    height: `calc(100vh - 140px)`, // вычитаем safe-area и свой отступ
+    marginBottom: `${$insetBottom +10}px`, // безопасная зона + свои 60px
+    background: '#000',
+  })
+);
 
 export const CameraFeed = styled.div({
   position: 'absolute',

@@ -135,7 +135,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   return (
     <>
       <Overlay>
-        <CameraContainer>
+        <CameraContainer $insetBottom={bottom}>
           <CameraFeed id={containerId} />
 
           <Header>
