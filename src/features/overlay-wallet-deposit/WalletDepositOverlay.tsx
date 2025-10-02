@@ -16,6 +16,7 @@ import useWalletStore from "@/shared/stores/wallet";
 import type { Wallet } from "@/api/services/wallet/schemes/wallet.schemas";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 import useApplicationStore from '@/shared/stores/application'
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 export type WalletDepositMode = "deposit" | "transfer";
 
@@ -50,6 +51,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
   const { t } = useTranslation();
   const { fullscreen } = useApplicationStore();
   const { wallets, fetchWallets, getRateToRub } = useWalletStore();
+  const { bottom } = useSafeAreaInsets();
 
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(
@@ -198,7 +200,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
           </S.Content>
         </S.ContentWrapper>
 
-        <S.BottomSection>
+        <S.BottomSection $insetBottom={bottom}>
           <S.MainButton onClick={handleContinue}>
             {t("walletDepositOverlay.continue")}
           </S.MainButton>

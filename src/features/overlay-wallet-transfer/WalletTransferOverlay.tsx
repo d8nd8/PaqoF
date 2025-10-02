@@ -16,6 +16,7 @@ import { WalletConfirmOverlay } from "@/features/overlay-wallet-confirm/WalletCo
 import useWalletStore from "@/shared/stores/wallet";
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
 import useApplicationStore from '@/shared/stores/application'
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 interface WalletTransferOverlayProps {
   isOpen: boolean;
@@ -37,6 +38,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                                                                               onTopUpClick,
                                                                             }) => {
   const { t } = useTranslation();
+  const { bottom } = useSafeAreaInsets();
   const { fullscreen } = useApplicationStore();
   const [amount, setAmount] = useState("0");
   const [rubPreset, setRubPreset] = useState<number | null>(null);
@@ -222,7 +224,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
           </S.CommissionButton>
         </S.Content>
 
-        <S.BottomSection>
+        <S.BottomSection $insetBottom={bottom}>
           <S.MainButton onClick={handleContinue}>
             {t("currency.overlays.transfer.continue")}
           </S.MainButton>

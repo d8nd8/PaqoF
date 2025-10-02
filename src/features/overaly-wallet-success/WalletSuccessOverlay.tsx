@@ -4,6 +4,7 @@ import * as S from "./WalletSuccessOverlay.styled";
 
 import CopyIconSvg from "@icons/copy.svg?react";
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 interface WalletSuccessOverlayProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
                                                                             createdAt,
                                                                           }) => {
   const { t } = useTranslation();
+  const { bottom } = useSafeAreaInsets();
   const navigate = useNavigate();
   if (!isOpen) return null;
 
@@ -113,7 +115,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
         </S.Card>
       </S.Content>
 
-      <S.BottomButton onClick={handleGoHome}>
+      <S.BottomButton $insetBottom={bottom} onClick={handleGoHome}>
         {t("currency.overlays.success.button")}
       </S.BottomButton>
     </S.OverlayWrapper>

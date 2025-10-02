@@ -15,6 +15,7 @@ import BtcIcon from "@/assets/icons/bitcoin-icon.svg?url";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 import useApplicationStore from '@/shared/stores/application'
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 interface WalletAddressOverlayProps {
   isOpen: boolean;
@@ -45,6 +46,7 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const { fullscreen } = useApplicationStore();
+  const { bottom } = useSafeAreaInsets();
 
   if (!isOpen) return null;
 
@@ -128,7 +130,7 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
         </S.QRCard>
       </S.Content>
 
-      <S.BottomActions>
+      <S.BottomActions $insetBottom={bottom}>
         <S.MainButton onClick={handleCopy}>
           {t("currency.overlays.walletAddress.buttons.copy")}
         </S.MainButton>

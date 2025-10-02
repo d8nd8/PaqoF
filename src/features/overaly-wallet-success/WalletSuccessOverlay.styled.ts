@@ -93,23 +93,25 @@ export const Value = styled.div(({ theme }) => ({
   wordBreak: "break-word",
 }));
 
-export const BottomButton = styled.button(({ theme }) => ({
-  margin: "0 16px 40px",
-  height: "44px",
-  borderRadius: "10px",
-  background: theme.colors.primary500,
-  color: theme.colors.textPrimary,
-  fontSize: "15px",
-  fontWeight: 600,
-  border: "none",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  transition: "opacity 0.2s ease",
-  "&:hover": { opacity: 0.9 },
-  "&:active": { transform: "scale(0.98)" },
-}));
+export const BottomButton = styled.button<{ $insetBottom?: number }>(
+  ({ theme, $insetBottom = 0 }) => ({
+    margin: `0 16px calc(40px + ${$insetBottom}px)`,
+    height: "44px",
+    borderRadius: "10px",
+    background: theme.colors.primary500,
+    color: theme.colors.textPrimary,
+    fontSize: "15px",
+    fontWeight: 600,
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "opacity 0.2s ease",
+    "&:hover": { opacity: 0.9 },
+    "&:active": { transform: "scale(0.98)" },
+  })
+);
 
 export const RowHorizontal = styled.div({
   display: "flex",

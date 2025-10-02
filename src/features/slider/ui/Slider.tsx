@@ -1,11 +1,25 @@
-import React, { useState, useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import React, { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
+import { Autoplay, EffectFade } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+
+
+
+
+
 import "swiper/css";
 import "swiper/css/effect-fade";
+
+
+
 import { SliderPagination } from "@/features/slider/ui/SliderPagination";
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
+
+
+
 import * as S from "./Slider.styled";
+
 
 interface Slide {
   title: string;
@@ -26,6 +40,7 @@ export const Slider: React.FC<SliderProps> = ({
                                               }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
+  const { bottom } = useSafeAreaInsets();
 
   const handleSlideChange = (index: number) => {
     setCurrentSlide(index);
@@ -90,7 +105,7 @@ export const Slider: React.FC<SliderProps> = ({
         />
       </Swiper>
 
-      <S.BottomSection>
+      <S.BottomSection $insetBottom={bottom}>
         <S.MainButton onClick={onButtonClick}>Перейти в кошелёк</S.MainButton>
       </S.BottomSection>
     </S.SliderContainer>

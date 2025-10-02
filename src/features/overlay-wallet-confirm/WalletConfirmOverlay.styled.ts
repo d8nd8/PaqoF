@@ -195,12 +195,14 @@ export const BottomButton = styled.button(({ theme }) => ({
 }));
 
 
-export const BottomSection = styled.div({
-  padding: "30px 14px 40px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-});
+export const BottomSection = styled.div<{ $insetBottom?: number }>(
+  ({ $insetBottom = 0 }) => ({
+    padding: `30px 14px calc(16px + ${$insetBottom}px)`,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  })
+);
 
 export const MainButton = styled.button<{ disabled?: boolean }>(({ theme, disabled }) => ({
   width: "100%",

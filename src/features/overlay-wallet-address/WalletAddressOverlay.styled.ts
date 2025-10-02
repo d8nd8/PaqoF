@@ -162,13 +162,14 @@ export const CommissionButton = styled.button(({ theme }) => ({
   },
 }));
 
-export const BottomActions = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  gap: "12px",
-  padding: "30px 14px 40px",
-});
-
+export const BottomActions = styled.div<{ $insetBottom?: number }>(
+  ({ $insetBottom = 0 }) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+    padding: `30px 14px calc(16px + ${$insetBottom}px)`,
+  })
+);
 export const MainButton = styled.button(({ theme }) => ({
   width: "100%",
   height: "44px",

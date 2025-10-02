@@ -1,15 +1,17 @@
 import styled from "@emotion/styled";
 
-export const WelcomeSliderWrapper = styled.div(({ theme }) => ({
-  position: "relative",
-  width: "100%",
-  height: "var(--app-height)",
-  boxSizing: "border-box",
-  background: theme.colors.systemBackground,
-  display: "flex",
-  flexDirection: "column",
-  padding: "60px 0 40px",
-}));
+export const WelcomeSliderWrapper = styled.div<{ $insetTop?: number }>(
+  ({ theme, $insetTop = 0 }) => ({
+    position: "relative",
+    width: "100%",
+    height: "var(--app-height)",
+    boxSizing: "border-box",
+    background: theme.colors.systemBackground,
+    display: "flex",
+    flexDirection: "column",
+    padding: `${$insetTop + 16}px 0 0`,
+  })
+);
 
 export const LangButton = styled.button({
   position: "absolute",

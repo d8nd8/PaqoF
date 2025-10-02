@@ -8,6 +8,7 @@ import useWalletStore from "@/shared/stores/wallet";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 import useApplicationStore from "@/shared/stores/application";
 import type { Operation } from '@/api/services/operation/schemes/operation.schemas'
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 
 interface WalletConfirmOverlayProps {
@@ -36,6 +37,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
   const { t } = useTranslation();
   const { withdraw } = useWalletStore();
   const { fullscreen } = useApplicationStore();
+  const { bottom } = useSafeAreaInsets();
 
   const [comment, setComment] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -127,7 +129,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
           />
         </S.Content>
 
-        <S.BottomSection>
+        <S.BottomSection $insetBottom={bottom}>
           <S.MainButton onClick={handleConfirm} disabled={loading}>
             {loading ? <S.Spinner /> : t("currency.overlays.confirm.confirmButton")}
           </S.MainButton>

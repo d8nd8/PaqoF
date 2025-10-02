@@ -216,16 +216,15 @@ export const NetworkLeft = styled.div({
 export const NetworkRight = styled.div({
   display: "flex",
   alignItems: "center",
-  gap: "8px",
   fontSize: "13px",
 });
 
-export const BottomSection = styled.div({
-  padding: "30px 14px 40px",
+export const BottomSection = styled.div<{ $insetBottom?: number }>(({ $insetBottom = 0 }) => ({
+  padding: `30px 14px calc(16px + ${$insetBottom}px)`,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-});
+}));
 
 export const MainButton = styled.button(({ theme }) => ({
   width: "100%",
