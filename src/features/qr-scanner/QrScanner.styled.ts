@@ -16,7 +16,7 @@ export const CameraContainer = styled.div<{ $insetTop?: number; $insetBottom?: n
   ({ $insetTop = 0, $insetBottom = 0 }) => ({
     position: 'relative',
     width: '100%',
-    height: `calc(100vh - ${120 + $insetTop}px)`,
+    height: `calc(100vh - ${150 + $insetTop}px)`,
     marginBottom: `${$insetBottom + 10}px`,
     background: '#000',
   })
