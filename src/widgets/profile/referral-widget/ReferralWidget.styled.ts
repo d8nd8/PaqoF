@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 export const WidgetWrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: "14px",
   flex: 1,
   backgroundColor: theme.colors.systemBackground,
+  paddingTop: theme.spacing.lg
 }));
 
 interface SwitchableContentProps {
