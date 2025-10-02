@@ -135,7 +135,7 @@ export const ScanButton = styled.button({
   cursor: 'pointer',
 });
 
-export const Footer = styled.div({
+export const Footer = styled.div<{ $insetBottom?: number }>(({ $insetBottom = 0 }) => ({
   position: 'absolute',
   display: 'flex',
   justifyContent: 'center',
@@ -143,9 +143,8 @@ export const Footer = styled.div({
   paddingTop: 12,
   width: '100%',
   zIndex: 10001,
-  bottom: '-48px'
-});
-
+  bottom: `${$insetBottom + 16}px`,
+}));
 export const FooterHint = styled.button({
   background: '#1C1C23',
   fontSize: 12,

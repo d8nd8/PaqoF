@@ -158,7 +158,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             </ActionButton>
           </BottomActions>
 
-          <Footer style={{ paddingBottom: bottom }}>
+          <Footer $insetBottom={bottom}>
             <FooterHint onClick={() => setIsPaymentInfoOpen(true)}>
               {t('qrScanner.footerHint')}
             </FooterHint>
