@@ -23,6 +23,7 @@ import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
 import { PaymentInfoOverlay } from '@/features/qr-scanner/payment-info-overlay';
 import { PaymentOverlay } from '@/features/payment-overlay/PaymentOverlay';
 import type { CryptoItemData } from '@/features/crypto-list/CryptoList';
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 const AVAILABLE_CURRENCIES: CryptoItemData[] = [
   {
@@ -74,6 +75,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
                                                       title,
                                                     }) => {
   const { t } = useTranslation();
+  const { bottom } = useSafeAreaInsets();
   const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false);
   const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
@@ -156,7 +158,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             </ActionButton>
           </BottomActions>
 
-          <Footer>
+          <Footer style={{ paddingBottom: bottom }}>
             <FooterHint onClick={() => setIsPaymentInfoOpen(true)}>
               {t('qrScanner.footerHint')}
             </FooterHint>
