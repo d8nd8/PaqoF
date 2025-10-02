@@ -8,6 +8,7 @@ export const OverlayWrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   background: theme.colors.systemBackground,
+  paddingTop: theme.spacing.lg,
 }));
 
 export const Header = styled.div({
