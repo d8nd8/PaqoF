@@ -3,6 +3,7 @@ import Toggle from "@/shared/components/Toggle/Toggle";
 import { SecurityPinCode } from "@/features/security-pin-code";
 import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
 import useUserStore from "@/shared/stores/user";
+import { useTranslation } from 'react-i18next'
 
 type Step = "idle" | "create" | "confirm-old" | "create-new" | "remove";
 
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export const PinToggle: React.FC<Props> = ({ onOverlayChange }) => {
+  const { t } = useTranslation();
   const { setEntryCode, changeEntryCode, deleteEntryCode } = useUserStore();
   const [enabled, setEnabled] = useState(Boolean(localStorage.getItem("pin")));
   const [showOverlay, setShowOverlay] = useState(false);
@@ -79,41 +81,41 @@ export const PinToggle: React.FC<Props> = ({ onOverlayChange }) => {
   };
 
   return (
-    <div>
+    <>
       <Toggle checked={enabled} onChange={handleToggle} />
 
-      {enabled && (
-        <button
-          type="button"
-          onClick={handleChangeCode}
-          style={{
-            marginTop: 8,
-            color: "#000",
-            fontSize: 14,
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          Сменить код
-        </button>
-      )}
-
       <FullOverlay isOpen={showOverlay} onClose={closeOverlay}>
-        <SecurityPinCode
-          mode={
-            step === "create"
-              ? "create"
-              : step === "remove"
-                ? "remove"
-                : step === "confirm-old"
-                  ? "confirm"
-                  : "create"
-          }
-          onComplete={handleComplete}
-        />
+        {step === "idle" && enabled ? (
+          <button
+            type="button"
+            onClick={handleChangeCode}
+            style={{
+              marginTop: 20,
+              padding: "12px 16px",
+              borderRadius: 8,
+              background: "#eee",
+              fontSize: 14,
+              cursor: "pointer",
+            }}
+          >
+            {t("pin.changeButton")}
+          </button>
+        ) : (
+          <SecurityPinCode
+            mode={
+              step === "create"
+                ? "create"
+                : step === "remove"
+                  ? "remove"
+                  : step === "confirm-old"
+                    ? "confirm"
+                    : "createNew"
+            }
+            onComplete={handleComplete}
+          />
+        )}
       </FullOverlay>
-    </div>
+    </>
   );
 };
 

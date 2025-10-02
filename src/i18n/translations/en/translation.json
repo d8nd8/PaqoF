@@ -419,7 +419,8 @@
     "errors": {
       "mismatch": "PIN codes do not match"
     },
-    "delete": "Delete digit"
+    "delete": "Delete digit",
+    "changeButton": "Change PIN code"
   },
 
   "languageSwitcher": {

@@ -422,7 +422,8 @@
     "errors": {
       "mismatch": "Пин-коды не совпадают"
     },
-    "delete": "Удалить символ"
+    "delete": "Удалить символ",
+    "changeButton": "Сменить PIN-код"
   },
   "languageSwitcher": {
     "title": "Выбор языка",

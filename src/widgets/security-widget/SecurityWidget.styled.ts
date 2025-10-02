@@ -5,7 +5,7 @@ export const SecurityWrapper = styled.div(({ theme }) => ({
   flexDirection: "column",
   minHeight: "100%",
   background: theme.colors.systemBackground,
-  padding: theme.spacing.lg,
+  padding: theme.spacing.sm,
 }));
 
 export const Header = styled.div(({ theme }) => ({
