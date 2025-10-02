@@ -2,16 +2,13 @@ import styled from '@emotion/styled';
 import { theme } from '@/styles/theme'
 
 export const NotificationContainer = styled.div({
-  padding: '0 0 40px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   height: '100%',
 });
 
-export const NotificationWrapper = styled.div({
-});
-
+export const NotificationWrapper = styled.div({});
 
 export const NotificationImage = styled.img({
   width: '100%',
@@ -34,10 +31,11 @@ export const NotificationText = styled.p(({theme}) => ({
   color: theme.colors.textSecondary,
 }));
 
-export const ButtonWrapper = styled.div({
+export const ButtonWrapper = styled.div<{ $insetBottom?: number }>(({ $insetBottom = 0 }) => ({
   display: 'flex',
   justifyContent: 'center',
-});
+  paddingBottom: `calc(${$insetBottom}px + 16px)`,
+}));
 
 export const ActionButton = styled.button({
   backgroundColor: theme.colors.primary500,

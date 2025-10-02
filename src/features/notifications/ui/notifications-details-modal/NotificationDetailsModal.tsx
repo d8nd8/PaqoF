@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FullscreenModal } from '@/shared/ui/fullscreen-modal/FullscreenModal';
 import * as S from './NotificationDetailsModal.styled';
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 
 interface NotificationDetailsModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const NotificationDetailsModal: React.FC<NotificationDetailsModalProps> =
                                                                                     notification,
                                                                                   }) => {
   const { t } = useTranslation();
+  const { bottom } = useSafeAreaInsets();
 
   return (
     <FullscreenModal
@@ -39,7 +41,7 @@ export const NotificationDetailsModal: React.FC<NotificationDetailsModalProps> =
             <S.NotificationTitle>{t(notification.title)}</S.NotificationTitle>
             <S.NotificationText>{t(notification.text)}</S.NotificationText>
           </S.NotificationWrapper>
-          <S.ButtonWrapper>
+          <S.ButtonWrapper $insetBottom={bottom}>
             <S.ActionButton onClick={onClose}>
               {t('notifications.details.cta')}
             </S.ActionButton>
