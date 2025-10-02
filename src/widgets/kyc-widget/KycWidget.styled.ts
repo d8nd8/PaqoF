@@ -5,7 +5,6 @@ export const KycWrapper = styled.div(({ theme }) => ({
   flexDirection: "column",
   minHeight: "100%",
   background: theme.colors.systemBackground,
-  padding: theme.spacing.lg,
 }));
 
 export const Header = styled.div(({ theme }) => ({
