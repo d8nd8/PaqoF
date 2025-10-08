@@ -27,22 +27,28 @@ interface Props {
 export const DepositOverlay: React.FC<Props> = ({ onClose, onSelectWallet }) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
-  // при маунте запускаем анимацию появления
   useEffect(() => {
     requestAnimationFrame(() => setIsVisible(true));
     return () => setIsVisible(false);
   }, []);
 
   const handleClose = () => {
-    setIsVisible(false);
+    setIsClosing(true);
     setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
       onClose();
-    }, 300); // должно совпадать с transition в styled
+    }, 350); 
   };
 
   return (
-    <OverlayBackground onClick={handleClose}>
+    <OverlayBackground
+      $isVisible={isVisible}
+      $isClosing={isClosing}
+      onClick={handleClose}
+    >
       <OverlayContainer
         $isVisible={isVisible}
         onClick={(e) => e.stopPropagation()}

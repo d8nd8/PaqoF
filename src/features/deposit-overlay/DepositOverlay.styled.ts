@@ -1,14 +1,24 @@
 import styled from "@emotion/styled";
 
-export const OverlayBackground = styled.div`
-  position: fixed;
-  inset: 0;
-  background: ${({ theme }) => theme.semantic.backgroundOverlay};
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: ${({ theme }) => theme.zIndex.modal};
-`;
+interface OverlayBackgroundProps {
+  $isVisible?: boolean;
+  $isClosing?: boolean;
+}
+
+export const OverlayBackground = styled.div<OverlayBackgroundProps>(
+  ({ theme, $isVisible = false, $isClosing = false }) => ({
+    position: "fixed",
+    inset: 0,
+    background: theme.semantic.backgroundOverlay || "rgba(0, 0, 0, 0.4)",
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    zIndex: theme.zIndex.modal,
+    pointerEvents: $isVisible ? "auto" : "none",
+    opacity: $isVisible && !$isClosing ? 1 : 0,
+    transition: "opacity 350ms ease-in-out",
+  })
+);
 
 export const OverlayContainer = styled.div<{ $isVisible?: boolean }>`
   width: 100%;

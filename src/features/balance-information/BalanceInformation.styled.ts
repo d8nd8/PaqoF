@@ -4,7 +4,7 @@ import { theme } from '@/styles/theme'
 export const BalanceCardContainer = styled.div(({theme}) => ({
   backgroundColor: theme.colors.systemElevatedBackground,
   borderRadius: '0 0 25px 25px',
-  padding: '60px 14px 14px',
+  padding: '34px 14px 14px',
   boxShadow: '0 0 25px 0 rgba(0, 0, 0, 0.05)',
 }));
 

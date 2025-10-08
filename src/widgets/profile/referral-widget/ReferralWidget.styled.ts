@@ -6,6 +6,7 @@ export const WidgetWrapper = styled.div(({ theme }) => ({
   gap: "14px",
   flex: 1,
   backgroundColor: theme.colors.systemBackground,
+
 }));
 
 interface SwitchableContentProps {

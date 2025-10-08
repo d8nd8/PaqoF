@@ -5,6 +5,8 @@ export const InfoWrapper = styled.div(({ theme }) => ({
   flexDirection: "column",
   minHeight: "100%",
   background: theme.colors.systemBackground,
+  paddingLeft: 14,
+  paddingRight: 14,
 }));
 
 export const Header = styled.div(({ theme }) => ({
