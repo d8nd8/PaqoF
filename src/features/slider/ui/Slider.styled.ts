@@ -28,6 +28,7 @@ export const SliderContainer = styled.div(({ theme }) => ({
   height: "var(--app-height)",
   flexDirection: "column",
   background: theme.colors.systemBackground,
+  paddingBottom: "100px",
 
   ".slider-slide": {
     width: "100% !important",
@@ -64,6 +65,27 @@ export const Description = styled.p(({ theme }) => ({
   color: theme.colors.textSecondary,
   marginBottom: "14px",
 }));
+
+export const ImageWrapper = styled.div({
+  flexShrink: 0,
+  width: "100%",
+  maxWidth: "380px",
+  height: "360px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+
+  img: {
+    width: "100%",
+    height: "auto",
+    objectFit: "contain",
+  },
+});
+
+export const TextBlock = styled.div({
+  marginTop: "16px",
+});
 
 
 
