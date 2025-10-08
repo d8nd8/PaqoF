@@ -6,6 +6,7 @@ import { viewport, init as initTelegramSdk } from '@telegram-apps/sdk-react'
 import App from '@/app/components/App'
 import { ThemeProvider } from '@emotion/react'
 import { theme } from '@/styles/theme'
+import { disableHoverOnTouchDevices } from '@/shared/utils/disableHover'
 
 import { i18n } from '@/i18n/config'
 import { I18nextProvider } from 'react-i18next'
@@ -20,6 +21,7 @@ const initApp = async () => {
       await viewport.mount()
       viewport.expand()
     }
+    disableHoverOnTouchDevices()
   } catch (error) {
     console.error(error)
   }

@@ -59,26 +59,3 @@ a, div,p, a:visited, a:active {
   text-decoration: none !important;
 }
 
-/* Сбрасываем hover в любом случае */
-*:hover {
-  background: none !important;
-  color: inherit !important;
-  border-color: inherit !important;
-  box-shadow: none !important;
-  text-decoration: none !important;
-  opacity: 1 !important;
-  transition: none !important;
-}
-
-
-@media (hover: none), (pointer: coarse) {
-  *:hover {
-    background: none !important;
-    color: inherit !important;
-    border-color: inherit !important;
-    box-shadow: none !important;
-    text-decoration: none !important;
-    opacity: 1 !important;
-    transition: none !important;
-  }
-}
