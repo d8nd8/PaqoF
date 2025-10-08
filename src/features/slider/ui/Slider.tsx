@@ -3,22 +3,12 @@ import type { Swiper as SwiperType } from "swiper";
 import { Autoplay, EffectFade } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-
-
-
-
-
 import "swiper/css";
 import "swiper/css/effect-fade";
 
-
-
 import { SliderPagination } from "@/features/slider/ui/SliderPagination";
-import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
-
-
-
 import * as S from "./Slider.styled";
+import TelegramMainButton from '@/shared/components/TelegramMainButton/TelegramMainButton'
 
 
 interface Slide {
@@ -40,7 +30,9 @@ export const Slider: React.FC<SliderProps> = ({
                                               }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
-  const { bottom } = useSafeAreaInsets();
+
+
+
 
   const handleSlideChange = (index: number) => {
     setCurrentSlide(index);
@@ -58,10 +50,10 @@ export const Slider: React.FC<SliderProps> = ({
         fadeEffect={{ crossFade: true }}
         loop
         autoplay={{ delay: autoPlayDuration, disableOnInteraction: false }}
-        allowTouchMove={true} // включаем свайп
-        touchStartPreventDefault={false} // чтобы свайп был мягче
-        resistanceRatio={0.85} // "дрейф" при свайпе
-        speed={700} // мягкость анимации
+        allowTouchMove={true}
+        touchStartPreventDefault={false}
+        resistanceRatio={0.85}
+        speed={700}
         onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         style={{
@@ -69,7 +61,7 @@ export const Slider: React.FC<SliderProps> = ({
           width: "100%",
           display: "flex",
           alignItems: "center",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
         slidesPerView={1}
         centeredSlides={false}
@@ -105,9 +97,10 @@ export const Slider: React.FC<SliderProps> = ({
         />
       </Swiper>
 
-      <S.BottomSection $insetBottom={bottom}>
-        <S.MainButton onClick={onButtonClick}>Перейти в кошелёк</S.MainButton>
-      </S.BottomSection>
+      <TelegramMainButton
+        text="Перейти в кошелёк"
+        callback={onButtonClick || (() => {})}
+      />
     </S.SliderContainer>
   );
 };

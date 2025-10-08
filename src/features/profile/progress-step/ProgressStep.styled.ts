@@ -10,7 +10,7 @@ export const ProgressContainer = styled.div(({ theme }) => ({
 
 export const ProgressTitle = styled.h3(({ theme }) => ({
   fontSize: '15px',
-  lineHeight: '20px',
+  lineHeight: '30px',
   fontWeight: 600,
   color: theme.colors?.textPrimary,
 }));

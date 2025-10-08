@@ -107,7 +107,6 @@ export const DateTotalWrapper = styled.div({
   flexDirection: "column",
   alignItems: "flex-end",
 });
-
 export const DateTotalMain = styled.div(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
   fontSize: "13px",
@@ -115,7 +114,7 @@ export const DateTotalMain = styled.div(({ theme }) => ({
   lineHeight: "18px",
   letterSpacing: "-0.08px",
   textAlign: "right",
-  color: theme.colors.textPrimary,
+  color: "rgba(60, 60, 67, 0.35) !important",
 }));
 
 export const DateTotalSecondary = styled.div(({ theme }) => ({
@@ -125,8 +124,9 @@ export const DateTotalSecondary = styled.div(({ theme }) => ({
   lineHeight: "18px",
   letterSpacing: "-0.08px",
   textAlign: "right",
-  color: theme.colors.textTertiary,
+  color: "rgba(60, 60, 67, 0.25) !important",
 }));
+
 
 export const TransactionList = styled.div({
   display: "flex",
@@ -179,22 +179,32 @@ export const TransactionRight = styled.div({
   alignItems: "flex-end",
 });
 
-export const Amount = styled.div<{
-  type?: "income" | "expense";
-  secondary?: boolean;
-}>(({ theme, type, secondary }) => ({
-  display: "flex",
-  alignItems: "center",
-  fontSize: "13px",
-  height: "20px",
-  letterSpacing: "-0.08px",
-  fontWeight: theme.typography.fontWeight.normal,
-  color: secondary
-    ? theme.colors.textTertiary
-    : type === "income"
-      ? theme.colors.success600
-      : theme.colors.textPrimary,
-}));
+export const Amount = styled.div<{ type?: "income" | "expense" }>(
+  ({ theme, type }) => ({
+    display: "flex",
+    alignItems: "center",
+    fontSize: "13px",
+    height: "20px",
+    letterSpacing: "-0.08px",
+    fontWeight: theme.typography.fontWeight.normal,
+    color:
+      type === "income"
+        ? theme.colors.success600
+        : theme.colors.textPrimary,
+  })
+);
+
+export const AmountSecondary = styled.div<{ type?: "income" | "expense" }>(
+  ({ theme }) => ({
+    display: "flex",
+    alignItems: "center",
+    fontSize: "13px",
+    height: "20px",
+    letterSpacing: "-0.08px",
+    fontWeight: theme.typography.fontWeight.normal,
+    color: "rgba(60, 60, 67, 0.6) !important",
+  })
+);
 
 export const StatusIcon = styled.div<{ status: "pending" | "warning" }>(
   ({ theme, status }) => {

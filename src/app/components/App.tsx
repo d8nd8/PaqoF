@@ -13,15 +13,18 @@ import useUserStore from "@/shared/stores/user";
 import Preloader from "@/shared/components/Preloader/Preloader";
 import { Wrapper, WrapperRoot } from "@/app/components/App.styled";
 import { useSafeInitData } from "@/shared/hooks/useSafeInitData";
-// import { SecurityPinCode } from "@/features/security-pin-code";
-// import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
+import { SecurityPinCode } from "@/features/security-pin-code";
+import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
 
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
     useApplicationStore();
+  const { setUserData, login, user } = useUserStore();
 
-  const { login, setUserData } = useUserStore();
   const [safeAreaBottom, setSafeAreaBottom] = useState(0);
+  const [isPinVerified, setIsPinVerified] = useState(false);
+  const [isPinRequired, setIsPinRequired] = useState(false);
+  const [pinError, setPinError] = useState<string | null>(null);
 
   const rawInitData = useSafeInitData();
 
@@ -46,13 +49,43 @@ const App = () => {
     }
 
     const bottom = parseInt(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--safe-area-bottom"
-      ),
+      getComputedStyle(document.documentElement).getPropertyValue("--safe-area-bottom"),
       10
     );
     setSafeAreaBottom(bottom);
   }, [setFullscreen, setUserData, rawInitData]);
+
+  useEffect(() => {
+    const savedPin = localStorage.getItem("pin-code");
+    if (savedPin) setIsPinRequired(true);
+  }, []);
+  const handlePinComplete = async (enteredPin: string) => {
+    if (!user?.id) return;
+
+    try {
+       await login({
+        entryCode: enteredPin,
+        telegramId: user.id,
+      });
+
+      setIsPinVerified(true);
+      setPinError(null);
+    } catch  {
+      setPinError("Неверный PIN-код");
+    }
+  };
+
+  if (isPinRequired && !isPinVerified) {
+    return (
+      <FullOverlay isOpen={true} onClose={() => null}>
+        <SecurityPinCode
+          mode="confirm"
+          onComplete={handlePinComplete}
+          error={pinError}
+        />
+      </FullOverlay>
+    );
+  }
 
   return (
     <Wrapper
@@ -64,14 +97,6 @@ const App = () => {
       <WrapperRoot>
         <RouterProvider router={router} />
       </WrapperRoot>
-
-      {/* Пин-код временно отключен */}
-      {/*
-      <FullOverlay isOpen={lockOpen} onClose={() => null}>
-        <SecurityPinCode mode="confirm" onComplete={handlePinComplete} />
-      </FullOverlay>
-      */}
-
       <Preloader />
     </Wrapper>
   );

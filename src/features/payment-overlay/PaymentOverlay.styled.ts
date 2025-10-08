@@ -4,10 +4,10 @@ export const PaymentFormContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '14px',
-  height: '100%'
+  height: '100%',
 });
 
-export const PaymentDetails = styled.div(({theme}) => ({
+export const PaymentDetails = styled.div(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '14px',
@@ -22,22 +22,21 @@ export const DetailRow = styled.div({
   alignItems: 'center',
 });
 
-export const DetailLabel = styled.span(({theme}) => ({
+export const DetailLabel = styled.span(({ theme }) => ({
   fontSize: '13px',
-  fontWeight: '400',
+  fontWeight: 400,
   color: theme.colors.textSecondary,
-  lineHeight: '18px'
+  lineHeight: '18px',
 }));
 
-export const DetailValue = styled.span(({theme}) => ({
+export const DetailValue = styled.span(({ theme }) => ({
   fontSize: '13px',
-  fontWeight: '600',
+  fontWeight: 600,
   color: theme.colors.neutral950,
-  lineHeight: '18px'
+  lineHeight: '18px',
 }));
 
-export const CurrencySection = styled.div({
-});
+export const CurrencySection = styled.div({});
 
 export const TotalSection = styled.div({
   display: 'flex',
@@ -45,69 +44,96 @@ export const TotalSection = styled.div({
   alignItems: 'center',
 });
 
-export const TotalLabel = styled.div(({theme}) => ({
+export const TotalLabel = styled.div(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   fontSize: '17px',
   lineHeight: '22px',
-  fontWeight: '600',
+  fontWeight: 600,
   color: theme.colors.neutral950,
 }));
 
-export const CommissionNote = styled.span(({theme}) => ({
+export const CommissionNote = styled.span(({ theme }) => ({
   fontSize: '12px',
-  fontWeight: '400',
+  fontWeight: 400,
   color: theme.colors.textTertiary,
   lineHeight: '16px',
 }));
 
-export const TotalAmount = styled.div(({theme}) => ({
+export const TotalAmount = styled.div(({ theme }) => ({
   fontSize: '28px',
-  fontWeight: '700',
+  fontWeight: 700,
   color: theme.colors.neutral950,
-  lineHeight: '34px'
+  lineHeight: '34px',
 }));
 
+// ======================
+// ✅ SUCCESS STATE STYLES
+// ======================
 interface StatusContainerProps {
   success?: boolean;
 }
 
-export const StatusContainer = styled.div<StatusContainerProps>(({ success = false, theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+export const StatusContainer = styled.div<StatusContainerProps>(
+  ({ success = false, theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingTop: '32px',
+    background: success
+      ? `
+    radial-gradient(circle at top left, #F2FF9E 0%, transparent 50%),
+    radial-gradient(circle at top right, #41D98D 10%, transparent 50%),
+    #FFFF
+  `
+      : 'transparent',
+    borderRadius: success ? '16px' : '0',
+    margin: success ? '-20px -20px 0' : '0',
+    color: theme.colors.neutral950,
+  })
+);
+
+export const StatusHeader = styled.h2<{ success?: boolean }>(
+  ({ success = false, theme }) => ({
+    fontSize: '16px',
+    fontWeight: 600,
+    color: theme.colors.neutral950,
+    lineHeight: '21px',
+    marginBottom: '12px',
+  })
+);
+
+export const StatusDate = styled.div(({ theme }) => ({
+  fontSize: '12px',
+  fontWeight: 400,
+  lineHeight: '16px',
+  color: `${theme.colors.textSecondary} !important`,
+  letterSpacing: '0px',
   textAlign: 'center',
-  paddingTop: '12px',
-  background: success ? 'linear-gradient(135deg, #A3D977 0%, #4CAF50 100%)' : 'transparent',
-  borderRadius: success ? '16px' : '0',
-  margin: success ? '-20px -20px 0' : '0',
-  color: theme.colors.neutral950,
 }));
 
-export const StatusHeader = styled.h2<{ success?: boolean }>(({ success = false, theme }) => ({
-  fontSize: '16px',
-  fontWeight: '600',
-  color: theme.colors.neutral950,
-  lineHeight: '21px',
-  marginBottom: '92px',
-}));
+export const SuccessIcon = styled.img({
+  width: '90px',
+  height: '90px',
+  margin: '16px 0 0px 0',
+  animation: 'fadeInScale 0.5s ease forwards',
 
-export const StatusDate = styled.div(({theme}) => ({
-  fontSize: '14px',
-  fontWeight: '400',
-  color: theme.colors.textSecondary,
-  lineHeight: '18px'
-}));
+  '@keyframes fadeInScale': {
+    from: { opacity: 0, transform: 'scale(0.6)' },
+    to: { opacity: 1, transform: 'scale(1)' },
+  },
+});
 
-export const StatusAmount = styled.div(({theme}) => ({
+export const StatusAmount = styled.div(({ theme }) => ({
   fontSize: '28px',
-  fontWeight: '700',
+  fontWeight: 700,
   color: theme.colors.neutral950,
   lineHeight: '34px',
-  marginBottom: '47px',
+  marginBottom: '40px',
 }));
 
-export const StatusDetails = styled.div(({theme}) => ({
+export const StatusDetails = styled.div(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
@@ -115,61 +141,69 @@ export const StatusDetails = styled.div(({theme}) => ({
   backgroundColor: theme.colors.systemElevatedBackground,
   borderRadius: '12px',
   padding: '16px',
-  marginBottom: '20px'
+  marginBottom: '20px',
 }));
 
-export const ErrorTitle = styled.h3(({theme}) => ({
+// ======================
+// ❌ ERROR STATE
+// ======================
+export const ErrorTitle = styled.h3(({ theme }) => ({
   fontSize: '20px',
-  fontWeight: '600',
+  fontWeight: 600,
   color: '#000000',
   margin: '10px 0',
-  lineHeight: '25px'
+  lineHeight: '25px',
 }));
 
-export const ErrorDescription = styled.p(({theme}) => ({
+export const ErrorDescription = styled.p(({ theme }) => ({
   fontSize: '15px',
-  fontWeight: '400',
+  fontWeight: 400,
   color: '#8E8E93',
   lineHeight: '20px',
 }));
 
+// ======================
+// 💰 Currency Button
+// ======================
 interface CurrencyButtonContainerProps {
   disabled: boolean;
   hasOptions: boolean;
 }
 
-export const CurrencyButtonContainer = styled.button<CurrencyButtonContainerProps>(({ disabled, hasOptions, theme }) => ({
-  width: '100%',
-  backgroundColor: '#ffffff',
-  borderRadius: '12px',
-  padding: '16px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  cursor: disabled || !hasOptions ? 'not-allowed' : 'pointer',
-  transition: 'all 0.2s ease',
-  opacity: disabled ? 0.6 : 1,
+export const CurrencyButtonContainer = styled.button<CurrencyButtonContainerProps>(
+  ({ disabled, hasOptions, theme }) => ({
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderRadius: '12px',
+    padding: '16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    cursor: disabled || !hasOptions ? 'not-allowed' : 'pointer',
+    transition: 'all 0.2s ease',
+    opacity: disabled ? 0.6 : 1,
 
-  '&:hover': {
-    backgroundColor: disabled || !hasOptions ? '#ffffff' : '#f8f9fa',
-    borderColor: disabled || !hasOptions ? '#E5E5E7' : '#D1D5DB'
-  },
+    '&:hover': {
+      backgroundColor: disabled || !hasOptions ? '#ffffff' : '#f8f9fa',
+      borderColor: disabled || !hasOptions ? '#E5E5E7' : '#D1D5DB',
+    },
 
-  '&:active': {
-    transform: disabled || !hasOptions ? 'none' : 'scale(0.98)'
-  },
+    '&:active': {
+      transform: disabled || !hasOptions ? 'none' : 'scale(0.98)',
+    },
 
-  '&:focus': {
-    outline: 'none',
-    borderColor: hasOptions && !disabled ? '#4CAF50' : '#E5E5E7'
-  }
-}));
+    '&:focus': {
+      outline: 'none',
+      borderColor: hasOptions && !disabled ? '#4CAF50' : '#E5E5E7',
+    },
+  })
+);
 
 export const CurrencyContent = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
-  flex: 1
+  flex: 1,
 });
 
 interface CurrencyIconProps {
@@ -177,59 +211,61 @@ interface CurrencyIconProps {
   isUSDT?: boolean;
 }
 
-export const CurrencyIcon = styled.div<CurrencyIconProps>(({ color = '#4CAF50', isUSDT = false, theme }) => ({
-  width: '40px',
-  height: '40px',
-  borderRadius: '50%',
-  backgroundColor: isUSDT ? '#4CAF50' : color,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0,
+export const CurrencyIcon = styled.div<CurrencyIconProps>(
+  ({ color = '#4CAF50', isUSDT = false }) => ({
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    backgroundColor: isUSDT ? '#4CAF50' : color,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
 
-  '& svg': {
-    width: isUSDT ? '24px' : '20px',
-    height: isUSDT ? '24px' : '20px',
-    fill: '#ffffff'
-  }
-}));
+    '& svg': {
+      width: isUSDT ? '24px' : '20px',
+      height: isUSDT ? '24px' : '20px',
+      fill: '#ffffff',
+    },
+  })
+);
 
-export const CurrencyIconText = styled.span(({theme}) => ({
+export const CurrencyIconText = styled.span({
   color: '#ffffff',
   fontSize: '16px',
-  fontWeight: '600',
-  lineHeight: '1'
-}));
+  fontWeight: 600,
+  lineHeight: 1,
+});
 
 export const CurrencyInfo = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: '2px'
+  gap: '2px',
 });
 
-export const CurrencyName = styled.div(({theme}) => ({
+export const CurrencyName = styled.div({
   fontSize: '16px',
-  fontWeight: '600',
+  fontWeight: 600,
   color: '#000000',
-  lineHeight: '20px'
-}));
+  lineHeight: '20px',
+});
 
-export const CurrencyAmount = styled.div(({theme}) => ({
+export const CurrencyAmount = styled.div({
   fontSize: '14px',
-  fontWeight: '400',
+  fontWeight: 400,
   color: '#8E8E93',
-  lineHeight: '18px'
-}));
+  lineHeight: '18px',
+});
 
-export const PlaceholderText = styled.div(({theme}) => ({
+export const PlaceholderText = styled.div({
   fontSize: '16px',
-  fontWeight: '400',
+  fontWeight: 400,
   color: '#8E8E93',
-  lineHeight: '20px'
-}));
+  lineHeight: '20px',
+});
 
-export const ChevronContainer = styled.div(({theme}) => ({
+export const ChevronContainer = styled.div({
   width: '20px',
   height: '20px',
   display: 'flex',
@@ -240,6 +276,6 @@ export const ChevronContainer = styled.div(({theme}) => ({
   '& svg': {
     width: '16px',
     height: '16px',
-    fill: '#8E8E93'
-  }
-}));
+    fill: '#8E8E93',
+  },
+});

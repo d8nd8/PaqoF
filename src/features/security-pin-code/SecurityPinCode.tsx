@@ -10,12 +10,14 @@ interface SecurityPinCodeProps {
   mode?: Mode
   maxLength?: number
   onComplete: (pin: string) => void
+  error?: string | null
 }
 
 export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
                                                                   mode = 'create',
                                                                   maxLength = 4,
                                                                   onComplete,
+                                                                  error,
                                                                 }) => {
   const { t } = useTranslation()
 
@@ -25,6 +27,7 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
   const [status, setStatus] = useState<PinStatus>('default')
   const [helper, setHelper] = useState('')
   const [isLocked, setIsLocked] = useState(false)
+  const [isShaking, setIsShaking] = useState(false)
 
   const handleInput = (val: string) => {
     if (isLocked || pin.length >= maxLength) return
@@ -35,6 +38,25 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
     if (isLocked) return
     setPin((prev) => prev.slice(0, -1))
   }
+
+  useEffect(() => {
+    if (error) {
+      setStatus('error')
+      setHelper(error)
+      setIsLocked(true)
+      setIsShaking(true)
+
+      if (navigator.vibrate) navigator.vibrate(100)
+
+      const timeout = setTimeout(() => {
+        setIsShaking(false)
+        reset()
+      }, 1500)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [error])
+
 
   useEffect(() => {
     if (pin.length !== maxLength || isLocked) return
@@ -57,7 +79,10 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
           setStatus('error')
           setHelper(t('pin.errors.mismatch'))
           setIsLocked(true)
+          setIsShaking(true)
+          if (navigator.vibrate) navigator.vibrate(100)
           setTimeout(() => {
+            setIsShaking(false)
             reset()
           }, 1500)
         }
@@ -114,11 +139,13 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
       <S.Description>{renderSubtitle()}</S.Description>
 
       <S.PinContainer>
-        <S.PinWrapper>
+        {/* 🔹 добавлено свойство shaking для анимации */}
+        <S.PinWrapper shaking={isShaking}>
           {Array.from({ length: maxLength }).map((_, i) => (
             <S.Bullet key={i} status={status} filled={i < pin.length} />
           ))}
         </S.PinWrapper>
+
         {!!helper && <S.HelperText status={status}>{helper}</S.HelperText>}
       </S.PinContainer>
 

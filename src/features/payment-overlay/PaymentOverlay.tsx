@@ -3,8 +3,9 @@ import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet';
 import { OverlayCryptoSelection } from '@/features/overlay-crypto-selection';
 import { CurrencyButton } from './CurrencyButton';
 import * as S from './PaymentOverlay.styled';
-import type { CryptoItemData } from '@/features/crypto-list/CryptoList'
-import ErrorIcon from '@icons/scanner/qr-error.svg?react'
+import type { CryptoItemData } from '@/features/crypto-list/CryptoList';
+import ErrorIcon from '@icons/scanner/qr-error.svg?react';
+import SuccessPaymentImage from '@/assets/images/success-payment.png';
 import { useTranslation } from 'react-i18next';
 
 export type PaymentStep = 'form' | 'processing' | 'success' | 'error';
@@ -30,11 +31,10 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
                                                                 availableCurrencies,
                                                                 onCurrencySelect,
                                                                 amount = '15.095 USDT',
-                                                                exchangeRate = '85.49 USDT',
+                                                                exchangeRate = '85.49 ₽',
                                                                 commission = '20 сек',
                                                                 onPayment,
                                                                 step = 'form',
-                                                                error
                                                               }) => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<PaymentStep>(step);
@@ -99,11 +99,13 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
   );
 
   const renderSuccessStep = () => (
-    <S.StatusContainer>
+    <S.StatusContainer success>
       <S.StatusHeader success>
         {t('payment.overlay.successTitle')}
         <S.StatusDate>20.05.2024, 17:41</S.StatusDate>
       </S.StatusHeader>
+
+      <S.SuccessIcon src={SuccessPaymentImage} alt="success" />
 
       <S.StatusAmount>{amount}</S.StatusAmount>
 
@@ -114,7 +116,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
         </S.DetailRow>
         <S.DetailRow>
           <S.DetailLabel>{t('payment.overlay.exchangeRate')}</S.DetailLabel>
-          <S.DetailValue>{exchangeRate}</S.DetailValue>
+          <S.DetailValue>85.49 ₽</S.DetailValue>
         </S.DetailRow>
       </S.StatusDetails>
     </S.StatusContainer>
@@ -143,7 +145,6 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
   const getButtonText = () => {
     switch (currentStep) {
       case 'processing':
-        return t('payment.overlay.toMain');
       case 'success':
         return t('payment.overlay.toMain');
       case 'error':
@@ -173,12 +174,12 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
         isOpen={isOpen}
         onClose={onClose}
         title=""
-        showBottomButton={true}
+        showBottomButton
         bottomButtonText={getButtonText()}
         onBottomButtonClick={handleButtonClick}
         isBottomButtonDisabled={isLoading}
         closeButtonText={t('common.close')}
-        status={['processing','success'].includes(currentStep) ? 'success' : 'default'}
+        status={['processing', 'success'].includes(currentStep) ? 'success' : 'default'}
         showCloseButton={currentStep !== 'success'}
         showHeader={currentStep === 'form'}
       >
@@ -196,3 +197,5 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
     </>
   );
 };
+
+export default PaymentOverlay;

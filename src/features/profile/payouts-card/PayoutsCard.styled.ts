@@ -15,7 +15,7 @@ export const TextWrapper = styled.div({
 export const SectionTitle = styled.div(({ theme }) => ({
   fontSize: "15px",
   fontWeight: 600,
-  lineHeight: "20px",
+  lineHeight: "30px",
   color: theme.colors.textPrimary,
   textAlign: "left",
 }));

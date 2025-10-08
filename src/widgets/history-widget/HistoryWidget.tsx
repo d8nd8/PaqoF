@@ -17,8 +17,8 @@ import {
   TransactionCategory,
   TransactionRight,
   Amount,
-  StatusIcon,
-} from "./HistoryWidget.styled";
+  StatusIcon, AmountSecondary
+} from './HistoryWidget.styled'
 
 import { MOCK_TRANSACTIONS } from "./history.mocks";
 import { mapTransactionToDetails, truncateText } from "./history.utils";
@@ -150,9 +150,9 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
                       {renderStatusIcon(tx)} {tx.amount}
                     </Amount>
                     {tx.amountUsd && (
-                      <Amount type={tx.type} secondary>
+                      <AmountSecondary type={tx.type}>
                         {tx.amountUsd}
-                      </Amount>
+                      </AmountSecondary>
                     )}
                   </TransactionRight>
                 </TransactionItem>

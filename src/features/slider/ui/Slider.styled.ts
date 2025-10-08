@@ -65,25 +65,5 @@ export const Description = styled.p(({ theme }) => ({
   marginBottom: "14px",
 }));
 
-export const BottomSection = styled.div<{ $insetBottom?: number }>(
-  ({ $insetBottom = 0 }) => ({
-    padding: `16px 14px calc(16px + ${$insetBottom}px)`,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "16px",
-  })
-);
 
-export const MainButton = styled.button(({ theme }) => ({
-  width: "100%",
-  background: theme.colors.primary500,
-  color: theme.colors.textPrimary,
-  border: "none",
-  borderRadius: 8,
-  padding: "10px",
-  marginTop: "70px",
-  fontWeight: 400,
-  fontSize: "14px",
-  cursor: "pointer"
-}));
+

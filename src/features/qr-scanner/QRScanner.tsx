@@ -178,7 +178,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         availableCurrencies={AVAILABLE_CURRENCIES}
         onCurrencySelect={setSelectedCurrency}
         amount="15.095 USDT"
-        exchangeRate="85.49 USDT"
+        exchangeRate="85.49 ₽"
         commission={t('qrScanner.commissionSeconds', { value: 20 })}
         onPayment={handlePayment}
       />
