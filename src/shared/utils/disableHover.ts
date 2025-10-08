@@ -4,16 +4,36 @@ export function disableHoverOnTouchDevices() {
     navigator.maxTouchPoints > 0;
 
   if (isTouchDevice) {
-    try {
-      const style = document.createElement("style");
-      style.innerHTML = `
-        *:hover {
-          pointer-events: none !important;
-        }
-      `;
-      document.head.appendChild(style);
-    } catch (e) {
-      console.warn("Failed to disable hover:", e);
-    }
+    const style = document.createElement("style");
+    style.innerHTML = `
+      /* Убираем hover */
+      *:hover {
+        background: inherit !important;
+        color: inherit !important;
+        border-color: inherit !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      /* Убираем active (когда нажал пальцем) */
+      *:active {
+        background: inherit !important;
+        color: inherit !important;
+        border-color: inherit !important;
+        box-shadow: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      /* Убираем focus-обводки, если они не нужны */
+      *:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    `;
+    document.head.appendChild(style);
   }
 }
