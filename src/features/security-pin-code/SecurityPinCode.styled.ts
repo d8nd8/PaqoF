@@ -30,12 +30,17 @@ export const PinContainer = styled.div({
 })
 
 
-export const PinWrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '14px',
-})
+export const PinWrapper = styled.div<{ shaking?: boolean }>(
+  ({ shaking }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '14px',
+    ...(shaking && {
+      animation: 'shake 0.5s',
+    }),
+  })
+)
 
 
 export const Bullet = styled.div<{ filled: boolean, status: 'default' | 'error' | 'success'}>(

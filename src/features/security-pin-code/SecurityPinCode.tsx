@@ -139,7 +139,6 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
       <S.Description>{renderSubtitle()}</S.Description>
 
       <S.PinContainer>
-        {/* 🔹 добавлено свойство shaking для анимации */}
         <S.PinWrapper shaking={isShaking}>
           {Array.from({ length: maxLength }).map((_, i) => (
             <S.Bullet key={i} status={status} filled={i < pin.length} />
