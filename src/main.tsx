@@ -21,7 +21,6 @@ const initApp = async () => {
       await viewport.mount()
       viewport.expand()
     }
-    disableHoverOnTouchDevices()
   } catch (error) {
     console.error(error)
   }
