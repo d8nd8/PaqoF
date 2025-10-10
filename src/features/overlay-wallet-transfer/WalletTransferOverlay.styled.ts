@@ -143,7 +143,7 @@ export const AmountValue = styled.div<{ $hasError?: boolean }>(({ theme, $hasErr
   color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
   display: "flex",
   alignItems: "baseline",
-  gap: "1px",
+  gap: "0px",
   marginBottom: "-10px",
   transition: "color 0.2s ease",
 }));
@@ -155,6 +155,7 @@ export const CurrencySymbol = styled.span<{ $hasError?: boolean }>(
     lineHeight: "28px",
     letterSpacing: "-0.26px",
     color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
+    marginLeft: "-6px"
   })
 );
 
