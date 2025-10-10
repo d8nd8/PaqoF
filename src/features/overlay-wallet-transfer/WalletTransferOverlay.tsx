@@ -131,6 +131,12 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                   placeholder="0"
                   $length={amount.length}
                   $hasError={hasError}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      e.currentTarget.blur()
+                    }
+                  }}
                 />
                 <S.CurrencySymbol $hasError={hasError}>
                   {crypto.symbol}
@@ -198,6 +204,12 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder={t("currency.overlays.transfer.address.placeholder")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  e.currentTarget.blur()
+                }
+              }}
             />
             <S.IconButton onClick={() => setShowScanner(true)}>
               <QrIcon />
