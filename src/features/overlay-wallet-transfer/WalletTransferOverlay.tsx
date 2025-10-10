@@ -96,16 +96,9 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const sendAmount = parseFloat(amount.replace(",", ".")) || 0;
 
   const handleContinue = () => {
-    if (sendAmount <= 0) {
-      setErrorType("invalidAmount");
-    } else if (sendAmount > balance) {
-      setErrorType("insufficient");
-    } else if (!address.trim()) {
-      setErrorType("invalidAddress");
-    } else {
-      setErrorType("none");
-      setShowConfirm(true);
-    }
+
+    setErrorType("none");
+    setShowConfirm(true);
   };
 
   const hasError = errorType !== "none";
