@@ -48,15 +48,28 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 
   useEffect(() => {
     if (isOpen) {
+      const preventTouch = (e: TouchEvent) => e.preventDefault();
+      const preventScroll = (e: WheelEvent) => e.preventDefault();
+
+      document.body.style.overflow = "hidden";
+      document.addEventListener("touchmove", preventTouch, { passive: false });
+      document.addEventListener("wheel", preventScroll, { passive: false });
+
+      return () => {
+        document.body.style.overflow = "";
+        document.removeEventListener("touchmove", preventTouch);
+        document.removeEventListener("wheel", preventScroll);
+      };
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
       setIsVisible(true);
       setIsClosing(false);
-      document.body.style.overflow = "hidden";
     } else if (isVisible) {
       handleClose();
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
   }, [isOpen]);
 
   const handleClose = () => {
@@ -93,6 +106,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
     const distance = currentY - startY;
     if (distance > 0) {
       setSwipeDistance(distance);
+      e.stopPropagation();
     }
   };
 
@@ -127,6 +141,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onScroll={(e) => e.stopPropagation()}
       >
         <S.TopWrapper>
           {showHeader && (
