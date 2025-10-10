@@ -1,11 +1,16 @@
 import styled from '@emotion/styled';
 
-export const PaymentFormContainer = styled.div({
+export const PaymentFormContainer = styled.div(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '14px',
   height: '100%',
-});
+
+  '& span, & a, & strong': {
+    color: `${theme.colors.neutral950} !important`,
+    textDecoration: 'none !important',
+  },
+}));
 
 export const PaymentDetails = styled.div(({ theme }) => ({
   display: 'flex',

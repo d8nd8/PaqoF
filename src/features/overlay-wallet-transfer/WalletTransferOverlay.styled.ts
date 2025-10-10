@@ -274,6 +274,10 @@ export const CommissionButton = styled.button(({ theme }) => ({
       fontWeight: theme.typography.fontWeight.semibold,
       color: theme.colors.textPrimary,
     },
+    "& span, & a": {
+      color: `${theme.colors.textPrimary} !important`,
+      textDecoration: "none !important",
+    },
   },
   "& .icon": {
     width: "16px",
@@ -285,7 +289,7 @@ export const CommissionButton = styled.button(({ theme }) => ({
     flexShrink: 0,
     color: theme.colors.warning400,
   },
-}));
+}))
 
 export const BottomSection = styled.div<{ $insetBottom?: number }>(
   ({ $insetBottom = 0 }) => ({
