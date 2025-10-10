@@ -16,15 +16,13 @@ import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
 export const MainPage: React.FC = () => {
   const { modal, openModal, closeModal } = useApplicationStore()
 
-
   const [overlayHistory, setOverlayHistory] = useState<string[]>([])
   const [currentOverlay, setCurrentOverlay] = useState<string | null>(null)
-
+  const [depositMode, setDepositMode] = useState<WalletDepositMode>('deposit') // <--- добавляем режим
 
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<string>('')
   const [selectedAddress, setSelectedAddress] = useState<string>('')
-
 
   const openOverlay = (name: string) => {
     setOverlayHistory((prev) => [...prev, name])
@@ -41,25 +39,36 @@ export const MainPage: React.FC = () => {
     })
   }
 
-  const handleDepositStart = () => openOverlay('deposit')
+  const handleDepositStart = () => {
+    setDepositMode('deposit')
+    openOverlay('deposit')
+  }
 
-  const handleDepositContinue = (crypto:any, network:any, mode:any, address:any) => {
+  const handleTransferStart = () => {
+    setDepositMode('transfer')
+    openOverlay('walletDeposit')
+  }
+
+  const handleDepositContinue = (crypto: any, network: any, mode: any, address: any) => {
     setSelectedCrypto(crypto)
     setSelectedNetwork(network)
     setSelectedAddress(address)
-    if (mode === 'deposit') openOverlay('walletAddress')
-    if (mode === 'transfer') openOverlay('walletTransfer')
+
+    if (mode === 'deposit') {
+      openOverlay('walletAddress')
+    } else if (mode === 'transfer') {
+      openOverlay('walletTransfer')
+    }
   }
 
   const hideNavbar = currentOverlay !== null || modal === 'notifications'
-
   const handlePay = () => goBack()
 
   return (
     <BaseLayout showNavbar={!hideNavbar}>
       <MainWidget
         onTopUp={handleDepositStart}
-        onSend={() => openOverlay('walletDeposit')}
+        onSend={handleTransferStart}
         onPay={() => openOverlay('scanner')}
         onNotifications={() => openModal('notifications')}
       />
@@ -79,7 +88,7 @@ export const MainPage: React.FC = () => {
         <WalletDepositOverlay
           isOpen
           onClose={goBack}
-          mode="deposit"
+          mode={depositMode}
           onContinue={handleDepositContinue}
         />
       )}
