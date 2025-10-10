@@ -16,102 +16,114 @@ import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
 export const MainPage: React.FC = () => {
   const { modal, openModal, closeModal } = useApplicationStore()
 
-  const [showDeposit, setShowDeposit] = useState(false)
-  const [showWalletDeposit, setShowWalletDeposit] = useState<WalletDepositMode | null>(null)
-  const [showWalletAddress, setShowWalletAddress] = useState(false)
-  const [showWalletTransfer, setShowWalletTransfer] = useState(false)
-  const [showCommission, setShowCommission] = useState(false)
-  const [showScanner, setShowScanner] = useState(false)
+
+  const [overlayHistory, setOverlayHistory] = useState<string[]>([])
+  const [currentOverlay, setCurrentOverlay] = useState<string | null>(null)
+
 
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<string>('')
   const [selectedAddress, setSelectedAddress] = useState<string>('')
 
-  const hideNavbar =
-    showDeposit ||
-    !!showWalletDeposit ||
-    showWalletAddress ||
-    showWalletTransfer ||
-    showCommission ||
-    showScanner
 
-  const handlePay = () => {
-    setShowScanner(false)
+  const openOverlay = (name: string) => {
+    setOverlayHistory((prev) => [...prev, name])
+    setCurrentOverlay(name)
   }
+
+  const goBack = () => {
+    setOverlayHistory((prev) => {
+      const newHistory = [...prev]
+      newHistory.pop()
+      const prevOverlay = newHistory[newHistory.length - 1] || null
+      setCurrentOverlay(prevOverlay)
+      return newHistory
+    })
+  }
+
+  const handleDepositStart = () => openOverlay('deposit')
+
+  const handleDepositContinue = (crypto:any, network:any, mode:any, address:any) => {
+    setSelectedCrypto(crypto)
+    setSelectedNetwork(network)
+    setSelectedAddress(address)
+    if (mode === 'deposit') openOverlay('walletAddress')
+    if (mode === 'transfer') openOverlay('walletTransfer')
+  }
+
+  const hideNavbar = currentOverlay !== null || modal === 'notifications'
+
+  const handlePay = () => goBack()
 
   return (
     <BaseLayout showNavbar={!hideNavbar}>
       <MainWidget
-        onTopUp={() => setShowDeposit(true)}
-        onSend={() => setShowWalletDeposit('transfer')}
-        onPay={() => setShowScanner(true)}
+        onTopUp={handleDepositStart}
+        onSend={() => openOverlay('walletDeposit')}
+        onPay={() => openOverlay('scanner')}
         onNotifications={() => openModal('notifications')}
       />
 
       <NotificationsModal isOpen={modal === 'notifications'} onClose={closeModal} />
 
-      {showDeposit && (
+
+      {currentOverlay === 'deposit' && (
         <DepositOverlay
-          onClose={() => setShowDeposit(false)}
-          onSelectWallet={() => {
-            setShowDeposit(false)
-            setShowWalletDeposit('deposit')
-          }}
+          onClose={goBack}
+          onSelectWallet={() => openOverlay('walletDeposit')}
         />
       )}
 
-      {showWalletDeposit && (
+
+      {currentOverlay === 'walletDeposit' && (
         <WalletDepositOverlay
-          isOpen={!!showWalletDeposit}
-          onClose={() => setShowWalletDeposit(null)}
-          mode={showWalletDeposit}
-          onContinue={(crypto, network, mode, address) => {
-            setSelectedCrypto(crypto)
-            setSelectedNetwork(network)
-            setSelectedAddress(address)
-            setShowWalletDeposit(null)
-
-            if (mode === 'deposit') {
-              setShowWalletAddress(true)
-            } else if (mode === 'transfer') {
-              setShowWalletTransfer(true)
-            }
-          }}
+          isOpen
+          onClose={goBack}
+          mode="deposit"
+          onContinue={handleDepositContinue}
         />
       )}
 
-      {selectedCrypto && (
+
+      {currentOverlay === 'walletAddress' && selectedCrypto && (
         <WalletAddressOverlay
-          isOpen={showWalletAddress}
-          onClose={() => setShowWalletAddress(false)}
+          isOpen
+          onClose={goBack}
           cryptoName={selectedCrypto.name}
           network={selectedNetwork}
           address={selectedAddress}
           commission="2.75 USDT"
-          onCommissionClick={() => setShowCommission(true)}
+          onCommissionClick={() => openOverlay('commission')}
         />
       )}
 
-      {selectedCrypto && (
+
+      {currentOverlay === 'walletTransfer' && selectedCrypto && (
         <WalletTransferOverlay
-          isOpen={showWalletTransfer}
-          onClose={() => setShowWalletTransfer(false)}
+          isOpen
+          onClose={goBack}
           crypto={selectedCrypto}
           commission="2.75 USDT"
-          onCommissionClick={() => setShowCommission(true)}
+          onCommissionClick={() => openOverlay('commission')}
         />
       )}
 
-      <OverlayCommission
-        isOpen={showCommission}
-        onClose={() => setShowCommission(false)}
-      />
 
-      <QRScanner
-        isVisible={showScanner}
-        onScan={handlePay}
-        onClose={() => setShowScanner(false)}
-      />
+      {currentOverlay === 'commission' && (
+        <OverlayCommission
+          isOpen
+          onClose={goBack}
+        />
+      )}
+
+
+      {currentOverlay === 'scanner' && (
+        <QRScanner
+          isVisible
+          onScan={handlePay}
+          onClose={goBack}
+        />
+      )}
     </BaseLayout>
   )
 }
