@@ -96,6 +96,12 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder={t("currency.overlays.confirm.comment.placeholder")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.currentTarget.blur();
+                }
+              }}
             />
             <S.InsertButton onClick={handlePaste}>
               {t("currency.overlays.confirm.comment.paste")}
