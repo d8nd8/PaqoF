@@ -43,6 +43,9 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
+  const [startY, setStartY] = useState<number | null>(null);
+  const [swipeDistance, setSwipeDistance] = useState(0);
+
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
@@ -80,6 +83,27 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (startY === null) return;
+    const currentY = e.touches[0].clientY;
+    const distance = currentY - startY;
+    if (distance > 0) {
+      setSwipeDistance(distance);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (swipeDistance > 100) {
+      handleClose();
+    }
+    setStartY(null);
+    setSwipeDistance(0);
+  };
+
   if (!isVisible && !isOpen) return null;
 
   const customCloseColor = background ? closeButtonColor : undefined;
@@ -96,6 +120,13 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
         $isClosing={isClosing}
         $status={status}
         $customBackground={background}
+        style={{
+          transform: swipeDistance > 0 ? `translateY(${swipeDistance}px)` : undefined,
+          transition: startY ? "none" : "transform 0.3s ease",
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <S.TopWrapper>
           {showHeader && (
