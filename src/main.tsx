@@ -27,6 +27,7 @@ const initApp = async () => {
 }
 
 initApp()
+disableHoverOnTouchDevices()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

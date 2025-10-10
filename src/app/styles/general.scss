@@ -59,3 +59,14 @@ a, div,p, a:visited, a:active {
   text-decoration: none !important;
 }
 
+
+.no-hover *:hover {
+  background: inherit !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
