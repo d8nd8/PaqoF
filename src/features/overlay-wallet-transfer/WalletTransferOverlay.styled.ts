@@ -155,7 +155,6 @@ export const CurrencySymbol = styled.span<{ $hasError?: boolean }>(
     lineHeight: "28px",
     letterSpacing: "-0.26px",
     color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
-    marginLeft: "-6px"
   })
 );
 
