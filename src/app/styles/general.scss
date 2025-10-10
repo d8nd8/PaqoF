@@ -67,23 +67,3 @@ a, div,p, a:visited, a:active {
   filter: none !important;
 }
 
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-
-* {
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-
-html, body {
-  -webkit-touch-callout: none;
-}
-
-
-img, a {
-  -webkit-user-drag: none;
-  user-drag: none;
-}
