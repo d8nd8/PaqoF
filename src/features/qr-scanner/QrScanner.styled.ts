@@ -81,7 +81,7 @@ export const CloseButton = styled.button<{ $insetTop?: number }>(({ $insetTop = 
   width: 44,
   height: 44,
   right: 16,
-  top: `calc(${ $insetTop }px + 50px)`,
+  top: 100,
   color: 'white',
   background: 'transparent',
   border: 'none',
