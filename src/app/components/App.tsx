@@ -34,9 +34,9 @@ const App = () => {
 
     if (miniApp.mountSync.isAvailable()) {
       miniApp.mountSync();
-      miniApp.setBackgroundColor("#F2F3F4");
-      miniApp.setBottomBarColor("#FFFFFF");
-      miniApp.setHeaderColor("#F2F3F4");
+      miniApp.setHeaderColor('secondary_bg_color');
+      miniApp.setHeaderColor('secondary_bg_color');
+      miniApp.setHeaderColor('secondary_bg_color');
     }
 
     if (viewport.mount.isAvailable()) {
