@@ -76,19 +76,18 @@ export const Title = styled.div({
   color: 'white',
 });
 
-export const CloseButton = styled.button({
+export const CloseButton = styled.button<{ $insetTop?: number }>(({ $insetTop = 0 }) => ({
   position: 'absolute',
   width: 44,
   height: 44,
   right: 16,
-  top: '50%',
-  transform: 'translateY(-50%)',
+  top: `calc(${ $insetTop }px + 20px)`,
   color: 'white',
   background: 'transparent',
   border: 'none',
   fontSize: 20,
   cursor: 'pointer',
-});
+}));
 
 export const ScannerOverlay = styled.div({
   position: 'absolute',

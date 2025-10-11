@@ -140,7 +140,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
           <Header>
             <Title>{title || t('qrScanner.title')}</Title>
-            <CloseButton onClick={handleClose}>✕</CloseButton>
+            <CloseButton  $insetTop={top} onClick={handleClose}>✕</CloseButton>
           </Header>
 
           <ScannerOverlay />
