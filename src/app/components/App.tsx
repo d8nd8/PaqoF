@@ -15,7 +15,7 @@ import { Wrapper, WrapperRoot } from "@/app/components/App.styled";
 import { useSafeInitData } from "@/shared/hooks/useSafeInitData";
 import { SecurityPinCode } from "@/features/security-pin-code";
 import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
-import { GlobalNoHover } from "./GlobalNoHover";
+
 
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
@@ -40,11 +40,19 @@ const App = () => {
 
       const applyTelegramTheme = (scheme: string) => {
         if (scheme === "dark") {
-          miniApp.setHeaderColor("secondary_bg_color");
+          try {
+            miniApp.setHeaderColor("#1C1C1E");
+          } catch {
+            miniApp.setHeaderColor("secondary_bg_color");
+          }
           miniApp.setBackgroundColor("#1C1C1E");
           miniApp.setBottomBarColor("#1C1C1E");
         } else {
-          miniApp.setHeaderColor("bg_color");
+          try {
+            miniApp.setHeaderColor("#F2F3F4");
+          } catch {
+            miniApp.setHeaderColor("bg_color");
+          }
           miniApp.setBackgroundColor("#F2F3F4");
           miniApp.setBottomBarColor("#FFFFFF");
         }
