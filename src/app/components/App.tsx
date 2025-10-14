@@ -29,18 +29,42 @@ const App = () => {
 
   const rawInitData = useSafeInitData();
 
-
-
-
   useEffect(() => {
     if (mainButton.mount.isAvailable()) mainButton.mount();
     if (secondaryButton.mount.isAvailable()) secondaryButton.mount();
 
     if (miniApp.mountSync.isAvailable()) {
       miniApp.mountSync();
-      miniApp.setBackgroundColor("#F2F3F4");
-      miniApp.setBottomBarColor("#FFFFFF");
-      miniApp.setHeaderColor("#F2F3F4");
+
+      const theme = window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
+
+
+      const applyTelegramTheme = (scheme: string) => {
+        if (scheme === "dark") {
+          miniApp.setHeaderColor("#1C1C1E");
+          miniApp.setBackgroundColor("#1C1C1E");
+          miniApp.setBottomBarColor("#1C1C1E");
+        } else {
+          miniApp.setHeaderColor("#F2F3F4");
+          miniApp.setBackgroundColor("#F2F3F4");
+          miniApp.setBottomBarColor("#FFFFFF");
+        }
+      };
+
+      applyTelegramTheme(theme);
+
+
+      window.Telegram?.WebApp?.onEvent("themeChanged", () => {
+        const scheme = window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
+        applyTelegramTheme(scheme);
+      });
+
+      return () => {
+        window.Telegram?.WebApp?.onEvent("themeChanged", () => {
+          const scheme = window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
+          applyTelegramTheme(scheme);
+        });
+      };
     }
 
     if (viewport.mount.isAvailable()) {
@@ -63,18 +87,19 @@ const App = () => {
     const savedPin = localStorage.getItem("pin-code");
     if (savedPin) setIsPinRequired(true);
   }, []);
+
   const handlePinComplete = async (enteredPin: string) => {
     if (!user?.id) return;
 
     try {
-       await login({
+      await login({
         entryCode: enteredPin,
         telegramId: user.id,
       });
 
       setIsPinVerified(true);
       setPinError(null);
-    } catch  {
+    } catch {
       setPinError("Неверный PIN-код");
     }
   };
@@ -91,9 +116,11 @@ const App = () => {
     );
   }
 
+
   return (
     <>
       <GlobalNoHover />
+
       <Wrapper
         fullscreen={fullscreen}
         fullscreenCentered={fullscreenCentered}
@@ -106,7 +133,6 @@ const App = () => {
         <Preloader />
       </Wrapper>
     </>
-
   );
 };
 
