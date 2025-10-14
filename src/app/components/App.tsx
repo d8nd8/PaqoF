@@ -40,11 +40,11 @@ const App = () => {
 
       const applyTelegramTheme = (scheme: string) => {
         if (scheme === "dark") {
-          miniApp.setHeaderColor("#1C1C1E");
+          miniApp.setHeaderColor("secondary_bg_color");
           miniApp.setBackgroundColor("#1C1C1E");
           miniApp.setBottomBarColor("#1C1C1E");
         } else {
-          miniApp.setHeaderColor("#F2F3F4");
+          miniApp.setHeaderColor("bg_color");
           miniApp.setBackgroundColor("#F2F3F4");
           miniApp.setBottomBarColor("#FFFFFF");
         }
