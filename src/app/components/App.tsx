@@ -119,8 +119,6 @@ const App = () => {
 
   return (
     <>
-      <GlobalNoHover />
-
       <Wrapper
         fullscreen={fullscreen}
         fullscreenCentered={fullscreenCentered}

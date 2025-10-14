@@ -1,4 +1,8 @@
-
+.button, a, [role="button"] {
+  user-select: none;
+  pointer-events: none;
+  cursor: none;
+}
 
 button, a {
   cursor: default !important; // убрать курсор
