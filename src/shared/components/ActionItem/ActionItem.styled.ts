@@ -40,15 +40,6 @@ export const ActionButton = styled.button<{ variant?: ActionVariant }>(
       "&:focus": {
         outline: "none",
       },
-
-      "&:hover": {
-        backgroundColor:
-          variant === "primary"
-            ? theme.colors.neutral800
-            : variant === "secondary"
-              ? theme.colors.neutral200
-              : theme.colors.textQuaternary,
-      },
     };
   }
 );

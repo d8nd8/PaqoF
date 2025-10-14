@@ -74,7 +74,6 @@ export const AvatarPlaceholder = styled.div(({ theme }) => ({
   fontWeight: 600,
   color: "#6B7280",
   letterSpacing: "1px",
-
 }));
 
 export const Content = styled.div(({ theme }) => ({
@@ -118,15 +117,9 @@ export const SectionItem = styled.button(({ theme }) => ({
     borderBottomRightRadius: theme.borderRadius.lg,
   },
 
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    transform: "translateY(-1px)",
-    zIndex: 2,
-  },
-
   "&:active": {
     transform: "translateY(0px)",
-  }
+  },
 }));
 
 export const IconBox = styled.div(({ theme }) => ({
@@ -200,13 +193,7 @@ export const LogoutButton = styled.button(({ theme }) => ({
   zIndex: 1,
   transition: "all 0.2s ease",
 
-  "&:hover": {
-    backgroundColor: "rgba(255, 43, 39, 0.1)",
-    transform: "translateY(-1px)",
-    zIndex: 2,
-  },
-
   "&:active": {
     transform: "translateY(0px)",
-  }
+  },
 }));

@@ -50,10 +50,6 @@ export const CloseButton = styled.button`
   letter-spacing: -0.08px;
   color: ${({ theme }) => theme.semantic.textPrimary};
   cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.neutral600};
-  }
 `;
 
 export const OverlayHeader = styled.div`
@@ -93,10 +89,6 @@ export const Option = styled.div`
   box-shadow: ${({ theme }) => theme.semantic.shadowLight};
   cursor: pointer;
   transition: background 0.2s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.neutral200};
-  }
 `;
 
 export const OptionIcon = styled.div`

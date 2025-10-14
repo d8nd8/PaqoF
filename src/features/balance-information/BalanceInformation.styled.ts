@@ -96,14 +96,6 @@ export const ActionButton = styled.button(({theme}) => ({
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   outline: 'none',
-
-  '&:focus': {
-    outline: 'none'
-  },
-
-  '&:hover': {
-    backgroundColor: theme.colors.textQuaternary,
-  },
 }));
 
 export const ActionIcon = styled.div(({theme}) => ({

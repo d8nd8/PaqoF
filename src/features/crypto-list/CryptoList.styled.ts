@@ -16,10 +16,6 @@ export const CryptoItemContainer = styled.div(({theme}) => ({
   borderRadius: '14px',
   cursor: 'pointer',
   transition: 'background-color 0.2s ease',
-
-  '&:hover': {
-    backgroundColor: theme.colors.textQuaternary,
-  },
 }));
 
 interface CryptoIconProps {

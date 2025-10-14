@@ -1,5 +1,4 @@
 import '@src/app/styles/index.scss'
-import '@src/app/styles/general.scss'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { viewport, init as initTelegramSdk } from '@telegram-apps/sdk-react'
@@ -27,7 +26,7 @@ const initApp = async () => {
 }
 
 initApp()
-disableHoverOnTouchDevices()
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -56,14 +56,6 @@ export const TextButton = styled.button(({theme}) => ({
   padding: '13px',
   transition: 'all 0.2s ease',
   lineHeight: '18px',
-
-  '&:hover': {
-    opacity: 0.6,
-},
-
-  '&:focus': {
-    outline: 'none'
-  }
 }));
 
 export const ChevronButton = styled.button(() => ({
@@ -75,14 +67,6 @@ export const ChevronButton = styled.button(() => ({
   alignItems: 'center',
   justifyContent: 'center',
   transition: 'all 0.2s ease',
-
-  '&:hover': {
-    opacity: 0.6
-  },
-
-  '&:focus': {
-    outline: 'none'
-  }
 }));
 
 interface ChevronIconProps {

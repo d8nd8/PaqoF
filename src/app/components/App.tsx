@@ -15,6 +15,7 @@ import { Wrapper, WrapperRoot } from "@/app/components/App.styled";
 import { useSafeInitData } from "@/shared/hooks/useSafeInitData";
 import { SecurityPinCode } from "@/features/security-pin-code";
 import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
+import { GlobalNoHover } from "./GlobalNoHover";
 
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
@@ -27,6 +28,9 @@ const App = () => {
   const [pinError, setPinError] = useState<string | null>(null);
 
   const rawInitData = useSafeInitData();
+
+
+
 
   useEffect(() => {
     if (mainButton.mount.isAvailable()) mainButton.mount();
@@ -88,17 +92,21 @@ const App = () => {
   }
 
   return (
-    <Wrapper
-      fullscreen={fullscreen}
-      fullscreenCentered={fullscreenCentered}
-      noHeaderOffset={!headerOffset}
-      style={{ paddingBottom: safeAreaBottom }}
-    >
-      <WrapperRoot>
-        <RouterProvider router={router} />
-      </WrapperRoot>
-      <Preloader />
-    </Wrapper>
+    <>
+      <GlobalNoHover />
+      <Wrapper
+        fullscreen={fullscreen}
+        fullscreenCentered={fullscreenCentered}
+        noHeaderOffset={!headerOffset}
+        style={{ paddingBottom: safeAreaBottom }}
+      >
+        <WrapperRoot>
+          <RouterProvider router={router} />
+        </WrapperRoot>
+        <Preloader />
+      </Wrapper>
+    </>
+
   );
 };
 

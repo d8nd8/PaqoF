@@ -41,9 +41,6 @@ export const BackButton = styled.button<HeaderElementProps>(({ theme, level }) =
   alignItems: "center",
   justifyContent: "center",
   transition: "opacity 0.2s ease",
-  "&:hover": {
-    opacity: 0.7,
-  },
 }));
 
 export const PageTitle = styled.h1<HeaderElementProps>(({ theme, level }) => ({
@@ -67,9 +64,6 @@ export const InfoButton = styled.button<HeaderElementProps>(({ theme, level }) =
   width: "44px",
   height: "44px",
   transition: "opacity 0.2s ease",
-  "&:hover": {
-    opacity: 0.7,
-  },
 }));
 
 export const SwitcherContainer = styled.div({

@@ -83,9 +83,6 @@ export const Key = styled.button(({theme}) => ({
   border: 'none',
   cursor: 'pointer',
   color: theme.colors.textPrimary,
-  ':hover': {
-    background: theme.colors.textTertiary,
-  },
   '&:focus': { outline: 'none' },
 }))
 

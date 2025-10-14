@@ -18,12 +18,6 @@ export const NotificationContainer = styled.div<NotificationContainerProps>(({th
   padding: '14px',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
-
-  '&:hover': {
-    backgroundColor: theme.colors.textQuaternary,
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-  },
-
   '&:active': {
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
   }

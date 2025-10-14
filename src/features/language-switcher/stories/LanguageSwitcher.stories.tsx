@@ -33,15 +33,6 @@ const TriggerButton = styled.button({
   cursor: 'pointer',
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   transition: 'all 0.2s ease',
-
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
-  },
-
-  '&:active': {
-    transform: 'translateY(0)',
-  },
 });
 
 const meta: Meta<typeof LanguageSwitcher> = {

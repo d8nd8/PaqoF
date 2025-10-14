@@ -1,6 +1,6 @@
-@import 'reset.scss';
-@import './fonts.scss';
-@import './general.scss';
+@use 'reset.scss';
+@use './fonts.scss';
+@use './general.scss';
 
 * {
   box-sizing: border-box;

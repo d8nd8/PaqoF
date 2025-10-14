@@ -78,10 +78,6 @@ export const ReferralItem = styled.div(({ theme }) => ({
   '&:last-child': {
     borderBottom: 'none'
   },
-
-  '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.02)',
-  }
 }));
 
 export const UserInfo = styled.div({

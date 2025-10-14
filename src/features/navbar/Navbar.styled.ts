@@ -54,10 +54,6 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
         outline: 'none',
         backgroundColor: props.theme.colors.primary400,
       },
-      '&:hover': {
-        backgroundColor: props.theme.colors.primary400,
-        transform: 'translateY(-1px)',
-      },
     }
   }
 
@@ -69,10 +65,6 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
       height: '50px',
       borderRadius: '20px',
       '&:focus': { outline: 'none' },
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        transform: 'translateY(-1px)',
-      },
     }
   }
 
