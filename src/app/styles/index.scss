@@ -16,4 +16,6 @@ body {
 
 :root {
   --app-height: 100vh;
+  --safe-area-top: env(safe-area-inset-top, 0px);
 }
+

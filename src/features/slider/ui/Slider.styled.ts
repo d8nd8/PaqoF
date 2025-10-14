@@ -28,7 +28,7 @@ export const SliderContainer = styled.div(({ theme }) => ({
   height: "var(--app-height)",
   flexDirection: "column",
   background: theme.colors.systemBackground,
-  paddingBottom: "50px",
+  paddingBottom: "70px",
 
   ".slider-slide": {
     width: "100% !important",
