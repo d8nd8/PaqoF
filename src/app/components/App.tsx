@@ -38,7 +38,6 @@ const App = () => {
 
       const theme = window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
 
-
       const applyTelegramTheme = (scheme: string) => {
         if (scheme === "dark") {
           miniApp.setHeaderColor("#1C1C1E");
@@ -51,19 +50,20 @@ const App = () => {
         }
       };
 
+
       applyTelegramTheme(theme);
 
 
-      window.Telegram?.WebApp?.onEvent("themeChanged", () => {
-        const scheme = window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
+      const onThemeChange = () => {
+        const scheme =
+          window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
         applyTelegramTheme(scheme);
-      });
+      };
+
+      window.Telegram?.WebApp?.onEvent("themeChanged", onThemeChange);
 
       return () => {
-        window.Telegram?.WebApp?.onEvent("themeChanged", () => {
-          const scheme = window.Telegram?.WebApp?.themeParams?.colorScheme || "light";
-          applyTelegramTheme(scheme);
-        });
+        window.Telegram?.WebApp?.offEvent("themeChanged", onThemeChange);
       };
     }
 
