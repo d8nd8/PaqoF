@@ -78,7 +78,6 @@ export const Slider: React.FC<SliderProps> = ({
                     maxWidth: "380px",
                     height: "auto",
                     objectFit: "contain",
-                    marginBottom: "16px",
                   }}
                 />
               )}
