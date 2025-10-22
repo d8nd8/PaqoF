@@ -16,7 +16,7 @@ export const WelcomeSliderWrapper = styled.div<{ $insetTop?: number }>(
 export const LangButton = styled.button({
   position: "absolute",
   zIndex: 10,
-  top: "80px",
+  top: "calc(env(safe-area-inset-top) + 20px)",
   left: "10px",
   background: "none",
   border: "none",
@@ -29,8 +29,8 @@ export const LangButton = styled.button({
   justifyContent: "center",
   img: {
     width: 20,
-    height: 20
-  }
+    height: 20,
+  },
 });
 
 // стили для пинкода

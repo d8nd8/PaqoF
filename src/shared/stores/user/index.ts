@@ -64,6 +64,20 @@ const useUserStore = create<IUserStore>((set) => ({
     }
   },
 
+  relogin: async (pin) => {
+    const user = get().user;
+    if (!user?.id) return false;
+    try {
+      const data = await userApi.login({ telegramId: user.id, entryCode: pin });
+      localStorage.setItem('access-token', data.accessToken);
+      localStorage.setItem('authentication-method', 'Bearer');
+      set({ isAuthenticated: true });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
   setEntryCode: async (payload) => {
     set({ loading: true });
     try {
