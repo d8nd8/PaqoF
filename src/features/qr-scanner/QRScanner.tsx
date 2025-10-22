@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import TorchlightIcon from '@icons/scanner/torchlight.svg?react';
 import AttachmentIcon from '@icons/scanner/attachment.svg?react';
 import type { QRScannerProps } from './QRScanner.types';
@@ -80,6 +80,18 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
     AVAILABLE_CURRENCIES[0],
   );
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const timeout = setTimeout(() => {
+      const shaded = document.querySelector('.qr-shaded-region') as HTMLElement;
+      if (shaded) {
+        shaded.style.background = 'transparent';
+      }
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [isVisible]);
 
   const { closeScanner, retryScanner, toggleTorch, containerId } = useQRScanner(
     isVisible,
