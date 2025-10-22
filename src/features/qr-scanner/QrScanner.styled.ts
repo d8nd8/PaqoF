@@ -28,9 +28,6 @@ export const CameraFeed = styled.div({
   zIndex: 1,
 
   backgroundColor: 'transparent',
-  backgroundImage:
-    'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),' +
-    'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)',
   backgroundPosition: '0 0, 25px 25px',
   backgroundSize: '50px 50px',
   height: '100%',
