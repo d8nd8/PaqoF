@@ -5,12 +5,13 @@ import type { Html5QrcodeCameraScanConfig } from 'html5-qrcode';
 type UseQRScannerReturn = {
   isScanning: boolean;
   error: string | null;
-  initializeScanner: () => void;
-  closeScanner: () => void;
-  retryScanner: () => void;
+  initializeScanner: () => Promise<void>;
+  closeScanner: () => Promise<void>;
+  retryScanner: () => Promise<void>;
   toggleTorch: () => void;
   containerId: string;
 };
+
 
 export function useQRScanner(
   isVisible: boolean,
@@ -21,6 +22,8 @@ export function useQRScanner(
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const containerId = 'qr-scanner-container';
+  const isStartingRef = useRef(false);
+
 
   const scanSuccess = useCallback(
     (decodedText: string) => {
@@ -30,67 +33,83 @@ export function useQRScanner(
     [onScan]
   );
 
-  const initializeScanner = useCallback(() => {
-    if (qrScannerRef.current) return;
 
-    const config: Html5QrcodeCameraScanConfig = {
-      fps: 10,
-      qrbox: { width: 250, height: 250 }
-    };
+  const initializeScanner = useCallback(async () => {
+    if (isStartingRef.current || qrScannerRef.current) return;
+    isStartingRef.current = true;
 
-    const scanner = new Html5Qrcode(containerId);
-    qrScannerRef.current = scanner;
+    try {
+      const config: Html5QrcodeCameraScanConfig = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+      };
 
-    scanner
-      .start({ facingMode: 'environment' }, config, scanSuccess, () => {})
-      .then(() => {
-        setIsScanning(true);
-        setError(null);
+      const scanner = new Html5Qrcode(containerId);
+      qrScannerRef.current = scanner;
 
-        const video = document.querySelector('video');
-        const stream = video?.srcObject instanceof MediaStream ? video.srcObject : null;
-        const track = stream?.getVideoTracks()?.[0] ?? null;
+      await scanner.start({ facingMode: 'environment' }, config, scanSuccess, () => {});
+      setIsScanning(true);
+      setError(null);
 
-        if (track) {
-          streamTrackRef.current = track;
-        }
-      })
-      .catch(() => {
-        setError('Не удалось запустить камеру');
-        setIsScanning(false);
-      });
+      const video = document.querySelector('video');
+      const stream = video?.srcObject instanceof MediaStream ? video.srcObject : null;
+      const track = stream?.getVideoTracks()?.[0] ?? null;
+      if (track) streamTrackRef.current = track;
+
+    } catch  {
+      setError('Не удалось запустить камеру');
+      setIsScanning(false);
+    } finally {
+      isStartingRef.current = false;
+    }
   }, [scanSuccess]);
 
-  const closeScanner = useCallback(() => {
+
+  const closeScanner = useCallback(async () => {
     const scanner = qrScannerRef.current;
 
-    if (scanner && scanner.getState() !== Html5QrcodeScannerState.NOT_STARTED) {
-      scanner.stop().then(() => {
-        scanner.clear();
-        qrScannerRef.current = null;
-        streamTrackRef.current = null;
-        setIsScanning(false);
-      });
-    } else {
+    if (!scanner) {
+      qrScannerRef.current = null;
+      streamTrackRef.current = null;
+      setIsScanning(false);
+      return;
+    }
+
+    const state = scanner.getState?.();
+    if (!state || state === Html5QrcodeScannerState.NOT_STARTED) {
+      qrScannerRef.current = null;
+      streamTrackRef.current = null;
+      setIsScanning(false);
+      return;
+    }
+
+    try {
+      await scanner.stop();
+      await scanner.clear();
+    }
+     finally {
       qrScannerRef.current = null;
       streamTrackRef.current = null;
       setIsScanning(false);
     }
   }, []);
 
-  const retryScanner = useCallback(() => {
-    closeScanner();
-    setTimeout(() => {
-      initializeScanner();
-    }, 300);
+
+  const retryScanner = useCallback(async () => {
+    await closeScanner();
+    await new Promise((r) => setTimeout(r, 300));
+    await initializeScanner();
   }, [closeScanner, initializeScanner]);
+
 
   const toggleTorch = useCallback(() => {
     const track = streamTrackRef.current;
     if (!track) return;
 
     const capabilities = track.getCapabilities?.() as MediaTrackCapabilities & { torch?: boolean };
-    if (!capabilities?.torch) return;
+    if (!capabilities?.torch) {
+      return;
+    }
 
     const settings = track.getSettings() as MediaTrackSettings & { torch?: boolean };
     const isTorchOn = settings.torch === true;
@@ -99,9 +118,9 @@ export function useQRScanner(
       .applyConstraints({
         advanced: [
           {
-            ...( { torch: !isTorchOn } as MediaTrackConstraintSet & { torch: boolean } )
-          }
-        ]
+            ...( { torch: !isTorchOn } as MediaTrackConstraintSet & { torch: boolean } ),
+          },
+        ],
       })
       .catch(() => {});
   }, []);
@@ -126,6 +145,6 @@ export function useQRScanner(
     closeScanner,
     retryScanner,
     toggleTorch,
-    containerId
+    containerId,
   };
 }
