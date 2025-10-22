@@ -20,6 +20,7 @@ body {
 }
 
 
+
 *:focus,
 *:focus-visible,
 *:focus-within {
@@ -27,7 +28,7 @@ body {
   box-shadow: none !important;
 }
 
-/* Отключаем серый/белый tap highlight при нажатии в Telegram WebView */
+
 * {
   -webkit-tap-highlight-color: transparent !important;
   -webkit-focus-ring-color: transparent !important;
@@ -38,17 +39,58 @@ body {
   -webkit-user-select: none;
 }
 
-/* Чтобы кнопки и инпуты не мигали при клике */
+
 button,
 input,
 textarea {
   outline: none !important;
   box-shadow: none !important;
   background-image: none !important;
+  background: inherit !important;
+  border: none !important;
 }
 
-/* Чтобы SVG и изображения не подсвечивались */
+
+a,
+button {
+  text-decoration: none !important;
+  background: inherit !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: none !important;
+}
+
+
+a:hover,
+button:hover {
+  background: inherit !important;
+  opacity: 1 !important;
+}
+
+
+a:focus,
+button:focus,
+a:focus-visible,
+button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background: inherit !important;
+}
+
+
+a:active,
+button:active {
+  background: inherit !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+
 svg,
 img {
   -webkit-tap-highlight-color: transparent !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
