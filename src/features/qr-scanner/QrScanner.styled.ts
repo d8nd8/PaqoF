@@ -94,15 +94,9 @@ export const ScannerOverlay = styled.div({
   inset: 0,
   zIndex: 2,
   pointerEvents: 'none',
+  background: 'transparent',
 
 
-  background: `
-    radial-gradient(
-      circle at center,
-      rgba(0, 0, 0, 0) 45%,     
-      rgba(0, 0, 0, 0.55) 100%   
-    )
-  `,
 
   '&::before': {
     content: '""',
