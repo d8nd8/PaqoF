@@ -13,7 +13,6 @@ import {
 } from "@/features/crypto-list/CryptoList";
 import { QRScanner } from "@/features/qr-scanner/QRScanner";
 import { WalletConfirmOverlay } from "@/features/overlay-wallet-confirm/WalletConfirmOverlay";
-import { OverlayCryptoSelection } from "@/features/overlay-crypto-selection/OverlayCryptoSelection";
 import useWalletStore from "@/shared/stores/wallet";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 import useApplicationStore from "@/shared/stores/application";
@@ -44,8 +43,6 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const { wallets, getRateToRub, fetchWallets, fetchRates } = useWalletStore();
 
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData>(crypto);
-  const [showCryptoSelection, setShowCryptoSelection] = useState(false);
-
   const [amount, setAmount] = useState("0");
   const [rubPreset, setRubPreset] = useState<number | null>(null);
   const [address, setAddress] = useState("");
@@ -54,17 +51,16 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const [showConfirm, setShowConfirm] = useState(false);
   const [rate, setRate] = useState<number | null>(null);
 
+  const [isFiatMode, setIsFiatMode] = useState(false);
 
   useEffect(() => {
     const loadRate = async () => {
       if (!selectedCrypto?.symbol) return;
       const r = await fetchRates(selectedCrypto.symbol);
-      console.log("Загружен курс:", r);
       setRate(r);
     };
     loadRate();
   }, [selectedCrypto.symbol, fetchRates]);
-
 
   useEffect(() => {
     fetchWallets();
@@ -89,7 +85,10 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     };
   });
 
+
+
   if (!isOpen) return null;
+
 
 
   const balance = parseFloat(selectedCrypto.amount.replace(/[^\d.]/g, "")) || 0;
@@ -98,10 +97,10 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const handleContinue = () => {
     if (sendAmount <= 0) {
       setErrorType("invalidAmount");
-    } else if (sendAmount > balance) {
-      setErrorType("insufficient");
     } else if (!address.trim()) {
       setErrorType("invalidAddress");
+    } else if (!isFiatMode && sendAmount > balance) {
+      setErrorType("insufficient");
     } else {
       setErrorType("none");
       setShowConfirm(true);
@@ -110,36 +109,45 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
   const hasError = errorType !== "none";
 
-  const fiatValue = useMemo(() => {
-    if (rubPreset !== null) return rubPreset;
-    if (rate === null) return null;
-    return sendAmount * rate;
-  }, [rate, sendAmount, rubPreset]);
+
 
   const formatter = new Intl.NumberFormat("ru-RU", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  const setByRub = (rubAmount: number) => {
-    if (!rate || rate <= 0) return;
-    const usdt = rubAmount / rate;
-    setAmount(usdt.toFixed(2));
-    setRubPreset(rubAmount);
-  };
+  const fiatValue = useMemo(() => {
+    if (!rate) return 0;
+    return isFiatMode
+      ? sendAmount / rate //
+      : sendAmount * rate;
+  }, [rate, sendAmount, isFiatMode]);
 
   const handleAmountChange = (val: string) => {
     let sanitized = val.replace(/[^0-9.,]/g, "");
-    if (sanitized.length > 7) sanitized = sanitized.slice(0, 7);
+    if (sanitized.length > 10) sanitized = sanitized.slice(0, 10);
     setAmount(sanitized);
     setRubPreset(null);
   };
 
-  const handleCryptoSelect = (crypto: CryptoItemData) => {
-    setSelectedCrypto(crypto);
-    setShowCryptoSelection(false);
-  };
+  // 🔄 смена режима (₽ ↔︎ USDT)
+  const handleSwapMode = () => {
+    if (!rate) return;
 
+    const numericValue = parseFloat(amount.replace(",", ".")) || 0;
+
+    if (isFiatMode) {
+      // сейчас рубли → конвертируем в крипту
+      const cryptoVal = numericValue / rate;
+      setAmount(cryptoVal.toFixed(2));
+    } else {
+      // сейчас крипта → конвертируем в рубли
+      const fiatVal = numericValue * rate;
+      setAmount(fiatVal.toFixed(2));
+    }
+
+    setIsFiatMode(!isFiatMode);
+  };
 
   return (
     <>
@@ -153,9 +161,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
         <S.Content>
           <S.Card>
-            <S.CardTitle>
-              {t("currency.overlays.transfer.amount.title")}
-            </S.CardTitle>
+            <S.CardTitle>{t("currency.overlays.transfer.amount.title")}</S.CardTitle>
 
             <S.AmountRow>
               <S.AmountValue $hasError={hasError}>
@@ -174,11 +180,11 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                   }}
                 />
                 <S.CurrencySymbol $hasError={hasError}>
-                  {selectedCrypto.symbol}
+                  {isFiatMode ? "₽" : selectedCrypto.symbol}
                 </S.CurrencySymbol>
               </S.AmountValue>
 
-              <S.SwapButton onClick={() => setShowCryptoSelection(true)}>
+              <S.SwapButton onClick={handleSwapMode}>
                 <SwapIcon />
               </S.SwapButton>
             </S.AmountRow>
@@ -193,41 +199,54 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
             )}
 
             {errorType === "invalidAmount" && (
-              <S.ErrorSub>
-                {t("currency.overlays.transfer.amount.enterAmount")}
-              </S.ErrorSub>
+              <S.ErrorSub>{t("currency.overlays.transfer.amount.enterAmount")}</S.ErrorSub>
             )}
 
             {errorType === "none" && (
               <S.AmountSub>
                 {rate === null
                   ? "≈ -"
-                  : `≈ ${formatter.format(fiatValue ?? 0)} ₽`}
+                  : isFiatMode
+                    ? `≈ ${formatter.format(fiatValue)} ${selectedCrypto.symbol}`
+                    : `≈ ${formatter.format(fiatValue)} ₽`}
               </S.AmountSub>
             )}
 
             <S.PresetRow>
-              <S.PresetButton onClick={() => setAmount(balance.toString())}>
-                {t("currency.overlays.transfer.amount.presets.all")}
-              </S.PresetButton>
-              <S.PresetButton onClick={() => setByRub(1000)}>
-                {t("currency.overlays.transfer.amount.presets.1000")}
-              </S.PresetButton>
-              <S.PresetButton onClick={() => setByRub(5000)}>
-                {t("currency.overlays.transfer.amount.presets.5000")}
-              </S.PresetButton>
-              <S.PresetButton onClick={() => setByRub(10000)}>
-                {t("currency.overlays.transfer.amount.presets.10000")}
-              </S.PresetButton>
+              {!isFiatMode && (
+                <>
+                  <S.PresetButton onClick={() => setAmount(balance.toString())}>
+                    {t("currency.overlays.transfer.amount.presets.all")}
+                  </S.PresetButton>
+                  <S.PresetButton onClick={() => setAmount(((1000 / (rate ?? 1)) || 0).toFixed(2))}>
+                    1 000 ₽
+                  </S.PresetButton>
+                  <S.PresetButton onClick={() => setAmount(((5000 / (rate ?? 1)) || 0).toFixed(2))}>
+                    5 000 ₽
+                  </S.PresetButton>
+                  <S.PresetButton onClick={() => setAmount(((10000 / (rate ?? 1)) || 0).toFixed(2))}>
+                    10 000 ₽
+                  </S.PresetButton>
+                </>
+              )}
+              {isFiatMode && (
+                <>
+                  <S.PresetButton onClick={() => setAmount("1000")}>1 000 ₽</S.PresetButton>
+                  <S.PresetButton onClick={() => setAmount("5000")}>5 000 ₽</S.PresetButton>
+                  <S.PresetButton onClick={() => setAmount("10000")}>10 000 ₽</S.PresetButton>
+                </>
+              )}
             </S.PresetRow>
           </S.Card>
 
           <S.SectionTitle>{t("currency.overlays.transfer.balance")}</S.SectionTitle>
-          <CryptoItem data={selectedCrypto} showRightSection={false} infoVariant="amount" />
+          <CryptoItem
+            data={selectedCrypto}
+            showRightSection={false}
+            infoVariant="amount"
+          />
 
-          <S.SectionTitle>
-            {t("currency.overlays.transfer.address.title")}
-          </S.SectionTitle>
+          <S.SectionTitle>{t("currency.overlays.transfer.address.title")}</S.SectionTitle>
 
           <S.InputWrapper hasError={errorType === "invalidAddress"}>
             <S.AddressInput
@@ -286,27 +305,22 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
       <WalletConfirmOverlay
         isOpen={showConfirm}
-        amountFiat={
-          rate !== null ? `≈ ${formatter.format(fiatValue ?? 0)} ₽` : "≈ -"
-        }
         onClose={() => setShowConfirm(false)}
         crypto={selectedCrypto}
-        amount={amount}
+        amount={
+          isFiatMode && rate
+            ? (parseFloat(amount) / rate).toFixed(2)
+            : amount
+        }
+        amountFiat={
+          isFiatMode
+            ? `${amount} ₽`
+            : `≈ ${formatter.format(sendAmount * (rate ?? 0))} ₽`
+        }
         address={address}
         commission={commission}
-        total={`${amount} ${selectedCrypto.symbol}${
-          rate !== null ? ` ≈ ${formatter.format(fiatValue ?? 0)} ₽` : ""
-        }`}
+        total={`${amount} ${isFiatMode ? "₽" : selectedCrypto.symbol}`}
         balanceAfter={`${(balance - sendAmount).toFixed(2)} ${selectedCrypto.symbol}`}
-      />
-
-      <OverlayCryptoSelection
-        isOpen={showCryptoSelection}
-        onClose={() => setShowCryptoSelection(false)}
-        cryptos={cryptoOptions}
-        selectedCryptoId={selectedCrypto.id}
-        onCryptoSelect={handleCryptoSelect}
-        title={t("walletDepositOverlay.selectCrypto")}
       />
     </>
   );
