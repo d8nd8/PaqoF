@@ -20,7 +20,7 @@ body {
 }
 
 
-
+/* 🔹 Убираем фокус, рамки и тени у всех элементов */
 *:focus,
 *:focus-visible,
 *:focus-within {
@@ -28,7 +28,7 @@ body {
   box-shadow: none !important;
 }
 
-
+/* 🔹 Отключаем серый/белый tap highlight при нажатии в Telegram WebView */
 * {
   -webkit-tap-highlight-color: transparent !important;
   -webkit-focus-ring-color: transparent !important;
@@ -39,50 +39,42 @@ body {
   -webkit-user-select: none;
 }
 
-
+/* 🔹 Убираем системные эффекты у кнопок и форм */
 button,
 input,
 textarea {
   outline: none !important;
-  box-shadow: none !important;
-  background-image: none !important;
-  background: inherit !important;
-  border: none !important;
 }
 
-
+/* 🔹 Убираем hover / focus / active у ссылок и кнопок */
 a,
 button {
   text-decoration: none !important;
-  background: inherit !important;
   outline: none !important;
   box-shadow: none !important;
-  color: inherit !important;
   -webkit-tap-highlight-color: transparent !important;
   transition: none !important;
 }
 
-
+/* Убираем hover-эффект */
 a:hover,
 button:hover {
   background: inherit !important;
   opacity: 1 !important;
 }
 
-
+/* Убираем подсветку при фокусе */
 a:focus,
 button:focus,
 a:focus-visible,
 button:focus-visible {
   outline: none !important;
   box-shadow: none !important;
-  background: inherit !important;
 }
 
-
+/* Убираем затемнение при тапе (active) */
 a:active,
 button:active {
-  background: inherit !important;
   opacity: 1 !important;
   transform: none !important;
 }
