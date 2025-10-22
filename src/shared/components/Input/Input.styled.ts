@@ -38,9 +38,7 @@ export const InputField = styled.input<{ hasRightIcon?: boolean }>(({ theme, has
     opacity: 0.6,
   },
 
-  '&:focus': {
-    boxShadow: `0 0 0 2px ${theme.colors.textPrimary || '#007AFF'}33`,
-  },
+
 
   '&:disabled': {
     opacity: 0.5,

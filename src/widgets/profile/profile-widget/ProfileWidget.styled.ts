@@ -117,9 +117,6 @@ export const SectionItem = styled.button(({ theme }) => ({
     borderBottomRightRadius: theme.borderRadius.lg,
   },
 
-  "&:active": {
-    transform: "translateY(0px)",
-  },
 }));
 
 export const IconBox = styled.div(({ theme }) => ({
@@ -192,8 +189,4 @@ export const LogoutButton = styled.button(({ theme }) => ({
   position: "relative",
   zIndex: 1,
   transition: "all 0.2s ease",
-
-  "&:active": {
-    transform: "translateY(0px)",
-  },
 }));

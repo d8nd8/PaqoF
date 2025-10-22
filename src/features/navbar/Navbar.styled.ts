@@ -52,7 +52,6 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
       backgroundColor: props.theme.colors.primary500,
       '&:focus': {
         outline: 'none',
-        backgroundColor: props.theme.colors.primary400,
       },
     }
   }
