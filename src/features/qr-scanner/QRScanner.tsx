@@ -23,7 +23,7 @@ import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
 import { PaymentInfoOverlay } from '@/features/qr-scanner/payment-info-overlay';
 import { PaymentOverlay } from '@/features/payment-overlay/PaymentOverlay';
 import type { CryptoItemData } from '@/features/crypto-list/CryptoList';
-import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets';
 
 const AVAILABLE_CURRENCIES: CryptoItemData[] = [
   {
@@ -67,7 +67,6 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
   },
 ];
 
-
 export const QRScanner: React.FC<QRScannerProps> = ({
                                                       isVisible,
                                                       onScan,
@@ -87,10 +86,17 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     onScan,
   );
 
-  const handleClose = (): void => {
-    closeScanner();
-    onClose?.();
+
+  const handleClose = async (): Promise<void> => {
+    try {
+      await closeScanner();
+    } catch (e) {
+      console.warn('Ошибка при остановке камеры:', e);
+    } finally {
+      onClose?.();
+    }
   };
+
 
   const handleGalleryOpen = async (): Promise<void> => {
     const input = document.createElement('input');
@@ -109,17 +115,19 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
         if (result) {
           onScan(result);
-          handleClose();
+          await handleClose();
         } else {
           retryScanner();
         }
-      } catch {
+      } catch (err) {
+        console.warn('Ошибка при сканировании из галереи:', err);
         retryScanner();
       }
     };
 
     input.click();
   };
+
 
   const handlePayment = async (currency: CryptoItemData, amount: string) => {
     return new Promise<void>((resolve, reject) => {
@@ -140,7 +148,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
           <Header>
             <Title>{title || t('qrScanner.title')}</Title>
-            <CloseButton  $insetTop={top} onClick={handleClose}>✕</CloseButton>
+            <CloseButton $insetTop={top} onClick={handleClose}>✕</CloseButton>
           </Header>
 
           <ScannerOverlay />
