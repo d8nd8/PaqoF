@@ -119,7 +119,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const fiatValue = useMemo(() => {
     if (!rate) return 0;
     return isFiatMode
-      ? sendAmount / rate //
+      ? sendAmount / rate
       : sendAmount * rate;
   }, [rate, sendAmount, isFiatMode]);
 
@@ -130,18 +130,17 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     setRubPreset(null);
   };
 
-  // 🔄 смена режима (₽ ↔︎ USDT)
+
   const handleSwapMode = () => {
     if (!rate) return;
 
     const numericValue = parseFloat(amount.replace(",", ".")) || 0;
 
     if (isFiatMode) {
-      // сейчас рубли → конвертируем в крипту
+
       const cryptoVal = numericValue / rate;
       setAmount(cryptoVal.toFixed(2));
     } else {
-      // сейчас крипта → конвертируем в рубли
       const fiatVal = numericValue * rate;
       setAmount(fiatVal.toFixed(2));
     }
