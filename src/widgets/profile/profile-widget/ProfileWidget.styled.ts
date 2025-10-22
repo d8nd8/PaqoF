@@ -14,7 +14,7 @@ export const ProfileTop = styled.div({
   minHeight: "180px",
   maxHeight: "260px",
   background: `
-    linear-gradient(135deg, #4A9EFF 0%, #6B7EFF 40%, #8B6EFF 70%, #B95EFF 100%)
+  linear-gradient(135deg, #4A9EFF 0%, #6B7EFF 40%, #6FD91A 100%)
   `,
 });
 
