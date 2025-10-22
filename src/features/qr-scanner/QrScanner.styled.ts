@@ -91,7 +91,7 @@ export const ScannerOverlay = styled.div({
   inset: 0,
   zIndex: 2,
   pointerEvents: 'none',
-  color: 'rgba(255,255,255,0.7)',
+  background: 'rgba(255,255,255,0.7)',
 
 
 
