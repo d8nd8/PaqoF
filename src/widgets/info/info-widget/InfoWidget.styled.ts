@@ -89,7 +89,11 @@ export const InfoText = styled.span(({ theme }) => ({
 }));
 
 export const RightIcon = styled.span(({ theme }) => ({
-  color: theme.colors.neutral500,
   display: "flex",
   alignItems: "center",
+  "& svg": {
+    width: "18px",
+    height: "18px",
+    stroke: theme.colors.textPrimary,
+  },
 }));

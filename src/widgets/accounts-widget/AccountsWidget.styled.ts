@@ -23,6 +23,11 @@ export const AccountItem = styled.button(({ theme }) => ({
   textAlign: "left",
   transition: "background 0.2s ease",
 
+  "& svg": {
+    width: "18px",
+    height: "18px",
+    stroke: theme.colors.textPrimary,
+  },
 
 }));
 
