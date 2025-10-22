@@ -28,7 +28,7 @@ body {
   box-shadow: none !important;
 }
 
-/* 🔹 Отключаем серый/белый tap highlight при нажатии в Telegram WebView */
+
 * {
   -webkit-tap-highlight-color: transparent !important;
   -webkit-focus-ring-color: transparent !important;
@@ -40,3 +40,11 @@ body {
 }
 
 
+a,
+button {
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: none !important;
+}
