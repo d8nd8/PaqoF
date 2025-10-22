@@ -23,12 +23,7 @@ export const AccountItem = styled.button(({ theme }) => ({
   textAlign: "left",
   transition: "background 0.2s ease",
 
-  "&:hover": {
-    background: theme.semantic.hover,
-  },
-  "&:active": {
-    background: theme.semantic.active,
-  },
+
 }));
 
 export const AccountContent = styled.div({
