@@ -117,6 +117,14 @@ export const SectionItem = styled.button(({ theme }) => ({
     borderBottomRightRadius: theme.borderRadius.lg,
   },
 
+  "&:focus": {
+    outline: "none",
+    boxShadow: "none",
+  },
+  "&:focus-visible": {
+    outline: "none",
+    boxShadow: "none",
+  },
 }));
 
 export const IconBox = styled.div(({ theme }) => ({
