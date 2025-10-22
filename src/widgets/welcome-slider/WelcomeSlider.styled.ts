@@ -16,7 +16,7 @@ export const WelcomeSliderWrapper = styled.div<{ $insetTop?: number }>(
 export const LangButton = styled.button({
   position: "absolute",
   zIndex: 10,
-  top: "calc(env(safe-area-inset-top) + 20px)",
+  top: "calc(env(safe-area-inset-top) + 30px)",
   left: "10px",
   background: "none",
   border: "none",
