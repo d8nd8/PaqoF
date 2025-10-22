@@ -97,18 +97,6 @@ export const ScannerOverlay = styled.div({
   background: 'transparent',
 
 
-
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '60%',
-    height: '60%',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '12px',
-    border: 'none',
-  },
 });
 
 export const BottomActions = styled.div({
