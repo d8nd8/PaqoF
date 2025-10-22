@@ -38,6 +38,7 @@ export const CameraFeed = styled.div({
     top: '50%',
     transform: 'translate(-50%, -50%)',
     fontSize: 13,
+    color: 'rgba(255,255,255,0.7)',
     whiteSpace: 'nowrap',
     pointerEvents: 'none',
   },
@@ -90,7 +91,7 @@ export const ScannerOverlay = styled.div({
   inset: 0,
   zIndex: 2,
   pointerEvents: 'none',
-  background: 'transparent',
+  background: 'rgba(255, 255, 255, 0.05)',
 
 
 
