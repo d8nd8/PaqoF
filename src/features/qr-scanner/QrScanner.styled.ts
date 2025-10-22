@@ -38,7 +38,6 @@ export const CameraFeed = styled.div({
     top: '50%',
     transform: 'translate(-50%, -50%)',
     fontSize: 13,
-    color: 'rgba(255,255,255,0.7)',
     whiteSpace: 'nowrap',
     pointerEvents: 'none',
   },
