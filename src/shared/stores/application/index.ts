@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import type IApplicationStore from './types';
 
+
 const useApplicationStore = create<IApplicationStore>((set, get) => ({
   headerOffset: false,
   fullscreen: false,
@@ -9,23 +10,64 @@ const useApplicationStore = create<IApplicationStore>((set, get) => ({
   modal: null,
   preloaders: [],
   enablePreloader: (name: string) => {
-    const { preloaders } = get();
+    const { preloaders } = get()
     if (!preloaders.includes(name)) {
-      set({ preloaders: [...preloaders, name] });
+      set({ preloaders: [...preloaders, name] })
     }
-
     const resolve = () => {
-      const { preloaders } = get();
-      set({ preloaders: preloaders.filter((preloader) => preloader !== name) });
+      const { preloaders } = get()
+      set({ preloaders: preloaders.filter((preloader) => preloader !== name) })
     }
-
-    return { resolve };
+    return { resolve }
   },
-  setFullscreen: (fullscreen: boolean) => set({ fullscreen }),
-  setFullscreenCentered: (fullscreenCentered: boolean) => set({ fullscreenCentered }),
-  setHeaderOffset: (headerOffset: boolean) => set({ headerOffset }),
-  openModal: (modal: string) => set({ modal }),
+  setFullscreen: (fullscreen) => set({ fullscreen }),
+  setFullscreenCentered: (fullscreenCentered) => set({ fullscreenCentered }),
+  setHeaderOffset: (headerOffset) => set({ headerOffset }),
+  openModal: (modal) => set({ modal }),
   closeModal: () => set({ modal: null }),
-}));
+  currentOverlay: null,
+  overlayHistory: [],
+  previousOverlay: null,
+  openOverlay: (name) => {
+    const { overlayHistory } = get()
+    set({
+      currentOverlay: name,
+      overlayHistory: [...overlayHistory, name],
+    })
+  },
+  closeOverlay: () => {
+    const { overlayHistory } = get()
+    const newHistory = [...overlayHistory]
+    newHistory.pop()
+    set({
+      overlayHistory: newHistory,
+      currentOverlay: newHistory[newHistory.length - 1] || null,
+    })
+  },
+  goBack: () => {
+    const { overlayHistory } = get()
+    if (overlayHistory.length > 1) {
+      const newHistory = [...overlayHistory]
+      newHistory.pop()
+      set({
+        overlayHistory: newHistory,
+        currentOverlay: newHistory[newHistory.length - 1] || null,
+      })
+    } else {
+      set({ overlayHistory: [], currentOverlay: null })
+    }
+  },
+  setPreviousOverlay: (value) => set({ previousOverlay: value }),
+  restoreOverlay: () => {
+    const { previousOverlay } = get()
+    if (previousOverlay) {
+      set({
+        currentOverlay: previousOverlay,
+        overlayHistory: [previousOverlay],
+        previousOverlay: null,
+      })
+    }
+  },
+}))
 
-export default useApplicationStore;
+export default useApplicationStore

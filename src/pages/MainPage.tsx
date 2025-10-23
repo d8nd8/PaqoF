@@ -14,30 +14,19 @@ import useApplicationStore from '@/shared/stores/application'
 import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
 
 export const MainPage: React.FC = () => {
-  const { modal, openModal, closeModal } = useApplicationStore()
+  const {
+    modal,
+    openModal,
+    closeModal,
+    currentOverlay,
+    openOverlay,
+    goBack,
+  } = useApplicationStore()
 
-  const [overlayHistory, setOverlayHistory] = useState<string[]>([])
-  const [currentOverlay, setCurrentOverlay] = useState<string | null>(null)
-  const [depositMode, setDepositMode] = useState<WalletDepositMode>('deposit') // <--- добавляем режим
-
+  const [depositMode, setDepositMode] = useState<WalletDepositMode>('deposit')
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<string>('')
   const [selectedAddress, setSelectedAddress] = useState<string>('')
-
-  const openOverlay = (name: string) => {
-    setOverlayHistory((prev) => [...prev, name])
-    setCurrentOverlay(name)
-  }
-
-  const goBack = () => {
-    setOverlayHistory((prev) => {
-      const newHistory = [...prev]
-      newHistory.pop()
-      const prevOverlay = newHistory[newHistory.length - 1] || null
-      setCurrentOverlay(prevOverlay)
-      return newHistory
-    })
-  }
 
   const handleDepositStart = () => {
     setDepositMode('deposit')
@@ -49,7 +38,12 @@ export const MainPage: React.FC = () => {
     openOverlay('walletDeposit')
   }
 
-  const handleDepositContinue = (crypto: any, network: any, mode: any, address: any) => {
+  const handleDepositContinue = (
+    crypto: CryptoItemData,
+    network: string,
+    mode: WalletDepositMode,
+    address: string
+  ) => {
     setSelectedCrypto(crypto)
     setSelectedNetwork(network)
     setSelectedAddress(address)
@@ -75,14 +69,12 @@ export const MainPage: React.FC = () => {
 
       <NotificationsModal isOpen={modal === 'notifications'} onClose={closeModal} />
 
-
       {currentOverlay === 'deposit' && (
         <DepositOverlay
           onClose={goBack}
           onSelectWallet={() => openOverlay('walletDeposit')}
         />
       )}
-
 
       {currentOverlay === 'walletDeposit' && (
         <WalletDepositOverlay
@@ -92,7 +84,6 @@ export const MainPage: React.FC = () => {
           onContinue={handleDepositContinue}
         />
       )}
-
 
       {currentOverlay === 'walletAddress' && selectedCrypto && (
         <WalletAddressOverlay
@@ -106,7 +97,6 @@ export const MainPage: React.FC = () => {
         />
       )}
 
-
       {currentOverlay === 'walletTransfer' && selectedCrypto && (
         <WalletTransferOverlay
           isOpen
@@ -117,21 +107,12 @@ export const MainPage: React.FC = () => {
         />
       )}
 
-
       {currentOverlay === 'commission' && (
-        <OverlayCommission
-          isOpen
-          onClose={goBack}
-        />
+        <OverlayCommission isOpen onClose={goBack} />
       )}
 
-
       {currentOverlay === 'scanner' && (
-        <QRScanner
-          isVisible
-          onScan={handlePay}
-          onClose={goBack}
-        />
+        <QRScanner isVisible onScan={handlePay} onClose={goBack} />
       )}
     </BaseLayout>
   )

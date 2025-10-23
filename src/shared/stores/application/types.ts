@@ -11,4 +11,13 @@ export default interface IApplicationStore {
   setHeaderOffset: (headerOffset: boolean) => void;
   openModal: (modal: string) => void;
   closeModal: () => void;
+
+  currentOverlay: string | null
+  overlayHistory: string[]
+  previousOverlay: string | null
+  openOverlay: (name: string) => void
+  closeOverlay: () => void
+  goBack: () => void
+  setPreviousOverlay: (value: string | null) => void
+  restoreOverlay: () => void
 }
