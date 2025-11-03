@@ -71,7 +71,7 @@ export const createClient = () => {
     async (error) => {
       if (!error.response) throw error
       if (error.response.status === HttpStatusCode.Unauthorized) {
-        clearAuthentication()
+        window.dispatchEvent(new Event('unauthorized'))
       }
       throw error
     }

@@ -16,7 +16,6 @@ import { useSafeInitData } from "@/shared/hooks/useSafeInitData";
 import { SecurityPinCode } from "@/features/security-pin-code";
 import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
 
-
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
     useApplicationStore();
@@ -58,9 +57,7 @@ const App = () => {
         }
       };
 
-
       applyTelegramTheme(theme);
-
 
       const onThemeChange = () => {
         const scheme =
@@ -69,7 +66,6 @@ const App = () => {
       };
 
       window.Telegram?.WebApp?.onEvent("themeChanged", onThemeChange);
-
       return () => {
         window.Telegram?.WebApp?.offEvent("themeChanged", onThemeChange);
       };
@@ -96,6 +92,16 @@ const App = () => {
     if (savedPin) setIsPinRequired(true);
   }, []);
 
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      setIsPinRequired(true);
+      setIsPinVerified(false);
+    };
+
+    window.addEventListener("unauthorized", handleUnauthorized);
+    return () => window.removeEventListener("unauthorized", handleUnauthorized);
+  }, []);
+
   const handlePinComplete = async (enteredPin: string) => {
     if (!user?.id) return;
 
@@ -105,7 +111,10 @@ const App = () => {
         telegramId: user.id,
       });
 
+      localStorage.setItem("pin-code", enteredPin);
+
       setIsPinVerified(true);
+      setIsPinRequired(false);
       setPinError(null);
     } catch {
       setPinError("Неверный PIN-код");
@@ -124,21 +133,18 @@ const App = () => {
     );
   }
 
-
   return (
-    <>
-      <Wrapper
-        fullscreen={fullscreen}
-        fullscreenCentered={fullscreenCentered}
-        noHeaderOffset={!headerOffset}
-        style={{ paddingBottom: safeAreaBottom }}
-      >
-        <WrapperRoot>
-          <RouterProvider router={router} />
-        </WrapperRoot>
-        <Preloader />
-      </Wrapper>
-    </>
+    <Wrapper
+      fullscreen={fullscreen}
+      fullscreenCentered={fullscreenCentered}
+      noHeaderOffset={!headerOffset}
+      style={{ paddingBottom: safeAreaBottom }}
+    >
+      <WrapperRoot>
+        <RouterProvider router={router} />
+      </WrapperRoot>
+      <Preloader />
+    </Wrapper>
   );
 };
 
