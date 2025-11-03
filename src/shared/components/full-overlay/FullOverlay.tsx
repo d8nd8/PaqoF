@@ -27,15 +27,13 @@ export const FullOverlay: React.FC<FullOverlayProps> = ({
           onClick={onClose}
         >
           <S.Content
-            $top={top}
-            $bottom={bottom}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <S.CloseButton $top={top} onClick={onClose}>
+            <S.CloseButton  onClick={onClose}>
               ✕
             </S.CloseButton>
             {children}
