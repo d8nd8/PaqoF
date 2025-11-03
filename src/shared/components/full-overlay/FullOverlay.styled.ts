@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 
-export const Backdrop = styled(motion.div)<{ $top: number; $bottom: number }>(
-  ({ theme, $top, $bottom }) => ({
+export const Backdrop = styled(motion.div)(
+  ({ theme }) => ({
     position: "fixed",
     inset: 0,
     width: "100%",
@@ -11,8 +11,6 @@ export const Backdrop = styled(motion.div)<{ $top: number; $bottom: number }>(
     zIndex: theme.zIndex.modal,
     display: "flex",
     flexDirection: "column",
-    paddingTop: `${$top}px`,
-    paddingBottom: `${$bottom}px`,
   })
 );
 

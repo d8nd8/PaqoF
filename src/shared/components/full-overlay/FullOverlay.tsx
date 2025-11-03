@@ -20,8 +20,6 @@ export const FullOverlay: React.FC<FullOverlayProps> = ({
     <AnimatePresence>
       {isOpen && (
         <S.Backdrop
-          $top={top}
-          $bottom={bottom}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
