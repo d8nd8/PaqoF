@@ -6,6 +6,7 @@ export const HeaderWrapper = styled.div<{ insetTop: number }>(({ theme, insetTop
   justifyContent: "center",
   position: "relative",
   marginBottom: theme.spacing.xxl,
+  scrollPaddingTop: theme.spacing.lg,
   paddingTop: `${insetTop}px`,
 }));
 
