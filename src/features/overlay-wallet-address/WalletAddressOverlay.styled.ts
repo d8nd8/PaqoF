@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 
-export const OverlayWrapper = styled.div(({ theme }) => ({
+export const OverlayWrapper = styled.div<{ insetTop?: number }>(({ theme, insetTop = 0 }) => ({
   position: "fixed",
   inset: 0,
   zIndex: theme.zIndex.modal,
   display: "flex",
   flexDirection: "column",
   background: theme.colors.systemBackground,
-  paddingTop: theme.spacing.lg,
+  paddingLeft: 14,
+  paddingRight: 14,
+  paddingTop: `${insetTop}px`,
 }));
 
 export const Header = styled.div({

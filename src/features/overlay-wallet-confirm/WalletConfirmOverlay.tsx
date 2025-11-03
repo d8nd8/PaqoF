@@ -37,7 +37,7 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
   const { t } = useTranslation();
   const { withdraw } = useWalletStore();
   const { fullscreen } = useApplicationStore();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets();
 
   const [comment, setComment] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -72,9 +72,9 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
 
   return (
     <>
-      <S.OverlayWrapper>
+      <S.OverlayWrapper insetTop={fullscreen ? top + 50 : top}>
         <PageHeader
-          customTopInset={fullscreen ? 80 : 0}
+          // customTopInset={fullscreen ? 80 : 0}
           title={t("currency.overlays.confirm.title")}
           onBack={onClose}
           rightSlot={null}

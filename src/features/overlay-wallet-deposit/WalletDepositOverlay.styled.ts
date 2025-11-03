@@ -10,6 +10,8 @@ export const OverlayWrapper = styled.div<{ insetTop?: number }>(({ theme, insetT
   flexDirection: 'column',
   paddingTop: insetTop,
   background: theme.colors.systemBackground,
+  paddingLeft: 14,
+  paddingRight: 14,
 }));
 
 export const HeaderWrapper = styled.div({

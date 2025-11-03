@@ -38,7 +38,6 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
                                                                               onTopUpClick,
                                                                             }) => {
   const { t } = useTranslation();
-  const { bottom } = useSafeAreaInsets();
   const { fullscreen } = useApplicationStore();
   const { wallets, getRateToRub, fetchWallets, fetchRates } = useWalletStore();
 
@@ -52,6 +51,8 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const [rate, setRate] = useState<number | null>(null);
 
   const [isFiatMode, setIsFiatMode] = useState(false);
+
+  const { bottom, top } = useSafeAreaInsets();
 
   useEffect(() => {
     const loadRate = async () => {
@@ -131,6 +132,8 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   };
 
 
+
+
   const handleSwapMode = () => {
     if (!rate) return;
 
@@ -150,7 +153,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
   return (
     <>
-      <S.OverlayWrapper>
+      <S.OverlayWrapper insetTop={fullscreen ? top + 50 : top}>
         <PageHeader
           customTopInset={fullscreen ? 80 : 0}
           title={t("currency.overlays.transfer.title")}
