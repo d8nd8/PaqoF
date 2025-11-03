@@ -12,23 +12,32 @@ export const Backdrop = styled(motion.div)(({ theme }) => ({
   flexDirection: "column",
 }));
 
-export const Content = styled(motion.div)({
-  position: "relative",
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  padding: "20px 16px",
-  background: "inherit",
-});
+export const Content = styled(motion.div)<{ $top: number; $bottom: number }>(
+  ({ theme, $top, $bottom }) => ({
+    position: "relative",
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
 
-export const CloseButton = styled.button(({ theme }) => ({
-  position: "absolute",
-  top: theme.spacing.lg,
-  right: theme.spacing.lg,
-  background: "transparent",
-  border: "none",
-  fontSize: "22px",
-  fontWeight: 600,
-  cursor: "pointer",
-  color: theme.colors.textPrimary,
-}));
+    paddingTop: `${$top + parseInt(theme.spacing.xl)}px`,
+    paddingBottom: `${$bottom + parseInt(theme.spacing.md)}px`,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+
+    background: "inherit",
+  })
+);
+
+export const CloseButton = styled("button")<{ $top: number }>(
+  ({ theme, $top }) => ({
+    position: "absolute",
+    top: `${$top + parseInt(theme.spacing.md)}px`,
+    right: theme.spacing.md,
+    background: "transparent",
+    border: "none",
+    fontSize: "22px",
+    fontWeight: 600,
+    cursor: "pointer",
+    color: theme.colors.textPrimary,
+  })
+);
