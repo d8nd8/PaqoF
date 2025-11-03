@@ -417,7 +417,9 @@
       "subtitle": "You are disabling app entry protection"
     },
     "errors": {
-      "mismatch": "PIN codes do not match"
+      "mismatch": "PIN codes do not match",
+      "wrong": "Incorrect PIN code",
+      "processing": "Error processing PIN code"
     },
     "delete": "Delete digit",
     "changeButton": "Change PIN code"

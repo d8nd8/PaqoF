@@ -3,7 +3,7 @@ import Toggle from "@/shared/components/Toggle/Toggle";
 import { SecurityPinCode } from "@/features/security-pin-code";
 import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
 import useUserStore from "@/shared/stores/user";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 type Step = "idle" | "create" | "confirm-old" | "create-new" | "remove";
 
@@ -14,21 +14,23 @@ type Props = {
 export const PinToggle: React.FC<Props> = ({ onOverlayChange }) => {
   const { t } = useTranslation();
   const { setEntryCode, changeEntryCode, deleteEntryCode } = useUserStore();
+
   const [enabled, setEnabled] = useState(Boolean(localStorage.getItem("pin")));
   const [showOverlay, setShowOverlay] = useState(false);
   const [step, setStep] = useState<Step>("idle");
   const [oldPin, setOldPin] = useState<string | null>(null);
+  const [pinError, setPinError] = useState<string | null>(null);
 
   const openOverlay = (newStep: Step) => {
     setStep(newStep);
     setShowOverlay(true);
+    setPinError(null);
     onOverlayChange?.(true);
   };
 
   const closeOverlay = () => {
     setShowOverlay(false);
-    setStep("idle");
-    setOldPin(null);
+    setPinError(null);
     onOverlayChange?.(false);
   };
 
@@ -45,38 +47,54 @@ export const PinToggle: React.FC<Props> = ({ onOverlayChange }) => {
   };
 
   const handleComplete = async (pin: string) => {
-    if (step === "create") {
-      await setEntryCode({ code: pin });
-      localStorage.setItem("pin", pin);
-      setEnabled(true);
-      closeOverlay();
-    }
+    const savedPin = localStorage.getItem("pin");
 
-    if (step === "remove") {
-      const savedPin = localStorage.getItem("pin");
-      if (savedPin === pin) {
-        await deleteEntryCode({ code: pin });
-        localStorage.removeItem("pin");
-        setEnabled(false);
+    try {
+      if (step === "create") {
+        await setEntryCode({ code: pin });
+        localStorage.setItem("pin", pin);
+        setEnabled(true);
+        setPinError(null);
+        closeOverlay();
+        return;
       }
-      closeOverlay();
-    }
 
-    if (step === "confirm-old") {
-      const savedPin = localStorage.getItem("pin");
-      if (savedPin === pin) {
-        setOldPin(pin);
-        setStep("create-new");
-      } else {
+
+      if (step === "remove") {
+        if (savedPin === pin) {
+          await deleteEntryCode({ code: pin });
+          localStorage.removeItem("pin");
+          setEnabled(false);
+          setPinError(null);
+          closeOverlay();
+        } else {
+          setPinError(t("pin.errors.wrong"));
+        }
+        return;
+      }
+
+
+      if (step === "confirm-old") {
+        if (savedPin === pin) {
+          setOldPin(pin);
+          setStep("create-new");
+          setPinError(null);
+        } else {
+          setPinError(t("pin.errors.wrong"));
+        }
+        return;
+      }
+
+
+      if (step === "create-new" && oldPin) {
+        await changeEntryCode({ oldCode: oldPin, newCode: pin });
+        localStorage.setItem("pin", pin);
+        setEnabled(true);
+        setPinError(null);
         closeOverlay();
       }
-    }
-
-    if (step === "create-new" && oldPin) {
-      await changeEntryCode({ oldCode: oldPin, newCode: pin });
-      localStorage.setItem("pin", pin);
-      setEnabled(true);
-      closeOverlay();
+    } catch  {
+      setPinError(t("pin.errors.processing"));
     }
   };
 
@@ -112,6 +130,8 @@ export const PinToggle: React.FC<Props> = ({ onOverlayChange }) => {
                     : "createNew"
             }
             onComplete={handleComplete}
+            onChangeRequest={() => setStep("confirm-old")}
+            error={pinError}
           />
         )}
       </FullOverlay>

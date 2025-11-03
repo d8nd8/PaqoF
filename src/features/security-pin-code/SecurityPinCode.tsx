@@ -11,6 +11,7 @@ interface SecurityPinCodeProps {
   maxLength?: number
   onComplete: (pin: string) => void
   error?: string | null
+  onChangeRequest?: () => void
 }
 
 export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
@@ -18,6 +19,7 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
                                                                   maxLength = 4,
                                                                   onComplete,
                                                                   error,
+                                                                  onChangeRequest,
                                                                 }) => {
   const { t } = useTranslation()
 
@@ -29,13 +31,23 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
   const [isLocked, setIsLocked] = useState(false)
   const [isShaking, setIsShaking] = useState(false)
 
+
   const handleInput = (val: string) => {
     if (isLocked || pin.length >= maxLength) return
+    if (status === 'error') {
+      setStatus('default')
+      setHelper('')
+    }
     setPin((prev) => prev + val)
   }
 
+
   const handleDelete = () => {
-    if (isLocked) return
+    if (status === 'error') {
+      setStatus('default')
+      setHelper('')
+      setIsLocked(false)
+    }
     setPin((prev) => prev.slice(0, -1))
   }
 
@@ -48,10 +60,15 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
 
       if (navigator.vibrate) navigator.vibrate(100)
 
+      if (pin.length < maxLength) {
+        setPin('•'.repeat(maxLength))
+      }
+
       const timeout = setTimeout(() => {
         setIsShaking(false)
-        reset()
-      }, 1500)
+        setIsLocked(false)
+        setPin('')
+      }, 1000)
 
       return () => clearTimeout(timeout)
     }
@@ -167,6 +184,12 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
           <DeleteIcon />
         </S.Key>
       </S.Keypad>
+
+      {mode === 'remove' && onChangeRequest && (
+        <S.ChangePinText onClick={onChangeRequest}>
+          {t('pin.changeButton')}
+        </S.ChangePinText>
+      )}
     </S.Wrapper>
   )
 }

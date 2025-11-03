@@ -14,6 +14,18 @@ export const Title = styled.h2({
   fontWeight: 600,
 })
 
+export const ChangePinText = styled.p(({ theme }) => ({
+  marginTop: theme.spacing.lg,
+  textAlign: "right",
+  fontSize: "14px",
+  fontWeight: 500,
+  cursor: "pointer",
+  userSelect: "none",
+  "&:hover": {
+    opacity: 0.8,
+  },
+}));
+
 export const Description = styled.p(({theme}) => ({
   fontSize: '13px',
   color: theme.colors.textSecondary,
@@ -59,10 +71,21 @@ export const Bullet = styled.div<{ filled: boolean, status: 'default' | 'error' 
   })
 )
 
-export const HelperText = styled.div<{ status: 'default' | 'error' | 'success' }>(({ status, theme }) => ({
-  fontSize: '13px',
-  color: status === 'error' ? theme.colors.error500 : 'inherit',
-}))
+export const HelperText = styled.div<{ status: 'default' | 'error' | 'success' }>(
+  ({ status, theme }) => ({
+    fontSize: '13px',
+    lineHeight: '18px',
+    textAlign: 'center',
+    marginTop: '8px',
+    color:
+      status === 'error'
+        ? `${theme.colors.error500} !important`
+        : status === 'success'
+          ? `${theme.colors.success600} !important`
+          : `${theme.colors.textSecondary} !important`,
+    transition: 'color 0.2s ease',
+  })
+)
 
 export const Keypad = styled.div({
   display: 'grid',
