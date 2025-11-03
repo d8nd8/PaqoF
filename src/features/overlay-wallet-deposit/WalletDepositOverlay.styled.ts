@@ -8,7 +8,6 @@ export const OverlayWrapper = styled.div(({ theme }) => ({
   zIndex: theme.zIndex.modal,
   display: "flex",
   flexDirection: "column",
-  padding: theme.spacing.lg ,
   background: theme.colors.systemBackground,
 }));
 
