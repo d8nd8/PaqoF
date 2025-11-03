@@ -2,12 +2,13 @@
 import styled from "@emotion/styled";
 import { theme } from '@/styles/theme'
 
-export const OverlayWrapper = styled.div(({ theme }) => ({
-  position: "fixed",
+export const OverlayWrapper = styled.div<{ insetTop?: number }>(({ theme, insetTop = 0 }) => ({
+  position: 'fixed',
   inset: 0,
   zIndex: theme.zIndex.modal,
-  display: "flex",
-  flexDirection: "column",
+  display: 'flex',
+  flexDirection: 'column',
+  paddingTop: insetTop,
   background: theme.colors.systemBackground,
 }));
 

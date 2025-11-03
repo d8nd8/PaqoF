@@ -128,9 +128,9 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
 
   return (
     <>
-      <S.OverlayWrapper>
+      <S.OverlayWrapper insetTop={fullscreen ? top + 50 : top}>
           <PageHeader
-            customTopInset={fullscreen ? top + 50 : top + 100}
+            // customTopInset={fullscreen ? top + 50 : top + 30}
             title={
               title ||
               (mode === "deposit"
