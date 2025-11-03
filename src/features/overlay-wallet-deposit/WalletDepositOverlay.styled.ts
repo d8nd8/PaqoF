@@ -1,5 +1,6 @@
 // WalletDepositOverlay.styled.ts
 import styled from "@emotion/styled";
+import { theme } from '@/styles/theme'
 
 export const OverlayWrapper = styled.div(({ theme }) => ({
   position: "fixed",
@@ -7,8 +8,8 @@ export const OverlayWrapper = styled.div(({ theme }) => ({
   zIndex: theme.zIndex.modal,
   display: "flex",
   flexDirection: "column",
+  padding: theme.spacing.lg ,
   background: theme.colors.systemBackground,
-  paddingTop: theme.spacing.lg,
 }));
 
 export const HeaderWrapper = styled.div({

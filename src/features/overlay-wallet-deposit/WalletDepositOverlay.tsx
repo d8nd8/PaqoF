@@ -51,7 +51,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
   const { t } = useTranslation();
   const { fullscreen } = useApplicationStore();
   const { wallets, fetchWallets, getRateToRub } = useWalletStore();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets();
 
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(
@@ -130,7 +130,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
     <>
       <S.OverlayWrapper>
           <PageHeader
-            customTopInset={fullscreen ? 200 : 0}
+            customTopInset={fullscreen ? top + 20 : top}
             title={
               title ||
               (mode === "deposit"
