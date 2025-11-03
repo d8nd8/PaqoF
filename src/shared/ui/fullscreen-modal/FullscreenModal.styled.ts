@@ -6,15 +6,20 @@ interface OverlayProps {
   $bottom: number;
 }
 
-export const Overlay = styled.div<OverlayProps>(({ $top, $bottom }) => ({
+
+
+export const Overlay = styled.div<OverlayProps>(({ $top = 0, $bottom = 0 }) => ({
   position: 'fixed',
   inset: 0,
   zIndex: theme.zIndex.modal,
   backgroundColor: theme.colors.systemBackground,
   display: 'flex',
   flexDirection: 'column',
-  padding: theme.spacing.lg ,
-  paddingBottom: `${$bottom}px`,
+
+  paddingTop: `${$top }px`,
+  paddingLeft: 14,
+  paddingRight: 14,
+  paddingBottom: `${$bottom + theme.spacing.lg}px`,
 }));
 
 export const ModalContent = styled.div({
