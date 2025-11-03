@@ -31,8 +31,8 @@ export const Content = styled(motion.div)<{ $top: number; $bottom: number }>(
 export const CloseButton = styled("button")<{ $top: number }>(
   ({ theme, $top }) => ({
     position: "absolute",
-    top: `${$top + parseInt(theme.spacing.md)}px`,
-    right: theme.spacing.md,
+    top: `${$top + parseInt(theme.spacing.xl) * 2}px`,
+    right: theme.spacing.lg,
     background: "transparent",
     border: "none",
     fontSize: "22px",
