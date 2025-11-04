@@ -44,11 +44,6 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     width: '50px',
     height: '50px',
     borderRadius: '12px',
-    '&:hover, &:focus, &:active': {
-      backgroundColor: 'transparent',
-      transform: 'none',
-      outline: 'none',
-    },
   }
 
   if (props.isQr) {
