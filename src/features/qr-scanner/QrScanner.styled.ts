@@ -7,9 +7,13 @@ export const Overlay = styled.div({
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '100%',
   justifyContent: 'end',
   paddingBottom: '60px',
+
+
+  overflow: 'hidden',
+  touchAction: 'none',
+  overscrollBehavior: 'none',
 });
 
 export const CameraContainer = styled.div<{ $insetTop?: number; $insetBottom?: number }>(
