@@ -72,9 +72,3 @@ html, body {
 }
 
 
-body::after {
-  content: '';
-  display: block;
-  height: 200px;
-  flex-shrink: 0;
-}
