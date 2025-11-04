@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const Overlay = styled.div({
   position: 'fixed',
   inset: 0,
-  backgroundColor: 'black',
+  backgroundColor: 'transparent',
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
