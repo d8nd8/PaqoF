@@ -28,6 +28,14 @@ const App = () => {
 
   const rawInitData = useSafeInitData();
 
+
+  useEffect(() => {
+    if (viewport.mount.isAvailable()) {
+      viewport.mount();
+      viewport.expand();
+    }
+  }, []);
+
   useEffect(() => {
     if (mainButton.mount.isAvailable()) mainButton.mount();
     if (secondaryButton.mount.isAvailable()) secondaryButton.mount();
@@ -81,7 +89,9 @@ const App = () => {
     }
 
     const bottom = parseInt(
-      getComputedStyle(document.documentElement).getPropertyValue("--safe-area-bottom"),
+      getComputedStyle(document.documentElement).getPropertyValue(
+        "--safe-area-bottom"
+      ),
       10
     );
     setSafeAreaBottom(bottom);
