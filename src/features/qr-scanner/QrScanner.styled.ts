@@ -56,7 +56,8 @@ export const CameraFeed = styled.div({
     background: 'transparent',
     opacity: 1,
     objectFit: 'cover',
-    filter: 'brightness(1) !important',
+    filter: 'brightness(1.3) contrast(1.05) saturate(1.05)',
+    transition: 'filter 0.3s ease',
   },
 });
 
