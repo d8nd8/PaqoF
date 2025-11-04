@@ -161,6 +161,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
         break;
       case 'success':
       case 'processing':
+        setCurrentStep('form');
         onClose();
         break;
       default:
