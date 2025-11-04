@@ -96,6 +96,10 @@ export const StatusContainer = styled.div<StatusContainerProps>(
     borderRadius: success ? '16px' : '0',
     margin: success ? '-20px -20px 0' : '0',
     color: theme.colors.neutral950,
+
+    overflowX: 'hidden',
+    touchAction: 'pan-y',
+    overscrollBehaviorY: 'contain'
   })
 );
 

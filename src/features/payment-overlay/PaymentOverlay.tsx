@@ -102,7 +102,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
     <S.StatusContainer success>
       <S.StatusHeader success>
         {t('payment.overlay.successTitle')}
-        <S.StatusDate>20.05.2024, 17:41</S.StatusDate>
+        <S.StatusDate>20.05.2025, 17:41</S.StatusDate>
       </S.StatusHeader>
 
       <S.SuccessIcon src={SuccessPaymentImage} alt="success" />
