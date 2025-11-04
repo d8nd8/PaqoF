@@ -3,12 +3,15 @@ import styled from "@emotion/styled";
 export const LanguageWrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  minHeight: "100%",
+  height: "100%",
   background: theme.colors.systemBackground,
   paddingLeft: 14,
   paddingRight: 14,
-}));
 
+  overflowY: "auto",
+  WebkitOverflowScrolling: "touch",
+  overscrollBehavior: "contain",
+}));
 export const Header = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
