@@ -25,7 +25,7 @@ export const CameraContainer = styled.div<{ $insetTop?: number; $insetBottom?: n
 export const CameraFeed = styled.div({
   position: 'absolute',
   inset: 0,
-  zIndex: 1,
+  zIndex: 0,
 
   backgroundColor: 'transparent',
   backgroundPosition: '0 0, 25px 25px',
