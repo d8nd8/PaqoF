@@ -49,7 +49,10 @@ export const CameraFeed = styled.div({
     inset: 0,
     width: '100%',
     height: "100%",
+    background: 'transparent',
+    opacity: 1,
     objectFit: 'cover',
+    filter: 'brightness(1) !important',
   },
 });
 
