@@ -36,27 +36,17 @@ const App = () => {
     }
   }, []);
 
-
   useEffect(() => {
     const preventPullToClose = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
       const touch = e.touches[0];
-
-      const bottomSafeZone = window.innerHeight * 0.9;
-      if (touch.clientY > bottomSafeZone) return;
-
-      const scrollable = target.closest('[data-scrollable="true"]') as HTMLElement | null;
-
-      if (scrollable && scrollable.scrollHeight > scrollable.clientHeight) {
-        return;
+      if (touch.clientY < window.innerHeight / 3 && window.scrollY <= 0) {
+        e.preventDefault();
       }
-
-      e.preventDefault();
     };
 
-    document.addEventListener('touchmove', preventPullToClose, { passive: false });
+    document.addEventListener("touchmove", preventPullToClose, { passive: false });
     return () => {
-      document.removeEventListener('touchmove', preventPullToClose);
+      document.removeEventListener("touchmove", preventPullToClose);
     };
   }, []);
 
