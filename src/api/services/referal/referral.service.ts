@@ -9,9 +9,6 @@ import { apiClient } from '@/shared/api';
 import type { AxiosRequestConfig } from 'axios';
 
 
-
-
-
 export const setReferralType = async (
   payload: SetReferralTypeRequest,
   options?: AxiosRequestConfig,

@@ -18,7 +18,7 @@ export const CameraContainer = styled.div<{ $insetTop?: number; $insetBottom?: n
     width: '100%',
     height: `calc(100vh - ${$insetTop}px)`,
     marginBottom: `${$insetBottom }px`,
-    background: '#000',
+    background: 'transparent',
   })
 );
 
