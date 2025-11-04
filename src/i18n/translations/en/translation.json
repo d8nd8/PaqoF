@@ -71,6 +71,7 @@
 
   "history": {
     "title": "Transaction History",
+    "empty": "No transactions yet",
     "tabs": {
       "all": "All",
       "payment": "Payments",
@@ -270,7 +271,8 @@
     "unknownNavItem": "Unknown menu item: {{id}}",
     "close": "Close",
     "ok": "Return",
-    "save": "Save"
+    "save": "Save",
+    "loading": "Loading..."
   },
 
 

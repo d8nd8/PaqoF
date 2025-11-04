@@ -78,3 +78,19 @@ export const groupOperationsByDate = (
     };
   });
 };
+
+
+export const mapOperationToTransactionData = (op: Operation): TransactionData => ({
+  id: op.operationId,
+  type: op.operationType === "DEPOSIT" ? "deposit" : "withdraw",
+  amount: op.amount,
+  amountUSD: `${op.totalAmount} USDT`,
+  commission: "2.75 USDT",
+  timestamp: op.createdAt,
+  status:
+    op.status === "CONFIRMED" || op.status === "COMPLETED"
+      ? "success"
+      : op.status === "PENDING"
+        ? "pending"
+        : "failed",
+});

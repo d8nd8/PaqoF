@@ -174,7 +174,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
         </ChainList>
       </CurrencyWrapper>
 
-      <HistoryWidget variant="card" />
+      <HistoryWidget variant="card" walletId={wallet.walletId} />
     </>
   );
 };

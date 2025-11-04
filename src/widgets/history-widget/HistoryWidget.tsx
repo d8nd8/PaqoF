@@ -1,35 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { getOperationById } from '@/api/services/operation/operation.service';
+import ClockIcon from "@/assets/icons/clock.svg?react";
+import DepositIcon from "@/assets/icons/deposit.svg?react";
+import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
+import TransferIcon from "@/assets/icons/transfer.svg?react";
+import { OverlayTransactionDetails } from '@/features/overlay-transaction-details/OverlayTransactionDetails';
+import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
+import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
+import useApplicationStore from "@/shared/stores/application";
+import useUserStore from "@/shared/stores/user";
+import useWalletStore from "@/shared/stores/wallet";
+import { useTranslation } from "react-i18next";
+
+import { mapOperationToTransactionData, truncateText } from "./history.utils";
 import {
-  HistoryWrapper,
-  Tabs,
-  TabButton,
+  Amount,
+  AmountSecondary,
   DateHeader,
   DateTitle,
-  DateTotalWrapper,
   DateTotalMain,
   DateTotalSecondary,
-  TransactionList,
+  DateTotalWrapper,
+  HistoryWrapper,
+  IconCircle,
+  StatusIcon,
+  TabButton,
+  Tabs,
+  TransactionCategory,
+  TransactionInfo,
   TransactionItem,
   TransactionLeft,
-  IconCircle,
-  TransactionInfo,
-  TransactionTitle,
-  TransactionCategory,
+  TransactionList,
   TransactionRight,
-  Amount,
-  StatusIcon, AmountSecondary
-} from './HistoryWidget.styled'
-
-import { MOCK_TRANSACTIONS } from "./history.mocks";
-import { mapTransactionToDetails, truncateText } from "./history.utils";
-import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
-import { OverlayTransactionDetails } from "@/features/overlay-transaction-details/OverlayTransactionDetails";
-import useApplicationStore from "@/shared/stores/application";
-
-import ClockIcon from "@/assets/icons/clock.svg?react";
-import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
-import { useTranslation } from "react-i18next";
-import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
+  TransactionTitle,
+} from "./HistoryWidget.styled";
+import type { Operation } from '@/api/services/operation/schemes/operation.schemas';
 
 const TABS = [
   { id: "all", token: "history.tabs.all" },
@@ -37,23 +42,85 @@ const TABS = [
   { id: "deposit", token: "history.tabs.deposit" },
 ];
 
+const PAGE_SIZE = 20;
+
 interface HistoryWidgetProps {
   variant?: "default" | "card";
+  walletId?: string;
 }
 
-export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default" }) => {
+export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
+                                                              variant = "default",
+                                                              walletId,
+                                                            }) => {
   const [activeTab, setActiveTab] = useState("all");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTx, setSelectedTx] = useState<TransactionData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loaderRef = useRef<HTMLDivElement | null>(null);
 
   const { openModal, closeModal } = useApplicationStore();
+  const { fetchUserOperations, operations: userOps } = useUserStore();
+  const { fetchWalletOperations, operations: walletOps } = useWalletStore();
   const { t } = useTranslation();
 
-  const handleCardClick = (tx: any) => {
-    const mapped = mapTransactionToDetails(tx);
-    setSelectedTx(mapped);
-    setIsOpen(true);
-    openModal("transaction-details");
+  const currentOperations =
+    variant === "card" && walletId
+      ? walletOps[walletId] || []
+      : userOps || [];
+
+
+  const loadPage = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      if (variant === "card" && walletId) {
+        const newOps = await fetchWalletOperations(walletId, PAGE_SIZE, page * PAGE_SIZE);
+        if (!newOps.length) setHasMore(false);
+      } else {
+        const newOps = await fetchUserOperations(PAGE_SIZE, page * PAGE_SIZE);
+        if (!newOps.length) setHasMore(false);
+      }
+    } catch (e) {
+      console.error("Ошибка при загрузке операций:", e);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [variant, walletId, page, fetchUserOperations, fetchWalletOperations]);
+
+  useEffect(() => {
+    loadPage();
+  }, [loadPage]);
+
+
+  useEffect(() => {
+    if (!hasMore || isLoading) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 1.0 }
+    );
+    if (loaderRef.current) observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [hasMore, isLoading]);
+
+
+  const handleCardClick = async (tx: Operation) => {
+    try {
+      setIsLoading(true);
+      const fullOp = await getOperationById(tx.operationId);
+      const mapped = mapOperationToTransactionData(fullOp);
+      setSelectedTx(mapped);
+      setIsOpen(true);
+      openModal("transaction-details");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -62,22 +129,57 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
     closeModal();
   };
 
-  const filterTransactions = (type: string) => {
-    if (type === "all") return MOCK_TRANSACTIONS;
-    return MOCK_TRANSACTIONS.map((group) => ({
-      ...group,
-      items: group.items.filter((tx) =>
-        type === "payment" ? tx.type === "expense" : tx.type === "income"
-      ),
-    })).filter((group) => group.items.length > 0);
+
+  const mapOperationType = (type: string) => {
+    switch (type) {
+      case "DEPOSIT":
+        return {
+          icon: <DepositIcon />,
+          title: t("history.transactions.walletDeposit"),
+          category: t("history.categories.deposit"),
+          txType: "income" as const,
+        };
+      case "WITHDRAW":
+        return {
+          icon: <TransferIcon />,
+          title: t("history.transactions.usdtTransfer"),
+          category: t("history.categories.transfer"),
+          txType: "expense" as const,
+        };
+      case "TRANSFER":
+        return {
+          icon: <TransferIcon />,
+          title: t("history.transactions.transfer"),
+          category: t("history.categories.transfer"),
+          txType: "expense" as const,
+        };
+      default:
+        return {
+          icon: <TransferIcon />,
+          title: type,
+          category: "",
+          txType: "expense" as const,
+        };
+    }
   };
 
-  const filtered = filterTransactions(activeTab);
 
-  const renderStatusIcon = (tx: any) => {
-    if (tx.type !== "income" || !tx.status) return null;
+  const renderStatusIcon = (apiStatus: string, txType: "income" | "expense") => {
+    if (txType !== "income") return null;
 
-    switch (tx.status) {
+    const statusMap: Record<string, "pending" | "warning" | "completed" | undefined> = {
+      PENDING: "pending",
+      PROCESSING: "pending",
+      WARNING: "warning",
+      FAILED: "warning",
+      CONFIRMED: "completed",
+      COMPLETED: "completed",
+    };
+
+    const mapped = statusMap[apiStatus];
+    if (!mapped) return null;
+
+    switch (mapped) {
       case "pending":
         return (
           <StatusIcon status="pending">
@@ -95,72 +197,127 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({ variant = "default
     }
   };
 
+  if (isLoading && !currentOperations.length) {
+    return (
+      <HistoryWrapper $variant={variant}>
+        <PageHeader title={t("history.title")} showBackButton={false} />
+        <p style={{ textAlign: "center", marginTop: 40 }}>
+          {t("common.loading")}
+        </p>
+      </HistoryWrapper>
+    );
+  }
+
+  if (!currentOperations?.length) {
+    return (
+      <HistoryWrapper $variant={variant}>
+        <PageHeader title={t("history.title")} showBackButton={false} />
+        <p style={{ textAlign: "center", marginTop: 40 }}>
+          {t("history.empty")}
+        </p>
+      </HistoryWrapper>
+    );
+  }
+
+
+  const filteredOps =
+    activeTab === "all"
+      ? currentOperations
+      : currentOperations.filter((op) =>
+        activeTab === "deposit"
+          ? op.operationType === "DEPOSIT"
+          : op.operationType === "WITHDRAW"
+      );
+
+  const groupedByDate = filteredOps.reduce<Record<string, typeof filteredOps>>(
+    (acc, op) => {
+      const date = new Date(op.createdAt).toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+      });
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(op);
+      return acc;
+    },
+    {}
+  );
+
   return (
     <HistoryWrapper $variant={variant}>
-      <PageHeader title={t("history.title")}   showBackButton={false}/>
+      <PageHeader title={t("history.title")} showBackButton={false} />
 
       <Tabs>
         {TABS.map((tab) => (
           <TabButton
             key={tab.id}
             $active={activeTab === tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              setActiveTab(tab.id);
+              setPage(0);
+              setHasMore(true);
+            }}
           >
             {t(tab.token)}
           </TabButton>
         ))}
       </Tabs>
 
-      {filtered.map((group) => {
-        const total = group.items.reduce((acc, tx) => {
-          const value = parseFloat(tx.amount.replace(/[^0-9.-]+/g, ""));
-          return acc + (tx.type === "income" ? value : -value);
-        }, 0);
-
+      {Object.entries(groupedByDate).map(([date, ops]) => {
+        const total = ops.reduce((sum, op) => sum + parseFloat(op.amount), 0);
         const totalUsd = total / 85;
 
         return (
-          <div key={group.id}>
+          <div key={date}>
             <DateHeader>
-              <DateTitle>{t(group.date)}</DateTitle>
+              <DateTitle>{date}</DateTitle>
               <DateTotalWrapper>
                 <DateTotalMain>
-                  {total >= 0 ? "+" : "−"} {Math.abs(total).toLocaleString("ru-RU")} ₽
+                  {total >= 0 ? "+" : "−"}{" "}
+                  {Math.abs(total).toLocaleString("ru-RU")} ₽
                 </DateTotalMain>
                 <DateTotalSecondary>
-                  {totalUsd >= 0 ? "+" : "−"} {Math.abs(totalUsd).toFixed(2)} USDT
+                  {totalUsd >= 0 ? "+" : "−"}{" "}
+                  {Math.abs(totalUsd).toFixed(2)} USDT
                 </DateTotalSecondary>
               </DateTotalWrapper>
             </DateHeader>
 
             <TransactionList>
-              {group.items.map((tx) => (
-                <TransactionItem key={tx.id} onClick={() => handleCardClick(tx)}>
-                  <TransactionLeft>
-                    <IconCircle>{tx.icon}</IconCircle>
-                    <TransactionInfo>
-                      <TransactionTitle>
-                        {truncateText(t(tx.title), 20)}
-                      </TransactionTitle>
-                      <TransactionCategory>{t(tx.category)}</TransactionCategory>
-                    </TransactionInfo>
-                  </TransactionLeft>
-                  <TransactionRight>
-                    <Amount type={tx.type}>
-                      {renderStatusIcon(tx)} {tx.amount}
-                    </Amount>
-                    {tx.amountUsd && (
-                      <AmountSecondary type={tx.type}>
-                        {tx.amountUsd}
+              {ops.map((op) => {
+                const { icon, title, category, txType } = mapOperationType(op.operationType);
+                return (
+                  <TransactionItem
+                    key={op.operationId}
+                    onClick={() => handleCardClick(op)}
+                  >
+                    <TransactionLeft>
+                      <IconCircle>{icon}</IconCircle>
+                      <TransactionInfo>
+                        <TransactionTitle>{truncateText(title, 24)}</TransactionTitle>
+                        <TransactionCategory>{category}</TransactionCategory>
+                      </TransactionInfo>
+                    </TransactionLeft>
+                    <TransactionRight>
+                      <Amount type={txType}>
+                        {renderStatusIcon(op.status, txType)} {op.amount}
+                      </Amount>
+                      <AmountSecondary type={txType}>
+                        {op.totalAmount} USDT
                       </AmountSecondary>
-                    )}
-                  </TransactionRight>
-                </TransactionItem>
-              ))}
+                    </TransactionRight>
+                  </TransactionItem>
+                );
+              })}
             </TransactionList>
           </div>
         );
       })}
+
+      {hasMore && (
+        <div ref={loaderRef} style={{ height: 40, textAlign: "center", marginTop: 10 }}>
+          {isLoading ? t("common.loading") : ""}
+        </div>
+      )}
 
       {selectedTx && (
         <OverlayTransactionDetails

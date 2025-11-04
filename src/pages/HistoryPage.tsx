@@ -5,7 +5,7 @@ import HistoryWidget from '@/widgets/history-widget/HistoryWidget'
 export const HistoryPage: React.FC = () => {
   return (
     <BaseLayout showNavbar>
-      <HistoryWidget />
+      <HistoryWidget  />
     </BaseLayout>
   );
 };
