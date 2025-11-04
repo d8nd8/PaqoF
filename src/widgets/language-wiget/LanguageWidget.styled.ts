@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const LanguageWrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  height: "100%",
+  minHeight: "100%",
   background: theme.colors.systemBackground,
   paddingLeft: 14,
   paddingRight: 14,
