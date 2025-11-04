@@ -7,7 +7,7 @@ export const Overlay = styled.div({
   zIndex: 999,
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
+  miHeight: '100%',
   justifyContent: 'end',
   paddingBottom: '60px',
 });
