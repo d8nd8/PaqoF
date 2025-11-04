@@ -100,15 +100,15 @@ export const ProfileWidget: React.FC<Props> = ({
         <Section>
           <SectionTitle>{t('profile.settings')}</SectionTitle>
 
-          <SectionItem onClick={onKycClick}>
-            <ItemContent>
-              <IconBox>
-                <ShieldIcon width={16} height={16} />
-              </IconBox>
-              <ItemText>{t('profile.kyc')}</ItemText>
-            </ItemContent>
-            <Chevron>›</Chevron>
-          </SectionItem>
+          {/*<SectionItem onClick={onKycClick}>*/}
+          {/*  <ItemContent>*/}
+          {/*    <IconBox>*/}
+          {/*      <ShieldIcon width={16} height={16} />*/}
+          {/*    </IconBox>*/}
+          {/*    <ItemText>{t('profile.kyc')}</ItemText>*/}
+          {/*  </ItemContent>*/}
+          {/*  <Chevron>›</Chevron>*/}
+          {/*</SectionItem>*/}
 
           <SectionItem onClick={onSecurityClick}>
             <ItemContent>
@@ -131,39 +131,39 @@ export const ProfileWidget: React.FC<Props> = ({
           </SectionItem>
         </Section>
 
-        <Section>
-          <SectionTitle>{t('profile.about')}</SectionTitle>
+        {/*<Section>*/}
+        {/*  <SectionTitle>{t('profile.about')}</SectionTitle>*/}
 
-          <SectionItem onClick={onOfficialClick}>
-            <ItemContent>
-              <IconBox>
-                <SendIcon width={16} height={16} />
-              </IconBox>
-              <ItemText>{t('profile.official')}</ItemText>
-            </ItemContent>
-            <Chevron>›</Chevron>
-          </SectionItem>
+        {/*  <SectionItem onClick={onOfficialClick}>*/}
+        {/*    <ItemContent>*/}
+        {/*      <IconBox>*/}
+        {/*        <SendIcon width={16} height={16} />*/}
+        {/*      </IconBox>*/}
+        {/*      <ItemText>{t('profile.official')}</ItemText>*/}
+        {/*    </ItemContent>*/}
+        {/*    <Chevron>›</Chevron>*/}
+        {/*  </SectionItem>*/}
 
-          <SectionItem onClick={onFaqClick}>
-            <ItemContent>
-              <IconBox>
-                <QuestionIcon width={16} height={16} />
-              </IconBox>
-              <ItemText>{t('profile.faq')}</ItemText>
-            </ItemContent>
-            <Chevron>›</Chevron>
-          </SectionItem>
+        {/*  <SectionItem onClick={onFaqClick}>*/}
+        {/*    <ItemContent>*/}
+        {/*      <IconBox>*/}
+        {/*        <QuestionIcon width={16} height={16} />*/}
+        {/*      </IconBox>*/}
+        {/*      <ItemText>{t('profile.faq')}</ItemText>*/}
+        {/*    </ItemContent>*/}
+        {/*    <Chevron>›</Chevron>*/}
+        {/*  </SectionItem>*/}
 
-          <SectionItem onClick={onInfoClick}>
-            <ItemContent>
-              <IconBox>
-                <InfoIcon width={16} height={16} />
-              </IconBox>
-              <ItemText>{t('profile.info')}</ItemText>
-            </ItemContent>
-            <Chevron>›</Chevron>
-          </SectionItem>
-        </Section>
+        {/*  <SectionItem onClick={onInfoClick}>*/}
+        {/*    <ItemContent>*/}
+        {/*      <IconBox>*/}
+        {/*        <InfoIcon width={16} height={16} />*/}
+        {/*      </IconBox>*/}
+        {/*      <ItemText>{t('profile.info')}</ItemText>*/}
+        {/*    </ItemContent>*/}
+        {/*    <Chevron>›</Chevron>*/}
+        {/*  </SectionItem>*/}
+        {/*</Section>*/}
       </Content>
     </ProfileWrapper>
   );
