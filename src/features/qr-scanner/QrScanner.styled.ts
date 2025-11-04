@@ -10,17 +10,10 @@ export const Overlay = styled.div({
   justifyContent: 'end',
   paddingBottom: '60px',
 
-  overflowY: 'auto',
-  WebkitOverflowScrolling: 'touch',
 
-  overscrollBehaviorY: 'contain',
-
-  '&::after': {
-    content: '""',
-    display: 'block',
-    height: '120px',
-    flexShrink: 0,
-  },
+  overflow: 'hidden',
+  touchAction: 'none',
+  overscrollBehavior: 'none',
 });
 
 export const CameraContainer = styled.div<{ $insetTop?: number; $insetBottom?: number }>(
