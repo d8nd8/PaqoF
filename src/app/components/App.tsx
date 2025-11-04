@@ -40,7 +40,8 @@ const App = () => {
   useEffect(() => {
     const preventPullToClose = (e: TouchEvent) => {
       const touch = e.touches[0];
-      if (touch.clientY < window.innerHeight / 3 && window.scrollY <= 0) {
+      const bottomSafeZone = window.innerHeight * 0.9;
+      if (touch.clientY < bottomSafeZone && window.scrollY <= 0) {
         e.preventDefault();
       }
     };
