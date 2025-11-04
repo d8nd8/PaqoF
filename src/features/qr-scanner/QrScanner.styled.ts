@@ -30,6 +30,7 @@ export const CameraFeed = styled.div({
   position: 'absolute',
   inset: 0,
   zIndex: 0,
+  pointerEvents: 'none',
 
   backgroundColor: 'transparent',
   backgroundPosition: '0 0, 25px 25px',
