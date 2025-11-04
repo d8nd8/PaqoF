@@ -33,7 +33,7 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     gap: '4px',
     border: 'none',
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    transition: 'none',
     outline: 'none',
     fontSize: '11px',
     fontWeight: 400,
@@ -41,18 +41,21 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     position: 'relative' as const,
     backgroundColor: 'transparent',
     color: props.theme.colors.textSecondary,
+    width: '50px',
+    height: '50px',
+    borderRadius: '12px',
+    '&:hover, &:focus, &:active': {
+      backgroundColor: 'transparent',
+      transform: 'none',
+      outline: 'none',
+    },
   }
 
   if (props.isQr) {
     return {
       ...base,
-      width: '50px',
-      height: '50px',
       borderRadius: '18px',
       backgroundColor: props.theme.colors.primary500,
-      '&:focus': {
-        outline: 'none',
-      },
     }
   }
 
@@ -60,25 +63,11 @@ export const NavbarItem = styled.button<NavbarItemStyledProps>((props) => {
     return {
       ...base,
       color: props.theme.colors.textPrimary,
-      width: '50px',
-      height: '50px',
       borderRadius: '20px',
-      '&:focus': { outline: 'none' },
     }
   }
 
-  return {
-    ...base,
-    color: props.theme.colors.textSecondary,
-    width: '50px',
-    height: '50px',
-    borderRadius: '12px',
-    '&:focus': { outline: 'none' },
-    '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      transform: 'translateY(-1px)',
-    },
-  }
+  return base
 })
 
 export const NavbarLabel = styled.span({
