@@ -17,15 +17,26 @@ export const WrapperPage = styled(animated.div)<WrapperPageProps>(
     height: "var(--app-height)",
     minHeight: "var(--app-height)",
     maxWidth: "100vw",
+    position: "relative",
+    zIndex: 1,
+
     overflowY: "auto",
     overflowX: "hidden",
     WebkitOverflowScrolling: "touch",
-    overscrollBehavior: "contain",
-    position: "relative",
-    zIndex: 1,
+    overscrollBehaviorY: "contain",
+
+    "&::after": {
+      content: '""',
+      display: "block",
+      height: "1px",
+      flexShrink: 0,
+    },
+
+    paddingTop: styleExtra.paddingTop,
     paddingBottom: shortBottomPadding
       ? styleExtra.paddingBottom
       : `calc(${styleExtra.paddingBottom})`,
-    paddingTop: styleExtra.paddingTop,
+
+    ['data-scrollable']: 'true',
   })
 );
