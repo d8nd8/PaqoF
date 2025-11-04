@@ -11,6 +11,13 @@ export const LanguageWrapper = styled.div(({ theme }) => ({
   overflowY: "auto",
   WebkitOverflowScrolling: "touch",
   overscrollBehavior: "contain",
+
+  "&::after": {
+    content: '""',
+    display: "block",
+    height: "1px",
+    flexShrink: 0,
+  },
 }));
 export const Header = styled.div(({ theme }) => ({
   display: "flex",
