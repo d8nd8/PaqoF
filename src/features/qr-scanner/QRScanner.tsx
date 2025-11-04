@@ -88,7 +88,20 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       if (shaded) {
         shaded.style.background = 'transparent';
       }
-    }, 300);
+
+      const video = document.querySelector('video');
+      if (video) {
+        video.style.filter = 'brightness(1.2) contrast(1.1)';
+        video.style.opacity = '1';
+        video.style.background = 'transparent';
+      }
+
+      const canvases = document.querySelectorAll('canvas');
+      canvases.forEach((c) => {
+        c.style.opacity = '0';
+        c.style.background = 'transparent';
+      });
+    }, 800);
 
     return () => clearTimeout(timeout);
   }, [isVisible]);
