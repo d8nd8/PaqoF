@@ -63,5 +63,11 @@ a, div,p, a:visited, a:active {
   text-decoration: none !important;
 }
 
-
+html, body {
+  overscroll-behavior: none; /* отключает смахивание / bounce-scroll */
+  overflow: hidden; /* фиксирует вьюпорт */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
