@@ -6,6 +6,7 @@ import { AdBanner } from '@/features/ad-banner/AdBanner';
 import { CryptoList, type CryptoItemData } from '@/features/crypto-list/CryptoList';
 import { useNavigate } from 'react-router-dom';
 import useWalletStore from '@/shared/stores/wallet';
+import { useSafeInitData } from '@/shared/hooks/useSafeInitData';
 
 interface MainWidgetProps {
   onTopUp: () => void;
@@ -22,6 +23,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
                                                       }) => {
   const navigate = useNavigate();
   const { wallets, fetchWallets, fetchRates, getRateToRub, loading } = useWalletStore();
+  const initData = useSafeInitData();
 
 
   useEffect(() => {
@@ -78,6 +80,9 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
 
   return (
     <S.Wrapper>
+      <div style={{ fontSize: 12, color: '#777', marginBottom: 8 }}>
+        InitData: {String(initData)}
+      </div>
       <BalanceCard
         balance={totalBalanceRub}
         currency="₽"
