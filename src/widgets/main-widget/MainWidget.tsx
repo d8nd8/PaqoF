@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo} from 'react'
 import { AdBanner } from '@/features/ad-banner/AdBanner';
 import { BalanceCard } from '@/features/balance-information/BalanceInformation';
 import { CryptoList, type CryptoItemData } from '@/features/crypto-list/CryptoList';
-import { useSafeInitData } from '@/shared/hooks/useSafeInitData';
+
 import useWalletStore from '@/shared/stores/wallet';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,9 +26,6 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
                                                       }) => {
   const navigate = useNavigate();
   const { wallets, fetchWallets, fetchRates, getRateToRub, loading } = useWalletStore();
-  const initData = useSafeInitData();
-  const [copied, setCopied] = useState(false);
-
 
   useEffect(() => {
     const loadData = async () => {
@@ -43,16 +40,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
     loadData();
   }, [fetchWallets, fetchRates]);
 
-  const handleCopy = async () => {
-    if (!initData) return;
-    try {
-      await navigator.clipboard.writeText(String(initData));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Не удалось скопировать initData', err);
-    }
-  };
+
 
 
   const cryptos: CryptoItemData[] = useMemo(() => {
@@ -95,35 +83,6 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
 
   return (
     <S.Wrapper>
-      {initData && (
-        <div
-          style={{
-            fontSize: 12,
-            color: '#777',
-            marginBottom: 8,
-            maxWidth: '100%',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          <button
-            onClick={handleCopy}
-            style={{
-              marginLeft: 8,
-              padding: '2px 6px',
-              fontSize: 10,
-              background: '#eee',
-              border: '1px solid #ccc',
-              borderRadius: 4,
-              cursor: 'pointer',
-            }}
-          >
-            {copied ? '✅ Скопировано' : '📋 Копировать'}
-          </button>
-        </div>
-      )}
-
       <BalanceCard
         balance={totalBalanceRub}
         currency="₽"
