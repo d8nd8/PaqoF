@@ -36,6 +36,7 @@ const App = () => {
     }
   }, []);
 
+
   useEffect(() => {
     const preventPullToClose = (e: TouchEvent) => {
       const touch = e.touches[0];
@@ -49,6 +50,7 @@ const App = () => {
       document.removeEventListener("touchmove", preventPullToClose);
     };
   }, []);
+
 
   useEffect(() => {
     if (mainButton.mount.isAvailable()) mainButton.mount();
@@ -98,18 +100,20 @@ const App = () => {
       setFullscreen(viewport.isFullscreen());
     }
 
-    if (rawInitData) {
-      setUserData(rawInitData);
-    }
-
     const bottom = parseInt(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--safe-area-bottom"
-      ),
+      getComputedStyle(document.documentElement).getPropertyValue("--safe-area-bottom"),
       10
     );
     setSafeAreaBottom(bottom);
-  }, [setFullscreen, setUserData, rawInitData]);
+  }, [setFullscreen]);
+
+  useEffect(() => {
+    if (rawInitData) {
+      console.log("[App] Обновляем access-token из initData");
+      setUserData(rawInitData);
+    }
+  }, [rawInitData, setUserData]);
+
 
   useEffect(() => {
     const savedPin = localStorage.getItem("pin-code");
@@ -125,6 +129,7 @@ const App = () => {
     window.addEventListener("unauthorized", handleUnauthorized);
     return () => window.removeEventListener("unauthorized", handleUnauthorized);
   }, []);
+
 
   const handlePinComplete = async (enteredPin: string) => {
     if (!user?.id) return;
@@ -145,6 +150,7 @@ const App = () => {
     }
   };
 
+
   if (isPinRequired && !isPinVerified) {
     return (
       <FullOverlay isOpen={true} onClose={() => null}>
@@ -156,6 +162,7 @@ const App = () => {
       </FullOverlay>
     );
   }
+
 
   return (
     <Wrapper
