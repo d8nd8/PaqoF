@@ -6,6 +6,7 @@ import {
   NotificationDetailsModal
 } from '@/features/notifications/ui/notifications-details-modal/NotificationDetailsModal'
 import type { NotificationProps } from '@/features/notifications/model/mockNotifications'
+import { useTranslation } from 'react-i18next'
 
 export interface NotificationListProps {
   notifications: NotificationProps[];
@@ -17,6 +18,8 @@ export const NotificationList: React.FC<NotificationListProps> = ({
                                                                     onNotificationClick
                                                                   }) => {
   const [selectedNotification, setSelectedNotification] = useState<NotificationProps | null>(null);
+
+  const { t } = useTranslation()
 
   const handleNotificationClick = (notification: NotificationProps) => {
     setSelectedNotification(notification);
@@ -30,7 +33,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   return (
     <S.NotificationListContainer>
       {notifications.length === 0 ? (
-        <S.EmptyState>Нет уведомлений</S.EmptyState>
+        <S.EmptyState>{t('notifications.empty')}</S.EmptyState>
       ) : (
         notifications.map((notification) => (
           <Notification
