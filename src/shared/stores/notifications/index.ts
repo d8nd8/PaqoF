@@ -32,12 +32,12 @@ const useNotificationsApiStore = create<INotificationsApiStore>((set, get) => ({
     await markNotificationsRead({ notificationIds: ids })
 
     const updated = get().notifications.map((n: Notification) =>
-      ids.includes(n.id) ? { ...n, isRead: true } : n,
+      ids.includes(n.notificationId) ? { ...n, isRead: true } : n,
     )
 
     set({
       notifications: updated,
-      unreadCount: updated.filter((n) => !n.isRead).length,
+      unreadCount: updated.filter((n) => !n.read).length,
     })
   },
 

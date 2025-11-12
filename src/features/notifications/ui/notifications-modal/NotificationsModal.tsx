@@ -35,11 +35,11 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
       ) : (
         <NotificationList
           notifications={notifications.map((n) => ({
-            id: n.id,
+            id: n.notificationId,
             title: n.title,
             description: n.message || '',
             date: new Date(n.createdAt).toLocaleDateString(),
-            isRead: n.isRead,
+            isRead: n.read,
             imageUrl: undefined,
           }))}
           onNotificationClick={handleNotificationClick}

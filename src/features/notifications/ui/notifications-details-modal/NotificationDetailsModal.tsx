@@ -41,11 +41,11 @@ export const NotificationDetailsModal: React.FC<NotificationDetailsModalProps> =
             <S.NotificationTitle>{t(notification.title)}</S.NotificationTitle>
             <S.NotificationText>{t(notification.text)}</S.NotificationText>
           </S.NotificationWrapper>
-          <S.ButtonWrapper $insetBottom={bottom}>
-            <S.ActionButton onClick={onClose}>
-              {t('notifications.details.cta')}
-            </S.ActionButton>
-          </S.ButtonWrapper>
+          {/*<S.ButtonWrapper $insetBottom={bottom}>*/}
+          {/*  <S.ActionButton onClick={onClose}>*/}
+          {/*    {t('notifications.details.cta')}*/}
+          {/*  </S.ActionButton>*/}
+          {/*</S.ButtonWrapper>*/}
         </S.NotificationContainer>
       )}
     </FullscreenModal>

@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
 export const NotificationSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  message: z.string().optional(),
+  notificationId: z.string(),
   type: z.enum(['operation_status', 'referral_deposit', 'referral_join']),
+  title: z.string(),
+  message: z.string(),
   createdAt: z.string(),
-  isRead: z.boolean(),
+  read: z.boolean(),
 })
 
 export const NotificationListSchema = z.object({
@@ -19,7 +19,6 @@ export const NotificationListSchema = z.object({
 
 export type Notification = z.infer<typeof NotificationSchema>
 export type NotificationList = z.infer<typeof NotificationListSchema>
-
 
 export const MarkNotificationsReadSchema = z.object({
   notificationIds: z.array(z.string()).nonempty(),
