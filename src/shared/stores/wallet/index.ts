@@ -56,12 +56,25 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
 
   fetchWalletOperations: async (walletId, limit, offset) => {
     const ops = await walletApi.getWalletOperations(walletId, { limit, offset });
-    set((state) => ({
-      operations: {
-        ...state.operations,
-        [walletId]: ops,
-      },
-    }));
+
+    set((state) => {
+      const prevOps = state.operations[walletId] || [];
+      const newOps = [...prevOps];
+
+      ops.forEach((op) => {
+        if (!prevOps.some((prev) => prev.operationId === op.operationId)) {
+          newOps.push(op);
+        }
+      });
+
+      return {
+        operations: {
+          ...state.operations,
+          [walletId]: newOps,
+        },
+      };
+    });
+
     return ops;
   },
 
