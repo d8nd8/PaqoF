@@ -109,23 +109,25 @@ const useUserStore = create<IUserStore>((set) => ({
     set({ loading: true });
     try {
       const ops = await userApi.getUserOperations({ limit, offset });
-      set({ operations: ops });
+
+      set((state) => ({
+        operations: state.operations
+          ? [
+            ...state.operations,
+            ...ops.filter(
+              (op) =>
+                !state.operations!.some(
+                  (existing) => existing.operationId === op.operationId
+                )
+            ),
+          ]
+          : ops,
+      }));
+
       return ops;
     } finally {
       set({ loading: false });
     }
-  },
-
-  logout: () => {
-    localStorage.removeItem('access-token');
-    localStorage.removeItem('authentication-method');
-    localStorage.removeItem('telegram-user');
-    set({
-      isAuthenticated: false,
-      operations: null,
-      token: null,
-      user: null,
-    });
   },
 }));
 

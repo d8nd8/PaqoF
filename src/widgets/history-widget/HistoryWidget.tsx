@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { getOperationById } from '@/api/services/operation/operation.service';
+import { getOperationById } from "@/api/services/operation/operation.service";
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import DepositIcon from "@/assets/icons/deposit.svg?react";
 import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
 import TransferIcon from "@/assets/icons/transfer.svg?react";
-import { OverlayTransactionDetails } from '@/features/overlay-transaction-details/OverlayTransactionDetails';
+import { OverlayTransactionDetails } from "@/features/overlay-transaction-details/OverlayTransactionDetails";
 import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
 import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
 import useApplicationStore from "@/shared/stores/application";
 import useUserStore from "@/shared/stores/user";
 import useWalletStore from "@/shared/stores/wallet";
 import { useTranslation } from "react-i18next";
-
 import { mapOperationToTransactionData, truncateText } from "./history.utils";
 import {
   Amount,
@@ -34,7 +33,7 @@ import {
   TransactionRight,
   TransactionTitle,
 } from "./HistoryWidget.styled";
-import type { Operation } from '@/api/services/operation/schemes/operation.schemas';
+import type { Operation } from "@/api/services/operation/schemes/operation.schemas";
 
 const TABS = [
   { id: "all", token: "history.tabs.all" },
@@ -57,6 +56,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTx, setSelectedTx] = useState<TransactionData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
@@ -64,7 +64,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
 
   const { openModal, closeModal } = useApplicationStore();
   const { fetchUserOperations, operations: userOps } = useUserStore();
-  const { fetchWalletOperations, operations: walletOps } = useWalletStore();
+  const { fetchWalletOperations, operations: walletOps, getRateToRub, fetchRates } =
+    useWalletStore();
   const { t } = useTranslation();
 
   const currentOperations =
@@ -72,8 +73,18 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       ? walletOps[walletId] || []
       : userOps || [];
 
+  const [usdtRate, setUsdtRate] = useState<number | null>(null);
+
+  const loadRate = useCallback(async () => {
+    let rate = getRateToRub("USDT");
+    if (!rate) {
+      rate = await fetchRates("USDT");
+    }
+    setUsdtRate(rate ?? 1);
+  }, [fetchRates, getRateToRub]);
 
   const loadPage = useCallback(async () => {
+    if (page === 0) setInitialLoading(true);
     setIsLoading(true);
     try {
       if (variant === "card" && walletId) {
@@ -87,28 +98,36 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       console.error("Ошибка при загрузке операций:", e);
     } finally {
       setIsLoading(false);
+      if (page === 0) setInitialLoading(false);
     }
   }, [variant, walletId, page, fetchUserOperations, fetchWalletOperations]);
 
   useEffect(() => {
-    loadPage();
-  }, [loadPage]);
-
+    loadRate();
+  }, [loadRate]);
 
   useEffect(() => {
-    if (!hasMore || isLoading) return;
+    loadPage();
+  }, [page]);
+
+  useEffect(() => {
+    if (!hasMore) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        const first = entries[0];
+        if (first.isIntersecting && !isLoading) {
+          setIsLoading(true);
           setPage((prev) => prev + 1);
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.5 }
     );
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
+    const current = loaderRef.current;
+    if (current) observer.observe(current);
+    return () => {
+      if (current) observer.unobserve(current);
+    };
   }, [hasMore, isLoading]);
-
 
   const handleCardClick = async (tx: Operation) => {
     try {
@@ -128,7 +147,6 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
     setSelectedTx(null);
     closeModal();
   };
-
 
   const mapOperationType = (type: string) => {
     switch (type) {
@@ -163,10 +181,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
     }
   };
 
-
   const renderStatusIcon = (apiStatus: string, txType: "income" | "expense") => {
     if (txType !== "income") return null;
-
     const statusMap: Record<string, "pending" | "warning" | "completed" | undefined> = {
       PENDING: "pending",
       PROCESSING: "pending",
@@ -175,10 +191,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       CONFIRMED: "completed",
       COMPLETED: "completed",
     };
-
     const mapped = statusMap[apiStatus];
     if (!mapped) return null;
-
     switch (mapped) {
       case "pending":
         return (
@@ -197,13 +211,11 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
     }
   };
 
-  if (isLoading && !currentOperations.length) {
+  if (initialLoading && !currentOperations.length) {
     return (
       <HistoryWrapper $variant={variant}>
         <PageHeader title={t("history.title")} showBackButton={false} />
-        <p style={{ textAlign: "center", marginTop: 40 }}>
-          {t("common.loading")}
-        </p>
+        <p style={{ textAlign: "center", marginTop: 40 }}>{t("common.loading")}</p>
       </HistoryWrapper>
     );
   }
@@ -212,21 +224,18 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
     return (
       <HistoryWrapper $variant={variant}>
         <PageHeader title={t("history.title")} showBackButton={false} />
-        <p style={{ textAlign: "center", marginTop: 40 }}>
-          {t("history.empty")}
-        </p>
+        <p style={{ textAlign: "center", marginTop: 40 }}>{t("history.empty")}</p>
       </HistoryWrapper>
     );
   }
-
 
   const filteredOps =
     activeTab === "all"
       ? currentOperations
       : currentOperations.filter((op) =>
         activeTab === "deposit"
-          ? op.operationType === "DEPOSIT"
-          : op.operationType === "WITHDRAW"
+          ? op.operationType === "deposit"
+          : op.operationType === "withdraw"
       );
 
   const groupedByDate = filteredOps.reduce<Record<string, typeof filteredOps>>(
@@ -263,7 +272,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       </Tabs>
 
       {Object.entries(groupedByDate).map(([date, ops]) => {
-        const total = ops.reduce((sum, op) => sum + parseFloat(op.amount), 0);
+        const total = ops.reduce((sum, op) => sum + parseFloat(op.totalAmount), 0);
         const totalUsd = total / 85;
 
         return (
@@ -272,12 +281,10 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
               <DateTitle>{date}</DateTitle>
               <DateTotalWrapper>
                 <DateTotalMain>
-                  {total >= 0 ? "+" : "−"}{" "}
-                  {Math.abs(total).toLocaleString("ru-RU")} ₽
+                  {total >= 0 ? "+" : "−"} {Math.abs(total).toLocaleString("ru-RU")} ₽
                 </DateTotalMain>
                 <DateTotalSecondary>
-                  {totalUsd >= 0 ? "+" : "−"}{" "}
-                  {Math.abs(totalUsd).toFixed(2)} USDT
+                  {totalUsd >= 0 ? "+" : "−"} {Math.abs(totalUsd).toFixed(2)} USDT
                 </DateTotalSecondary>
               </DateTotalWrapper>
             </DateHeader>
@@ -285,6 +292,10 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
             <TransactionList>
               {ops.map((op) => {
                 const { icon, title, category, txType } = mapOperationType(op.operationType);
+                const rubAmount =
+                  usdtRate && op.totalAmount
+                    ? (parseFloat(op.totalAmount) * usdtRate).toFixed(2)
+                    : op.totalAmount;
                 return (
                   <TransactionItem
                     key={op.operationId}
@@ -299,7 +310,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
                     </TransactionLeft>
                     <TransactionRight>
                       <Amount type={txType}>
-                        {renderStatusIcon(op.status, txType)} {op.amount}
+                        {renderStatusIcon(op.status, txType)} {rubAmount} ₽
                       </Amount>
                       <AmountSecondary type={txType}>
                         {op.totalAmount} USDT
@@ -313,11 +324,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
         );
       })}
 
-      {hasMore && (
-        <div ref={loaderRef} style={{ height: 40, textAlign: "center", marginTop: 10 }}>
-          {isLoading ? t("common.loading") : ""}
-        </div>
-      )}
+      {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
 
       {selectedTx && (
         <OverlayTransactionDetails

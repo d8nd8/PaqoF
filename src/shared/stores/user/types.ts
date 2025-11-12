@@ -17,6 +17,5 @@ export default interface IUserStore {
   changeEntryCode: (payload: ChangeEntryCodeRequest) => Promise<void>;
   deleteEntryCode: (payload: DeleteEntryCodeRequest) => Promise<void>;
   fetchUserOperations: (limit?: number, offset?: number) => Promise<OperationList>;
-  logout: () => void;
   // relogin: (pin: string) => Promise<boolean>;
 }
