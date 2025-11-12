@@ -5,6 +5,7 @@ export const TransactionDetailsWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   padding-top: 4px;
+  padding-bottom: 80px;
 
   /* оставляем место под хедер сверху и кнопку снизу */
   max-height: calc(100vh - 160px);

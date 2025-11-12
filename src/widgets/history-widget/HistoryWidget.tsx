@@ -59,20 +59,14 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   const [initialLoading, setInitialLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-
   const loaderRef = useRef<HTMLDivElement | null>(null);
-
   const { openModal, closeModal } = useApplicationStore();
   const { fetchUserOperations, operations: userOps } = useUserStore();
   const { fetchWalletOperations, operations: walletOps, getRateToRub, fetchRates } =
     useWalletStore();
   const { t } = useTranslation();
-
   const currentOperations =
-    variant === "card" && walletId
-      ? walletOps[walletId] || []
-      : userOps || [];
-
+    variant === "card" && walletId ? walletOps[walletId] || [] : userOps || [];
   const [usdtRate, setUsdtRate] = useState<number | null>(null);
 
   const loadRate = useCallback(async () => {
@@ -254,7 +248,6 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   return (
     <HistoryWrapper $variant={variant}>
       <PageHeader title={t("history.title")} showBackButton={false} />
-
       <Tabs>
         {TABS.map((tab) => (
           <TabButton
@@ -272,8 +265,12 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       </Tabs>
 
       {Object.entries(groupedByDate).map(([date, ops]) => {
-        const total = ops.reduce((sum, op) => sum + parseFloat(op.totalAmount), 0);
-        const totalUsd = total / 85;
+        const totalUsd = ops.reduce((sum, op) => {
+          const value = parseFloat(op.totalAmount || "0");
+          const sign = op.operationType === "withdraw" ? -1 : 1;
+          return sum + value * sign;
+        }, 0);
+        const totalRub = usdtRate ? totalUsd * usdtRate : totalUsd;
 
         return (
           <div key={date}>
@@ -281,7 +278,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
               <DateTitle>{date}</DateTitle>
               <DateTotalWrapper>
                 <DateTotalMain>
-                  {total >= 0 ? "+" : "−"} {Math.abs(total).toLocaleString("ru-RU")} ₽
+                  {totalRub >= 0 ? "+" : "−"}{" "}
+                  {Math.abs(totalRub).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽
                 </DateTotalMain>
                 <DateTotalSecondary>
                   {totalUsd >= 0 ? "+" : "−"} {Math.abs(totalUsd).toFixed(2)} USDT
@@ -296,11 +294,9 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
                   usdtRate && op.totalAmount
                     ? (parseFloat(op.totalAmount) * usdtRate).toFixed(2)
                     : op.totalAmount;
+                const sign = op.operationType === "withdraw" ? "-" : "+";
                 return (
-                  <TransactionItem
-                    key={op.operationId}
-                    onClick={() => handleCardClick(op)}
-                  >
+                  <TransactionItem key={op.operationId} onClick={() => handleCardClick(op)}>
                     <TransactionLeft>
                       <IconCircle>{icon}</IconCircle>
                       <TransactionInfo>
@@ -310,9 +306,11 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
                     </TransactionLeft>
                     <TransactionRight>
                       <Amount type={txType}>
-                        {renderStatusIcon(op.status, txType)} {rubAmount} ₽
+                        {renderStatusIcon(op.status, txType)} {sign}
+                        {rubAmount} ₽
                       </Amount>
                       <AmountSecondary type={txType}>
+                        {sign}
                         {op.totalAmount} USDT
                       </AmountSecondary>
                     </TransactionRight>
@@ -325,7 +323,6 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       })}
 
       {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
-
       {selectedTx && (
         <OverlayTransactionDetails
           isOpen={isOpen}

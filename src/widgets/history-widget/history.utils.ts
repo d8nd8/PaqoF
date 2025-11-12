@@ -1,6 +1,7 @@
 import dayjs from "@/shared/config/dayjs.config";
 import type { Transaction } from "@/widgets/history-widget/history.types";
 import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details";
+import useWalletStore from '@/shared/stores/wallet'
 
 
 export const mapTransactionToDetails = (tx: Transaction): TransactionData => {
@@ -80,17 +81,40 @@ export const groupOperationsByDate = (
 };
 
 
-export const mapOperationToTransactionData = (op: Operation): TransactionData => ({
-  id: op.operationId,
-  type: op.operationType === "DEPOSIT" ? "deposit" : "withdraw",
-  amount: op.amount,
-  amountUSD: `${op.totalAmount} USDT`,
-  commission: "2.75 USDT",
-  timestamp: op.createdAt,
-  status:
-    op.status === "CONFIRMED" || op.status === "COMPLETED"
-      ? "success"
-      : op.status === "PENDING"
-        ? "pending"
-        : "failed",
-});
+export const mapOperationToTransactionData = (op: Operation): TransactionData => {
+  const { getRateToRub } = useWalletStore.getState();
+  const usdtRate = getRateToRub("USDT") ?? 1;
+
+  const usdtAmount = parseFloat(op.totalAmount || "0");
+  const rubAmount = usdtAmount * usdtRate;
+
+  let status: TransactionData["status"];
+  switch (op.status) {
+    case "COMPLETED":
+    case "CONFIRMED":
+      status = "success";
+      break;
+    case "PENDING":
+    case "PROCESSING":
+      status = "pending";
+      break;
+    case "FAILED":
+    case "CANCELLED":
+      status = "failed";
+      break;
+    default:
+      status = "success";
+  }
+
+  return {
+    id: op.operationId,
+    type: op.operationType === "DEPOSIT" ? "deposit" : "withdraw",
+    amount: rubAmount.toFixed(2),
+    amountUSD: `${usdtAmount.toFixed(6)} USDT`,
+    commission: "2.75 USDT",
+    timestamp: op.createdAt,
+    exchangeRate: `${usdtRate.toFixed(2)} ₽/USDT`,
+    status,
+    network:   "TRC 20",
+  };
+};
