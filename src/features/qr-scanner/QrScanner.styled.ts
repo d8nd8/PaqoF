@@ -9,6 +9,7 @@ export const Overlay = styled.div({
   flexDirection: 'column',
   justifyContent: 'end',
   paddingBottom: '60px',
+  minHeight: '100%',
 
 
   overflow: 'hidden',
