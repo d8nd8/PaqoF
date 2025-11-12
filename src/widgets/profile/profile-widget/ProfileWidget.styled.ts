@@ -5,6 +5,7 @@ export const ProfileWrapper = styled.div(({ theme }) => ({
   flexDirection: "column",
   background: theme.colors.systemBackground,
   width: "100%",
+  minHeight: '100%',
 }));
 
 export const ProfileTop = styled.div({
