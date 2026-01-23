@@ -12,6 +12,9 @@ interface TelegramWebApp {
     showConfirm(message: string, callback?: (confirmed: boolean) => void): void;
     showPopup(params: any, callback?: (buttonId: string) => void): void;
 
+    // Init data (строка с параметрами)
+    initData: string;
+
     // Данные пользователя
     initDataUnsafe: {
         user?: {
