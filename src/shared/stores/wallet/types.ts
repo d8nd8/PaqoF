@@ -13,7 +13,7 @@ export default interface IWalletStore {
   rates: Rate[];
   selectedWallet: Wallet | null;
 
-  fetchWallets: () => Promise<WalletList>;
+  fetchWallets: (force?: boolean) => Promise<WalletList>;
   fetchWalletById: (walletId: string) => Promise<Wallet>;
   fetchWalletCurrencies: () => Promise<WalletCurrencyList>;
   withdraw: (walletId: string, payload: WithdrawRequest) => Promise<Operation>;

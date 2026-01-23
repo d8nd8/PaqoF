@@ -50,7 +50,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
                                                                           }) => {
   const { t } = useTranslation();
   const { fullscreen } = useApplicationStore();
-  const { wallets, fetchWallets, getRateToRub } = useWalletStore();
+  const { wallets, fetchWallets, getRateToRub, loading } = useWalletStore();
   const { bottom, top } = useSafeAreaInsets();
 
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
@@ -63,7 +63,10 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      fetchWallets();
+      // Принудительно обновляем данные при открытии оверлея
+      fetchWallets(true).catch((error) => {
+        console.error('Error fetching wallets:', error);
+      });
     }
   }, [isOpen, fetchWallets]);
 
@@ -95,11 +98,17 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
   useEffect(() => {
     if (selectedCrypto) {
       const wallet = wallets.find((w) => w.currency === selectedCrypto.symbol);
+      console.log('🔍 Selected crypto:', selectedCrypto.symbol);
+      console.log('💼 Found wallet:', wallet);
+      console.log('🌐 Wallet addresses:', wallet?.addresses);
       setSelectedWallet(wallet || null);
 
       if (wallet?.addresses?.length) {
         setSelectedNetwork(wallet.addresses[0].network);
         setSelectedAddress(wallet.addresses[0].address);
+        console.log('✅ Selected network:', wallet.addresses[0].network);
+      } else {
+        console.warn('⚠️ No addresses found for wallet:', wallet);
       }
     }
   }, [selectedCrypto, wallets]);
@@ -166,6 +175,30 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
             <S.SectionTitle>
               {t("walletDepositOverlay.selectNetwork")}
             </S.SectionTitle>
+
+            {(!selectedWallet || loading) && (
+              <S.NetworkOption $selected={false} disabled>
+                <div className="left">
+                  <div className="info">
+                    <span className="name">
+                      {loading ? (t("walletDepositOverlay.loading") || "Загрузка...") : (t("walletDepositOverlay.selectCryptoFirst") || "Выберите криптовалюту")}
+                    </span>
+                  </div>
+                </div>
+              </S.NetworkOption>
+            )}
+
+            {selectedWallet && (!selectedWallet.addresses || selectedWallet.addresses.length === 0) && (
+              <S.NetworkOption $selected={false} disabled>
+                <div className="left">
+                  <div className="info">
+                    <span className="name">
+                      {t("walletDepositOverlay.noNetworks") || "Сети не доступны"}
+                    </span>
+                  </div>
+                </div>
+              </S.NetworkOption>
+            )}
 
             {selectedWallet?.addresses?.map((addr) => (
               <S.NetworkOption

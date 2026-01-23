@@ -148,8 +148,12 @@ export const NetworkOption = styled.button<{ $selected?: boolean }>(
     cursor: "pointer",
     transition: "background 0.2s ease",
 
-    "&:hover": { background: theme.semantic.hover },
-    "&:active": { background: theme.semantic.active },
+    "&:hover:not(:disabled)": { background: theme.semantic.hover },
+    "&:active:not(:disabled)": { background: theme.semantic.active },
+    "&:disabled": {
+      cursor: "not-allowed",
+      opacity: 0.6,
+    },
 
     "& .left": {
       display: "flex",

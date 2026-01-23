@@ -12,17 +12,32 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
   rates: [],
   selectedWallet: null,
 
-  fetchWallets: async () => {
+  fetchWallets: async (force = false) => {
     const { wallets } = get();
-    if (wallets.length > 0) {
+    if (wallets.length > 0 && !force) {
       return wallets;
     }
 
     set({ loading: true });
     try {
+      console.log('🔄 Fetching wallets from API...');
       const wallets = await walletApi.getWallets();
+      console.log('✅ Wallets fetched successfully:', wallets);
+      console.log('📊 Wallets data:', wallets.map(w => ({
+        currency: w.currency,
+        addressesCount: w.addresses?.length || 0,
+        addresses: w.addresses
+      })));
       set({ wallets });
       return wallets;
+    } catch (error) {
+      console.error('❌ Failed to fetch wallets:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+      // Не очищаем существующие кошельки при ошибке, чтобы UI не сломался
+      throw error;
     } finally {
       set({ loading: false });
     }

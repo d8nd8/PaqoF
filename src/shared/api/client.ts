@@ -3,6 +3,7 @@ import config from './config'
 import { transformKeysToCamelCase, transformKeysToSnakeCase } from '@/shared/utils/transform-keys.utils'
 
 export const createClient = () => {
+  console.log('🔧 Creating API client with baseURL:', config.url);
   const instance = axios.create({ baseURL: config.url })
 
   const clearAuthentication = () => {
@@ -16,12 +17,16 @@ export const createClient = () => {
   })
 
   instance.interceptors.request.use((config) => {
+    console.log('📤 API Request:', config.method?.toUpperCase(), config.url);
     config.performAuth = config.performAuth ?? true
 
     if (config.performAuth) {
       const { accessToken, authenticationMethod } = getAuthentication()
       if (accessToken && authenticationMethod === 'Bearer') {
         config.headers.Authorization = `Bearer ${accessToken}`
+        console.log('🔐 Using authentication token');
+      } else {
+        console.warn('⚠️ No authentication token found');
       }
     }
 
@@ -38,6 +43,7 @@ export const createClient = () => {
 
   instance.interceptors.response.use(
     async (response) => {
+      console.log('✅ API Response:', response.config.method?.toUpperCase(), response.config.url, response.status);
       const { model, modelDictionary, flattenDictionary } = response.config
 
       if (model) {
@@ -69,7 +75,14 @@ export const createClient = () => {
       return response
     },
     async (error) => {
-      if (!error.response) throw error
+      if (!error.response) {
+        console.error('❌ API Request failed (no response):', error.message);
+        if (error.code === 'ERR_NETWORK') {
+          console.error('🌐 Network error - check if backend is running and URL is correct:', config.url);
+        }
+        throw error
+      }
+      console.error('❌ API Error:', error.config?.method?.toUpperCase(), error.config?.url, error.response.status, error.response.data);
       if (error.response.status === HttpStatusCode.Unauthorized) {
         window.dispatchEvent(new Event('unauthorized'))
       }
