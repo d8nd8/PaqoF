@@ -71,7 +71,10 @@
 
   "history": {
     "title": "Transaction History",
-    "empty": "No transactions yet",
+    "empty": {
+      "title": "You haven't made any purchases yet, so",
+      "subtitle": "it's empty here for now"
+    },
     "tabs": {
       "all": "All",
       "payment": "Payments",

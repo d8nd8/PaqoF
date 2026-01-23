@@ -20,6 +20,9 @@ import {
   DateTotalMain,
   DateTotalSecondary,
   DateTotalWrapper,
+  EmptyStateSubtitle,
+  EmptyStateTitle,
+  EmptyStateWrapper,
   HistoryWrapper,
   IconCircle,
   StatusIcon,
@@ -218,7 +221,10 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
     return (
       <HistoryWrapper $variant={variant}>
         <PageHeader title={t("history.title")} showBackButton={false} />
-        <p style={{ textAlign: "center", marginTop: 40 }}>{t("history.empty")}</p>
+        <EmptyStateWrapper>
+          <EmptyStateTitle>{t("history.empty.title")}</EmptyStateTitle>
+          <EmptyStateSubtitle>{t("history.empty.subtitle")}</EmptyStateSubtitle>
+        </EmptyStateWrapper>
       </HistoryWrapper>
     );
   }

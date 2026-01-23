@@ -236,3 +236,36 @@ export const StatusIcon = styled.div<{ status: "pending" | "warning" }>(
     };
   }
 );
+
+export const EmptyStateWrapper = styled.div({
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  paddingTop: "60px",
+  paddingBottom: "60px",
+});
+
+export const EmptyStateTitle = styled.p({
+  fontFamily: "Inter, sans-serif",
+  fontWeight: 600,
+  fontSize: "17px",
+  lineHeight: "22px",
+  letterSpacing: "-0.43px",
+  textAlign: "center",
+  color: "#000000",
+  margin: 0,
+  marginBottom: "4px",
+});
+
+export const EmptyStateSubtitle = styled.p({
+  fontFamily: "Inter, sans-serif",
+  fontWeight: 400,
+  fontSize: "15px",
+  lineHeight: "20px",
+  letterSpacing: "-0.23px",
+  textAlign: "center",
+  color: "rgba(60, 60, 67, 0.6)",
+  margin: 0,
+});
