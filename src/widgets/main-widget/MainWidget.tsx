@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo} from 'react'
+import React, { useEffect, useMemo, useRef} from 'react'
 import { AdBanner } from '@/features/ad-banner/AdBanner';
 import { BalanceCard } from '@/features/balance-information/BalanceInformation';
 import { CryptoList, type CryptoItemData } from '@/features/crypto-list/CryptoList';
@@ -26,9 +26,14 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
                                                       }) => {
   const navigate = useNavigate();
   const { wallets, fetchWallets, fetchRates, getRateToRub, loading } = useWalletStore();
+  const hasLoadedRef = useRef(false);
 
   useEffect(() => {
+    // Предотвращаем повторную загрузку данных
+    if (hasLoadedRef.current) return;
+    
     const loadData = async () => {
+      hasLoadedRef.current = true;
       const walletsList = await fetchWallets();
       const uniqueCurrencies = Array.from(new Set(walletsList.map((w) => w.currency)));
 
@@ -38,7 +43,8 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
     };
 
     loadData();
-  }, [fetchWallets, fetchRates]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
 

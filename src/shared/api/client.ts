@@ -25,6 +25,41 @@ export const createClient = () => {
       if (accessToken && authenticationMethod === 'Bearer') {
         config.headers.Authorization = `Bearer ${accessToken}`
         console.log('🔐 Using authentication token');
+        console.log('🔐 Token length:', accessToken.length);
+        console.log('🔐 Full token:', accessToken);
+        console.log('🔐 Authorization header:', `Bearer ${accessToken.substring(0, 50)}...`);
+        
+        // Парсим токен для проверки срока действия
+        try {
+          const params = new URLSearchParams(accessToken);
+          const userId = params.get('user') ? JSON.parse(params.get('user')!).id : null;
+          const authDate = params.get('auth_date');
+          const hash = params.get('hash');
+          
+          // Проверяем срок действия токена (обычно 24 часа)
+          if (authDate) {
+            const authTimestamp = parseInt(authDate, 10);
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            const tokenAge = currentTimestamp - authTimestamp; // возраст токена в секундах
+            const maxAge = 24 * 60 * 60; // 24 часа в секундах (86400)
+            const hoursOld = Math.floor(tokenAge / 3600);
+            const minutesOld = Math.floor((tokenAge % 3600) / 60);
+            
+            console.log('🔐 Token parsed:', { 
+              userId, 
+              authDate, 
+              hash: hash?.substring(0, 20) + '...',
+              tokenAge: `${hoursOld}h ${minutesOld}m`,
+              isExpired: tokenAge > maxAge
+            });
+            
+            if (tokenAge > maxAge) {
+              console.warn('⚠️ Token is expired! Age:', `${hoursOld}h ${minutesOld}m`, 'Max age: 24h');
+            }
+          }
+        } catch (e) {
+          console.warn('🔐 Failed to parse token:', e);
+        }
       } else {
         console.warn('⚠️ No authentication token found');
       }
@@ -83,7 +118,8 @@ export const createClient = () => {
         throw error
       }
       console.error('❌ API Error:', error.config?.method?.toUpperCase(), error.config?.url, error.response.status, error.response.data);
-      if (error.response.status === HttpStatusCode.Unauthorized) {
+      if (error.response.status === HttpStatusCode.Unauthorized || error.response.status === HttpStatusCode.Forbidden) {
+        console.warn('⚠️ Authentication failed (401/403), dispatching unauthorized event');
         window.dispatchEvent(new Event('unauthorized'))
       }
       throw error

@@ -5,12 +5,20 @@ import type { TelegramUser } from '@/shared/types/user';
 
 function parseTelegramUser(initData: string): TelegramUser | null {
   try {
+    console.log('[parseTelegramUser] initData:', initData);
     const params = new URLSearchParams(initData);
     const rawUser = params.get('user');
-    if (!rawUser) return null;
+    console.log('[parseTelegramUser] rawUser:', rawUser);
+    
+    if (!rawUser) {
+      console.warn('[parseTelegramUser] user parameter not found in initData');
+      return null;
+    }
 
     const parsed = JSON.parse(rawUser);
-    return {
+    console.log('[parseTelegramUser] parsed user:', parsed);
+    
+    const user = {
       id: parsed.id,
       firstName: parsed.first_name,
       lastName: parsed.last_name,
@@ -19,7 +27,11 @@ function parseTelegramUser(initData: string): TelegramUser | null {
       isPremium: parsed.is_premium,
       photoUrl: parsed.photo_url,
     } as TelegramUser;
-  } catch {
+    
+    console.log('[parseTelegramUser] final user:', user);
+    return user;
+  } catch (error) {
+    console.error('[parseTelegramUser] error:', error);
     return null;
   }
 }
@@ -34,17 +46,25 @@ const useUserStore = create<IUserStore>((set) => ({
     : null,
 
   setUserData: (initData: string) => {
+    console.log('[setUserData] received initData:', initData);
     const params = new URLSearchParams(initData);
-    params.delete("query_id");
+    // Не удаляем query_id - возможно, сервер его ожидает для проверки подписи
+    // params.delete("query_id");
 
     const filteredInitData = params.toString();
+    console.log('[setUserData] filteredInitData (with query_id):', filteredInitData);
+    
     const user = parseTelegramUser(filteredInitData);
+    console.log('[setUserData] parsed user:', user);
 
     localStorage.setItem("access-token", filteredInitData);
     localStorage.setItem("authentication-method", "Bearer");
 
     if (user) {
       localStorage.setItem("telegram-user", JSON.stringify(user));
+      console.log('[setUserData] user saved to localStorage');
+    } else {
+      console.warn('[setUserData] user is null, not saving to localStorage');
     }
 
     set({
@@ -52,6 +72,8 @@ const useUserStore = create<IUserStore>((set) => ({
       token: filteredInitData,
       user,
     });
+    
+    console.log('[setUserData] store updated, user:', user);
   },
 
   login: async (payload) => {

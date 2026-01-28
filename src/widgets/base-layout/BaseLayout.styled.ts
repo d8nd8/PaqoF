@@ -9,7 +9,9 @@ interface WrapperPageProps {
   };
 }
 
-export const WrapperPage = styled(animated.div)<WrapperPageProps>(
+export const WrapperPage = styled(animated.div, {
+  shouldForwardProp: (prop) => prop !== 'shortBottomPadding' && prop !== 'styleExtra',
+})<WrapperPageProps>(
   ({ styleExtra, shortBottomPadding }) => ({
     display: "flex",
     flexDirection: "column",
@@ -36,7 +38,5 @@ export const WrapperPage = styled(animated.div)<WrapperPageProps>(
     paddingBottom: shortBottomPadding
       ? styleExtra.paddingBottom
       : `calc(${styleExtra.paddingBottom})`,
-
-    ['data-scrollable']: 'true',
   })
 );

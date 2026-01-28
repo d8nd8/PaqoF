@@ -55,17 +55,21 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   const { bottom, top } = useSafeAreaInsets();
 
   useEffect(() => {
+    if (!isOpen || !selectedCrypto?.symbol) return;
+    
     const loadRate = async () => {
-      if (!selectedCrypto?.symbol) return;
       const r = await fetchRates(selectedCrypto.symbol);
       setRate(r);
     };
     loadRate();
-  }, [selectedCrypto.symbol, fetchRates]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, selectedCrypto?.symbol]);
 
   useEffect(() => {
+    if (!isOpen) return;
     fetchWallets();
-  }, [fetchWallets]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const cryptoOptions: CryptoItemData[] = wallets.map((wallet) => {
     const rateToRub = getRateToRub(wallet.currency) ?? 0;

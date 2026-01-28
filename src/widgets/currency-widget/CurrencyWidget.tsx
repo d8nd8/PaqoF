@@ -62,14 +62,15 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
   const { fetchRates } = useWalletStore();
 
   useEffect(() => {
+    if (!wallet?.currency) return;
+    
     const loadRate = async () => {
-      if (wallet?.currency) {
-        const r = await fetchRates(wallet.currency);
-        setRate(r);
-      }
+      const r = await fetchRates(wallet.currency);
+      setRate(r);
     };
     loadRate();
-  }, [fetchRates, wallet?.currency]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet?.currency]);
 
   const balanceRub = rate ? parseFloat(wallet.balance) * rate : null;
 

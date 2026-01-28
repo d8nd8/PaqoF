@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { RouterProvider } from "react-router-dom";
 import {
   miniApp,
@@ -107,23 +107,75 @@ const App = () => {
     setSafeAreaBottom(bottom);
   }, [setFullscreen]);
 
+  const prevInitDataRef = useRef<string | null>(null);
+
   useEffect(() => {
-    if (rawInitData) {
+    // Предотвращаем повторные вызовы с теми же данными
+    if (rawInitData && rawInitData !== prevInitDataRef.current) {
+      prevInitDataRef.current = rawInitData;
       console.log("[App] Обновляем access-token из initData");
       setUserData(rawInitData);
+    } else if (!rawInitData) {
+      console.warn("[App] rawInitData is null or empty");
     }
-  }, [rawInitData, setUserData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawInitData]);
 
-
+  // Проверяем PIN после загрузки пользователя (объединенная логика)
   useEffect(() => {
+    if (!user?.id) {
+      // Если нет пользователя, очищаем PIN из localStorage
+      const savedPin = localStorage.getItem("pin-code");
+      if (savedPin) {
+        console.log('[App] Clearing saved PIN (no user data)');
+        localStorage.removeItem("pin-code");
+      }
+      setIsPinRequired(false);
+      setIsPinVerified(false);
+      return;
+    }
+
     const savedPin = localStorage.getItem("pin-code");
-    if (savedPin) setIsPinRequired(true);
-  }, []);
+    console.log('[App] Checking PIN requirement:', { 
+      userId: user.id, 
+      savedPin: !!savedPin 
+    });
+    
+    // Требуем PIN только если есть сохраненный PIN
+    if (savedPin) {
+      console.log('[App] PIN required: user has saved PIN');
+      setIsPinRequired(true);
+      setIsPinVerified(false);
+    } else {
+      console.log('[App] No PIN required - no saved PIN in localStorage');
+      setIsPinRequired(false);
+      setIsPinVerified(true); // Разрешаем доступ, если нет PIN
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleUnauthorized = () => {
-      setIsPinRequired(true);
-      setIsPinVerified(false);
+      // При ошибке аутентификации проверяем, есть ли сохраненный PIN
+      const savedPin = localStorage.getItem("pin-code");
+      const user = useUserStore.getState().user;
+      
+      console.log('[App] Unauthorized event:', { savedPin: !!savedPin, hasUser: !!user });
+      
+      // Требуем PIN только если:
+      // 1. Есть сохраненный PIN
+      // 2. И есть информация о пользователе (значит это не новый пользователь)
+      if (savedPin && user?.id) {
+        console.log('[App] PIN required after unauthorized: user has PIN and user data');
+        setIsPinRequired(true);
+        setIsPinVerified(false);
+      } else {
+        console.log('[App] PIN not required after unauthorized: no saved PIN or no user data');
+        // Если нет PIN или пользователя, очищаем PIN из localStorage
+        if (savedPin) {
+          console.log('[App] Clearing saved PIN (no user or PIN not in DB)');
+          localStorage.removeItem("pin-code");
+        }
+      }
     };
 
     window.addEventListener("unauthorized", handleUnauthorized);
@@ -145,8 +197,25 @@ const App = () => {
       setIsPinVerified(true);
       setIsPinRequired(false);
       setPinError(null);
-    } catch {
-      setPinError("Неверный PIN-код");
+    } catch (error: any) {
+      console.error('[App] PIN login error:', error);
+      
+      // Если ошибка связана с тем, что пользователя нет в БД или PIN не установлен,
+      // очищаем PIN из localStorage и разрешаем доступ
+      const errorMessage = error?.response?.data?.detail || error?.message || '';
+      const isUserNotFound = errorMessage.includes('not found') || 
+                            errorMessage.includes('does not exist') ||
+                            error?.response?.status === 404;
+      
+      if (isUserNotFound) {
+        console.log('[App] User not found in DB, clearing PIN and allowing access');
+        localStorage.removeItem("pin-code");
+        setIsPinVerified(true);
+        setIsPinRequired(false);
+        setPinError(null);
+      } else {
+        setPinError("Неверный PIN-код");
+      }
     }
   };
 

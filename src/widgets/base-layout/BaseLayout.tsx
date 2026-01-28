@@ -118,6 +118,7 @@ const BaseLayout = ({
             paddingBottom: `${bottomPadding}px`,
           }}
           className={`wrapper-page ${className || ""}`.trim()}
+          data-scrollable="true"
         >
           {children}
         </WrapperPage>

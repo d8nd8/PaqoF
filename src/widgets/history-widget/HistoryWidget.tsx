@@ -78,7 +78,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       rate = await fetchRates("USDT");
     }
     setUsdtRate(rate ?? 1);
-  }, [fetchRates, getRateToRub]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const loadPage = useCallback(async () => {
     if (page === 0) setInitialLoading(true);
@@ -97,11 +98,13 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       setIsLoading(false);
       if (page === 0) setInitialLoading(false);
     }
-  }, [variant, walletId, page, fetchUserOperations, fetchWalletOperations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [variant, walletId, page]);
 
   useEffect(() => {
     loadRate();
-  }, [loadRate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     loadPage();
