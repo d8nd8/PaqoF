@@ -1,27 +1,22 @@
 import React, { useState } from 'react'
-import { MainWidget } from '@/widgets/main-widget/MainWidget'
-import { BaseLayout } from '@/widgets/base-layout'
-
-import { NotificationsModal } from '@/features/notifications'
-import { DepositOverlay } from '@/features/deposit-overlay/DepositOverlay'
-import { WalletDepositOverlay, type WalletDepositMode } from '@/features/overlay-wallet-deposit/WalletDepositOverlay'
-import { WalletAddressOverlay } from '@/features/overlay-wallet-address/WalletAddressOverlay'
-import { WalletTransferOverlay } from '@/features/overlay-wallet-transfer/WalletTransferOverlay'
-import { OverlayCommission } from '@/features/overlay-commission/OverlayCommission'
-import QRScanner from '@/features/qr-scanner/QRScanner'
-
-import useApplicationStore from '@/shared/stores/application'
 import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
+import { DepositOverlay } from '@/features/deposit-overlay/DepositOverlay'
+import { NotificationsModal } from '@/features/notifications'
+import { OverlayCommission } from '@/features/overlay-commission/OverlayCommission'
+import { WalletAddressOverlay } from '@/features/overlay-wallet-address/WalletAddressOverlay'
+import {
+  WalletDepositOverlay,
+  type WalletDepositMode,
+} from '@/features/overlay-wallet-deposit/WalletDepositOverlay'
+import { WalletTransferOverlay } from '@/features/overlay-wallet-transfer/WalletTransferOverlay'
+import QRScanner from '@/features/qr-scanner/QRScanner'
+import useApplicationStore from '@/shared/stores/application'
+import { BaseLayout } from '@/widgets/base-layout'
+import { MainWidget } from '@/widgets/main-widget/MainWidget'
 
 export const MainPage: React.FC = () => {
-  const {
-    modal,
-    openModal,
-    closeModal,
-    currentOverlay,
-    openOverlay,
-    goBack,
-  } = useApplicationStore()
+  const { modal, openModal, closeModal, currentOverlay, openOverlay, goBack } =
+    useApplicationStore()
 
   const [depositMode, setDepositMode] = useState<WalletDepositMode>('deposit')
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
@@ -42,7 +37,7 @@ export const MainPage: React.FC = () => {
     crypto: CryptoItemData,
     network: string,
     mode: WalletDepositMode,
-    address: string
+    address: string,
   ) => {
     setSelectedCrypto(crypto)
     setSelectedNetwork(network)
@@ -67,7 +62,10 @@ export const MainPage: React.FC = () => {
         onNotifications={() => openModal('notifications')}
       />
 
-      <NotificationsModal isOpen={modal === 'notifications'} onClose={closeModal} />
+      <NotificationsModal
+        isOpen={modal === 'notifications'}
+        onClose={closeModal}
+      />
 
       {currentOverlay === 'deposit' && (
         <DepositOverlay
@@ -108,11 +106,18 @@ export const MainPage: React.FC = () => {
       )}
 
       {currentOverlay === 'commission' && (
-        <OverlayCommission isOpen onClose={goBack} />
+        <OverlayCommission
+          isOpen
+          onClose={goBack}
+        />
       )}
 
       {currentOverlay === 'scanner' && (
-        <QRScanner isVisible onScan={handlePay} onClose={goBack} />
+        <QRScanner
+          isVisible
+          onScan={handlePay}
+          onClose={goBack}
+        />
       )}
     </BaseLayout>
   )

@@ -1,26 +1,29 @@
-import styled from '@emotion/styled';
 import { theme } from '@/styles/theme'
+import styled from '@emotion/styled'
 
-export const BalanceCardContainer = styled.div(({theme}) => ({
+export const BalanceCardContainer = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.systemElevatedBackground,
   borderRadius: '0 0 25px 25px',
-  padding: '45px 14px 14px',
+  padding: '60px 14px 14px',
   boxShadow: '0 0 25px 0 rgba(0, 0, 0, 0.05)',
-}));
+  position: 'sticky',
+  top: 0,
+  zIndex: 1,
+}))
 
 export const BalanceHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '2px',
-  marginBottom: '12px'
-});
+  marginBottom: '12px',
+})
 
-export const BalanceTitle = styled.span(({theme}) => ({
+export const BalanceTitle = styled.span(({ theme }) => ({
   fontSize: '12px',
   fontWeight: 400,
   color: theme.colors.textSecondary,
-  lineHeight: '17px'
-}));
+  lineHeight: '17px',
+}))
 
 export const EyeButton = styled.button({
   cursor: 'pointer',
@@ -29,16 +32,16 @@ export const EyeButton = styled.button({
   justifyContent: 'center',
 
   '&:focus': {
-    outline: 'none'
+    outline: 'none',
   },
 
   '& svg': {
     width: '16px',
-    height: '16px'
-  }
-});
+    height: '16px',
+  },
+})
 
-export const BalanceAmount = styled.div(({theme}) => ({
+export const BalanceAmount = styled.div(({ theme }) => ({
   fontSize: '34px',
   fontWeight: '700',
   fontStyle: 'normal',
@@ -48,13 +51,13 @@ export const BalanceAmount = styled.div(({theme}) => ({
   display: 'flex',
   alignItems: 'baseline',
   height: '41px',
-}));
+}))
 
-export const BalanceDecimal = styled.span(({theme}) => ({
+export const BalanceDecimal = styled.span(({ theme }) => ({
   fontSize: '22px',
-  color:  theme.colors.textSecondary,
-  fontWeight: '700'
-}));
+  color: theme.colors.textSecondary,
+  fontWeight: '700',
+}))
 
 export const HiddenBalance = styled.div({
   display: 'flex',
@@ -62,29 +65,29 @@ export const HiddenBalance = styled.div({
   gap: '4px',
   marginBottom: '14px',
   height: '41px',
-});
+})
 
-export const BalanceDot = styled.div(({theme}) => ({
+export const BalanceDot = styled.div(({ theme }) => ({
   width: '8px',
   height: '8px',
   borderRadius: '50%',
   backgroundColor: theme.colors.neutral950,
-}));
+}))
 
 export const ActionButtons = styled.div({
   display: 'flex',
-  gap: '14px'
-});
+  gap: '14px',
+})
 
 export const ActionItemContainer = styled.div({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '4px'
-});
+  gap: '4px',
+})
 
-export const ActionButton = styled.button(({theme}) => ({
+export const ActionButton = styled.button(({ theme }) => ({
   width: '100%',
   backgroundColor: theme.colors.systemBackground,
   border: 'none',
@@ -96,9 +99,9 @@ export const ActionButton = styled.button(({theme}) => ({
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   outline: 'none',
-}));
+}))
 
-export const ActionIcon = styled.div(({theme}) => ({
+export const ActionIcon = styled.div(({ theme }) => ({
   width: '24px',
   height: '24px',
   display: 'flex',
@@ -109,30 +112,30 @@ export const ActionIcon = styled.div(({theme}) => ({
   '& svg': {
     width: '100%',
     height: '100%',
-    fill: 'currentColor'
-  }
-}));
+    fill: 'currentColor',
+  },
+}))
 
 export const ActionLabel = styled.span({
   fontSize: '12px',
   fontWeight: '400',
   color: theme.colors.textSecondary,
   lineHeight: '13px',
-  textAlign: 'center'
-});
+  textAlign: 'center',
+})
 
 export const TopRow = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   marginBottom: '30px',
-});
+})
 
 export const UserInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '18px',
-});
+})
 
 export const Avatar = styled.img({
   width: '44px',
@@ -140,7 +143,7 @@ export const Avatar = styled.img({
   borderRadius: '50%',
   objectFit: 'cover',
   background: theme.colors.primary300,
-});
+})
 
 export const UserText = styled.div({
   display: 'flex',
@@ -148,22 +151,22 @@ export const UserText = styled.div({
   lineHeight: '13px',
   flexDirection: 'column',
   color: theme.colors.textSecondary,
-  fontWeight: 600
-});
+  fontWeight: 600,
+})
 
 export const Greeting = styled.span(({ theme }) => ({
   fontSize: '11px',
   lineHeight: '13px',
   flexDirection: 'column',
   color: theme.colors.textSecondary,
-}));
+}))
 
 export const Username = styled.span(({ theme }) => ({
   fontSize: '15px',
   lineHeight: '20px',
   fontWeight: 600,
   color: theme.colors.textPrimary,
-}));
+}))
 
 export const NotificationButton = styled.button({
   position: 'relative',
@@ -184,9 +187,9 @@ export const NotificationButton = styled.button({
   },
 
   '&:focus': {
-    outline: 'none'
-  }
-});
+    outline: 'none',
+  },
+})
 
 export const NotificationDot = styled.span({
   position: 'absolute',
@@ -196,4 +199,4 @@ export const NotificationDot = styled.span({
   height: '6px',
   backgroundColor: '#FF3B30',
   borderRadius: '50%',
-});
+})

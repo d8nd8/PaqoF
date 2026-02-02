@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import TorchlightIcon from '@icons/scanner/torchlight.svg?react';
-import AttachmentIcon from '@icons/scanner/attachment.svg?react';
-import type { QRScannerProps } from './QRScanner.types';
-import { useTranslation } from 'react-i18next';
+import type { CryptoItemData } from '@/features/crypto-list/CryptoList'
+import { PaymentOverlay } from '@/features/payment-overlay/PaymentOverlay'
+import { PaymentInfoOverlay } from '@/features/qr-scanner/payment-info-overlay'
+import { useQRScanner } from '@/features/qr-scanner/useQRScanner'
+import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
+import AttachmentIcon from '@icons/scanner/attachment.svg?react'
+import TorchlightIcon from '@icons/scanner/torchlight.svg?react'
+import { useTranslation } from 'react-i18next'
 
 import {
-  Overlay,
-  Header,
-  Title,
-  CloseButton,
-  CameraContainer,
-  ScannerOverlay,
-  BottomActions,
   ActionButton,
-  ScanButton,
+  BottomActions,
+  CameraContainer,
+  CameraFeed,
+  CloseButton,
   Footer,
   FooterHint,
-  CameraFeed,
-} from './QrScanner.styled';
-
-import { useQRScanner } from '@/features/qr-scanner/useQRScanner';
-import { PaymentInfoOverlay } from '@/features/qr-scanner/payment-info-overlay';
-import { PaymentOverlay } from '@/features/payment-overlay/PaymentOverlay';
-import type { CryptoItemData } from '@/features/crypto-list/CryptoList';
-import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets';
+  Header,
+  Overlay,
+  ScanButton,
+  ScannerOverlay,
+  Title,
+} from './QrScanner.styled'
+import type { QRScannerProps } from './QRScanner.types'
 
 const AVAILABLE_CURRENCIES: CryptoItemData[] = [
   {
@@ -65,128 +64,142 @@ const AVAILABLE_CURRENCIES: CryptoItemData[] = [
     icon: 'U',
     iconColor: '#2775CA',
   },
-];
+]
 
 export const QRScanner: React.FC<QRScannerProps> = ({
-                                                      isVisible,
-                                                      onScan,
-                                                      onClose,
-                                                      title,
-                                                    }) => {
-  const { t } = useTranslation();
-  const { top, bottom } = useSafeAreaInsets();
-  const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false);
-  const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false);
+  isVisible,
+  onScan,
+  onClose,
+  title,
+}) => {
+  const { t } = useTranslation()
+  const { top, bottom } = useSafeAreaInsets()
+  const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false)
+  const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
     AVAILABLE_CURRENCIES[0],
-  );
+  )
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible) return
     const timeout = setTimeout(() => {
-      const shaded = document.querySelector('.qr-shaded-region') as HTMLElement;
+      const shaded = document.querySelector('.qr-shaded-region') as HTMLElement
       if (shaded) {
-        shaded.style.background = 'transparent';
+        shaded.style.background = 'transparent'
       }
 
-      const video = document.querySelector('video');
+      const video = document.querySelector('video')
       if (video) {
-        video.style.filter = 'brightness(1.2) contrast(1.1)';
-        video.style.opacity = '1';
-        video.style.background = 'transparent';
+        video.style.filter = 'brightness(1.2) contrast(1.1)'
+        video.style.opacity = '1'
+        video.style.background = 'transparent'
       }
 
-      const canvases = document.querySelectorAll('canvas');
+      const canvases = document.querySelectorAll('canvas')
       canvases.forEach((c) => {
-        c.style.opacity = '0';
-        c.style.background = 'transparent';
-      });
-    }, 800);
+        c.style.opacity = '0'
+        c.style.background = 'transparent'
+      })
+    }, 800)
 
-    return () => clearTimeout(timeout);
-  }, [isVisible]);
+    return () => clearTimeout(timeout)
+  }, [isVisible])
 
   const { closeScanner, retryScanner, toggleTorch, containerId } = useQRScanner(
     isVisible,
     onScan,
-  );
-
+  )
 
   const handleClose = async (): Promise<void> => {
     try {
-      await closeScanner();
+      await closeScanner()
     } catch (e) {
-      console.warn('Ошибка при остановке камеры:', e);
+      console.warn('Ошибка при остановке камеры:', e)
     } finally {
-      onClose?.();
+      onClose?.()
     }
-  };
-
+  }
 
   const handleGalleryOpen = async (): Promise<void> => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
 
     input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (!file) return
 
       try {
-        const { Html5Qrcode } = await import('html5-qrcode');
-        const scanner = new Html5Qrcode('gallery-scan-temp');
-        const result = await scanner.scanFile(file, true);
-        await scanner.clear();
+        const { Html5Qrcode } = await import('html5-qrcode')
+        const scanner = new Html5Qrcode('gallery-scan-temp')
+        const result = await scanner.scanFile(file, true)
+        await scanner.clear()
 
         if (result) {
-          onScan(result);
-          await handleClose();
+          onScan(result)
+          await handleClose()
         } else {
-          retryScanner();
+          retryScanner()
         }
       } catch (err) {
-        console.warn('Ошибка при сканировании из галереи:', err);
-        retryScanner();
+        console.warn('Ошибка при сканировании из галереи:', err)
+        retryScanner()
       }
-    };
+    }
 
-    input.click();
-  };
-
+    input.click()
+  }
 
   const handlePayment = async (currency: CryptoItemData, amount: string) => {
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
-        if (Math.random() > 0.3) resolve();
-        else reject(new Error('Payment failed'));
-      }, 1500);
-    });
-  };
+        if (Math.random() > 0.3) resolve()
+        else reject(new Error('Payment failed'))
+      }, 1500)
+    })
+  }
 
-  if (!isVisible) return null;
+  if (!isVisible) return null
 
   return (
     <>
       <Overlay>
-        <CameraContainer $insetTop={top} $insetBottom={bottom}>
+        <CameraContainer
+          $insetTop={top}
+          $insetBottom={bottom}
+        >
           <CameraFeed id={containerId} />
 
           <Header>
             <Title>{title || t('qrScanner.title')}</Title>
-            <CloseButton $insetTop={top} onClick={handleClose}>✕</CloseButton>
+            <CloseButton
+              $insetTop={top}
+              onClick={handleClose}
+            >
+              ✕
+            </CloseButton>
           </Header>
 
           <ScannerOverlay />
-          <div id="gallery-scan-temp" style={{ display: 'none' }} />
+          <div
+            id="gallery-scan-temp"
+            style={{ display: 'none' }}
+          />
 
           <BottomActions>
-            <ActionButton onClick={toggleTorch} title={t('qrScanner.torch')}>
+            <ActionButton
+              onClick={toggleTorch}
+              title={t('qrScanner.torch')}
+            >
               <TorchlightIcon />
             </ActionButton>
 
             <ScanButton onClick={() => setIsPaymentOverlayOpen(true)} />
 
-            <ActionButton onClick={handleGalleryOpen} title={t('qrScanner.gallery')}>
+            <ActionButton
+              onClick={handleGalleryOpen}
+              title={t('qrScanner.gallery')}
+            >
               <AttachmentIcon />
             </ActionButton>
           </BottomActions>
@@ -216,7 +229,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         onPayment={handlePayment}
       />
     </>
-  );
-};
+  )
+}
 
-export default QRScanner;
+export default QRScanner

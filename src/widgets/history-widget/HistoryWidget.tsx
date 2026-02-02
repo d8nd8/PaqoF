@@ -1,17 +1,19 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { getOperationById } from "@/api/services/operation/operation.service";
-import ClockIcon from "@/assets/icons/clock.svg?react";
-import DepositIcon from "@/assets/icons/deposit.svg?react";
-import ExclamationCircleIcon from "@/assets/icons/exclamation-circle.svg?react";
-import TransferIcon from "@/assets/icons/transfer.svg?react";
-import { OverlayTransactionDetails } from "@/features/overlay-transaction-details/OverlayTransactionDetails";
-import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
-import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
-import useApplicationStore from "@/shared/stores/application";
-import useUserStore from "@/shared/stores/user";
-import useWalletStore from "@/shared/stores/wallet";
-import { useTranslation } from "react-i18next";
-import { mapOperationToTransactionData, truncateText } from "./history.utils";
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { getOperationById } from '@/api/services/operation/operation.service'
+import type { Operation } from '@/api/services/operation/schemes/operation.schemas'
+import ClockIcon from '@/assets/icons/clock.svg?react'
+import DepositIcon from '@/assets/icons/deposit.svg?react'
+import ExclamationCircleIcon from '@/assets/icons/exclamation-circle.svg?react'
+import TransferIcon from '@/assets/icons/transfer.svg?react'
+import { OverlayTransactionDetails } from '@/features/overlay-transaction-details/OverlayTransactionDetails'
+import type { TransactionData } from '@/features/overlay-transaction-details/transaction-details/TransactionDetails'
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
+import useApplicationStore from '@/shared/stores/application'
+import useUserStore from '@/shared/stores/user'
+import useWalletStore from '@/shared/stores/wallet'
+import { useTranslation } from 'react-i18next'
+
+import { mapOperationToTransactionData, truncateText } from './history.utils'
 import {
   Amount,
   AmountSecondary,
@@ -35,237 +37,255 @@ import {
   TransactionList,
   TransactionRight,
   TransactionTitle,
-} from "./HistoryWidget.styled";
-import type { Operation } from "@/api/services/operation/schemes/operation.schemas";
+} from './HistoryWidget.styled'
 
 const TABS = [
-  { id: "all", token: "history.tabs.all" },
-  { id: "payment", token: "history.tabs.payment" },
-  { id: "deposit", token: "history.tabs.deposit" },
-];
+  { id: 'all', token: 'history.tabs.all' },
+  { id: 'payment', token: 'history.tabs.payment' },
+  { id: 'deposit', token: 'history.tabs.deposit' },
+]
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 interface HistoryWidgetProps {
-  variant?: "default" | "card";
-  walletId?: string;
+  variant?: 'default' | 'card'
+  walletId?: string
 }
 
 export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
-                                                              variant = "default",
-                                                              walletId,
-                                                            }) => {
-  const [activeTab, setActiveTab] = useState("all");
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedTx, setSelectedTx] = useState<TransactionData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-  const { openModal, closeModal } = useApplicationStore();
-  const { fetchUserOperations, operations: userOps } = useUserStore();
-  const { fetchWalletOperations, operations: walletOps, getRateToRub, fetchRates } =
-    useWalletStore();
-  const { t } = useTranslation();
+  variant = 'default',
+  walletId,
+}) => {
+  const [activeTab, setActiveTab] = useState('all')
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedTx, setSelectedTx] = useState<TransactionData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [page, setPage] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
+  const loaderRef = useRef<HTMLDivElement | null>(null)
+  const { openModal, closeModal } = useApplicationStore()
+  const { fetchUserOperations, operations: userOps } = useUserStore()
+  const {
+    fetchWalletOperations,
+    operations: walletOps,
+    getRateToRub,
+    fetchRates,
+  } = useWalletStore()
+  const { t } = useTranslation()
   const currentOperations =
-    variant === "card" && walletId ? walletOps[walletId] || [] : userOps || [];
-  const [usdtRate, setUsdtRate] = useState<number | null>(null);
+    variant === 'card' && walletId ? walletOps[walletId] || [] : userOps || []
+  const [usdtRate, setUsdtRate] = useState<number | null>(null)
 
   const loadRate = useCallback(async () => {
-    let rate = getRateToRub("USDT");
+    let rate = getRateToRub('USDT')
     if (!rate) {
-      rate = await fetchRates("USDT");
+      rate = await fetchRates('USDT')
     }
-    setUsdtRate(rate ?? 1);
+    setUsdtRate(rate ?? 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const loadPage = useCallback(async () => {
-    if (page === 0) setInitialLoading(true);
-    setIsLoading(true);
+    if (page === 0) setInitialLoading(true)
+    setIsLoading(true)
     try {
-      if (variant === "card" && walletId) {
-        const newOps = await fetchWalletOperations(walletId, PAGE_SIZE, page * PAGE_SIZE);
-        if (!newOps.length) setHasMore(false);
+      if (variant === 'card' && walletId) {
+        const newOps = await fetchWalletOperations(walletId, PAGE_SIZE, page * PAGE_SIZE)
+        if (!newOps.length) setHasMore(false)
       } else {
-        const newOps = await fetchUserOperations(PAGE_SIZE, page * PAGE_SIZE);
-        if (!newOps.length) setHasMore(false);
+        const newOps = await fetchUserOperations(PAGE_SIZE, page * PAGE_SIZE)
+        if (!newOps.length) setHasMore(false)
       }
     } catch (e) {
-      console.error("Ошибка при загрузке операций:", e);
+      console.error('Ошибка при загрузке операций:', e)
     } finally {
-      setIsLoading(false);
-      if (page === 0) setInitialLoading(false);
+      setIsLoading(false)
+      if (page === 0) setInitialLoading(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [variant, walletId, page]);
+  }, [variant, walletId, page])
 
   useEffect(() => {
-    loadRate();
+    loadRate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useEffect(() => {
-    loadPage();
-  }, [page]);
+    loadPage()
+  }, [page])
 
   useEffect(() => {
-    if (!hasMore) return;
+    if (!hasMore) return
     const observer = new IntersectionObserver(
       (entries) => {
-        const first = entries[0];
+        const first = entries[0]
         if (first.isIntersecting && !isLoading) {
-          setIsLoading(true);
-          setPage((prev) => prev + 1);
+          setIsLoading(true)
+          setPage((prev) => prev + 1)
         }
       },
-      { threshold: 0.5 }
-    );
-    const current = loaderRef.current;
-    if (current) observer.observe(current);
+      { threshold: 0.5 },
+    )
+    const current = loaderRef.current
+    if (current) observer.observe(current)
     return () => {
-      if (current) observer.unobserve(current);
-    };
-  }, [hasMore, isLoading]);
+      if (current) observer.unobserve(current)
+    }
+  }, [hasMore, isLoading])
 
   const handleCardClick = async (tx: Operation) => {
     try {
-      setIsLoading(true);
-      const fullOp = await getOperationById(tx.operationId);
-      const mapped = mapOperationToTransactionData(fullOp);
-      setSelectedTx(mapped);
-      setIsOpen(true);
-      openModal("transaction-details");
+      setIsLoading(true)
+      const fullOp = await getOperationById(tx.operationId)
+      const mapped = mapOperationToTransactionData(fullOp)
+      setSelectedTx(mapped)
+      setIsOpen(true)
+      openModal('transaction-details')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleClose = () => {
-    setIsOpen(false);
-    setSelectedTx(null);
-    closeModal();
-  };
+    setIsOpen(false)
+    setSelectedTx(null)
+    closeModal()
+  }
 
   const mapOperationType = (type: string) => {
     switch (type) {
-      case "DEPOSIT":
+      case 'DEPOSIT':
         return {
           icon: <DepositIcon />,
-          title: t("history.transactions.walletDeposit"),
-          category: t("history.categories.deposit"),
-          txType: "income" as const,
-        };
-      case "WITHDRAW":
+          title: t('history.transactions.walletDeposit'),
+          category: t('history.categories.deposit'),
+          txType: 'income' as const,
+        }
+      case 'WITHDRAW':
         return {
           icon: <TransferIcon />,
-          title: t("history.transactions.usdtTransfer"),
-          category: t("history.categories.transfer"),
-          txType: "expense" as const,
-        };
-      case "TRANSFER":
+          title: t('history.transactions.usdtTransfer'),
+          category: t('history.categories.transfer'),
+          txType: 'expense' as const,
+        }
+      case 'TRANSFER':
         return {
           icon: <TransferIcon />,
-          title: t("history.transactions.transfer"),
-          category: t("history.categories.transfer"),
-          txType: "expense" as const,
-        };
+          title: t('history.transactions.transfer'),
+          category: t('history.categories.transfer'),
+          txType: 'expense' as const,
+        }
       default:
         return {
           icon: <TransferIcon />,
           title: type,
-          category: "",
-          txType: "expense" as const,
-        };
+          category: '',
+          txType: 'expense' as const,
+        }
     }
-  };
+  }
 
-  const renderStatusIcon = (apiStatus: string, txType: "income" | "expense") => {
-    if (txType !== "income") return null;
-    const statusMap: Record<string, "pending" | "warning" | "completed" | undefined> = {
-      PENDING: "pending",
-      PROCESSING: "pending",
-      WARNING: "warning",
-      FAILED: "warning",
-      CONFIRMED: "completed",
-      COMPLETED: "completed",
-    };
-    const mapped = statusMap[apiStatus];
-    if (!mapped) return null;
+  const renderStatusIcon = (apiStatus: string, txType: 'income' | 'expense') => {
+    if (txType !== 'income') return null
+    const statusMap: Record<string, 'pending' | 'warning' | 'completed' | undefined> = {
+      PENDING: 'pending',
+      PROCESSING: 'pending',
+      WARNING: 'warning',
+      FAILED: 'warning',
+      CONFIRMED: 'completed',
+      COMPLETED: 'completed',
+    }
+    const mapped = statusMap[apiStatus]
+    if (!mapped) return null
     switch (mapped) {
-      case "pending":
+      case 'pending':
         return (
           <StatusIcon status="pending">
-            <ClockIcon width={18} height={18} />
+            <ClockIcon
+              width={18}
+              height={18}
+            />
           </StatusIcon>
-        );
-      case "warning":
+        )
+      case 'warning':
         return (
           <StatusIcon status="warning">
-            <ExclamationCircleIcon width={18} height={18} />
+            <ExclamationCircleIcon
+              width={18}
+              height={18}
+            />
           </StatusIcon>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   if (initialLoading && !currentOperations.length) {
     return (
       <HistoryWrapper $variant={variant}>
-        <PageHeader title={t("history.title")} showBackButton={false} />
-        <p style={{ textAlign: "center", marginTop: 40 }}>{t("common.loading")}</p>
+        <PageHeader
+          title={t('history.title')}
+          showBackButton={false}
+        />
+        <p style={{ textAlign: 'center', marginTop: 40 }}>{t('common.loading')}</p>
       </HistoryWrapper>
-    );
+    )
   }
 
   if (!currentOperations?.length) {
     return (
       <HistoryWrapper $variant={variant}>
-        <PageHeader title={t("history.title")} showBackButton={false} />
+        <PageHeader
+          title={t('history.title')}
+          showBackButton={false}
+        />
         <EmptyStateWrapper>
-          <EmptyStateTitle>{t("history.empty.title")}</EmptyStateTitle>
-          <EmptyStateSubtitle>{t("history.empty.subtitle")}</EmptyStateSubtitle>
+          <EmptyStateTitle>{t('history.empty.title')}</EmptyStateTitle>
+          <EmptyStateSubtitle>{t('history.empty.subtitle')}</EmptyStateSubtitle>
         </EmptyStateWrapper>
       </HistoryWrapper>
-    );
+    )
   }
 
   const filteredOps =
-    activeTab === "all"
+    activeTab === 'all'
       ? currentOperations
       : currentOperations.filter((op) =>
-        activeTab === "deposit"
-          ? op.operationType === "deposit"
-          : op.operationType === "withdraw"
-      );
+          activeTab === 'deposit'
+            ? op.operationType === 'deposit'
+            : op.operationType === 'withdraw',
+        )
 
   const groupedByDate = filteredOps.reduce<Record<string, typeof filteredOps>>(
     (acc, op) => {
-      const date = new Date(op.createdAt).toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long",
-      });
-      if (!acc[date]) acc[date] = [];
-      acc[date].push(op);
-      return acc;
+      const date = new Date(op.createdAt).toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+      })
+      if (!acc[date]) acc[date] = []
+      acc[date].push(op)
+      return acc
     },
-    {}
-  );
+    {},
+  )
 
   return (
     <HistoryWrapper $variant={variant}>
-      <PageHeader title={t("history.title")} showBackButton={false} />
+      <PageHeader
+        title={t('history.title')}
+        showBackButton={false}
+      />
       <Tabs>
         {TABS.map((tab) => (
           <TabButton
             key={tab.id}
             $active={activeTab === tab.id}
             onClick={() => {
-              setActiveTab(tab.id);
-              setPage(0);
-              setHasMore(true);
+              setActiveTab(tab.id)
+              setPage(0)
+              setHasMore(true)
             }}
           >
             {t(tab.token)}
@@ -275,11 +295,11 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
 
       {Object.entries(groupedByDate).map(([date, ops]) => {
         const totalUsd = ops.reduce((sum, op) => {
-          const value = parseFloat(op.totalAmount || "0");
-          const sign = op.operationType === "withdraw" ? -1 : 1;
-          return sum + value * sign;
-        }, 0);
-        const totalRub = usdtRate ? totalUsd * usdtRate : totalUsd;
+          const value = parseFloat(op.totalAmount || '0')
+          const sign = op.operationType === 'withdraw' ? -1 : 1
+          return sum + value * sign
+        }, 0)
+        const totalRub = usdtRate ? totalUsd * usdtRate : totalUsd
 
         return (
           <div key={date}>
@@ -287,25 +307,33 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
               <DateTitle>{date}</DateTitle>
               <DateTotalWrapper>
                 <DateTotalMain>
-                  {totalRub >= 0 ? "+" : "−"}{" "}
-                  {Math.abs(totalRub).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽
+                  {totalRub >= 0 ? '+' : '−'}{' '}
+                  {Math.abs(totalRub).toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2,
+                  })}{' '}
+                  ₽
                 </DateTotalMain>
                 <DateTotalSecondary>
-                  {totalUsd >= 0 ? "+" : "−"} {Math.abs(totalUsd).toFixed(2)} USDT
+                  {totalUsd >= 0 ? '+' : '−'} {Math.abs(totalUsd).toFixed(2)} USDT
                 </DateTotalSecondary>
               </DateTotalWrapper>
             </DateHeader>
 
             <TransactionList>
               {ops.map((op) => {
-                const { icon, title, category, txType } = mapOperationType(op.operationType);
+                const { icon, title, category, txType } = mapOperationType(
+                  op.operationType,
+                )
                 const rubAmount =
                   usdtRate && op.totalAmount
                     ? (parseFloat(op.totalAmount) * usdtRate).toFixed(2)
-                    : op.totalAmount;
-                const sign = op.operationType === "withdraw" ? "-" : "+";
+                    : op.totalAmount
+                const sign = op.operationType === 'withdraw' ? '-' : '+'
                 return (
-                  <TransactionItem key={op.operationId} onClick={() => handleCardClick(op)}>
+                  <TransactionItem
+                    key={op.operationId}
+                    onClick={() => handleCardClick(op)}
+                  >
                     <TransactionLeft>
                       <IconCircle>{icon}</IconCircle>
                       <TransactionInfo>
@@ -324,14 +352,19 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
                       </AmountSecondary>
                     </TransactionRight>
                   </TransactionItem>
-                );
+                )
               })}
             </TransactionList>
           </div>
-        );
+        )
       })}
 
-      {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
+      {hasMore && (
+        <div
+          ref={loaderRef}
+          style={{ height: 1 }}
+        />
+      )}
       {selectedTx && (
         <OverlayTransactionDetails
           isOpen={isOpen}
@@ -340,7 +373,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
         />
       )}
     </HistoryWrapper>
-  );
-};
+  )
+}
 
-export default HistoryWidget;
+export default HistoryWidget

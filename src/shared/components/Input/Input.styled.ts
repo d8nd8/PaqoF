@@ -1,54 +1,54 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 export const InputWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
-});
+})
 
 export const InputLabel = styled.label(({ theme }) => ({
-  fontSize: "15px",
-  lineHeight: "20px",
+  fontSize: '15px',
+  lineHeight: '20px',
   fontWeight: 600,
   color: theme.colors.textPrimary,
-}));
+}))
 
 export const InputContainer = styled.div({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
-});
+})
 
-export const InputField = styled.input<{ hasRightIcon?: boolean }>(({ theme, hasRightIcon }) => ({
-  width: '100%',
-  height: '44px',
-  background: theme.colors.systemBackground,
-  border: 'none',
-  borderRadius: theme.borderRadius.lg,
-  padding: hasRightIcon ? '0 20px 0 16px' : '0 16px',
-  fontFamily: "Inter, monospace",
-  fontSize: '15px',
-  fontWeight: 500,
-  color: theme.colors.textPrimary,
-  outline: 'none',
-  transition: 'all 0.2s ease',
+export const InputField = styled.input<{ hasRightIcon?: boolean }>(
+  ({ theme, hasRightIcon }) => ({
+    width: '100%',
+    height: '44px',
+    background: theme.colors.systemBackground,
+    border: 'none',
+    borderRadius: theme.borderRadius.lg,
+    padding: hasRightIcon ? '0 20px 0 16px' : '0 16px',
+    fontFamily: 'Inter, monospace',
+    fontSize: '15px',
+    fontWeight: 500,
+    color: theme.colors.textPrimary,
+    outline: 'none',
+    transition: 'all 0.2s ease',
 
-  '&::placeholder': {
-    color: theme.colors.textSecondary,
-    opacity: 0.6,
-  },
+    '&::placeholder': {
+      color: theme.colors.textSecondary,
+      opacity: 0.6,
+    },
 
+    '&:disabled': {
+      opacity: 0.5,
+      cursor: 'not-allowed',
+    },
 
-
-  '&:disabled': {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-
-  '&[readonly]': {
-    cursor: 'default',
-  },
-}));
+    '&[readonly]': {
+      cursor: 'default',
+    },
+  }),
+)
 
 export const IconButton = styled.button({
   position: 'absolute',
@@ -65,12 +65,8 @@ export const IconButton = styled.button({
   opacity: 0.6,
   transition: 'opacity 0.2s ease',
 
-  '&:hover:not(:disabled)': {
-    opacity: 1,
-  },
-
   '&:disabled': {
     cursor: 'not-allowed',
     opacity: 0.3,
   },
-});
+})

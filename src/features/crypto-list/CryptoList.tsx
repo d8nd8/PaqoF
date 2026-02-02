@@ -1,87 +1,91 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as S from './CryptoList.styled';
-import UsdtIcon from '@icons/usdt-icon.svg?react';
-import TonIcon from '@icons/ton-icon.svg?react';
-import BtcIcon from '@icons/bitcoin-icon.svg?react';
+import React from 'react'
+import BtcIcon from '@icons/bitcoin-icon.svg?react'
+import TonIcon from '@icons/ton-icon.svg?react'
+import UsdtIcon from '@icons/usdt-icon.svg?react'
+import { useNavigate } from 'react-router-dom'
+
+import * as S from './CryptoList.styled'
 
 export interface CryptoItemData {
-  id: string;
-  name: string;
-  symbol: string;
-  amount: string;
-  amountInRubles?: string;
-  priceInRubles?:string;
-  icon?: string | React.ReactNode;
-  iconColor?: string;
-  useCustomIcon?: boolean;
+  id: string
+  name: string
+  symbol: string
+  amount: string
+  amountInRubles?: string
+  priceInRubles?: string
+  icon?: string | React.ReactNode
+  iconColor?: string
+  useCustomIcon?: boolean
 }
 
-type InfoVariant = 'price' | 'amount' | 'both';
+type InfoVariant = 'price' | 'amount' | 'both'
 
 interface CryptoItemProps {
-  data: CryptoItemData;
-  onClick?: (crypto: CryptoItemData) => void;
-  showRightSection?: boolean;
-  rightSection?: React.ReactNode;
-  disableNavigation?: boolean;
-  infoVariant?: InfoVariant;
+  data: CryptoItemData
+  onClick?: (crypto: CryptoItemData) => void
+  showRightSection?: boolean
+  rightSection?: React.ReactNode
+  disableNavigation?: boolean
+  infoVariant?: InfoVariant
 }
 
 export const CryptoItem: React.FC<CryptoItemProps> = ({
-                                                        data,
-                                                        onClick,
-                                                        showRightSection = true,
-                                                        rightSection,
-                                                        disableNavigation = false,
-                                                        infoVariant = 'price',
-                                                      }) => {
-  const navigate = useNavigate();
+  data,
+  onClick,
+  showRightSection = true,
+  rightSection,
+  disableNavigation = false,
+  infoVariant = 'price',
+}) => {
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    onClick?.(data);
+    onClick?.(data)
     if (!disableNavigation) {
-      navigate(`/currency?walletId=${data.id}`);
+      navigate(`/currency?walletId=${data.id}`)
     }
-  };
+  }
 
   const renderIcon = () => {
     switch (data.symbol) {
       case 'USDT':
-        return <UsdtIcon />;
+        return <UsdtIcon />
       case 'TON':
-        return <TonIcon />;
+        return <TonIcon />
       case 'BTC':
-        return <BtcIcon />;
+        return <BtcIcon />
       default:
         if (data.useCustomIcon && React.isValidElement(data.icon)) {
-          return data.icon;
+          return data.icon
         }
-        return <S.CryptoIconText>{data.icon}</S.CryptoIconText>;
+        return <S.CryptoIconText>{data.icon}</S.CryptoIconText>
     }
-  };
+  }
 
   const renderInfo = () => {
     switch (infoVariant) {
       case 'price':
-        return <S.CryptoRubles>{data.priceInRubles}</S.CryptoRubles>;
+        return <S.CryptoRubles>{data.priceInRubles}</S.CryptoRubles>
       case 'amount':
-        return <S.CryptoRubles>{data.amount}</S.CryptoRubles>;
+        return <S.CryptoRubles>{data.amount}</S.CryptoRubles>
       case 'both':
         return (
           <>
             <S.CryptoRubles>{data.amount}</S.CryptoRubles>
             <S.CryptoRubles>{data.priceInRubles}</S.CryptoRubles>
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <S.CryptoItemContainer onClick={handleClick}>
-      <S.CryptoIcon color={data.iconColor} isUSDT={data.symbol === 'USDT'}>
+      <S.CryptoIcon
+        color={data.iconColor}
+        isUSDT={data.symbol === 'USDT'}
+      >
         {renderIcon()}
       </S.CryptoIcon>
 
@@ -98,26 +102,26 @@ export const CryptoItem: React.FC<CryptoItemProps> = ({
           </S.CryptoAmount>
         ))}
     </S.CryptoItemContainer>
-  );
-};
+  )
+}
 
 interface CryptoListProps {
-  cryptos: CryptoItemData[];
-  onCryptoClick?: (crypto: CryptoItemData) => void;
-  showRightSection?: boolean;
-  renderRightSection?: (crypto: CryptoItemData) => React.ReactNode;
-  disableNavigation?: boolean;
-  infoVariant?: InfoVariant;
+  cryptos: CryptoItemData[]
+  onCryptoClick?: (crypto: CryptoItemData) => void
+  showRightSection?: boolean
+  renderRightSection?: (crypto: CryptoItemData) => React.ReactNode
+  disableNavigation?: boolean
+  infoVariant?: InfoVariant
 }
 
 export const CryptoList: React.FC<CryptoListProps> = ({
-                                                        cryptos,
-                                                        onCryptoClick,
-                                                        showRightSection = true,
-                                                        renderRightSection,
-                                                        disableNavigation = false,
-                                                        infoVariant = 'price',
-                                                      }) => {
+  cryptos,
+  onCryptoClick,
+  showRightSection = true,
+  renderRightSection,
+  disableNavigation = false,
+  infoVariant = 'price',
+}) => {
   return (
     <S.CryptoListContainer>
       {cryptos.map((crypto) => (
@@ -132,5 +136,5 @@ export const CryptoList: React.FC<CryptoListProps> = ({
         />
       ))}
     </S.CryptoListContainer>
-  );
-};
+  )
+}

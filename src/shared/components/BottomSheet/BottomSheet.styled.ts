@@ -1,8 +1,9 @@
+import { colors } from '@/styles/theme'
 import styled from '@emotion/styled'
 
 interface OverlayProps {
-  $isVisible: boolean;
-  $isClosing: boolean;
+  $isVisible: boolean
+  $isClosing: boolean
 }
 
 export const Overlay = styled.div<OverlayProps>(({ $isVisible, $isClosing }) => ({
@@ -16,14 +17,13 @@ export const Overlay = styled.div<OverlayProps>(({ $isVisible, $isClosing }) => 
   pointerEvents: $isVisible ? 'auto' : 'none',
   opacity: $isVisible && !$isClosing ? 1 : 0,
   transition: 'opacity 350ms ease-in-out',
-}));
-
+}))
 
 interface SheetProps {
-  $isVisible: boolean;
-  $isClosing: boolean;
-  $status?: 'default' | 'success' | 'error';
-  $customBackground?: string;
+  $isVisible: boolean
+  $isClosing: boolean
+  $status?: 'default' | 'success' | 'error'
+  $customBackground?: string
 }
 
 export const Sheet = styled.div<SheetProps>((props) => {
@@ -37,17 +37,15 @@ export const Sheet = styled.div<SheetProps>((props) => {
       bottom: '0',
       left: '0',
       right: '0',
-      background: props.$customBackground,
+      background: props.$customBackground || colors.systemBackground,
       borderRadius: '20px 20px 0 0',
       zIndex: 100000,
       minHeight: '50vh',
       overflow: 'hidden',
       transform:
-        props.$isVisible && !props.$isClosing
-          ? 'translateY(0)'
-          : 'translateY(100%)',
+        props.$isVisible && !props.$isClosing ? 'translateY(0)' : 'translateY(100%)',
       transition: 'transform 300ms ease-out',
-    };
+    }
   }
 
   // Базовая логика для статусов
@@ -63,29 +61,27 @@ export const Sheet = styled.div<SheetProps>((props) => {
     background:
       props.$status === 'success'
         ? [
-          `radial-gradient(165.91% 110.87% at 0% 0%,
+            `radial-gradient(165.91% 110.87% at 0% 0%,
                 ${props.theme.colors.primary300} 0%,
                 rgba(242, 242, 247, 0) 60%)`,
-          `radial-gradient(164.95% 98.92% at 52.53% 0%,
+            `radial-gradient(164.95% 98.92% at 52.53% 0%,
                  ${props.theme.colors.success500} 0%,
                 rgba(242, 242, 247, 0) 60%)`,
-          `radial-gradient(165.9% 110.75% at 100% 0%,
+            `radial-gradient(165.9% 110.75% at 100% 0%,
                  ${props.theme.colors.success400} 0%,
                 rgba(242, 242, 247, 0) 60%)`,
-          ` ${props.theme.colors.systemElevatedBackground}`,
-        ].join(', ')
+            ` ${props.theme.colors.systemElevatedBackground}`,
+          ].join(', ')
         : '#f5f5f5',
     borderRadius: '20px 20px 0 0',
     zIndex: 100000,
     minHeight: '50vh',
     overflow: 'hidden',
     transform:
-      props.$isVisible && !props.$isClosing
-        ? 'translateY(0)'
-        : 'translateY(100%)',
+      props.$isVisible && !props.$isClosing ? 'translateY(0)' : 'translateY(100%)',
     transition: 'transform 300ms ease-out',
-  };
-});
+  }
+})
 
 export const CloseIconButton = styled.button<{ $customCloseColor?: string }>`
   position: absolute;
@@ -110,15 +106,14 @@ export const CloseIconButton = styled.button<{ $customCloseColor?: string }>`
   }
 `
 
-export const TopWrapper = styled.div({
-});
+export const TopWrapper = styled.div({})
 
 export const Header = styled.div({
   position: 'relative',
   height: '44px',
   marginBottom: '14px',
   padding: '13px 0',
-});
+})
 
 export const Title = styled.h2(({ theme }) => ({
   fontSize: '16px',
@@ -131,8 +126,7 @@ export const Title = styled.h2(({ theme }) => ({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
-}));
-
+}))
 
 export const CloseButton = styled.button<{ $customCloseColor?: string }>`
   position: absolute;
@@ -153,18 +147,17 @@ export const CloseButton = styled.button<{ $customCloseColor?: string }>`
 `
 
 export const Content = styled.div({
-  padding: '0 14px',
-  overflowY: 'auto'
-});
+  overflowY: 'auto',
+})
 
 export const Footer = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0 14px 40px',
-});
+})
 
-export const BottomButton = styled.button<{ $disabled?: boolean }>(({theme}) => ({
+export const BottomButton = styled.button<{ $disabled?: boolean }>(({ theme }) => ({
   width: '100%',
   padding: '11px',
   backgroundColor: theme.colors.primary500,
@@ -175,8 +168,4 @@ export const BottomButton = styled.button<{ $disabled?: boolean }>(({theme}) => 
   fontWeight: '600',
   cursor: 'pointer',
   transition: 'background-color 0.3s ease',
-
-  '&:hover': {
-    opacity: 0.7,
-  },
-}));
+}))

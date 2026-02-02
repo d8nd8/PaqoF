@@ -1,37 +1,38 @@
-import React from 'react';
-import { type CryptoItemData } from '@/features/crypto-list/CryptoList';
-import UsdtIcon from '@icons/usdt-icon.svg?react';
-import ChevronDownIcon from '@icons/chevron-left.svg?react';
-import * as S from './PaymentOverlay.styled';
+import React from 'react'
+import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
+import ChevronDownIcon from '@icons/chevron-left.svg?react'
+import UsdtIcon from '@icons/usdt-icon.svg?react'
+
+import * as S from './PaymentOverlay.styled'
 
 export interface CurrencyButtonProps {
-  currency?: CryptoItemData;
-  onClick: () => void;
-  disabled?: boolean;
-  hasOptions?: boolean;
-  placeholder?: string;
+  currency?: CryptoItemData
+  onClick: () => void
+  disabled?: boolean
+  hasOptions?: boolean
+  placeholder?: string
 }
 
 export const CurrencyButton: React.FC<CurrencyButtonProps> = ({
-                                                                currency,
-                                                                onClick,
-                                                                disabled = false,
-                                                                hasOptions = true,
-                                                                placeholder = 'Выберите валюту'
-                                                              }) => {
+  currency,
+  onClick,
+  disabled = false,
+  hasOptions = true,
+  placeholder = 'Выберите валюту',
+}) => {
   const renderIcon = () => {
-    if (!currency) return null;
+    if (!currency) return null
 
     if (currency.symbol === 'USDT') {
-      return <UsdtIcon />;
+      return <UsdtIcon />
     }
 
     if (currency.useCustomIcon && React.isValidElement(currency.icon)) {
-      return currency.icon;
+      return currency.icon
     }
 
-    return <S.CurrencyIconText>{currency.icon}</S.CurrencyIconText>;
-  };
+    return <S.CurrencyIconText>{currency.icon}</S.CurrencyIconText>
+  }
 
   return (
     <S.CurrencyButtonContainer
@@ -42,7 +43,10 @@ export const CurrencyButton: React.FC<CurrencyButtonProps> = ({
       <S.CurrencyContent>
         {currency ? (
           <>
-            <S.CurrencyIcon color={currency.iconColor} isUSDT={currency.symbol === 'USDT'}>
+            <S.CurrencyIcon
+              color={currency.iconColor}
+              isUSDT={currency.symbol === 'USDT'}
+            >
               {renderIcon()}
             </S.CurrencyIcon>
             <S.CurrencyInfo>
@@ -61,5 +65,5 @@ export const CurrencyButton: React.FC<CurrencyButtonProps> = ({
         </S.ChevronContainer>
       )}
     </S.CurrencyButtonContainer>
-  );
-};
+  )
+}

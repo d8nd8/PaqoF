@@ -11,7 +11,6 @@ export const colors = {
   reverseBackgroundTertiary: '#EBEBF5', // 30% opacity
   reverseBackgroundQuaternary: '#EBEBF5', // 16% opacity
 
-
   // UI Colors / Neutral
   neutral100: '#FFFFFF',
   neutral200: '#F1F1F1',
@@ -79,7 +78,7 @@ export const colors = {
   systemBackground: '#F2F2F7',
   systemElevatedBackground: '#FFFFFF',
   systemBlurryOverlay: '#3C3C43', // 60% opacity
-} as const;
+} as const
 
 export const theme = {
   colors,
@@ -94,13 +93,14 @@ export const theme = {
     xxl: '24px',
     xxxl: '32px',
     huge: '40px',
-    header: "50px",
-    page: "14px",
+    header: '50px',
+    page: '14px',
   },
 
   // Typography
   typography: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
     fontSize: {
       xs: '12px',
       sm: '14px',
@@ -197,8 +197,8 @@ export const theme = {
 
     // Gradients
     gradientPrimary: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  }
-} as const;
+  },
+} as const
 
-export type Theme = typeof theme;
-export type Colors = typeof colors;
+export type Theme = typeof theme
+export type Colors = typeof colors

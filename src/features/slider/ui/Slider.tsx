@@ -1,43 +1,44 @@
-import React, { useRef, useState } from "react";
-import type { Swiper as SwiperType } from "swiper";
-import { Autoplay, EffectFade } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useRef, useState } from 'react'
+import type { Swiper as SwiperType } from 'swiper'
+import { Autoplay, EffectFade } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-import "swiper/css";
-import "swiper/css/effect-fade";
+import 'swiper/css'
+import 'swiper/css/effect-fade'
 
-import { SliderPagination } from "@/features/slider/ui/SliderPagination";
-import * as S from "./Slider.styled";
+import { SliderPagination } from '@/features/slider/ui/SliderPagination'
 import TelegramMainButton from '@/shared/components/TelegramMainButton/TelegramMainButton'
 
+import * as S from './Slider.styled'
 
 interface Slide {
-  title: string;
-  description: string;
-  image?: string;
+  title: string
+  description: string
+  image?: string
+  backgroundSize?: string
+  backgroundPosition?: string
+  /** Bottom offset in px: background is drawn in area above this, image anchored to top (no crop) */
+  backgroundBottomOffset?: number
 }
 
 interface SliderProps {
-  slides: Slide[];
-  autoPlayDuration?: number;
-  onButtonClick?: () => void;
+  slides: Slide[]
+  autoPlayDuration?: number
+  onButtonClick?: () => void
 }
 
 export const Slider: React.FC<SliderProps> = ({
-                                                slides,
-                                                autoPlayDuration = 5000,
-                                                onButtonClick,
-                                              }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const swiperRef = useRef<SwiperType | null>(null);
-
-
-
+  slides,
+  autoPlayDuration = 5000,
+  onButtonClick,
+}) => {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const swiperRef = useRef<SwiperType | null>(null)
 
   const handleSlideChange = (index: number) => {
-    setCurrentSlide(index);
-    swiperRef.current?.slideToLoop(index);
-  };
+    setCurrentSlide(index)
+    swiperRef.current?.slideToLoop(index)
+  }
 
   return (
     <S.SliderContainer>
@@ -46,7 +47,7 @@ export const Slider: React.FC<SliderProps> = ({
 
       <Swiper
         modules={[Autoplay, EffectFade]}
-        effect="fade"
+        effect="slide"
         fadeEffect={{ crossFade: true }}
         loop
         autoplay={{ delay: autoPlayDuration, disableOnInteraction: false }}
@@ -58,26 +59,39 @@ export const Slider: React.FC<SliderProps> = ({
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         style={{
           flex: 1,
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
+          marginTop: '120px',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
         }}
         slidesPerView={1}
         centeredSlides={false}
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} className="slider-slide">
-            <S.SlideCenter>
-              {slide.image && (
-                <img
-                  src={slide.image}
-                  alt={slide.title}
+          <SwiperSlide
+            key={index}
+            className="slider-slide"
+          >
+            <S.SlideCenter
+              style={
+                slide.backgroundBottomOffset
+                  ? undefined
+                  : {
+                      backgroundImage: `url(${slide.image})`,
+                      backgroundSize: slide.backgroundSize,
+                      backgroundPosition: slide.backgroundPosition,
+                      backgroundRepeat: 'no-repeat',
+                    }
+              }
+            >
+              {slide.backgroundBottomOffset != null && slide.image && (
+                <S.SlideBackgroundZone
                   style={{
-                    width: "100%",
-                    maxWidth: "380px",
-                    height: "auto",
-                    objectFit: "contain",
+                    height: `calc(100% - ${slide.backgroundBottomOffset}px)`,
+                    backgroundImage: `url(${slide.image})`,
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'bottom',
                   }}
                 />
               )}
@@ -101,5 +115,5 @@ export const Slider: React.FC<SliderProps> = ({
         callback={onButtonClick || (() => {})}
       />
     </S.SliderContainer>
-  );
-};
+  )
+}
