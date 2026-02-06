@@ -1,28 +1,53 @@
-import React from 'react';
-import * as S from './ReferralCodes.styled';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import CopyIcon from '@/assets/icons/profile/copy-outline.svg?react'
 import { Input } from '@/shared/components/Input'
-import CopyIcon from '@/assets/icons/profile/copy-outline.svg?react';
-import { useTranslation } from 'react-i18next';
+import { Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+
+import * as S from './ReferralCodes.styled'
+
+const SUCCESS_ICON_DURATION_MS = 2000
 
 type Props = {
-  referralCode?: string;
-  referralLink?: string;
-  onCopyCode?: (text: string) => void;
-  className?: string;
-};
+  referralCode?: string
+  referralLink?: string
+  onCopyCode?: (text: string) => void
+  className?: string
+}
+
+type CopiedField = 'code' | 'link' | null
 
 export const ReferralCodes: React.FC<Props> = ({
-                                                 referralCode = 'dko777ka',
-                                                 referralLink = 'https://t.me/papagowallet',
-                                                 onCopyCode,
-                                                 className
-                                               }) => {
-  const { t } = useTranslation();
+  referralCode = 'dko777ka',
+  referralLink = 'https://t.me/papagowallet',
+  onCopyCode,
+  className,
+}) => {
+  const { t } = useTranslation()
+  const [copiedField, setCopiedField] = useState<CopiedField>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    onCopyCode?.(text);
-  };
+  const handleCopy = useCallback(
+    (text: string, field: CopiedField) => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      navigator.clipboard.writeText(text).then(() => {
+        onCopyCode?.(text)
+        setCopiedField(field)
+        timeoutRef.current = setTimeout(() => {
+          setCopiedField(null)
+          timeoutRef.current = null
+        }, SUCCESS_ICON_DURATION_MS)
+      })
+    },
+    [onCopyCode],
+  )
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    },
+    [],
+  )
 
   return (
     <S.CodesSection className={className}>
@@ -30,19 +55,19 @@ export const ReferralCodes: React.FC<Props> = ({
         label={t('referral.codes.code')}
         value={referralCode}
         readOnly
-        rightIcon={<CopyIcon />}
-        onRightIconClick={() => handleCopy(referralCode)}
+        rightIcon={copiedField === 'code' ? <Check size={20} /> : <CopyIcon />}
+        onRightIconClick={() => handleCopy(referralCode, 'code')}
       />
 
       <Input
         label={t('referral.codes.link')}
         value={referralLink}
         readOnly
-        rightIcon={<CopyIcon />}
-        onRightIconClick={() => handleCopy(referralLink)}
+        rightIcon={copiedField === 'link' ? <Check size={20} /> : <CopyIcon />}
+        onRightIconClick={() => handleCopy(referralLink, 'link')}
       />
     </S.CodesSection>
-  );
-};
+  )
+}
 
-export default ReferralCodes;
+export default ReferralCodes

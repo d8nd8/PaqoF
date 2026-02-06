@@ -7,8 +7,8 @@ import { theme } from '@/styles/theme'
 import { ThemeProvider } from '@emotion/react'
 import {
   init as initTelegramSdk,
-  viewport,
   swipeBehavior,
+  viewport,
 } from '@telegram-apps/sdk-react'
 import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
