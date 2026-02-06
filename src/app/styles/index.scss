@@ -46,6 +46,12 @@ button {
   transition: none !important;
 }
 
+.wrapper-page {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
 .welcome-page {
   height: 100%;
   min-height: auto;

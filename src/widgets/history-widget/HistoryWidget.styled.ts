@@ -14,16 +14,20 @@ export const HistoryWrapper = styled.div<{ $variant?: 'default' | 'card' }>(
     border: $variant === 'card' ? `1px solid ${theme.colors.neutral300}` : 'none',
     borderTop: 'none',
 
-    ...($variant === 'card'
-      ? {
-          width: '100%',
-          maxWidth: '100%',
-          margin: '0 auto',
-          height: 'auto',
-        }
-      : {
-          minHeight: '100%',
-        }),
+    // ...($variant === 'card'
+    //   ? {
+    //       width: '100%',
+    //       maxWidth: '100%',
+    //       margin: '0 auto',
+    //       height: 'auto',
+    //     }
+    //   : {
+    //       minHeight: '100%',
+    //     }),
+    width: '100%',
+    maxWidth: '100%',
+    margin: '0 auto',
+    height: 'auto',
   }),
 )
 export const Header = styled.div<{ $variant?: 'default' | 'card' }>(
