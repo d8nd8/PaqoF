@@ -63,7 +63,7 @@ export const Slider: React.FC<SliderProps> = ({
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         style={{
           flex: 1,
-          marginTop: '120px',
+          marginTop: '60px',
           width: '100%',
           display: 'flex',
           alignItems: 'center',

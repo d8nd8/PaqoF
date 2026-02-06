@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 export const WelcomeSliderWrapper = styled.div<{ $insetTop?: number }>(({ theme }) => ({
   position: 'relative',
   width: '100%',
-  height: 'var(--app-height)',
+  height: '100%',
   boxSizing: 'border-box',
   background: theme.colors.systemBackground,
   display: 'flex',
