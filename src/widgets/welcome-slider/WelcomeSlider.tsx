@@ -58,6 +58,7 @@ export const WelcomeSlider: React.FC = () => {
       </LangButton>
 
       <Slider
+        showButton={!isLangOpen}
         slides={slides}
         autoPlayDuration={5000}
         onButtonClick={handleGoToWallet}

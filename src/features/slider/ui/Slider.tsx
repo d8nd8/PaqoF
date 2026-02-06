@@ -8,6 +8,7 @@ import 'swiper/css/effect-fade'
 
 import { SliderPagination } from '@/features/slider/ui/SliderPagination'
 import TelegramMainButton from '@/shared/components/TelegramMainButton/TelegramMainButton'
+import { useTranslation } from 'react-i18next'
 
 import * as S from './Slider.styled'
 
@@ -22,16 +23,19 @@ interface Slide {
 }
 
 interface SliderProps {
+  showButton?: boolean
   slides: Slide[]
   autoPlayDuration?: number
   onButtonClick?: () => void
 }
 
 export const Slider: React.FC<SliderProps> = ({
+  showButton = true,
   slides,
   autoPlayDuration = 5000,
   onButtonClick,
 }) => {
+  const { t } = useTranslation()
   const [currentSlide, setCurrentSlide] = useState(0)
   const swiperRef = useRef<SwiperType | null>(null)
 
@@ -110,10 +114,12 @@ export const Slider: React.FC<SliderProps> = ({
         />
       </Swiper>
 
-      <TelegramMainButton
-        text="Перейти в кошелёк"
-        callback={onButtonClick || (() => {})}
-      />
+      {showButton && (
+        <TelegramMainButton
+          text={t('welcome.buttonText')}
+          callback={onButtonClick || (() => {})}
+        />
+      )}
     </S.SliderContainer>
   )
 }

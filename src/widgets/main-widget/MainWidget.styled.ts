@@ -9,9 +9,9 @@ export const Wrapper = styled.div(({ theme }) => ({
   minHeight: '100vh',
 }))
 
-export const CryptoWrapper = styled.div(({ theme }) => ({
+export const CryptoWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '14px',
-  padding: '0 14px',
-}))
+  padding: '0 14px 14px',
+})

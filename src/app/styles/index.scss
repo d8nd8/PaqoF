@@ -15,10 +15,9 @@ body {
 }
 
 :root {
-  --app-height: 100vh;
+  --app-height: 100svh;
   --safe-area-top: env(safe-area-inset-top, 0px);
 }
-
 
 /* 🔹 Убираем фокус, рамки и тени у всех элементов */
 *:focus,
@@ -27,7 +26,6 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
-
 
 * {
   -webkit-tap-highlight-color: transparent !important;
@@ -39,7 +37,6 @@ body {
   -webkit-user-select: none;
 }
 
-
 a,
 button {
   text-decoration: none !important;
@@ -48,4 +45,3 @@ button {
   -webkit-tap-highlight-color: transparent !important;
   transition: none !important;
 }
-

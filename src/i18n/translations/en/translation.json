@@ -3,6 +3,7 @@
   "Something went wrong": "Something went wrong",
 
   "welcome": {
+    "buttonText": "Go to wallet",
     "slide1": {
       "title": "Like a crypto card, only crypto-SBP",
       "description": "Top up your wallet with the cryptocurrencies convenient for you",

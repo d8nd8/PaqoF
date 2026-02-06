@@ -89,7 +89,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
   }, [wallets, getRateToRubSync])
 
   return (
-    <S.Wrapper>
+    <S.Wrapper style={{ minHeight: 'auto' }}>
       <BalanceCard
         balance={totalBalanceRub}
         currency="₽"
