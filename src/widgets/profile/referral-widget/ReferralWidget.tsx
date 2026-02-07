@@ -1,130 +1,132 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import RefBackTab from "../refback-tab/RefBackTab";
-import * as S from "./ReferralWidget.styled";
-import { Switcher } from "@/shared/components/Switcher/Switcher";
-import { BadgeProgress } from "@/features/profile/badge-progress";
-import { PakogochiDisplay } from "@/features/profile/pakogochi-display/PakogochiDisplay";
-import InfoIcon from "@/assets/icons/profile/information-circle.svg?react";
-import { PakogochiTab } from "@/widgets/profile/pakogochi-tab/PakogochiTab";
-import { InfoOverlay } from "@/features/profile/info-overlay/InfoOverlay";
-import { useTranslation } from "react-i18next";
-import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
+import React, { useEffect, useState } from 'react'
+import InfoIcon from '@/assets/icons/profile/information-circle.svg?react'
+import { BadgeProgress } from '@/features/profile/badge-progress'
+import { InfoOverlay } from '@/features/profile/info-overlay/InfoOverlay'
+import { PakogochiDisplay } from '@/features/profile/pakogochi-display/PakogochiDisplay'
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
+import { Switcher } from '@/shared/components/Switcher/Switcher'
+import { PakogochiTab } from '@/widgets/profile/pakogochi-tab/PakogochiTab'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
-type TabType = "pakogochi" | "refback";
+import RefBackTab from '../refback-tab/RefBackTab'
+import * as S from './ReferralWidget.styled'
+
+type TabType = 'pakogochi' | 'refback'
 
 type ReferralData = {
-  id: string;
-  username: string;
-  avatar: string;
-  earnings: string;
-};
+  id: string
+  username: string
+  avatar: string
+  earnings: string
+}
 
 type Props = {
-  progress?: number;
-  balance?: number;
-  balanceUSD?: number;
-  referralCode?: string;
-  referralLink?: string;
-  referrals?: ReferralData[];
-  referralsCount?: number;
-  level?: number;
-  experience?: number;
-  maxExperience?: number;
-  upgradeAmount?: string;
-  upgradeText?: string;
-  onBack?: () => void;
-  onInfo?: () => void;
-  onWithdraw?: () => void;
-  onCopyCode?: (text: string) => void;
-  onOverlayStateChange?: (isOpen: boolean) => void;
-  initialTab?: TabType;
-};
+  progress?: number
+  balance?: number
+  balanceUSD?: number
+  referralCode?: string
+  referralLink?: string
+  referrals?: ReferralData[]
+  referralsCount?: number
+  level?: number
+  experience?: number
+  maxExperience?: number
+  upgradeAmount?: string
+  upgradeText?: string
+  onBack?: () => void
+  onInfo?: () => void
+  onWithdraw?: () => void
+  onCopyCode?: (text: string) => void
+  onOverlayStateChange?: (isOpen: boolean) => void
+  initialTab?: TabType
+}
 
 const levelBackgrounds = {
-  1: "linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
-  2: "linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
-  3: "linear-gradient(225deg, #BACFFF 0%, #132F55 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)",
-  4: "linear-gradient(225deg, #FFCEBA 0%, #441355 100%)",
-  5: "linear-gradient(225deg, #5E5E5E 0%, #0B0B0B 100%)",
-};
+  1: 'linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
+  2: 'linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
+  3: 'linear-gradient(225deg, #BACFFF 0%, #132F55 100%), linear-gradient(225deg, #FFFFFF 0%, #D30066 100%), linear-gradient(225deg, #C5C5C5 0%, #929292 100%)',
+  4: 'linear-gradient(225deg, #FFCEBA 0%, #441355 100%)',
+  5: 'linear-gradient(225deg, #5E5E5E 0%, #0B0B0B 100%)',
+}
 
 export const ReferralWidget: React.FC<Props> = ({
-                                                  progress = 50,
-                                                  balance,
-                                                  balanceUSD,
-                                                  referralCode,
-                                                  referralLink,
-                                                  referrals,
-                                                  referralsCount,
-                                                  experience,
-                                                  maxExperience,
-                                                  upgradeAmount,
-                                                  upgradeText,
-                                                  onBack,
-                                                  onInfo,
-                                                  onWithdraw,
-                                                  onCopyCode,
-                                                  onOverlayStateChange,
-                                                  initialTab = "refback",
-                                                }) => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  progress = 50,
+  balance,
+  balanceUSD,
+  referralCode,
+  referralLink,
+  referrals,
+  referralsCount,
+  experience,
+  maxExperience,
+  upgradeAmount,
+  upgradeText,
+  onBack,
+  onInfo,
+  onWithdraw,
+  onCopyCode,
+  onOverlayStateChange,
+  initialTab = 'refback',
+}) => {
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
-  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
-  const [isInfoOverlayOpen, setIsInfoOverlayOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab)
+  const [isInfoOverlayOpen, setIsInfoOverlayOpen] = useState(false)
 
   useEffect(() => {
-    onOverlayStateChange?.(isInfoOverlayOpen);
-  }, [isInfoOverlayOpen, onOverlayStateChange]);
+    onOverlayStateChange?.(isInfoOverlayOpen)
+  }, [isInfoOverlayOpen, onOverlayStateChange])
 
-  const handleTabChange = (key: string) => setActiveTab(key as TabType);
+  const handleTabChange = (key: string) => setActiveTab(key as TabType)
 
   const getCurrentLevel = () => {
-    if (progress >= 50) return 5;
-    if (progress >= 40) return 4;
-    if (progress >= 30) return 3;
-    if (progress >= 20) return 2;
-    return 1;
-  };
+    if (progress >= 50) return 5
+    if (progress >= 40) return 4
+    if (progress >= 30) return 3
+    if (progress >= 20) return 2
+    return 1
+  }
 
   const handleWithdraw = () => {
-    if (activeTab === "refback") {
-      setIsInfoOverlayOpen(true);
+    if (activeTab === 'refback') {
+      setIsInfoOverlayOpen(true)
     } else {
-      onWithdraw?.();
+      onWithdraw?.()
     }
-  };
+  }
 
   const handleInfoClick = () => {
-    setIsInfoOverlayOpen(true);
-    onInfo?.();
-  };
+    setIsInfoOverlayOpen(true)
+    onInfo?.()
+  }
 
   const handleOverlayConfirm = () => {
-    setIsInfoOverlayOpen(false);
-    if (activeTab === "refback") {
-      onWithdraw?.();
+    setIsInfoOverlayOpen(false)
+    if (activeTab === 'refback') {
+      onWithdraw?.()
     }
-  };
+  }
 
-  const handleOverlayClose = () => setIsInfoOverlayOpen(false);
+  const handleOverlayClose = () => setIsInfoOverlayOpen(false)
 
   const handleBackClick = () => {
-    if (onBack) onBack();
-    else navigate(-1);
-  };
+    if (onBack) onBack()
+    else navigate(-1)
+  }
 
-  const currentLevel = getCurrentLevel();
-  const backgroundGradient = levelBackgrounds[currentLevel as keyof typeof levelBackgrounds];
-  const headerColor = currentLevel === 3 || currentLevel === 5 ? "#FFFFFF" : undefined;
+  const currentLevel = getCurrentLevel()
+  const backgroundGradient =
+    levelBackgrounds[currentLevel as keyof typeof levelBackgrounds]
+  const headerColor = currentLevel === 3 || currentLevel === 5 ? '#FFFFFF' : undefined
 
   return (
     <>
-      <S.WidgetWrapper>
+      <S.WidgetWrapper style={{ overflow: isInfoOverlayOpen ? 'hidden' : 'auto' }}>
         <S.SwitchableContent background={backgroundGradient}>
           <PageHeader
-            title={t("referral.title")}
+            title={t('referral.title')}
             onBack={handleBackClick}
             rightSlot={<InfoIcon onClick={handleInfoClick} />}
           />
@@ -132,8 +134,8 @@ export const ReferralWidget: React.FC<Props> = ({
           <S.SwitcherContainer>
             <Switcher
               options={[
-                { key: "pakogochi", label: t("referral.tabs.pakogochi") },
-                { key: "refback", label: t("referral.tabs.refback") },
+                { key: 'pakogochi', label: t('referral.tabs.pakogochi') },
+                { key: 'refback', label: t('referral.tabs.refback') },
               ]}
               activeKey={activeTab}
               onChange={handleTabChange}
@@ -141,7 +143,7 @@ export const ReferralWidget: React.FC<Props> = ({
             />
           </S.SwitcherContainer>
 
-          {activeTab === "refback" ? (
+          {activeTab === 'refback' ? (
             <>
               <S.PlaceholderBox />
               <BadgeProgress
@@ -151,12 +153,15 @@ export const ReferralWidget: React.FC<Props> = ({
               />
             </>
           ) : (
-            <PakogochiDisplay level={currentLevel} progress={progress} />
+            <PakogochiDisplay
+              level={currentLevel}
+              progress={progress}
+            />
           )}
         </S.SwitchableContent>
 
         <S.TabContent>
-          {activeTab === "refback" ? (
+          {activeTab === 'refback' ? (
             <RefBackTab
               progress={progress}
               balance={balance}
@@ -184,8 +189,8 @@ export const ReferralWidget: React.FC<Props> = ({
         onConfirm={handleOverlayConfirm}
         title={t(`referral.overlays.${activeTab}.title`)}
         description={t(`referral.overlays.${activeTab}.description`)}
-        buttonText={t("referral.overlays.close")}
+        buttonText={t('referral.overlays.close')}
       />
     </>
-  );
-};
+  )
+}
