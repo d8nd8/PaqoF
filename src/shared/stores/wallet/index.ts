@@ -19,7 +19,7 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
       return wallets
     }
 
-    set({ loading: true })
+    set({ loading: true, wallets: [] })
     try {
       console.log('🔄 Fetching wallets from API...')
       const wallets = await walletApi.getWallets()

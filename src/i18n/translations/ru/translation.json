@@ -366,8 +366,8 @@
     },
     "badge": {
       "progress": {
-        "label": "Badge progress",
-        "upgradeText": "Until upgrade",
+        "label": "Прогресс",
+        "upgradeText": "До следующего уровня",
         "upgradeAmount": "{{amount}}"
       }
     },
@@ -458,7 +458,9 @@
     "selectCrypto": "Выберите криптовалюту",
     "selectNetwork": "Выберите сеть",
     "commission": "Комиссия {{value}}",
-    "continue": "Продолжить"
+    "continue": "Продолжить",
+    "loading": "Загрузка...",
+    "selectCryptoFirst": "Выберите криптовалюту"
   },
   "commission": {
     "title": "Почему комиссия 2.75$?",

@@ -7,8 +7,6 @@ export const OverlayWrapper = styled.div<{ insetTop?: number }>(({ theme }) => (
   display: 'flex',
   flexDirection: 'column',
   zIndex: theme.zIndex.modal,
-  paddingLeft: 14,
-  paddingRight: 14,
 }))
 
 export const Header = styled.div({
@@ -38,8 +36,8 @@ export const BackButton = styled.button(({ theme }) => ({
   },
 }))
 
-export const AmountInput = styled.input<{ $length: number; $hasError?: boolean }>(
-  ({ theme, $length, $hasError }) => ({
+export const AmountInput = styled.input<{ $hasError?: boolean }>(
+  ({ theme, $hasError }) => ({
     border: 'none',
     outline: 'none',
     background: 'transparent',
@@ -49,9 +47,11 @@ export const AmountInput = styled.input<{ $length: number; $hasError?: boolean }
     letterSpacing: '0.4px',
     color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
     minWidth: '2ch',
-    width: `${Math.min(Math.max(2, $length), 7)}ch`,
+
     textAlign: 'left',
     padding: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   }),
 )
 
@@ -68,7 +68,7 @@ export const Title = styled.h2(({ theme }) => ({
 
 export const Content = styled.div({
   flex: 1,
-  padding: '16px',
+  padding: '0 16px',
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',
@@ -89,12 +89,16 @@ export const Card = styled.div(({ theme }) => ({
   background: theme.colors.neutral100,
   display: 'flex',
   flexDirection: 'column',
-  gap: '14px',
+  gap: '4px',
 }))
 
 export const AmountRow = styled.div({
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: '1fr 40px',
+  width: '100%',
   justifyContent: 'space-between',
+  gap: '30px',
+  overflow: 'hidden',
   alignItems: 'center',
 })
 
@@ -104,6 +108,7 @@ export const AmountSub = styled.div<{ $hasError?: boolean }>(({ theme, $hasError
   fontWeight: theme.typography.fontWeight.normal,
   letterSpacing: '-0.08px',
   color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
+  marginBottom: '10px',
 }))
 
 export const PresetRow = styled.div({
@@ -122,11 +127,12 @@ export const PresetButton = styled.button(({ theme }) => ({
   borderRadius: '8px',
   border: `1px solid ${theme.colors.neutral300}`,
   background: theme.colors.textQuaternary,
-  fontSize: theme.typography.fontSize.sm,
+  fontSize: '13px',
   padding: '5px 10px',
   cursor: 'pointer',
+  lineHeight: '18px',
+  letterSpacing: '-0.08px',
   color: theme.colors.textPrimary,
-  fontWeight: 500,
   textDecoration: 'none',
   appearance: 'none',
   WebkitAppearance: 'none',
@@ -135,6 +141,7 @@ export const PresetButton = styled.button(({ theme }) => ({
 
 export const AmountValue = styled.div<{ $hasError?: boolean }>(
   ({ theme, $hasError }) => ({
+    overflow: 'hidden',
     fontSize: '34px',
     fontWeight: 700,
     lineHeight: '41px',
@@ -142,8 +149,6 @@ export const AmountValue = styled.div<{ $hasError?: boolean }>(
     color: $hasError ? theme.colors.error500 : theme.colors.textPrimary,
     display: 'flex',
     alignItems: 'baseline',
-    gap: '0px',
-    marginBottom: '-10px',
     transition: 'color 0.2s ease',
   }),
 )
@@ -164,7 +169,8 @@ export const ErrorSub = styled.div(({ theme }) => ({
   fontWeight: 400,
   letterSpacing: '-0.08px',
   color: `${theme.colors.error500} !important`,
-  marginTop: '4px',
+
+  marginBottom: '10px',
   '& span': {
     color: `${theme.colors.blueberry} !important`,
     cursor: 'pointer',
@@ -227,7 +233,6 @@ export const CardTitle = styled.div(({ theme }) => ({
   lineHeight: '18px',
   fontWeight: theme.typography.fontWeight.normal,
   color: theme.colors.textPrimary,
-  marginBottom: '-10px',
 }))
 
 export const BottomButton = styled.button(({ theme }) => ({

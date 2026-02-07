@@ -119,12 +119,10 @@ export const WalletAddressOverlay: React.FC<WalletAddressOverlayProps> = ({
             <ChevronRightIcon className="chevron" />
           </S.CommissionButton>
 
-          {copied && (
-            <S.CopyNotification>
-              <CheckIcon />
-              {t("currency.overlays.walletAddress.copied")}
-            </S.CopyNotification>
-          )}
+          <S.CopyNotification $visible={copied}>
+            <CheckIcon />
+            {t("currency.overlays.walletAddress.copied")}
+          </S.CopyNotification>
         </S.QRCard>
       </S.Content>
 

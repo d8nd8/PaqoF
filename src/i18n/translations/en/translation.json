@@ -456,7 +456,9 @@
     "selectCrypto": "Select cryptocurrency",
     "selectNetwork": "Select network",
     "commission": "Fee {{value}}",
-    "continue": "Continue"
+    "continue": "Continue",
+    "loading": "Loading...",
+    "selectCryptoFirst": "Select cryptocurrency first"
   },
   "commission": {
     "title": "Why is the commission 2.75$?",
