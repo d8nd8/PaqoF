@@ -7,6 +7,8 @@ export const OverlayWrapper = styled.div<{ insetTop?: number }>(({ theme }) => (
   display: 'flex',
   flexDirection: 'column',
   zIndex: theme.zIndex.modal,
+  paddingLeft: '14px',
+  paddingRight: '14px',
 }))
 
 export const Header = styled.div({
@@ -68,7 +70,6 @@ export const Title = styled.h2(({ theme }) => ({
 
 export const Content = styled.div({
   flex: 1,
-  padding: '0 16px',
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',

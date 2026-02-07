@@ -63,7 +63,6 @@ export const ContentWrapper = styled.div(({ theme }) => ({
 
 export const Content = styled.div({
   flex: 1,
-  padding: '0 16px',
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',

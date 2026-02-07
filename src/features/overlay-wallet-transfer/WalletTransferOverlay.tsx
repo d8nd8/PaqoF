@@ -96,8 +96,9 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     fiat ? val.toFixed(0) : val.toFixed(2)
   const formatAmountForInput = (val: number, fiat: boolean) =>
     formatAmountForDisplay(val, fiat).replace('.', ',')
-  const displayAmount =
-    isAmountFocused ? amountInputStr : formatAmountForInput(amount, isFiatMode)
+  const displayAmount = isAmountFocused
+    ? amountInputStr
+    : formatAmountForInput(amount, isFiatMode)
 
   const handleContinue = () => {
     if (sendAmount <= 0) {
@@ -161,7 +162,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     <>
       <S.OverlayWrapper insetTop={fullscreen ? top + 50 : top}>
         <PageHeader
-          customTopInset={105}
+          customTopInset={108}
           title={t('currency.overlays.transfer.title')}
           onBack={onClose}
           rightSlot={null}
@@ -375,11 +376,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
         isOpen={showConfirm}
         onClose={() => setShowConfirm(false)}
         crypto={selectedCrypto}
-        amount={
-          isFiatMode && rate
-            ? (amount / rate).toFixed(8)
-            : amount.toFixed(8)
-        }
+        amount={isFiatMode && rate ? (amount / rate).toFixed(8) : amount.toFixed(8)}
         amountFiat={
           isFiatMode
             ? `${formatAmountForDisplay(amount, true)} ₽`
