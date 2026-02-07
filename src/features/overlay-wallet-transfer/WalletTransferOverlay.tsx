@@ -150,7 +150,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
         />
 
         <S.Content>
-          <S.Card>
+          <S.Card style={{ overflow: 'hidden' }}>
             <S.CardTitle>{t('currency.overlays.transfer.amount.title')}</S.CardTitle>
 
             <S.AmountRow>

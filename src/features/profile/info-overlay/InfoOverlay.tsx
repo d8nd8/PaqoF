@@ -1,24 +1,25 @@
-import React from 'react';
-import * as S from './InfoOverlay.styled';
+import React from 'react'
 import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet'
 
+import * as S from './InfoOverlay.styled'
+
 interface InfoOverlayProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  description: string;
-  buttonText?: string;
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
+  title: string
+  description: string
+  buttonText?: string
 }
 
 export const InfoOverlay: React.FC<InfoOverlayProps> = ({
-                                                          isOpen,
-                                                          onClose,
-                                                          onConfirm,
-                                                          title,
-                                                          description,
-                                                          buttonText = "Закрыть",
-                                                        }) => {
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  description,
+  buttonText = 'Закрыть',
+}) => {
   return (
     <BottomSheet
       isOpen={isOpen}
@@ -34,5 +35,5 @@ export const InfoOverlay: React.FC<InfoOverlayProps> = ({
         <S.Description>{description}</S.Description>
       </S.Content>
     </BottomSheet>
-  );
-};
+  )
+}

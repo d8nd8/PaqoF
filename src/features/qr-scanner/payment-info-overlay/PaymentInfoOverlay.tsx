@@ -1,38 +1,39 @@
-import React from 'react';
-import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet';
-import QrCodeScannerImage from '@images/scanner/qr-code-scanner.png';
-import * as S from './PaymentInfoOverlay.styled';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet'
+import QrCodeScannerImage from '@images/scanner/qr-code-scanner.png'
+import { useTranslation } from 'react-i18next'
+
+import * as S from './PaymentInfoOverlay.styled'
 
 export interface OverlayScannerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
-  description?: string;
-  buttonText?: string;
-  onButtonClick?: () => void;
-  image?: string;
-  isInStorybook?: boolean;
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  description?: string
+  buttonText?: string
+  onButtonClick?: () => void
+  image?: string
+  isInStorybook?: boolean
 }
 
 export const PaymentInfoOverlay: React.FC<OverlayScannerProps> = ({
-                                                                    isOpen,
-                                                                    onClose,
-                                                                    title,
-                                                                    description,
-                                                                    buttonText,
-                                                                    onButtonClick,
-                                                                    image = QrCodeScannerImage,
-                                                                  }) => {
-  const { t } = useTranslation();
+  isOpen,
+  onClose,
+  title,
+  description,
+  buttonText,
+  onButtonClick,
+  image = QrCodeScannerImage,
+}) => {
+  const { t } = useTranslation()
 
   const handleButtonClick = () => {
     if (onButtonClick) {
-      onButtonClick();
+      onButtonClick()
     } else {
-      onClose();
+      onClose()
     }
-  };
+  }
 
   return (
     <BottomSheet
@@ -55,14 +56,12 @@ export const PaymentInfoOverlay: React.FC<OverlayScannerProps> = ({
         </S.ImageContainer>
 
         <S.TextSection>
-          <S.ScannerTitle>
-            {title || t('qrScanner.info.title')}
-          </S.ScannerTitle>
+          <S.ScannerTitle>{title || t('qrScanner.info.title')}</S.ScannerTitle>
           <S.ScannerDescription>
             {description || t('qrScanner.info.description')}
           </S.ScannerDescription>
         </S.TextSection>
       </S.OverlayScannerContent>
     </BottomSheet>
-  );
-};
+  )
+}
