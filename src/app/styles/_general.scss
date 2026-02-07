@@ -1,10 +1,13 @@
-.button, a, [role="button"] {
+.button,
+a,
+[role='button'] {
   user-select: none;
   pointer-events: none;
   cursor: none;
 }
 
-button, a {
+button,
+a {
   cursor: default !important; // убрать курсор
 }
 
@@ -41,7 +44,6 @@ button, a {
   scrollbar-color: rgba(var(--scrollbar-color), 0.15) transparent;
 }
 
-
 :root {
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
@@ -49,8 +51,9 @@ button, a {
   --safe-area-right: env(safe-area-inset-right, 0px);
 }
 
-html, body, #root {
-  height: 100%;
+html,
+body,
+#root {
   min-height: 100%;
   padding-top: var(--safe-area-top);
   padding-bottom: var(--safe-area-bottom);
@@ -58,17 +61,19 @@ html, body, #root {
   padding-right: var(--safe-area-right);
 }
 
-a, div,p, a:visited, a:active {
+a,
+div,
+p,
+a:visited,
+a:active {
   color: inherit !important;
   text-decoration: none !important;
 }
 
-html, body {
+html,
+body {
   overscroll-behavior: none; /* отключает смахивание / bounce-scroll */
   overflow: hidden; /* фиксирует вьюпорт */
-  height: 100%;
   margin: 0;
   padding: 0;
 }
-
-
