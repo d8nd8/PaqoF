@@ -7,7 +7,6 @@ export const OverlayWrapper = styled.div<{ insetTop?: number }>(({ theme }) => (
   display: 'flex',
   flexDirection: 'column',
   zIndex: theme.zIndex.modal,
-  paddingTop: 60,
   paddingLeft: 14,
   paddingRight: 14,
 }))
