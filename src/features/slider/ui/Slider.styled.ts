@@ -20,6 +20,8 @@ export const SwipeAreaRight = styled.div({
   cursor: 'pointer',
 })
 
+export const MAIN_BUTTON_HEIGHT = 56
+
 export const SliderContainer = styled.div(({ theme }) => ({
   flex: 1,
   width: '100vw',
@@ -99,4 +101,11 @@ export const ImageWrapper = styled.div({
 
 export const TextBlock = styled.div({
   marginTop: '16px',
+})
+
+export const MainButtonSpacer = styled.div({
+  flexShrink: 0,
+  width: '100%',
+  minHeight: MAIN_BUTTON_HEIGHT,
+  height: MAIN_BUTTON_HEIGHT,
 })

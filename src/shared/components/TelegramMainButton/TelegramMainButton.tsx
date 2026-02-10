@@ -36,6 +36,7 @@ const TelegramMainButton = ({
       text,
       backgroundColor: '#CFFD0F',
       textColor: '#000000',
+
       isVisible: showButton,
       isEnabled: !disabled,
       isLoaderVisible: getLoadingValue(),
