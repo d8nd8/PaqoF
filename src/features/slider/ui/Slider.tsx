@@ -45,7 +45,7 @@ export const Slider: React.FC<SliderProps> = ({
   }
 
   return (
-    <S.SliderContainer style={{ paddingBottom: showButton ? 84 : 154 }}>
+    <S.SliderContainer>
       <S.SwipeAreaLeft onClick={() => swiperRef.current?.slidePrev()} />
       <S.SwipeAreaRight onClick={() => swiperRef.current?.slideNext()} />
 
