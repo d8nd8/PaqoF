@@ -20,7 +20,7 @@ export const SwipeAreaRight = styled.div({
   cursor: 'pointer',
 })
 
-export const MAIN_BUTTON_HEIGHT = 70
+export const MAIN_BUTTON_HEIGHT = 80
 
 export const SliderContainer = styled.div(({ theme }) => ({
   flex: 1,
