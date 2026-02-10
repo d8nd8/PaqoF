@@ -1,54 +1,53 @@
-import React from "react";
-import { BottomSheet } from "@/shared/components/BottomSheet/BottomSheet";
+import React from 'react'
 import {
   TransactionDetails,
   type TransactionData,
-} from "@/features/overlay-transaction-details/transaction-details/TransactionDetails";
-import * as S from "./OverlayTransactionDetails.styled";
-import { useTranslation } from "react-i18next";
+} from '@/features/overlay-transaction-details/transaction-details/TransactionDetails'
+import { BottomSheet } from '@/shared/components/BottomSheet/BottomSheet'
+import { useTranslation } from 'react-i18next'
+
+import * as S from './OverlayTransactionDetails.styled'
 
 export interface OverlayTransactionDetailsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  transaction: TransactionData;
-  onCopyClick?: (value: string) => void;
-  onAMLClick?: () => void;
-  bottomButtonText?: string;
-  onBottomButtonClick?: () => void;
-  showBottomButton?: boolean;
+  isOpen: boolean
+  onClose: () => void
+  transaction: TransactionData
+  onCopyClick?: (value: string) => void
+  onAMLClick?: () => void
+  bottomButtonText?: string
+  onBottomButtonClick?: () => void
+  showBottomButton?: boolean
 }
 
-export const OverlayTransactionDetails: React.FC<
-  OverlayTransactionDetailsProps
-> = ({
-       isOpen,
-       onClose,
-       transaction,
-       onCopyClick,
-       onAMLClick,
-       bottomButtonText = "currency.openInExplorer",
-       onBottomButtonClick,
-       showBottomButton = true,
-     }) => {
-  const { i18n, t } = useTranslation();
+export const OverlayTransactionDetails: React.FC<OverlayTransactionDetailsProps> = ({
+  isOpen,
+  onClose,
+  transaction,
+  onCopyClick,
+  onAMLClick,
+  bottomButtonText = 'currency.openInExplorer',
+  onBottomButtonClick,
+  showBottomButton = true,
+}) => {
+  const { i18n, t } = useTranslation()
 
   const handleBottomButtonClick = () => {
     if (onBottomButtonClick) {
-      onBottomButtonClick();
+      onBottomButtonClick()
     } else {
-      onClose();
+      onClose()
     }
-  };
+  }
 
   const formattedDate = new Intl.DateTimeFormat(i18n.language, {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   })
     .format(new Date(transaction.timestamp))
-    .replace(",", " •");
+    .replace(',', ' •')
 
   return (
     <BottomSheet
@@ -70,5 +69,5 @@ export const OverlayTransactionDetails: React.FC<
         />
       </S.TransactionDetailsWrapper>
     </BottomSheet>
-  );
-};
+  )
+}

@@ -272,26 +272,11 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   )
 
   return (
-    <HistoryWrapper $variant={variant}>
-      <PageHeader
-        title={t('history.title')}
-        showBackButton={false}
-      />
-      <Tabs>
-        {TABS.map((tab) => (
-          <TabButton
-            key={tab.id}
-            $active={activeTab === tab.id}
-            onClick={() => {
-              setActiveTab(tab.id)
-              setPage(0)
-              setHasMore(true)
-            }}
-          >
-            {t(tab.token)}
-          </TabButton>
-        ))}
-      </Tabs>
+    <HistoryWrapper
+      style={{ overflow: isOpen ? 'hidden' : 'auto' }}
+      $variant={variant}
+    >
+      <></>
 
       {Object.entries(groupedByDate).map(([date, ops]) => {
         const totalUsd = ops.reduce((sum, op) => {
