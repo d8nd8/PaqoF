@@ -116,7 +116,6 @@ export const Slider: React.FC<SliderProps> = ({
       <div
         style={{
           height: 65,
-          display: showButton ? 'block' : 'none',
         }}
       >
         <TelegramMainButton
