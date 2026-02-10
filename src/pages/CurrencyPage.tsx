@@ -1,41 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { BaseLayout } from "@/widgets/base-layout";
-import { CurrencyWidget } from "@/widgets/currency-widget/CurrencyWidget";
-import { DepositOverlay } from "@/features/deposit-overlay/DepositOverlay";
+import React, { useEffect, useState } from 'react'
+import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
+import { DepositOverlay } from '@/features/deposit-overlay/DepositOverlay'
+import { OverlayCommission } from '@/features/overlay-commission/OverlayCommission'
+import { WalletAddressOverlay } from '@/features/overlay-wallet-address/WalletAddressOverlay'
 import {
   WalletDepositOverlay,
   type WalletDepositMode,
-} from "@/features/overlay-wallet-deposit/WalletDepositOverlay";
-import { WalletAddressOverlay } from "@/features/overlay-wallet-address/WalletAddressOverlay";
-import { WalletTransferOverlay } from "@/features/overlay-wallet-transfer/WalletTransferOverlay";
-import { OverlayCommission } from "@/features/overlay-commission/OverlayCommission";
-import QRScanner from "@/features/qr-scanner/QRScanner";
-
-import useWalletStore from "@/shared/stores/wallet";
-import { type CryptoItemData } from "@/features/crypto-list/CryptoList";
-
+} from '@/features/overlay-wallet-deposit/WalletDepositOverlay'
+import { WalletTransferOverlay } from '@/features/overlay-wallet-transfer/WalletTransferOverlay'
+import QRScanner from '@/features/qr-scanner/QRScanner'
+import useWalletStore from '@/shared/stores/wallet'
+import { BaseLayout } from '@/widgets/base-layout'
+import { CurrencyWidget } from '@/widgets/currency-widget/CurrencyWidget'
+import { useSearchParams } from 'react-router-dom'
 
 export const CurrencyPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const walletId = searchParams.get("walletId");
+  const [searchParams] = useSearchParams()
+  const walletId = searchParams.get('walletId')
 
-  const {
-    selectedWallet,
-    fetchWalletById,
-  } = useWalletStore();
+  const { selectedWallet, fetchWalletById } = useWalletStore()
 
-  const [showDeposit, setShowDeposit] = useState(false);
-  const [showWalletDeposit, setShowWalletDeposit] =
-    useState<WalletDepositMode | null>(null);
-  const [showWalletAddress, setShowWalletAddress] = useState(false);
-  const [showWalletTransfer, setShowWalletTransfer] = useState(false);
-  const [showCommission, setShowCommission] = useState(false);
-  const [showScanner, setShowScanner] = useState(false);
+  const [showDeposit, setShowDeposit] = useState(false)
+  const [showWalletDeposit, setShowWalletDeposit] = useState<WalletDepositMode | null>(
+    null,
+  )
+  const [showWalletAddress, setShowWalletAddress] = useState(false)
+  const [showWalletTransfer, setShowWalletTransfer] = useState(false)
+  const [showCommission, setShowCommission] = useState(false)
+  const [showScanner, setShowScanner] = useState(false)
 
-  const [selectedCrypto, setSelectedCrypto] =
-    useState<CryptoItemData | null>(null);
-  const [selectedNetwork, setSelectedNetwork] = useState<string>("");
+  const [selectedCrypto, setSelectedCrypto] = useState<CryptoItemData | null>(null)
+  const [selectedNetwork, setSelectedNetwork] = useState<string>('')
 
   const hideNavbar =
     showDeposit ||
@@ -43,22 +38,20 @@ export const CurrencyPage: React.FC = () => {
     showWalletAddress ||
     showWalletTransfer ||
     showCommission ||
-    showScanner;
+    showScanner
 
   useEffect(() => {
     if (walletId) {
-      fetchWalletById(walletId);
+      fetchWalletById(walletId)
     }
-  }, [walletId, fetchWalletById]);
+  }, [walletId, fetchWalletById])
 
   const handlePay = () => {
-    setShowScanner(false);
-  };
-
-
+    setShowScanner(false)
+  }
 
   if (!selectedWallet) {
-    return <div></div>;
+    return <div></div>
   }
 
   return (
@@ -67,15 +60,15 @@ export const CurrencyPage: React.FC = () => {
         wallet={selectedWallet}
         onShowScanner={() => setShowScanner(true)}
         onTopUp={() => setShowDeposit(true)}
-        onSend={() => setShowWalletDeposit("transfer")}
+        onSend={() => setShowWalletDeposit('transfer')}
       />
 
       {showDeposit && (
         <DepositOverlay
           onClose={() => setShowDeposit(false)}
           onSelectWallet={() => {
-            setShowDeposit(false);
-            setShowWalletDeposit("deposit");
+            setShowDeposit(false)
+            setShowWalletDeposit('deposit')
           }}
         />
       )}
@@ -90,23 +83,23 @@ export const CurrencyPage: React.FC = () => {
             name: selectedWallet.currency,
             symbol: selectedWallet.currency,
             amount: `${selectedWallet.balance} ${selectedWallet.currency}`,
-            amountInRubles: "",
+            amountInRubles: '',
             iconColor:
-              selectedWallet.currency === "USDT"
-                ? "#26A17B"
-                : selectedWallet.currency === "TON"
-                  ? "#0088CC"
-                  : "#F7931A",
+              selectedWallet.currency === 'USDT'
+                ? '#26A17B'
+                : selectedWallet.currency === 'TON'
+                  ? '#0088CC'
+                  : '#F7931A',
           }}
           onContinue={(crypto, network, mode) => {
-            setSelectedCrypto(crypto);
-            setSelectedNetwork(network);
-            setShowWalletDeposit(null);
+            setSelectedCrypto(crypto)
+            setSelectedNetwork(network)
+            setShowWalletDeposit(null)
 
-            if (mode === "deposit") {
-              setShowWalletAddress(true);
-            } else if (mode === "transfer") {
-              setShowWalletTransfer(true);
+            if (mode === 'deposit') {
+              setShowWalletAddress(true)
+            } else if (mode === 'transfer') {
+              setShowWalletTransfer(true)
             }
           }}
         />
@@ -120,7 +113,7 @@ export const CurrencyPage: React.FC = () => {
           network={selectedNetwork}
           address={
             selectedWallet.addresses.find((a) => a.network === selectedNetwork)
-              ?.address || ""
+              ?.address || ''
           }
           commission="2.75 USDT"
           onCommissionClick={() => setShowCommission(true)}
@@ -151,7 +144,7 @@ export const CurrencyPage: React.FC = () => {
         onClose={() => setShowScanner(false)}
       />
     </BaseLayout>
-  );
-};
+  )
+}
 
-export default CurrencyPage;
+export default CurrencyPage

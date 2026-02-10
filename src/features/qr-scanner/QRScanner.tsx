@@ -219,7 +219,10 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
       <PaymentOverlay
         isOpen={isPaymentOverlayOpen}
-        onClose={() => setIsPaymentOverlayOpen(false)}
+        onClose={() => {
+          setIsPaymentOverlayOpen(false)
+        }}
+        onFinish={handleClose}
         selectedCurrency={selectedCurrency}
         availableCurrencies={AVAILABLE_CURRENCIES}
         onCurrencySelect={setSelectedCurrency}

@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React, { useState } from 'react';
-import { PaymentOverlay, type PaymentStep } from '@/features/payment-overlay/PaymentOverlay';
-import { type CryptoItemData } from '@/features/crypto-list/CryptoList';
+import React, { useState } from 'react'
+import { type CryptoItemData } from '@/features/crypto-list/CryptoList'
+import {
+  PaymentOverlay,
+  type PaymentStep,
+} from '@/features/payment-overlay/PaymentOverlay'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 
 const meta: Meta<typeof PaymentOverlay> = {
   title: 'QRComponents/PaymentOverlay',
@@ -12,15 +15,24 @@ const meta: Meta<typeof PaymentOverlay> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '375px', width: '100%', margin: '0 auto', backgroundColor: '#C8A2C8', padding: '20px', minHeight: '600px' }}>
+      <div
+        style={{
+          maxWidth: '375px',
+          width: '100%',
+          margin: '0 auto',
+          backgroundColor: '#C8A2C8',
+          padding: '20px',
+          minHeight: '600px',
+        }}
+      >
         <Story />
       </div>
     ),
   ],
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 const availableCurrencies: CryptoItemData[] = [
   {
@@ -30,7 +42,7 @@ const availableCurrencies: CryptoItemData[] = [
     amount: '1 290.53 USDT',
     amountInRubles: '110 323.99 ₽',
     priceInRubles: '85.50 ₽', // добавлено
-    iconColor: '#4CAF50'
+    iconColor: '#4CAF50',
   },
   {
     id: 'toncoin-1',
@@ -40,7 +52,7 @@ const availableCurrencies: CryptoItemData[] = [
     amountInRubles: '144 426.19 ₽',
     priceInRubles: '244.80 ₽',
     icon: '◆',
-    iconColor: '#0088CC'
+    iconColor: '#0088CC',
   },
   {
     id: 'bitcoin-1',
@@ -50,7 +62,7 @@ const availableCurrencies: CryptoItemData[] = [
     amountInRubles: '34 880.61 ₽',
     priceInRubles: '29 500.00 ₽',
     icon: '₿',
-    iconColor: '#F7931A'
+    iconColor: '#F7931A',
   },
   {
     id: 'usdc-1',
@@ -60,41 +72,44 @@ const availableCurrencies: CryptoItemData[] = [
     amountInRubles: '77 650.00 ₽',
     priceInRubles: '91.35 ₽',
     icon: 'U',
-    iconColor: '#2775CA'
-  }
-];
+    iconColor: '#2775CA',
+  },
+]
 
 const InteractivePaymentOverlay = ({
-                                     initialStep = 'form',
-                                     initialCurrency
-                                   }: {
-  initialStep?: PaymentStep;
-  initialCurrency?: CryptoItemData;
+  initialStep = 'form',
+  initialCurrency,
+}: {
+  initialStep?: PaymentStep
+  initialCurrency?: CryptoItemData
 }) => {
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
-    initialCurrency || availableCurrencies[0]
-  );
-  const [isOpen, setIsOpen] = useState(true);
+    initialCurrency || availableCurrencies[0],
+  )
+  const [isOpen, setIsOpen] = useState(true)
 
   const handlePayment = async (currency: CryptoItemData, amount: string) => {
-    console.log('💳 Processing payment:', { currency, amount });
+    console.log('💳 Processing payment:', { currency, amount })
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
         if (Math.random() > 0.3) {
-          resolve();
+          resolve()
         } else {
-          reject(new Error('Payment failed'));
+          reject(new Error('Payment failed'))
         }
-      }, 2000);
-    });
-  };
+      }, 2000)
+    })
+  }
 
   return (
     <PaymentOverlay
       isOpen={isOpen}
+      onFinish={() => {
+        setIsOpen(false)
+      }}
       onClose={() => {
-        setIsOpen(false);
-        setTimeout(() => setIsOpen(true), 1000); // Переоткрываем для демо
+        setIsOpen(false)
+        setTimeout(() => setIsOpen(true), 1000) // Переоткрываем для демо
       }}
       selectedCurrency={selectedCurrency}
       availableCurrencies={availableCurrencies}
@@ -105,43 +120,25 @@ const InteractivePaymentOverlay = ({
       onPayment={handlePayment}
       step={initialStep}
     />
-  );
-};
+  )
+}
 
 export const PaymentForm: Story = {
-  render: () => (
-    <InteractivePaymentOverlay />
-  )
-};
+  render: () => <InteractivePaymentOverlay />,
+}
 
 export const SuccessTransaction: Story = {
-  render: () => (
-    <InteractivePaymentOverlay
-      initialStep="success"
-    />
-  )
-};
+  render: () => <InteractivePaymentOverlay initialStep="success" />,
+}
 
 export const ErrorQRCode: Story = {
-  render: () => (
-    <InteractivePaymentOverlay
-      initialStep="error"
-    />
-  )
-};
+  render: () => <InteractivePaymentOverlay initialStep="error" />,
+}
 
 export const WithToncoin: Story = {
-  render: () => (
-    <InteractivePaymentOverlay
-      initialCurrency={availableCurrencies[1]}
-    />
-  )
-};
+  render: () => <InteractivePaymentOverlay initialCurrency={availableCurrencies[1]} />,
+}
 
 export const WithBitcoin: Story = {
-  render: () => (
-    <InteractivePaymentOverlay
-      initialCurrency={availableCurrencies[2]}
-    />
-  )
-};
+  render: () => <InteractivePaymentOverlay initialCurrency={availableCurrencies[2]} />,
+}

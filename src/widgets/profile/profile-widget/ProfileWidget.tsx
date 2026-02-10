@@ -1,95 +1,102 @@
-import React from 'react';
+import React from 'react'
+import GlobeAltIcon from '@/assets/icons/profile/globe-alt.svg?react'
+import InfoIcon from '@/assets/icons/profile/information-circle.svg?react'
+import LockClosedIcon from '@/assets/icons/profile/lock-closed.svg?react'
+import QuestionIcon from '@/assets/icons/profile/question-mark-circle.svg?react'
+import SendIcon from '@/assets/icons/profile/send.svg?react'
+import ShieldIcon from '@/assets/icons/profile/shield.svg?react'
+import UsersIcon from '@/assets/icons/profile/users.svg?react'
+import { useAppNavigation } from '@/shared/hooks/useAppNavigation'
+import useUserStore from '@/shared/stores/user'
+import { useTranslation } from 'react-i18next'
+
 import {
-  ProfileWrapper,
-  ProfileTop,
-  Username,
-  AvatarWrapper,
   Avatar,
   AvatarPlaceholder,
-  Content,
-  Section,
-  SectionTitle,
-  SectionItem,
-  IconBox,
-  ItemText,
-  ItemContent,
+  AvatarWrapper,
   Chevron,
-} from './ProfileWidget.styled';
-
-import UsersIcon from '@/assets/icons/profile/users.svg?react';
-import ShieldIcon from '@/assets/icons/profile/shield.svg?react';
-import LockClosedIcon from '@/assets/icons/profile/lock-closed.svg?react';
-import GlobeAltIcon from '@/assets/icons/profile/globe-alt.svg?react';
-import InfoIcon from '@/assets/icons/profile/information-circle.svg?react';
-import QuestionIcon from '@/assets/icons/profile/question-mark-circle.svg?react';
-import SendIcon from '@/assets/icons/profile/send.svg?react';
-import { useAppNavigation } from '@/shared/hooks/useAppNavigation';
-import { useTranslation } from 'react-i18next';
-import useUserStore from '@/shared/stores/user';
+  Content,
+  IconBox,
+  ItemContent,
+  ItemText,
+  ProfileTop,
+  ProfileWrapper,
+  Section,
+  SectionItem,
+  SectionTitle,
+  Username,
+} from './ProfileWidget.styled'
 
 type Props = {
-  onReferralClick?: () => void;
-  onKycClick?: () => void;
-  onSecurityClick?: () => void;
-  onLanguageClick?: () => void;
-  onOfficialClick?: () => void;
-  onFaqClick?: () => void;
-  onInfoClick?: () => void;
-  onLogout?: () => void;
-};
+  onReferralClick?: () => void
+  onKycClick?: () => void
+  onSecurityClick?: () => void
+  onLanguageClick?: () => void
+  onOfficialClick?: () => void
+  onFaqClick?: () => void
+  onInfoClick?: () => void
+  onLogout?: () => void
+}
 
 export const ProfileWidget: React.FC<Props> = ({
-                                                 onReferralClick,
-                                                 onKycClick,
-                                                 onSecurityClick,
-                                                 onLanguageClick,
-                                                 onOfficialClick,
-                                                 onFaqClick,
-                                                 onInfoClick,
-
-                                               }) => {
-  const { goToReferral } = useAppNavigation();
-  const { t } = useTranslation();
-  const user = useUserStore((s) => s.user);
+  onReferralClick,
+  onKycClick,
+  onSecurityClick,
+  onLanguageClick,
+  onOfficialClick,
+  onFaqClick,
+  onInfoClick,
+}) => {
+  const { goToReferral } = useAppNavigation()
+  const { t } = useTranslation()
+  const user = useUserStore((s) => s.user)
 
   const handleReferralClick = () => {
     if (onReferralClick) {
-      onReferralClick();
-      return;
+      onReferralClick()
+      return
     }
-    goToReferral();
-  };
+    goToReferral()
+  }
 
   const getInitials = (username: string) => {
-    const cleanUsername = username.replace('@', '');
-    return cleanUsername.slice(0, 2).toUpperCase();
-  };
+    const cleanUsername = username.replace('@', '')
+    return cleanUsername.slice(0, 2).toUpperCase()
+  }
 
-  const displayUsername = user?.username ? `@${user.username}` : '@anonymous';
+  const displayUsername = user?.username ? `@${user.username}` : '@anonymous'
   const displayInitials = user?.firstName
     ? user.firstName.slice(0, 2).toUpperCase()
-    : getInitials(displayUsername);
+    : getInitials(displayUsername)
 
   return (
     <ProfileWrapper>
       <ProfileTop>
         <Username>{displayUsername}</Username>
-      </ProfileTop>
 
-      <AvatarWrapper>
-        {user?.photoUrl ? (
-          <Avatar src={user.photoUrl} alt="Avatar" />
-        ) : (
-          <AvatarPlaceholder>{displayInitials}</AvatarPlaceholder>
-        )}
-      </AvatarWrapper>
+        <AvatarWrapper>
+          {user?.photoUrl ? (
+            <Avatar
+              src={user.photoUrl}
+              alt="Avatar"
+            />
+          ) : (
+            <AvatarPlaceholder>{displayInitials}</AvatarPlaceholder>
+          )}
+        </AvatarWrapper>
+
+        <div></div>
+      </ProfileTop>
 
       <Content>
         <Section>
           <SectionItem onClick={handleReferralClick}>
             <ItemContent>
               <IconBox>
-                <UsersIcon width={16} height={16} />
+                <UsersIcon
+                  width={16}
+                  height={16}
+                />
               </IconBox>
               <ItemText>{t('profile.referral')}</ItemText>
             </ItemContent>
@@ -113,7 +120,10 @@ export const ProfileWidget: React.FC<Props> = ({
           <SectionItem onClick={onSecurityClick}>
             <ItemContent>
               <IconBox>
-                <LockClosedIcon width={16} height={16} />
+                <LockClosedIcon
+                  width={16}
+                  height={16}
+                />
               </IconBox>
               <ItemText>{t('profile.security')}</ItemText>
             </ItemContent>
@@ -123,7 +133,10 @@ export const ProfileWidget: React.FC<Props> = ({
           <SectionItem onClick={onLanguageClick}>
             <ItemContent>
               <IconBox>
-                <GlobeAltIcon width={16} height={16} />
+                <GlobeAltIcon
+                  width={16}
+                  height={16}
+                />
               </IconBox>
               <ItemText>{t('profile.language')}</ItemText>
             </ItemContent>
@@ -166,7 +179,7 @@ export const ProfileWidget: React.FC<Props> = ({
         {/*</Section>*/}
       </Content>
     </ProfileWrapper>
-  );
-};
+  )
+}
 
-export default ProfileWidget;
+export default ProfileWidget

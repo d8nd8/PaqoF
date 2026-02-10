@@ -134,7 +134,7 @@ export const TopRow = styled.div({
 export const UserInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
-  gap: '18px',
+  gap: '8px',
 })
 
 export const Avatar = styled.img({
@@ -158,6 +158,8 @@ export const Greeting = styled.span(({ theme }) => ({
   fontSize: '11px',
   lineHeight: '13px',
   flexDirection: 'column',
+  letterSpacing: '0.06px',
+  fontWeight: 600,
   color: theme.colors.textSecondary,
 }))
 
@@ -165,6 +167,7 @@ export const Username = styled.span(({ theme }) => ({
   fontSize: '15px',
   lineHeight: '20px',
   fontWeight: 600,
+  letterSpacing: '-0.23px',
   color: theme.colors.textPrimary,
 }))
 

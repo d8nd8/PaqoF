@@ -15,6 +15,7 @@ export type PaymentStep = 'form' | 'processing' | 'success' | 'error'
 export interface PaymentOverlayProps {
   isOpen: boolean
   onClose: () => void
+  onFinish: () => void
   selectedCurrency?: CryptoItemData
   availableCurrencies: CryptoItemData[]
   onCurrencySelect: (currency: CryptoItemData) => void
@@ -29,6 +30,7 @@ export interface PaymentOverlayProps {
 export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
   isOpen,
   onClose,
+  onFinish,
   selectedCurrency,
   availableCurrencies,
   onCurrencySelect,
@@ -169,6 +171,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
       case 'success':
       case 'processing':
         setCurrentStep('form')
+        onFinish()
         onClose()
         break
       default:

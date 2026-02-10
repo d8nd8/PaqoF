@@ -87,10 +87,16 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     }
   })
 
+  const sendAmount = amount
+
+  const fiatValue = useMemo(() => {
+    if (!rate) return 0
+    return isFiatMode ? sendAmount / rate : sendAmount * rate
+  }, [rate, sendAmount, isFiatMode])
+
   if (!isOpen) return null
 
   const balance = parseFloat(selectedCrypto.amount.replace(/[^\d.]/g, '')) || 0
-  const sendAmount = amount
 
   const formatAmountForDisplay = (val: number, fiat: boolean) =>
     fiat ? val.toFixed(0) : val.toFixed(2)
@@ -101,11 +107,12 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     : formatAmountForInput(amount, isFiatMode)
 
   const handleContinue = () => {
+    const cryptoAmount = isFiatMode && rate ? sendAmount / rate : sendAmount
     if (sendAmount <= 0) {
       setErrorType('invalidAmount')
     } else if (!address.trim()) {
       setErrorType('invalidAddress')
-    } else if (!isFiatMode && sendAmount > balance) {
+    } else if (cryptoAmount > balance) {
       setErrorType('insufficient')
     } else {
       setErrorType('none')
@@ -119,11 +126,6 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
-
-  const fiatValue = useMemo(() => {
-    if (!rate) return 0
-    return isFiatMode ? sendAmount / rate : sendAmount * rate
-  }, [rate, sendAmount, isFiatMode])
 
   const handleAmountChange = (val: string) => {
     const sanitized = val.replace(/[^0-9.,]/g, '').slice(0, 15)

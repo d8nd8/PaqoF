@@ -80,8 +80,6 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
     })
   }, [wallets, getRateToRubSync])
 
-  console.log(cryptos)
-
   const totalBalanceRub = useMemo(() => {
     return wallets.reduce((sum, w) => {
       const rate = getRateToRubSync(w.currency)
