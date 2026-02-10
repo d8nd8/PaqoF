@@ -45,7 +45,7 @@ export const Slider: React.FC<SliderProps> = ({
   }
 
   return (
-    <S.SliderContainer>
+    <S.SliderContainer style={{ paddingBottom: showButton ? 84 : 154 }}>
       <S.SwipeAreaLeft onClick={() => swiperRef.current?.slidePrev()} />
       <S.SwipeAreaRight onClick={() => swiperRef.current?.slideNext()} />
 
@@ -113,13 +113,11 @@ export const Slider: React.FC<SliderProps> = ({
           isAutoPlaying
         />
       </Swiper>
-      <S.MainButtonSpacer>
-        <TelegramMainButton
-          showButton={showButton}
-          text={t('welcome.buttonText')}
-          callback={onButtonClick || (() => {})}
-        />
-      </S.MainButtonSpacer>
+      <TelegramMainButton
+        showButton={showButton}
+        text={t('welcome.buttonText')}
+        callback={onButtonClick || (() => {})}
+      />
     </S.SliderContainer>
   )
 }
