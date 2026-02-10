@@ -113,14 +113,18 @@ export const Slider: React.FC<SliderProps> = ({
           isAutoPlaying
         />
       </Swiper>
-      {showButton ? (
+      <div
+        style={{
+          opacity: showButton ? 1 : 0,
+          height: 65,
+          display: showButton ? 'block' : 'none',
+        }}
+      >
         <TelegramMainButton
           text={t('welcome.buttonText')}
           callback={onButtonClick || (() => {})}
         />
-      ) : (
-        <div style={{ opacity: showButton ? 1 : 0, height: 70 }}></div>
-      )}
+      </div>
     </S.SliderContainer>
   )
 }
