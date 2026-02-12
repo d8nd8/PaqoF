@@ -52,7 +52,7 @@ export const WelcomeSlider: React.FC = () => {
   }
 
   return (
-    <WelcomeSliderWrapper style={{ paddingBottom: isLangOpen ? '60px' : 0 }}>
+    <WelcomeSliderWrapper>
       <LangButton onClick={handleOpenLang}>
         <GlobeIcon />
       </LangButton>

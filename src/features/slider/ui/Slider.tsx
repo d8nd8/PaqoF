@@ -49,75 +49,77 @@ export const Slider: React.FC<SliderProps> = ({
       <S.SwipeAreaLeft onClick={() => swiperRef.current?.slidePrev()} />
       <S.SwipeAreaRight onClick={() => swiperRef.current?.slideNext()} />
 
-      <Swiper
-        modules={[Autoplay, EffectFade]}
-        effect="slide"
-        fadeEffect={{ crossFade: true }}
-        loop
-        autoplay={{ delay: autoPlayDuration, disableOnInteraction: false }}
-        allowTouchMove={true}
-        touchStartPreventDefault={false}
-        resistanceRatio={0.85}
-        speed={700}
-        onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
-        onSwiper={(swiper) => (swiperRef.current = swiper)}
-        style={{
-          flex: 1,
-          marginTop: '60px',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-        slidesPerView={1}
-        centeredSlides={false}
-      >
-        {slides.map((slide, index) => (
-          <SwiperSlide
-            key={index}
-            className="slider-slide"
-          >
-            <S.SlideCenter
-              style={
-                slide.backgroundBottomOffset
-                  ? undefined
-                  : {
-                      backgroundImage: `url(${slide.image})`,
-                      backgroundSize: slide.backgroundSize,
-                      backgroundPosition: slide.backgroundPosition,
-                      backgroundRepeat: 'no-repeat',
-                    }
-              }
+      <div style={{ display: 'grid', gridTemplateRows: '1fr 58px', height: '100%' }}>
+        <Swiper
+          modules={[Autoplay, EffectFade]}
+          effect="slide"
+          fadeEffect={{ crossFade: true }}
+          loop
+          autoplay={{ delay: autoPlayDuration, disableOnInteraction: false }}
+          allowTouchMove={true}
+          touchStartPreventDefault={false}
+          resistanceRatio={0.85}
+          speed={700}
+          onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          style={{
+            flex: 1,
+            marginTop: '60px',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+          slidesPerView={1}
+          centeredSlides={false}
+        >
+          {slides.map((slide, index) => (
+            <SwiperSlide
+              key={index}
+              className="slider-slide"
             >
-              {slide.backgroundBottomOffset != null && slide.image && (
-                <S.SlideBackgroundZone
-                  style={{
-                    height: `calc(100% - ${slide.backgroundBottomOffset}px)`,
-                    backgroundImage: `url(${slide.image})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'bottom',
-                  }}
-                />
-              )}
-              <S.Title>{slide.title}</S.Title>
-              <S.Description>{slide.description}</S.Description>
-            </S.SlideCenter>
-          </SwiperSlide>
-        ))}
+              <S.SlideCenter
+                style={
+                  slide.backgroundBottomOffset
+                    ? undefined
+                    : {
+                        backgroundImage: `url(${slide.image})`,
+                        backgroundSize: slide.backgroundSize,
+                        backgroundPosition: slide.backgroundPosition,
+                        backgroundRepeat: 'no-repeat',
+                      }
+                }
+              >
+                {slide.backgroundBottomOffset != null && slide.image && (
+                  <S.SlideBackgroundZone
+                    style={{
+                      height: `calc(100% - ${slide.backgroundBottomOffset}px)`,
+                      backgroundImage: `url(${slide.image})`,
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'bottom',
+                    }}
+                  />
+                )}
+                <S.Title>{slide.title}</S.Title>
+                <S.Description>{slide.description}</S.Description>
+              </S.SlideCenter>
+            </SwiperSlide>
+          ))}
 
-        <SliderPagination
-          totalSlides={slides.length}
-          currentSlide={currentSlide}
-          onSlideChange={handleSlideChange}
-          autoPlayDuration={autoPlayDuration}
-          isAutoPlaying
+          <SliderPagination
+            totalSlides={slides.length}
+            currentSlide={currentSlide}
+            onSlideChange={handleSlideChange}
+            autoPlayDuration={autoPlayDuration}
+            isAutoPlaying
+          />
+        </Swiper>
+        <TelegramMainButton
+          showButton={showButton}
+          text={t('welcome.buttonText')}
+          callback={onButtonClick || (() => {})}
         />
-      </Swiper>
-      <TelegramMainButton
-        showButton={showButton}
-        text={t('welcome.buttonText')}
-        callback={onButtonClick || (() => {})}
-      />
+      </div>
     </S.SliderContainer>
   )
 }
