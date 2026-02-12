@@ -223,7 +223,7 @@ export const SecondaryButton = styled.button(({ theme }) => ({
 export const CopyNotification = styled.div<{ $visible?: boolean }>(
   ({ theme, $visible }) => ({
     position: 'fixed',
-    top: '56px',
+    top: '100px',
     left: '50%',
     transform: 'translateX(-50%)',
     display: 'flex',
