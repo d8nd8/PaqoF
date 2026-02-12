@@ -51,7 +51,7 @@ export const BalanceWrapper = styled.div`
 
 export const CopyNotification = styled.div`
   position: fixed;
-  top: 116px;
+  top: 100px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
