@@ -222,8 +222,8 @@ export const SecondaryButton = styled.button(({ theme }) => ({
 
 export const CopyNotification = styled.div<{ $visible?: boolean }>(
   ({ theme, $visible }) => ({
-    position: 'absolute',
-    top: '45px',
+    position: 'fixed',
+    top: '56px',
     left: '50%',
     transform: 'translateX(-50%)',
     display: 'flex',
@@ -239,7 +239,7 @@ export const CopyNotification = styled.div<{ $visible?: boolean }>(
     pointerEvents: $visible ? 'auto' : 'none',
     visibility: $visible ? 'visible' : 'hidden',
     opacity: $visible ? 1 : 0,
-    animation: $visible ? 'fadeInOut 1.5s ease' : 'none',
+    animation: $visible ? 'fadeInOut 2s ease' : 'none',
 
     svg: {
       fill: theme.colors.success600,
