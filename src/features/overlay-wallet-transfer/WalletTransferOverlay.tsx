@@ -11,6 +11,9 @@ import ExclamationIcon from '@icons/exclamation-circle.svg?react'
 import QrIcon from '@icons/qr.svg?react'
 import SwapIcon from '@icons/swap-icon.svg?react'
 import { useTranslation } from 'react-i18next'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import 'swiper/css'
 
 import * as S from './WalletTransferOverlay.styled'
 
@@ -94,8 +97,6 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
     return isFiatMode ? sendAmount / rate : sendAmount * rate
   }, [rate, sendAmount, isFiatMode])
 
-  if (!isOpen) return null
-
   const balance = parseFloat(selectedCrypto.amount.replace(/[^\d.]/g, '')) || 0
 
   const formatAmountForDisplay = (val: number, fiat: boolean) =>
@@ -159,6 +160,80 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
     setIsFiatMode(!isFiatMode)
   }
+
+  const presets = useMemo(() => {
+    const allLabel = t('currency.overlays.transfer.amount.presets.all')
+    if (!isFiatMode) {
+      return [
+        {
+          label: allLabel,
+          onClick: () => {
+            setAmount(balance)
+            setAmountInputStr(formatAmountForInput(balance, false))
+          },
+        },
+        {
+          label: '1 000 ₽',
+          onClick: () => {
+            const val = 1000 / (rate ?? 1) || 0
+            setAmount(val)
+            setAmountInputStr(formatAmountForInput(val, false))
+          },
+        },
+        {
+          label: '5 000 ₽',
+          onClick: () => {
+            const val = 5000 / (rate ?? 1) || 0
+            setAmount(val)
+            setAmountInputStr(formatAmountForInput(val, false))
+          },
+        },
+        {
+          label: '10 000 ₽',
+          onClick: () => {
+            const val = 10000 / (rate ?? 1) || 0
+            setAmount(val)
+            setAmountInputStr(formatAmountForInput(val, false))
+          },
+        },
+      ]
+    }
+    return [
+      {
+        label: allLabel,
+        onClick: () => {
+          const val = balance * (rate ?? 0)
+          setAmount(val)
+          setAmountInputStr(formatAmountForInput(val, true))
+        },
+      },
+      {
+        label: '1 000 ₽',
+        onClick: () => {
+          setAmount(1000)
+          setAmountInputStr(formatAmountForInput(1000, true))
+        },
+      },
+      {
+        label: '5 000 ₽',
+        onClick: () => {
+          setAmount(5000)
+          setAmountInputStr(formatAmountForInput(5000, true))
+        },
+      },
+      {
+        label: '10 000 ₽',
+        onClick: () => {
+          setAmount(10000)
+          setAmountInputStr(formatAmountForInput(10000, true))
+        },
+      },
+    ]
+    // formatAmountForInput стабилен по логике, не в deps чтобы не пересоздавать presets каждый рендер
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, isFiatMode, balance, rate])
+
+  if (!isOpen) return null
 
   return (
     <>
@@ -231,82 +306,21 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
             )}
 
             <S.PresetRow>
-              {!isFiatMode && (
-                <>
-                  <S.PresetButton
-                    onClick={() => {
-                      setAmount(balance)
-                      setAmountInputStr(formatAmountForInput(balance, false))
-                    }}
-                  >
-                    {t('currency.overlays.transfer.amount.presets.all')}
-                  </S.PresetButton>
-                  <S.PresetButton
-                    onClick={() => {
-                      const val = 1000 / (rate ?? 1) || 0
-                      setAmount(val)
-                      setAmountInputStr(formatAmountForInput(val, false))
-                    }}
-                  >
-                    1 000 ₽
-                  </S.PresetButton>
-                  <S.PresetButton
-                    onClick={() => {
-                      const val = 5000 / (rate ?? 1) || 0
-                      setAmount(val)
-                      setAmountInputStr(formatAmountForInput(val, false))
-                    }}
-                  >
-                    5 000 ₽
-                  </S.PresetButton>
-                  <S.PresetButton
-                    onClick={() => {
-                      const val = 10000 / (rate ?? 1) || 0
-                      setAmount(val)
-                      setAmountInputStr(formatAmountForInput(val, false))
-                    }}
-                  >
-                    10 000 ₽
-                  </S.PresetButton>
-                </>
-              )}
-              {isFiatMode && (
-                <>
-                  <S.PresetButton
-                    onClick={() => {
-                      const val = balance * (rate ?? 0)
-                      setAmount(val)
-                      setAmountInputStr(formatAmountForInput(val, true))
-                    }}
-                  >
-                    {t('currency.overlays.transfer.amount.presets.all')}
-                  </S.PresetButton>
-                  <S.PresetButton
-                    onClick={() => {
-                      setAmount(1000)
-                      setAmountInputStr(formatAmountForInput(1000, true))
-                    }}
-                  >
-                    1 000 ₽
-                  </S.PresetButton>
-                  <S.PresetButton
-                    onClick={() => {
-                      setAmount(5000)
-                      setAmountInputStr(formatAmountForInput(5000, true))
-                    }}
-                  >
-                    5 000 ₽
-                  </S.PresetButton>
-                  <S.PresetButton
-                    onClick={() => {
-                      setAmount(10000)
-                      setAmountInputStr(formatAmountForInput(10000, true))
-                    }}
-                  >
-                    10 000 ₽
-                  </S.PresetButton>
-                </>
-              )}
+              <Swiper
+                className="preset-swiper"
+                slidesPerView="auto"
+                spaceBetween={10}
+                grabCursor
+                style={{ overflow: 'visible' }}
+              >
+                {presets.map((preset) => (
+                  <SwiperSlide key={preset.label}>
+                    <S.PresetButton onClick={preset.onClick}>
+                      {preset.label}
+                    </S.PresetButton>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </S.PresetRow>
           </S.Card>
 

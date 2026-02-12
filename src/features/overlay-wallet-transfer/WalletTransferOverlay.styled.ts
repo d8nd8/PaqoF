@@ -113,15 +113,11 @@ export const AmountSub = styled.div<{ $hasError?: boolean }>(({ theme, $hasError
 }))
 
 export const PresetRow = styled.div({
-  display: 'flex',
-  gap: '10px',
-  flexWrap: 'nowrap',
-  overflowX: 'auto',
   padding: '0 16px',
   margin: '0 -16px',
-  scrollbarWidth: 'none',
-  '&::-webkit-scrollbar': { display: 'none' },
-  scrollSnapType: 'x mandatory',
+  '& .preset-swiper .swiper-slide': {
+    width: 'auto',
+  },
 })
 
 export const PresetButton = styled.button(({ theme }) => ({
