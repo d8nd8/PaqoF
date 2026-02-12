@@ -25,11 +25,11 @@ export const CopyNotification = styled.div<{ $visible?: boolean }>(
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.textPrimary,
-    zIndex: 10,
+    zIndex: 10000,
     pointerEvents: $visible ? 'auto' : 'none',
     visibility: $visible ? 'visible' : 'hidden',
     opacity: $visible ? 1 : 0,
-    animation: $visible ? 'fadeInOut 2s ease' : 'none',
+    // animation: $visible ? 'fadeInOut 2s ease' : 'none',
 
     svg: {
       fill: theme.colors.success600,
@@ -37,11 +37,11 @@ export const CopyNotification = styled.div<{ $visible?: boolean }>(
       height: '16px',
     },
 
-    '@keyframes fadeInOut': {
-      '0%': { opacity: 0, transform: 'translateX(-50%) translateY(-10px)' },
-      '10%': { opacity: 1, transform: 'translateX(-50%) translateY(0)' },
-      '90%': { opacity: 1, transform: 'translateX(-50%) translateY(0)' },
-      '100%': { opacity: 0, transform: 'translateX(-50%) translateY(-10px)' },
-    },
+    // '@keyframes fadeInOut': {
+    //   '0%': { opacity: 0, transform: 'translateX(-50%) translateY(-10px)' },
+    //   '10%': { opacity: 1, transform: 'translateX(-50%) translateY(0)' },
+    //   '90%': { opacity: 1, transform: 'translateX(-50%) translateY(0)' },
+    //   '100%': { opacity: 0, transform: 'translateX(-50%) translateY(-10px)' },
+    // },
   }),
 )
