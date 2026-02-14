@@ -4,7 +4,7 @@ export const CurrencyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xxl};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.page};
   padding-top: 0;
   background: ${({ theme }) => theme.colors.systemBackground};
 `
