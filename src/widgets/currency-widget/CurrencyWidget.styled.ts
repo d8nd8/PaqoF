@@ -5,6 +5,7 @@ export const CurrencyWrapper = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xxl};
   padding: ${({ theme }) => theme.spacing.lg};
+  padding-top: 0;
   background: ${({ theme }) => theme.colors.systemBackground};
 `
 

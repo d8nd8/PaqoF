@@ -12,30 +12,34 @@ export const PaginationContainer = styled.div({
   gap: '8px',
 })
 
-export const Dot = styled.button(({ theme }) => ({
-  width: '7px',
-  height: '7px',
-  borderRadius: '50%',
-  border: 'none',
-  backgroundColor: theme.colors.textTertiary,
-  cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  position: 'relative',
-}))
-
-interface ActiveDotProps {
+interface PaginationDotProps {
+  $isActive: boolean
   $isAnimating: boolean
   $duration: number
 }
 
-export const ActiveDot = styled.div<ActiveDotProps>(
-  ({ theme, $isAnimating, $duration }) => ({
-    width: '35px',
-    height: '7px',
-    borderRadius: '360px',
-    backgroundColor: theme.colors.textTertiary,
+export const PaginationDot = styled.button<PaginationDotProps>(
+  ({ theme, $isActive, $isAnimating, $duration }) => ({
+    border: 'none',
+    cursor: 'pointer',
     position: 'relative',
+    flexShrink: 0,
     overflow: 'hidden',
+    transition: 'all 0.25s ease !important',
+
+    ...($isActive
+      ? {
+          width: '35px',
+          height: '7px',
+          borderRadius: '360px',
+          backgroundColor: theme.colors.textTertiary,
+        }
+      : {
+          width: '7px',
+          height: '7px',
+          borderRadius: '50%',
+          backgroundColor: theme.colors.textTertiary,
+        }),
 
     '&::before': {
       content: "''",
@@ -45,10 +49,11 @@ export const ActiveDot = styled.div<ActiveDotProps>(
       width: '100%',
       height: '100%',
       backgroundColor: theme.colors.textPrimary,
-      borderRadius: '360px',
+      borderRadius: 'inherit',
       transform: 'scaleX(0)',
       transformOrigin: 'left',
-      animation: $isAnimating ? `${fillAnimation} ${$duration}ms linear` : 'none',
+      animation:
+        $isActive && $isAnimating ? `${fillAnimation} ${$duration}ms ease-out` : 'none',
     },
   }),
 )

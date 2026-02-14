@@ -1,88 +1,87 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import * as S from "./WalletConfirmOverlay.styled";
-
-import { CryptoItem, type CryptoItemData } from "@/features/crypto-list/CryptoList";
-import { WalletSuccessOverlay } from "@/features/overaly-wallet-success/WalletSuccessOverlay";
-import useWalletStore from "@/shared/stores/wallet";
-import { PageHeader } from "@/shared/components/PageHeader/PageHeader";
-import useApplicationStore from "@/shared/stores/application";
+import React from 'react'
 import type { Operation } from '@/api/services/operation/schemes/operation.schemas'
+import { CryptoItem, type CryptoItemData } from '@/features/crypto-list/CryptoList'
+import { WalletSuccessOverlay } from '@/features/overaly-wallet-success/WalletSuccessOverlay'
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
 import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
+import useApplicationStore from '@/shared/stores/application'
+import useWalletStore from '@/shared/stores/wallet'
+import { useTranslation } from 'react-i18next'
 
+import * as S from './WalletConfirmOverlay.styled'
 
 interface WalletConfirmOverlayProps {
-  isOpen: boolean;
-  onClose: () => void;
-  crypto: CryptoItemData;
-  amount: string;
-  amountFiat: string;
-  address: string;
-  commission: string;
-  total: string;
-  balanceAfter: string;
+  isOpen: boolean
+  onClose: () => void
+  crypto: CryptoItemData
+  amount: string
+  amountFiat: string
+  address: string
+  commission: string
+  total: string
+  balanceAfter: string
 }
 
 export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
-                                                                            isOpen,
-                                                                            onClose,
-                                                                            crypto,
-                                                                            amount,
-                                                                            amountFiat,
-                                                                            address,
-                                                                            commission,
-                                                                            total,
-                                                                            balanceAfter,
-                                                                          }) => {
-  const { t } = useTranslation();
-  const { withdraw } = useWalletStore();
-  const { fullscreen } = useApplicationStore();
-  const { bottom, top } = useSafeAreaInsets();
+  isOpen,
+  onClose,
+  crypto,
+  amount,
+  amountFiat,
+  address,
+  commission,
+  total,
+  balanceAfter,
+}) => {
+  const { t } = useTranslation()
+  const { withdraw } = useWalletStore()
+  const { fullscreen } = useApplicationStore()
+  const { bottom, top } = useSafeAreaInsets()
 
-  const [comment, setComment] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [showSuccess, setShowSuccess] = React.useState(false);
-  const [operation, setOperation] = React.useState<Operation | null>(null);
+  const [comment, setComment] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
+  const [showSuccess, setShowSuccess] = React.useState(false)
+  const [operation, setOperation] = React.useState<Operation | null>(null)
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const handlePaste = async () => {
-    const text = await navigator.clipboard.readText();
-    if (text) setComment(text);
-  };
+    const text = await navigator.clipboard.readText()
+    if (text) setComment(text)
+  }
 
   const handleConfirm = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
 
-      const walletId = crypto.id;
+      const walletId = crypto.id
       const payload = {
         address,
         amount: parseFloat(amount),
-      };
+      }
 
-      const op = await withdraw(walletId, payload);
+      const op = await withdraw(walletId, payload)
 
-      setOperation(op);
-      setShowSuccess(true);
+      setOperation(op)
+      setShowSuccess(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
       <S.OverlayWrapper insetTop={fullscreen ? top + 50 : top}>
         <PageHeader
           // customTopInset={fullscreen ? 80 : 0}
-          title={t("currency.overlays.confirm.title")}
+          title={t('currency.overlays.confirm.title')}
           onBack={onClose}
           rightSlot={null}
         />
 
         <S.Content>
           <S.Card>
-            <S.CardTitle>{t("currency.overlays.confirm.amount.title")}</S.CardTitle>
+            <S.CardTitle>{t('currency.overlays.confirm.amount.title')}</S.CardTitle>
             <S.AmountRow>
               <S.AmountValue>
                 {amount} {crypto.symbol}
@@ -95,37 +94,37 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
             <S.AddressInput
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder={t("currency.overlays.confirm.comment.placeholder")}
+              placeholder={t('currency.overlays.confirm.comment.placeholder')}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  e.currentTarget.blur();
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  e.currentTarget.blur()
                 }
               }}
             />
             <S.InsertButton onClick={handlePaste}>
-              {t("currency.overlays.confirm.comment.paste")}
+              {t('currency.overlays.confirm.comment.paste')}
             </S.InsertButton>
           </S.InputWrapper>
 
           <S.Card>
             <div>
-              <S.CardLabel>{t("currency.overlays.confirm.recipient")}</S.CardLabel>
+              <S.CardLabel>{t('currency.overlays.confirm.recipient')}</S.CardLabel>
               <S.AddressValue>{address}</S.AddressValue>
             </div>
 
             <div>
-              <S.CardLabel>{t("currency.overlays.confirm.commission.label")}</S.CardLabel>
+              <S.CardLabel>{t('currency.overlays.confirm.commission.label')}</S.CardLabel>
               <S.InfoText>{commission}</S.InfoText>
             </div>
 
             <div>
-              <S.CardLabel>{t("currency.overlays.confirm.total.label")}</S.CardLabel>
+              <S.CardLabel>{t('currency.overlays.confirm.total.label')}</S.CardLabel>
               <S.InfoText isTotal>{total}</S.InfoText>
             </div>
           </S.Card>
 
-          <S.SectionTitle>{t("currency.overlays.confirm.balanceAfter")}</S.SectionTitle>
+          <S.SectionTitle>{t('currency.overlays.confirm.balanceAfter')}</S.SectionTitle>
           <CryptoItem
             infoVariant="amount"
             data={{ ...crypto, amount: balanceAfter }}
@@ -134,8 +133,11 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
         </S.Content>
 
         <S.BottomSection $insetBottom={bottom}>
-          <S.MainButton onClick={handleConfirm} disabled={loading}>
-            {loading ? <S.Spinner /> : t("currency.overlays.confirm.confirmButton")}
+          <S.MainButton
+            onClick={handleConfirm}
+            disabled={loading}
+          >
+            {loading ? <S.Spinner /> : t('currency.overlays.confirm.confirmButton')}
           </S.MainButton>
         </S.BottomSection>
       </S.OverlayWrapper>
@@ -154,5 +156,5 @@ export const WalletConfirmOverlay: React.FC<WalletConfirmOverlayProps> = ({
         />
       )}
     </>
-  );
-};
+  )
+}

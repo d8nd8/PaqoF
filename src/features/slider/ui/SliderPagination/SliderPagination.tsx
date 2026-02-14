@@ -1,68 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { PaginationContainer, Dot, ActiveDot } from './SliderPagination.styled';
+import React, { useEffect, useState } from 'react'
+
+import { PaginationContainer, PaginationDot } from './SliderPagination.styled'
 
 interface SliderPaginationProps {
-  totalSlides: number;
-  currentSlide: number;
-  onSlideChange: (index: number) => void;
-  autoPlayDuration?: number;
-  isAutoPlaying?: boolean;
+  totalSlides: number
+  currentSlide: number
+  onSlideChange: (index: number) => void
+  autoPlayDuration?: number
+  isAutoPlaying?: boolean
 }
 
 export const SliderPagination: React.FC<SliderPaginationProps> = ({
-                                                                    totalSlides,
-                                                                    currentSlide,
-                                                                    onSlideChange,
-                                                                    autoPlayDuration = 10000,
-                                                                    isAutoPlaying = false
-                                                                  }) => {
-  const [isAnimating, setIsAnimating] = useState(false);
+  totalSlides,
+  currentSlide,
+  onSlideChange,
+  autoPlayDuration = 10000,
+  isAutoPlaying = false,
+}) => {
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     if (isAutoPlaying) {
-      setIsAnimating(true);
+      setIsAnimating(true)
 
       const slideTimer = setTimeout(() => {
-        const nextSlide = (currentSlide + 1) % totalSlides;
-        onSlideChange(nextSlide);
-      }, autoPlayDuration);
+        const nextSlide = (currentSlide + 1) % totalSlides
+        onSlideChange(nextSlide)
+      }, autoPlayDuration)
 
       const animationTimer = setTimeout(() => {
-        setIsAnimating(false);
-      }, autoPlayDuration - 100);
+        setIsAnimating(false)
+      }, autoPlayDuration - 100)
 
       return () => {
-        clearTimeout(slideTimer);
-        clearTimeout(animationTimer);
-      };
+        clearTimeout(slideTimer)
+        clearTimeout(animationTimer)
+      }
     } else {
-      setIsAnimating(false);
+      setIsAnimating(false)
     }
-  }, [currentSlide, isAutoPlaying, autoPlayDuration, totalSlides, onSlideChange]);
+  }, [currentSlide, isAutoPlaying, autoPlayDuration, totalSlides, onSlideChange])
 
   return (
     <PaginationContainer>
-      {Array.from({ length: totalSlides }, (_, index) => {
-        const isActive = index === currentSlide;
-
-        if (isActive) {
-          return (
-            <ActiveDot
-              key={index}
-              $isAnimating={isAnimating}
-              $duration={autoPlayDuration}
-            />
-          );
-        }
-
-        return (
-          <Dot
-            key={index}
-            onClick={() => onSlideChange(index)}
-            aria-label={`Перейти к слайду ${index + 1}`}
-          />
-        );
-      })}
+      {Array.from({ length: totalSlides }, (_, index) => (
+        <PaginationDot
+          key={index}
+          type="button"
+          $isActive={index === currentSlide}
+          $isAnimating={isAnimating}
+          $duration={autoPlayDuration}
+          onClick={() => onSlideChange(index)}
+          aria-label={`Перейти к слайду ${index + 1}`}
+        />
+      ))}
     </PaginationContainer>
-  );
-};
+  )
+}
