@@ -155,21 +155,21 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
 
   const mapOperationType = (type: string) => {
     switch (type) {
-      case 'DEPOSIT':
+      case 'deposit':
         return {
           icon: <DepositIcon />,
           title: t('history.transactions.walletDeposit'),
           category: t('history.categories.deposit'),
           txType: 'income' as const,
         }
-      case 'WITHDRAW':
+      case 'withdraw':
         return {
           icon: <TransferIcon />,
           title: t('history.transactions.usdtTransfer'),
           category: t('history.categories.transfer'),
           txType: 'expense' as const,
         }
-      case 'TRANSFER':
+      case 'transfer':
         return {
           icon: <TransferIcon />,
           title: t('history.transactions.transfer'),
@@ -189,12 +189,12 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   const renderStatusIcon = (apiStatus: string, txType: 'income' | 'expense') => {
     if (txType !== 'income') return null
     const statusMap: Record<string, 'pending' | 'warning' | 'completed' | undefined> = {
-      PENDING: 'pending',
-      PROCESSING: 'pending',
-      WARNING: 'warning',
-      FAILED: 'warning',
-      CONFIRMED: 'completed',
-      COMPLETED: 'completed',
+      pending: 'pending',
+      processing: 'pending',
+      warning: 'warning',
+      failed: 'warning',
+      confirmed: 'completed',
+      completed: 'completed',
     }
     const mapped = statusMap[apiStatus]
     if (!mapped) return null

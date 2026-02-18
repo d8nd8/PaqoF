@@ -90,16 +90,16 @@ export const mapOperationToTransactionData = (op: Operation): TransactionData =>
 
   let status: TransactionData["status"];
   switch (op.status) {
-    case "COMPLETED":
-    case "CONFIRMED":
+    case "completed":
+    case "confirmed":
       status = "success";
       break;
-    case "PENDING":
-    case "PROCESSING":
+    case "pending":
+    case "processing":
       status = "pending";
       break;
-    case "FAILED":
-    case "CANCELLED":
+    case "failed":
+    case "cancelled":
       status = "failed";
       break;
     default:
@@ -108,9 +108,9 @@ export const mapOperationToTransactionData = (op: Operation): TransactionData =>
 
   return {
     id: op.operationId,
-    type: op.operationType === "DEPOSIT" ? "deposit" : "withdraw",
+    type: op.operationType === "deposit" ? "deposit" : "withdraw",
     amount: rubAmount.toFixed(2),
-    amountUSD: `${usdtAmount.toFixed(6)} USDT`,
+    amountUSD: `${usdtAmount.toFixed(2)} USDT`,
     commission: "2.75 USDT",
     timestamp: op.createdAt,
     exchangeRate: `${usdtRate.toFixed(2)} ₽/USDT`,
