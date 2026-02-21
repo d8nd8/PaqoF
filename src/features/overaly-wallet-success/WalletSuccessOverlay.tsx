@@ -1,63 +1,63 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import * as S from "./WalletSuccessOverlay.styled";
-
-import CopyIconSvg from "@icons/copy.svg?react";
-import { useTranslation } from "react-i18next";
+import React from 'react'
 import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
+import CopyIconSvg from '@icons/copy.svg?react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+
+import * as S from './WalletSuccessOverlay.styled'
 
 interface WalletSuccessOverlayProps {
-  isOpen: boolean;
-  amount: string;
-  address: string;
-  txHash: string;
-  txId: string;
-  network: string;
-  receivedAmount: string;
-  crypto: string;
-  createdAt: string;
+  isOpen: boolean
+  amount: string
+  address: string
+  txHash: string
+  txId: string
+  network: string
+  receivedAmount: string
+  crypto: string
+  createdAt: string
 }
 
 export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
-                                                                            isOpen,
-                                                                            amount,
-                                                                            address,
-                                                                            txHash,
-                                                                            txId,
-                                                                            network,
-                                                                            receivedAmount,
-                                                                            crypto,
-                                                                            createdAt,
-                                                                          }) => {
-  const { t } = useTranslation();
-  const { bottom } = useSafeAreaInsets();
-  const navigate = useNavigate();
-  if (!isOpen) return null;
+  isOpen,
+  amount,
+  address,
+  txHash,
+  txId,
+  network,
+  receivedAmount,
+  crypto,
+  createdAt,
+}) => {
+  const { t } = useTranslation()
+  const { bottom } = useSafeAreaInsets()
+  const navigate = useNavigate()
+  if (!isOpen) return null
 
   const handleGoHome = () => {
-    window.location.href = "/main";
-  };
+    window.location.href = '/main'
+  }
 
   const handleCopy = (value: string) => {
-    navigator.clipboard.writeText(value);
-  };
+    navigator.clipboard.writeText(value)
+  }
 
-  const formattedDate = new Date(createdAt).toLocaleString("ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const formattedDate = new Date(createdAt).toLocaleString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 
   return (
     <S.OverlayWrapper>
       <S.SuccessHeader>
         <S.SuccessTitle>
-          {t("currency.overlays.success.title", { crypto })}
+          {t('currency.overlays.success.title', { crypto })}
         </S.SuccessTitle>
         <S.Date>
-          {t("currency.overlays.success.date", {
+          {t('currency.overlays.success.date', {
             date: formattedDate,
           })}
         </S.Date>
@@ -65,7 +65,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
 
       <S.Content>
         <S.Amount>
-          {t("currency.overlays.success.amount", {
+          {t('currency.overlays.success.amount', {
             amount,
             crypto,
           })}
@@ -73,7 +73,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
 
         <S.Card>
           <S.RowHorizontal>
-            <S.Label>{t("currency.overlays.success.transactionHash")}</S.Label>
+            <S.Label>{t('currency.overlays.success.transactionHash')}</S.Label>
             <S.CopyWrapper>
               <S.Value>{txHash}</S.Value>
               <S.CopyIcon onClick={() => handleCopy(txHash)}>
@@ -83,7 +83,7 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
           </S.RowHorizontal>
 
           <S.RowHorizontal>
-            <S.Label>{t("currency.overlays.success.transactionId")}</S.Label>
+            <S.Label>{t('currency.overlays.success.transactionId')}</S.Label>
             <S.CopyWrapper>
               <S.Value>{txId}</S.Value>
               <S.CopyIcon onClick={() => handleCopy(txId)}>
@@ -93,31 +93,34 @@ export const WalletSuccessOverlay: React.FC<WalletSuccessOverlayProps> = ({
           </S.RowHorizontal>
 
           <S.RowHorizontal>
-            <S.Label>{t("currency.overlays.success.network")}</S.Label>
+            <S.Label>{t('currency.overlays.success.network')}</S.Label>
             <S.Value>{network}</S.Value>
           </S.RowHorizontal>
 
           <S.RowHorizontal>
-            <S.Label>{t("currency.overlays.success.receivedAmount")}</S.Label>
+            <S.Label>{t('currency.overlays.success.receivedAmount')}</S.Label>
             <S.Value>{receivedAmount}</S.Value>
           </S.RowHorizontal>
         </S.Card>
 
         <S.Card>
           <S.Row>
-            <S.Label>{t("currency.overlays.success.recipientAddress")}</S.Label>
+            <S.Label>{t('currency.overlays.success.recipientAddress')}</S.Label>
             <S.Value>{address}</S.Value>
           </S.Row>
           <S.Row>
-            <S.Label>{t("currency.overlays.success.comment")}</S.Label>
-            <S.Value>{t("currency.overlays.success.commentMissing")}</S.Value>
+            <S.Label>{t('currency.overlays.success.comment')}</S.Label>
+            <S.Value>{t('currency.overlays.success.commentMissing')}</S.Value>
           </S.Row>
         </S.Card>
       </S.Content>
 
-      <S.BottomButton $insetBottom={bottom} onClick={handleGoHome}>
-        {t("currency.overlays.success.button")}
+      <S.BottomButton
+        $insetBottom={bottom}
+        onClick={handleGoHome}
+      >
+        {t('currency.overlays.success.button')}
       </S.BottomButton>
     </S.OverlayWrapper>
-  );
-};
+  )
+}

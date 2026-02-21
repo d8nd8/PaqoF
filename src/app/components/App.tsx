@@ -230,6 +230,8 @@ const App = () => {
     }
   }
 
+  // return <Loader />
+
   const mainContent =
     isPinRequired && !isPinVerified ? (
       <FullOverlay

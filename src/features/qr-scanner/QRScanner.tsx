@@ -7,7 +7,9 @@ import { useSafeAreaInsets } from '@/shared/hooks/useSafeAreaInsets'
 import AttachmentIcon from '@icons/scanner/attachment.svg?react'
 import TorchlightIcon from '@icons/scanner/torchlight.svg?react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
+import { QrErrorOverlay } from './QrErrorOverlay'
 import {
   ActionButton,
   BottomActions,
@@ -73,8 +75,10 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   title,
 }) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { top, bottom } = useSafeAreaInsets()
   const [isPaymentInfoOpen, setIsPaymentInfoOpen] = useState(false)
+  const [isQrErrorOpen, setIsQrErrorOpen] = useState(false)
   const [isPaymentOverlayOpen, setIsPaymentOverlayOpen] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<CryptoItemData | undefined>(
     AVAILABLE_CURRENCIES[0],
@@ -113,11 +117,61 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   const handleClose = async (): Promise<void> => {
     try {
       await closeScanner()
+      navigate('/main')
     } catch (e) {
       console.warn('Ошибка при остановке камеры:', e)
     } finally {
       onClose?.()
     }
+  }
+
+  const scanImageFile = async (file: File): Promise<boolean> => {
+    try {
+      const { Html5Qrcode } = await import('html5-qrcode')
+      const scanner = new Html5Qrcode('gallery-scan-temp')
+      const result = await scanner.scanFile(file, false)
+      await scanner.clear()
+      if (result) {
+        setIsPaymentOverlayOpen(true)
+        return true
+      }
+    } catch (err) {
+      console.warn('Ошибка при сканировании:', err)
+    }
+    setIsQrErrorOpen(true)
+    return false
+  }
+
+  const handleCaptureAndScan = async (): Promise<void> => {
+    const video = document.querySelector(
+      `#${containerId} video`,
+    ) as HTMLVideoElement | null
+    if (!video || video.readyState < 2) {
+      setIsQrErrorOpen(true)
+      return
+    }
+    const canvas = document.createElement('canvas')
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    const ctx = canvas.getContext('2d')
+    if (!ctx) {
+      setIsQrErrorOpen(true)
+      return
+    }
+    ctx.drawImage(video, 0, 0)
+    canvas.toBlob(
+      async (blob) => {
+        if (!blob) {
+          setIsQrErrorOpen(true)
+          return
+        }
+        const file = new File([blob], 'capture.jpg', { type: 'image/jpeg' })
+        const ok = await scanImageFile(file)
+        if (!ok) retryScanner()
+      },
+      'image/jpeg',
+      0.92,
+    )
   }
 
   const handleGalleryOpen = async (): Promise<void> => {
@@ -126,35 +180,28 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     input.accept = 'image/*'
 
     input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0]
-      if (!file) return
+      const raw = (e.target as HTMLInputElement).files?.[0]
+      if (!raw) return
+      const file =
+        raw instanceof File
+          ? raw
+          : new File([raw as Blob], 'image.jpg', {
+              type: (raw as Blob).type || 'image/jpeg',
+            })
 
-      try {
-        const { Html5Qrcode } = await import('html5-qrcode')
-        const scanner = new Html5Qrcode('gallery-scan-temp')
-        const result = await scanner.scanFile(file, true)
-        await scanner.clear()
-
-        if (result) {
-          onScan(result)
-          await handleClose()
-        } else {
-          retryScanner()
-        }
-      } catch (err) {
-        console.warn('Ошибка при сканировании из галереи:', err)
-        retryScanner()
-      }
+      const ok = await scanImageFile(file)
+      if (!ok) retryScanner()
     }
 
     input.click()
   }
 
   const handlePayment = async (currency: CryptoItemData, amount: string) => {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       setTimeout(() => {
-        if (Math.random() > 0.3) resolve()
-        else reject(new Error('Payment failed'))
+        // if (Math.random() > 0.3) resolve()
+        // else reject(new Error('Payment failed'))
+        resolve()
       }, 1500)
     })
   }
@@ -183,7 +230,15 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           <ScannerOverlay />
           <div
             id="gallery-scan-temp"
-            style={{ display: 'none' }}
+            style={{
+              position: 'absolute',
+              width: 300,
+              height: 300,
+              left: -9999,
+              top: 0,
+              visibility: 'hidden',
+              pointerEvents: 'none',
+            }}
           />
 
           <BottomActions>
@@ -194,7 +249,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
               <TorchlightIcon />
             </ActionButton>
 
-            <ScanButton onClick={() => setIsPaymentOverlayOpen(true)} />
+            <ScanButton onClick={handleCaptureAndScan} />
 
             <ActionButton
               onClick={handleGalleryOpen}
@@ -211,6 +266,12 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           </Footer>
         </CameraContainer>
       </Overlay>
+
+      <QrErrorOverlay
+        isOpen={isQrErrorOpen}
+        onClose={() => setIsQrErrorOpen(false)}
+        onButtonClick={() => setIsPaymentOverlayOpen(true)}
+      />
 
       <PaymentInfoOverlay
         isOpen={isPaymentInfoOpen}

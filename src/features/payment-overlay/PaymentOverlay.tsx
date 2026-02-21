@@ -199,6 +199,7 @@ export const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
       </BottomSheet>
 
       <OverlayCryptoSelection
+        style={{ padding: '0px 14px' }}
         isOpen={showCurrencySelector}
         onClose={() => setShowCurrencySelector(false)}
         cryptos={availableCurrencies}

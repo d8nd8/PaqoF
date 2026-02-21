@@ -273,6 +273,7 @@
     "unknownNavItem": "Unknown menu item: {{id}}",
     "close": "Close",
     "ok": "Return",
+    "retry": "Retry",
     "save": "Save",
     "loading": "Loading..."
   },
