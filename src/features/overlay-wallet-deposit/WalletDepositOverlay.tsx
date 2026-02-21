@@ -77,7 +77,7 @@ export const WalletDepositOverlay: React.FC<WalletDepositOverlayProps> = ({
   useEffect(() => {
     if (isOpen) {
       // Принудительно обновляем данные при открытии оверлея
-      fetchWallets(true).catch((error) => {
+      fetchWallets(true, { skipLoading: true }).catch((error) => {
         console.error('Error fetching wallets:', error)
       })
     }

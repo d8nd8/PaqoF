@@ -67,7 +67,7 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
   useEffect(() => {
     if (!isOpen) return
-    fetchWallets()
+    fetchWallets(true, { skipLoading: true })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 

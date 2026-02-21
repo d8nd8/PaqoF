@@ -3,24 +3,43 @@ import { Wrapper, WrapperRoot } from '@/app/components/App.styled'
 import { router } from '@/app/router'
 import { SecurityPinCode } from '@/features/security-pin-code'
 import FullOverlay from '@/shared/components/full-overlay/FullOverlay'
+import Loader from '@/shared/components/Loader/Loader'
 import Preloader from '@/shared/components/Preloader/Preloader'
 import { useSafeInitData } from '@/shared/hooks/useSafeInitData'
 import useApplicationStore from '@/shared/stores/application'
 import useUserStore from '@/shared/stores/user'
+import useWalletStore from '@/shared/stores/wallet'
 import { mainButton, miniApp, secondaryButton, viewport } from '@telegram-apps/sdk-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { RouterProvider } from 'react-router-dom'
 
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
     useApplicationStore()
   const { setUserData, login, user } = useUserStore()
+  const { fetchInitialWalletsAndRates, initialLoading } = useWalletStore()
 
   const [safeAreaBottom, setSafeAreaBottom] = useState(0)
   const [isPinVerified, setIsPinVerified] = useState(false)
   const [isPinRequired, setIsPinRequired] = useState(false)
   const [pinError, setPinError] = useState<string | null>(null)
+  const [isLoaderExiting, setIsLoaderExiting] = useState(false)
+  const prevInitialLoading = useRef(initialLoading)
 
   const rawInitData = useSafeInitData()
+
+  useEffect(() => {
+    if (initialLoading) {
+      setIsLoaderExiting(false)
+    } else if (prevInitialLoading.current) {
+      setIsLoaderExiting(true)
+    }
+    prevInitialLoading.current = initialLoading
+  }, [initialLoading])
+
+  useEffect(() => {
+    fetchInitialWalletsAndRates()
+  }, [])
 
   useEffect(() => {
     if (viewport.mount.isAvailable()) {
@@ -211,8 +230,8 @@ const App = () => {
     }
   }
 
-  if (isPinRequired && !isPinVerified) {
-    return (
+  const mainContent =
+    isPinRequired && !isPinVerified ? (
       <FullOverlay
         isOpen={true}
         onClose={() => null}
@@ -223,21 +242,43 @@ const App = () => {
           error={pinError}
         />
       </FullOverlay>
+    ) : (
+      <Wrapper
+        fullscreen={fullscreen}
+        fullscreenCentered={fullscreenCentered}
+        noHeaderOffset={!headerOffset}
+        style={{ paddingBottom: safeAreaBottom }}
+      >
+        <WrapperRoot>
+          <RouterProvider router={router} />
+        </WrapperRoot>
+        <Preloader />
+      </Wrapper>
     )
-  }
 
   return (
-    <Wrapper
-      fullscreen={fullscreen}
-      fullscreenCentered={fullscreenCentered}
-      noHeaderOffset={!headerOffset}
-      style={{ paddingBottom: safeAreaBottom }}
-    >
-      <WrapperRoot>
-        <RouterProvider router={router} />
-      </WrapperRoot>
-      <Preloader />
-    </Wrapper>
+    <>
+      {!initialLoading && mainContent}
+      <AnimatePresence mode="wait">
+        {initialLoading && (
+          <motion.div
+            key="modal"
+            initial={{ opacity: 0.3 }}
+            animate={{ opacity: 1, transition: { duration: 0.3 } }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'auto',
+            }}
+          >
+            <Loader />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 

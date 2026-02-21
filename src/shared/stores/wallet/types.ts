@@ -16,10 +16,15 @@ export default interface IWalletStore {
   currencies: WalletCurrencyList | null
   operations: Record<string, Operation[]>
   loading: boolean
+  initialLoading: boolean
   rates: Rate[]
   selectedWallet: Wallet | null
 
-  fetchWallets: (force?: boolean) => Promise<WalletList>
+  fetchWallets: (
+    force?: boolean,
+    options?: { skipLoading?: boolean },
+  ) => Promise<WalletList>
+  fetchInitialWalletsAndRates: (force?: boolean) => Promise<{ wallets: WalletList }>
   fetchWalletById: (walletId: string) => Promise<Wallet>
   fetchWalletCurrencies: () => Promise<WalletCurrencyList>
   withdraw: (walletId: string, payload: WithdrawRequest) => Promise<Operation>

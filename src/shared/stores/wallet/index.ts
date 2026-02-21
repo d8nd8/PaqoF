@@ -10,16 +10,18 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
   currencies: null,
   operations: {},
   loading: false,
+  initialLoading: true,
   rates: [],
   selectedWallet: null,
 
-  fetchWallets: async (force = false) => {
+  fetchWallets: async (force = false, options?: { skipLoading?: boolean }) => {
     const { wallets } = get()
     if (wallets.length > 0 && !force) {
       return wallets
     }
 
-    set({ loading: true, wallets: [] })
+    const manageLoading = options?.skipLoading !== true
+    if (manageLoading) set({ loading: true, wallets: [] })
     try {
       console.log('🔄 Fetching wallets from API...')
       const wallets = await walletApi.getWallets()
@@ -43,7 +45,18 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
       // Не очищаем существующие кошельки при ошибке, чтобы UI не сломался
       throw error
     } finally {
-      set({ loading: false })
+      if (manageLoading) set({ loading: false })
+    }
+  },
+
+  fetchInitialWalletsAndRates: async (force = false) => {
+    try {
+      const wallets = await get().fetchWallets(force, { skipLoading: true })
+      const currencies = [...new Set(wallets.map((w) => w.currency).filter(Boolean))]
+      await Promise.all(currencies.map((c) => get().fetchRates(c)))
+      return { wallets }
+    } finally {
+      set({ initialLoading: false })
     }
   },
 

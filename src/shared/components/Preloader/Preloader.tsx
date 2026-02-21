@@ -1,12 +1,11 @@
-import { memo } from 'react';
-
-import { Spinner } from '@/shared/ui/spinner';
-import { FadeIn } from '@/shared/animations';
+import { memo } from 'react'
+import { FadeIn } from '@/shared/animations'
 import useApplicationStore from '@/shared/stores/application'
+import { Spinner } from '@/shared/ui/spinner'
 import { theme } from '@/styles/theme'
 
 const Preloader = memo(() => {
-  const { preloaders } = useApplicationStore();
+  const { preloaders } = useApplicationStore()
 
   return (
     <FadeIn
@@ -15,9 +14,13 @@ const Preloader = memo(() => {
       duration={300}
       className="preloader"
     >
-      <Spinner size={40} thickness={4} color={theme.colors.textPrimary} />
+      <Spinner
+        size={40}
+        thickness={4}
+        color={theme.colors.textPrimary}
+      />
     </FadeIn>
-  );
-});
+  )
+})
 
-export default Preloader;
+export default Preloader

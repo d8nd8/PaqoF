@@ -21,26 +21,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
   onNotifications,
 }) => {
   const navigate = useNavigate()
-  const { wallets, fetchWallets, fetchRates, loading, rates } = useWalletStore()
-  const hasLoadedRef = useRef(false)
-
-  useEffect(() => {
-    // Предотвращаем повторную загрузку данных
-    if (hasLoadedRef.current) return
-
-    const loadData = async () => {
-      hasLoadedRef.current = true
-      const walletsList = await fetchWallets()
-      const uniqueCurrencies = Array.from(new Set(walletsList.map((w) => w.currency)))
-
-      for (const cur of uniqueCurrencies) {
-        await fetchRates(cur)
-      }
-    }
-
-    loadData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { wallets, loading, rates } = useWalletStore()
 
   const getRateToRubSync = useMemo(() => {
     return (currency: string) => {
