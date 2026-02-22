@@ -16,29 +16,22 @@ import { RouterProvider } from 'react-router-dom'
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
     useApplicationStore()
-  const { setUserData, login, user } = useUserStore()
+  const { setUserData, login, user, auth } = useUserStore()
   const { fetchInitialWalletsAndRates, initialLoading } = useWalletStore()
 
   const [safeAreaBottom, setSafeAreaBottom] = useState(0)
   const [isPinVerified, setIsPinVerified] = useState(false)
   const [isPinRequired, setIsPinRequired] = useState(false)
   const [pinError, setPinError] = useState<string | null>(null)
-  const [isLoaderExiting, setIsLoaderExiting] = useState(false)
-  const prevInitialLoading = useRef(initialLoading)
 
   const rawInitData = useSafeInitData()
 
   useEffect(() => {
-    if (initialLoading) {
-      setIsLoaderExiting(false)
-    } else if (prevInitialLoading.current) {
-      setIsLoaderExiting(true)
-    }
-    prevInitialLoading.current = initialLoading
-  }, [initialLoading])
+    fetchInitialWalletsAndRates()
+  }, [])
 
   useEffect(() => {
-    fetchInitialWalletsAndRates()
+    auth()
   }, [])
 
   useEffect(() => {
