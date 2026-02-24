@@ -32,7 +32,7 @@ export const login = async (
 
 export const auth = async (
   options?: AxiosRequestConfig,
-): Promise<{ isNewUser: boolean }> => {
+): Promise<{ isNewUser: boolean; isPinRequired: boolean }> => {
   return apiClient.get('/api/v1/user/me', {
     ...options,
   })
@@ -63,7 +63,7 @@ export const deleteEntryCode = async (
   options?: AxiosRequestConfig,
 ): Promise<void> => {
   return apiClient.delete('/api/v1/user/entry_code', {
-    data: payload,
+    ...payload,
     requestSchema: DeleteEntryCodeSchema,
     ...options,
   })

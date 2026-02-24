@@ -5,7 +5,7 @@ import { createClient } from './client'
 import { DEFAULT_ERROR_TITLE, DEFAULT_ERROR_MESSAGE } from './consts'
 import useNotificationStore from '@/shared/stores/notification'
 
-const { instance } = createClient()
+const { instance, retryQueuedRequests } = createClient()
 
 const request =
   (method: string) =>
@@ -58,4 +58,4 @@ const apiClient = {
   delete: request('DELETE'),
 }
 
-export { apiClient }
+export { apiClient, retryQueuedRequests }

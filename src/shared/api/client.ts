@@ -1,10 +1,23 @@
+import useUserStore from '@/shared/stores/user'
+import {
+  transformKeysToCamelCase,
+  transformKeysToSnakeCase,
+} from '@/shared/utils/transform-keys.utils'
 import axios, { HttpStatusCode } from 'axios'
+import type { InternalAxiosRequestConfig } from 'axios'
+
 import config from './config'
-import { transformKeysToCamelCase, transformKeysToSnakeCase } from '@/shared/utils/transform-keys.utils'
+
+type QueuedRequest = {
+  config: InternalAxiosRequestConfig
+  resolve: (value: unknown) => void
+  reject: (reason: unknown) => void
+}
 
 export const createClient = () => {
-  console.log('🔧 Creating API client with baseURL:', config.url);
+  console.log('🔧 Creating API client with baseURL:', config.url)
   const instance = axios.create({ baseURL: config.url })
+  let failed401Queue: QueuedRequest[] = []
 
   const clearAuthentication = () => {
     localStorage.removeItem('access-token')
@@ -17,55 +30,66 @@ export const createClient = () => {
   })
 
   instance.interceptors.request.use((config) => {
-    console.log('📤 API Request:', config.method?.toUpperCase(), config.url);
+    console.log('📤 API Request:', config.method?.toUpperCase(), config.url)
     config.performAuth = config.performAuth ?? true
 
     if (config.performAuth) {
       const { accessToken, authenticationMethod } = getAuthentication()
       if (accessToken && authenticationMethod === 'Bearer') {
         config.headers.Authorization = `Bearer ${accessToken}`
-        console.log('🔐 Using authentication token');
-        console.log('🔐 Token length:', accessToken.length);
-        console.log('🔐 Full token:', accessToken);
-        console.log('🔐 Authorization header:', `Bearer ${accessToken.substring(0, 50)}...`);
-        
+        console.log('🔐 Using authentication token')
+        console.log('🔐 Token length:', accessToken.length)
+        console.log('🔐 Full token:', accessToken)
+        console.log(
+          '🔐 Authorization header:',
+          `Bearer ${accessToken.substring(0, 50)}...`,
+        )
+
         // Парсим токен для проверки срока действия
         try {
-          const params = new URLSearchParams(accessToken);
-          const userId = params.get('user') ? JSON.parse(params.get('user')!).id : null;
-          const authDate = params.get('auth_date');
-          const hash = params.get('hash');
-          
+          const params = new URLSearchParams(accessToken)
+          const userId = params.get('user') ? JSON.parse(params.get('user')!).id : null
+          const authDate = params.get('auth_date')
+          const hash = params.get('hash')
+
           // Проверяем срок действия токена (обычно 24 часа)
           if (authDate) {
-            const authTimestamp = parseInt(authDate, 10);
-            const currentTimestamp = Math.floor(Date.now() / 1000);
-            const tokenAge = currentTimestamp - authTimestamp; // возраст токена в секундах
-            const maxAge = 24 * 60 * 60; // 24 часа в секундах (86400)
-            const hoursOld = Math.floor(tokenAge / 3600);
-            const minutesOld = Math.floor((tokenAge % 3600) / 60);
-            
-            console.log('🔐 Token parsed:', { 
-              userId, 
-              authDate, 
+            const authTimestamp = parseInt(authDate, 10)
+            const currentTimestamp = Math.floor(Date.now() / 1000)
+            const tokenAge = currentTimestamp - authTimestamp // возраст токена в секундах
+            const maxAge = 24 * 60 * 60 // 24 часа в секундах (86400)
+            const hoursOld = Math.floor(tokenAge / 3600)
+            const minutesOld = Math.floor((tokenAge % 3600) / 60)
+
+            console.log('🔐 Token parsed:', {
+              userId,
+              authDate,
               hash: hash?.substring(0, 20) + '...',
               tokenAge: `${hoursOld}h ${minutesOld}m`,
-              isExpired: tokenAge > maxAge
-            });
-            
+              isExpired: tokenAge > maxAge,
+            })
+
             if (tokenAge > maxAge) {
-              console.warn('⚠️ Token is expired! Age:', `${hoursOld}h ${minutesOld}m`, 'Max age: 24h');
+              console.warn(
+                '⚠️ Token is expired! Age:',
+                `${hoursOld}h ${minutesOld}m`,
+                'Max age: 24h',
+              )
             }
           }
         } catch (e) {
-          console.warn('🔐 Failed to parse token:', e);
+          console.warn('🔐 Failed to parse token:', e)
         }
       } else {
-        console.warn('⚠️ No authentication token found');
+        console.warn('⚠️ No authentication token found')
       }
     }
 
-    if (config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
+    if (
+      config.data &&
+      typeof config.data === 'object' &&
+      !(config.data instanceof FormData)
+    ) {
       config.data = transformKeysToSnakeCase(config.data)
     }
 
@@ -78,7 +102,12 @@ export const createClient = () => {
 
   instance.interceptors.response.use(
     async (response) => {
-      console.log('✅ API Response:', response.config.method?.toUpperCase(), response.config.url, response.status);
+      console.log(
+        '✅ API Response:',
+        response.config.method?.toUpperCase(),
+        response.config.url,
+        response.status,
+      )
       const { model, modelDictionary, flattenDictionary } = response.config
 
       if (model) {
@@ -111,20 +140,56 @@ export const createClient = () => {
     },
     async (error) => {
       if (!error.response) {
-        console.error('❌ API Request failed (no response):', error.message);
+        console.error('❌ API Request failed (no response):', error.message)
         if (error.code === 'ERR_NETWORK') {
-          console.error('🌐 Network error - check if backend is running and URL is correct:', config.url);
+          console.error(
+            '🌐 Network error - check if backend is running and URL is correct:',
+            config.url,
+          )
         }
         throw error
       }
-      console.error('❌ API Error:', error.config?.method?.toUpperCase(), error.config?.url, error.response.status, error.response.data);
-      if (error.response.status === HttpStatusCode.Unauthorized || error.response.status === HttpStatusCode.Forbidden) {
-        console.warn('⚠️ Authentication failed (401/403), dispatching unauthorized event');
+      console.error(
+        '❌ API Error:',
+        error.config?.method?.toUpperCase(),
+        error.config?.url,
+        error.response.status,
+        error.response.data,
+      )
+
+      if (
+        error.response.status === HttpStatusCode.Unauthorized ||
+        error.response.status === HttpStatusCode.Forbidden
+      ) {
+        console.warn(
+          '⚠️ Authentication failed (401/403), queueing request and dispatching unauthorized event',
+        )
+        useUserStore.getState().setIsPinVerified(false)
         window.dispatchEvent(new Event('unauthorized'))
+        return new Promise((resolve, reject) => {
+          failed401Queue.push({
+            config: error.config as InternalAxiosRequestConfig,
+            resolve,
+            reject,
+          })
+        })
       }
       throw error
-    }
+    },
   )
 
-  return { instance }
+  const retryQueuedRequests = async () => {
+    const queue = [...failed401Queue]
+    failed401Queue = []
+    for (const item of queue) {
+      try {
+        const response = await instance.request(item.config)
+        item.resolve(response)
+      } catch (err) {
+        item.reject(err)
+      }
+    }
+  }
+
+  return { instance, retryQueuedRequests }
 }

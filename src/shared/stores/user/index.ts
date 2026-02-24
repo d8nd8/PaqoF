@@ -39,6 +39,8 @@ function parseTelegramUser(initData: string): TelegramUser | null {
 
 const useUserStore = create<IUserStore>((set) => ({
   isAuthenticated: !!localStorage.getItem('access-token'),
+  isPinVerified: true,
+  isPinRequired: false,
   loading: false,
   operations: null,
   token: localStorage.getItem('access-token'),
@@ -78,11 +80,14 @@ const useUserStore = create<IUserStore>((set) => ({
     console.log('[setUserData] store updated, user:', user)
   },
 
+  setIsPinVerified: (value) => set({ isPinVerified: value }),
+
   login: async (payload) => {
     set({ loading: true })
     try {
       await userApi.login(payload)
-      set({ isAuthenticated: true })
+      set({ isPinVerified: true })
+      window.dispatchEvent(new Event('auth-success'))
     } finally {
       set({ loading: false })
     }
@@ -92,7 +97,7 @@ const useUserStore = create<IUserStore>((set) => ({
     set({ loading: true })
     try {
       const data = await userApi.auth()
-      set({ userFromServer: data })
+      set({ userFromServer: data, isPinRequired: data.isPinRequired })
     } finally {
       set({ loading: false })
     }
@@ -116,6 +121,7 @@ const useUserStore = create<IUserStore>((set) => ({
     set({ loading: true })
     try {
       await userApi.setEntryCode(payload)
+      set({ isPinRequired: true })
     } finally {
       set({ loading: false })
     }
@@ -125,6 +131,7 @@ const useUserStore = create<IUserStore>((set) => ({
     set({ loading: true })
     try {
       await userApi.changeEntryCode(payload)
+      set({ isPinRequired: true })
     } finally {
       set({ loading: false })
     }
@@ -134,6 +141,7 @@ const useUserStore = create<IUserStore>((set) => ({
     set({ loading: true })
     try {
       await userApi.deleteEntryCode(payload)
+      set({ isPinRequired: false })
     } finally {
       set({ loading: false })
     }

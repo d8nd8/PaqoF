@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import * as S from './SecurityPinCode.styled'
 import DeleteIcon from '@icons/backspace.svg?react'
 import { useTranslation } from 'react-i18next'
+
+import * as S from './SecurityPinCode.styled'
 
 type PinStatus = 'default' | 'success' | 'error'
 type Mode = 'create' | 'createNew' | 'confirm' | 'remove'
@@ -15,12 +16,12 @@ interface SecurityPinCodeProps {
 }
 
 export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
-                                                                  mode = 'create',
-                                                                  maxLength = 4,
-                                                                  onComplete,
-                                                                  error,
-                                                                  onChangeRequest,
-                                                                }) => {
+  mode = 'create',
+  maxLength = 4,
+  onComplete,
+  error,
+  onChangeRequest,
+}) => {
   const { t } = useTranslation()
 
   const [pin, setPin] = useState('')
@@ -31,7 +32,6 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
   const [isLocked, setIsLocked] = useState(false)
   const [isShaking, setIsShaking] = useState(false)
 
-
   const handleInput = (val: string) => {
     if (isLocked || pin.length >= maxLength) return
     if (status === 'error') {
@@ -40,7 +40,6 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
     }
     setPin((prev) => prev + val)
   }
-
 
   const handleDelete = () => {
     if (status === 'error') {
@@ -73,7 +72,6 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
       return () => clearTimeout(timeout)
     }
   }, [error])
-
 
   useEffect(() => {
     if (pin.length !== maxLength || isLocked) return
@@ -137,14 +135,10 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
 
   const renderSubtitle = () => {
     if (mode === 'create') {
-      return step === 1
-        ? t('pin.create.subtitle')
-        : t('pin.create.repeatSubtitle')
+      return step === 1 ? t('pin.create.subtitle') : t('pin.create.repeatSubtitle')
     }
     if (mode === 'createNew') {
-      return step === 1
-        ? t('pin.change.subtitle')
-        : t('pin.change.repeatSubtitle')
+      return step === 1 ? t('pin.change.subtitle') : t('pin.change.repeatSubtitle')
     }
     if (mode === 'remove') return t('pin.remove.subtitle')
     return ''
@@ -158,7 +152,11 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
       <S.PinContainer>
         <S.PinWrapper shaking={isShaking}>
           {Array.from({ length: maxLength }).map((_, i) => (
-            <S.Bullet key={i} status={status} filled={i < pin.length} />
+            <S.Bullet
+              key={i}
+              status={status}
+              filled={i < pin.length}
+            />
           ))}
         </S.PinWrapper>
 
@@ -167,12 +165,19 @@ export const SecurityPinCode: React.FC<SecurityPinCodeProps> = ({
 
       <S.Keypad>
         {[...'123456789'].map((num) => (
-          <S.Key key={num} onClick={() => handleInput(num)} disabled={isLocked}>
+          <S.Key
+            key={num}
+            onClick={() => handleInput(num)}
+            disabled={isLocked}
+          >
             {num}
           </S.Key>
         ))}
         <S.EmptyKey />
-        <S.Key onClick={() => handleInput('0')} disabled={isLocked}>
+        <S.Key
+          onClick={() => handleInput('0')}
+          disabled={isLocked}
+        >
           0
         </S.Key>
         <S.Key

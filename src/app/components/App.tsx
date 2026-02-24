@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Wrapper, WrapperRoot } from '@/app/components/App.styled'
 import { router } from '@/app/router'
 import { SecurityPinCode } from '@/features/security-pin-code'
+import { retryQueuedRequests } from '@/shared/api'
 import FullOverlay from '@/shared/components/full-overlay/FullOverlay'
 import Loader from '@/shared/components/Loader/Loader'
 import Preloader from '@/shared/components/Preloader/Preloader'
@@ -16,12 +17,10 @@ import { RouterProvider } from 'react-router-dom'
 const App = () => {
   const { headerOffset, fullscreen, fullscreenCentered, setFullscreen } =
     useApplicationStore()
-  const { setUserData, login, user, auth } = useUserStore()
+  const { setUserData, login, user, auth, isPinVerified, isPinRequired } = useUserStore()
   const { fetchInitialWalletsAndRates, initialLoading } = useWalletStore()
 
   const [safeAreaBottom, setSafeAreaBottom] = useState(0)
-  const [isPinVerified, setIsPinVerified] = useState(false)
-  const [isPinRequired, setIsPinRequired] = useState(false)
   const [pinError, setPinError] = useState<string | null>(null)
 
   const rawInitData = useSafeInitData()
@@ -123,38 +122,6 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawInitData])
 
-  // Проверяем PIN после загрузки пользователя (объединенная логика)
-  useEffect(() => {
-    if (!user?.id) {
-      // Если нет пользователя, очищаем PIN из localStorage
-      const savedPin = localStorage.getItem('pin-code')
-      if (savedPin) {
-        console.log('[App] Clearing saved PIN (no user data)')
-        localStorage.removeItem('pin-code')
-      }
-      setIsPinRequired(false)
-      setIsPinVerified(false)
-      return
-    }
-
-    const savedPin = localStorage.getItem('pin-code')
-    console.log('[App] Checking PIN requirement:', {
-      userId: user.id,
-      savedPin: !!savedPin,
-    })
-
-    // Требуем PIN только если есть сохраненный PIN
-    if (savedPin) {
-      console.log('[App] PIN required: user has saved PIN')
-      setIsPinRequired(true)
-      setIsPinVerified(false)
-    } else {
-      console.log('[App] No PIN required - no saved PIN in localStorage')
-      setIsPinRequired(false)
-      setIsPinVerified(true) // Разрешаем доступ, если нет PIN
-    }
-  }, [user])
-
   useEffect(() => {
     const handleUnauthorized = () => {
       // При ошибке аутентификации проверяем, есть ли сохраненный PIN
@@ -168,8 +135,6 @@ const App = () => {
       // 2. И есть информация о пользователе (значит это не новый пользователь)
       if (savedPin && user?.id) {
         console.log('[App] PIN required after unauthorized: user has PIN and user data')
-        setIsPinRequired(true)
-        setIsPinVerified(false)
       } else {
         console.log(
           '[App] PIN not required after unauthorized: no saved PIN or no user data',
@@ -186,6 +151,14 @@ const App = () => {
     return () => window.removeEventListener('unauthorized', handleUnauthorized)
   }, [])
 
+  useEffect(() => {
+    const onAuthSuccess = () => {
+      retryQueuedRequests()
+    }
+    window.addEventListener('auth-success', onAuthSuccess)
+    return () => window.removeEventListener('auth-success', onAuthSuccess)
+  }, [])
+
   const handlePinComplete = async (enteredPin: string) => {
     if (!user?.id) return
 
@@ -194,12 +167,6 @@ const App = () => {
         entryCode: enteredPin,
         telegramId: user.id,
       })
-
-      localStorage.setItem('pin-code', enteredPin)
-
-      setIsPinVerified(true)
-      setIsPinRequired(false)
-      setPinError(null)
     } catch (error: any) {
       console.error('[App] PIN login error:', error)
 
@@ -214,8 +181,7 @@ const App = () => {
       if (isUserNotFound) {
         console.log('[App] User not found in DB, clearing PIN and allowing access')
         localStorage.removeItem('pin-code')
-        setIsPinVerified(true)
-        setIsPinRequired(false)
+
         setPinError(null)
       } else {
         setPinError('Неверный PIN-код')
@@ -225,19 +191,8 @@ const App = () => {
 
   // return <Loader />
 
-  const mainContent =
-    isPinRequired && !isPinVerified ? (
-      <FullOverlay
-        isOpen={true}
-        onClose={() => null}
-      >
-        <SecurityPinCode
-          mode="confirm"
-          onComplete={handlePinComplete}
-          error={pinError}
-        />
-      </FullOverlay>
-    ) : (
+  return (
+    <>
       <Wrapper
         fullscreen={fullscreen}
         fullscreenCentered={fullscreenCentered}
@@ -249,19 +204,28 @@ const App = () => {
         </WrapperRoot>
         <Preloader />
       </Wrapper>
-    )
+      {isPinRequired && (
+        <FullOverlay
+          isOpen={!isPinVerified}
+          onClose={() => null}
+        >
+          <SecurityPinCode
+            mode="confirm"
+            onComplete={handlePinComplete}
+            error={pinError}
+          />
+        </FullOverlay>
+      )}
 
-  return (
-    <>
-      {!initialLoading && mainContent}
       <AnimatePresence mode="wait">
-        {initialLoading && (
+        {initialLoading && isPinVerified && (
           <motion.div
             key="modal"
-            initial={{ opacity: 0.3 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1, transition: { duration: 0.3 } }}
             exit={{ opacity: 0 }}
             style={{
+              zIndex: 10000,
               position: 'fixed',
               inset: 0,
               width: '100%',

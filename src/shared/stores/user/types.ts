@@ -9,6 +9,8 @@ import type { TelegramUser } from '@/shared/types/user'
 
 export default interface IUserStore {
   isAuthenticated: boolean
+  isPinVerified: boolean
+  isPinRequired: boolean
   loading: boolean
   operations: OperationList | null
   token: string | null
@@ -16,6 +18,7 @@ export default interface IUserStore {
   userFromServer: { isNewUser: boolean } | null
 
   setUserData: (initData: string) => void
+  setIsPinVerified: (value: boolean) => void
   login: (payload: LoginRequest) => Promise<void>
   auth: () => Promise<void>
   setEntryCode: (payload: SetEntryCodeRequest) => Promise<void>

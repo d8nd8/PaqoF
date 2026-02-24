@@ -1,142 +1,140 @@
-import React, { useState } from "react";
-import Toggle from "@/shared/components/Toggle/Toggle";
-import { SecurityPinCode } from "@/features/security-pin-code";
-import FullOverlay from "@/shared/components/full-overlay/FullOverlay";
-import useUserStore from "@/shared/stores/user";
-import { useTranslation } from "react-i18next";
+import React, { useState } from 'react'
+import { SecurityPinCode } from '@/features/security-pin-code'
+import FullOverlay from '@/shared/components/full-overlay/FullOverlay'
+import Toggle from '@/shared/components/Toggle/Toggle'
+import useUserStore from '@/shared/stores/user'
+import { useTranslation } from 'react-i18next'
 
-type Step = "idle" | "create" | "confirm-old" | "create-new" | "remove";
+type Step = 'idle' | 'create' | 'confirm-old' | 'create-new' | 'remove'
 
 type Props = {
-  onOverlayChange?: (open: boolean) => void;
-};
+  onOverlayChange?: (open: boolean) => void
+}
 
 export const PinToggle: React.FC<Props> = ({ onOverlayChange }) => {
-  const { t } = useTranslation();
-  const { setEntryCode, changeEntryCode, deleteEntryCode } = useUserStore();
+  const { t } = useTranslation()
+  const { setEntryCode, changeEntryCode, deleteEntryCode, isPinRequired } = useUserStore()
 
-  const [enabled, setEnabled] = useState(Boolean(localStorage.getItem("pin")));
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [step, setStep] = useState<Step>("idle");
-  const [oldPin, setOldPin] = useState<string | null>(null);
-  const [pinError, setPinError] = useState<string | null>(null);
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [step, setStep] = useState<Step>('idle')
+  const [oldPin, setOldPin] = useState<string | null>(null)
+  const [pinError, setPinError] = useState<string | null>(null)
 
   const openOverlay = (newStep: Step) => {
-    setStep(newStep);
-    setShowOverlay(true);
-    setPinError(null);
-    onOverlayChange?.(true);
-  };
+    setStep(newStep)
+    setShowOverlay(true)
+    setPinError(null)
+    onOverlayChange?.(true)
+  }
 
   const closeOverlay = () => {
-    setShowOverlay(false);
-    setPinError(null);
-    onOverlayChange?.(false);
-  };
+    setShowOverlay(false)
+    setPinError(null)
+    onOverlayChange?.(false)
+  }
 
   const handleToggle = () => {
-    if (!enabled) {
-      openOverlay("create");
+    if (!isPinRequired) {
+      openOverlay('create')
     } else {
-      openOverlay("remove");
+      openOverlay('remove')
     }
-  };
+  }
 
   const handleChangeCode = () => {
-    openOverlay("confirm-old");
-  };
+    openOverlay('confirm-old')
+  }
 
   const handleComplete = async (pin: string) => {
-    const savedPin = localStorage.getItem("pin");
+    const savedPin = localStorage.getItem('pin')
 
     try {
-      if (step === "create") {
-        await setEntryCode({ code: pin });
-        localStorage.setItem("pin", pin);
-        setEnabled(true);
-        setPinError(null);
-        closeOverlay();
-        return;
+      if (step === 'create') {
+        await setEntryCode({ code: pin })
+        localStorage.setItem('pin', pin)
+        setPinError(null)
+        closeOverlay()
+        return
       }
 
-
-      if (step === "remove") {
-        if (savedPin === pin) {
-          await deleteEntryCode({ code: pin });
-          localStorage.removeItem("pin");
-          setEnabled(false);
-          setPinError(null);
-          closeOverlay();
-        } else {
-          setPinError(t("pin.errors.wrong"));
+      if (step === 'remove') {
+        try {
+          await deleteEntryCode({ code: pin })
+          setPinError(null)
+          closeOverlay()
+        } catch {
+          setPinError(t('pin.errors.wrong'))
         }
-        return;
+        return
       }
 
-
-      if (step === "confirm-old") {
+      if (step === 'confirm-old') {
         if (savedPin === pin) {
-          setOldPin(pin);
-          setStep("create-new");
-          setPinError(null);
+          setOldPin(pin)
+          setStep('create-new')
+          setPinError(null)
         } else {
-          setPinError(t("pin.errors.wrong"));
+          setPinError(t('pin.errors.wrong'))
         }
-        return;
+        return
       }
 
-
-      if (step === "create-new" && oldPin) {
-        await changeEntryCode({ oldCode: oldPin, newCode: pin });
-        localStorage.setItem("pin", pin);
-        setEnabled(true);
-        setPinError(null);
-        closeOverlay();
+      if (step === 'create-new' && oldPin) {
+        await changeEntryCode({ oldCode: oldPin, newCode: pin })
+        localStorage.setItem('pin', pin)
+        setPinError(null)
+        closeOverlay()
       }
-    } catch  {
-      setPinError(t("pin.errors.processing"));
+    } catch {
+      setPinError(t('pin.errors.processing'))
     }
-  };
+  }
 
   return (
     <>
-      <Toggle checked={enabled} onChange={handleToggle} />
+      <Toggle
+        checked={isPinRequired}
+        onChange={handleToggle}
+      />
 
-      <FullOverlay isOpen={showOverlay} onClose={closeOverlay}>
-        {step === "idle" && enabled ? (
+      <FullOverlay
+        isOpen={showOverlay}
+        onClose={closeOverlay}
+      >
+        {step === 'idle' && isPinRequired ? (
           <button
             type="button"
             onClick={handleChangeCode}
             style={{
               marginTop: 20,
-              padding: "12px 16px",
+              padding: '12px 16px',
               borderRadius: 8,
-              background: "#eee",
+              background: '#eee',
               fontSize: 14,
-              cursor: "pointer",
+              cursor: 'pointer',
             }}
           >
-            {t("pin.changeButton")}
+            {t('pin.changeButton')}
           </button>
         ) : (
           <SecurityPinCode
             mode={
-              step === "create"
-                ? "create"
-                : step === "remove"
-                  ? "remove"
-                  : step === "confirm-old"
-                    ? "confirm"
-                    : "createNew"
+              step === 'create'
+                ? 'create'
+                : step === 'remove'
+                  ? 'remove'
+                  : step === 'confirm-old'
+                    ? 'confirm'
+                    : 'createNew'
             }
             onComplete={handleComplete}
-            onChangeRequest={() => setStep("confirm-old")}
+            onChangeRequest={() => setStep('confirm-old')}
             error={pinError}
           />
         )}
       </FullOverlay>
     </>
-  );
-};
+  )
+}
 
-export default PinToggle;
+export default PinToggle
