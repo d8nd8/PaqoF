@@ -13,7 +13,11 @@ import useUserStore from '@/shared/stores/user'
 import useWalletStore from '@/shared/stores/wallet'
 import { useTranslation } from 'react-i18next'
 
-import { mapOperationToTransactionData, truncateText } from './history.utils'
+import {
+  getOperationDisplayUsdtAmount,
+  mapOperationToTransactionData,
+  truncateText,
+} from './history.utils'
 import {
   Amount,
   AmountSecondary,
@@ -298,7 +302,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
 
       {Object.entries(groupedByDate).map(([date, ops]) => {
         const totalUsd = ops.reduce((sum, op) => {
-          const value = parseFloat(op.totalAmount || '0')
+          const value = getOperationDisplayUsdtAmount(op)
           const sign = op.operationType === 'withdraw' ? -1 : 1
           return sum + value * sign
         }, 0)
@@ -327,10 +331,11 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
                 const { icon, title, category, txType } = mapOperationType(
                   op.operationType,
                 )
+                const operationUsdtAmount = getOperationDisplayUsdtAmount(op)
                 const rubAmount =
-                  usdtRate && op.totalAmount
-                    ? (parseFloat(op.totalAmount) * usdtRate).toFixed(2)
-                    : op.totalAmount
+                  usdtRate != null
+                    ? (operationUsdtAmount * usdtRate).toFixed(2)
+                    : operationUsdtAmount.toFixed(2)
                 const sign = op.operationType === 'withdraw' ? '-' : '+'
                 return (
                   <TransactionItem
@@ -351,7 +356,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
                       </Amount>
                       <AmountSecondary type={txType}>
                         {sign}
-                        {op.totalAmount} USDT
+                        {operationUsdtAmount.toFixed(2)} USDT
                       </AmountSecondary>
                     </TransactionRight>
                   </TransactionItem>

@@ -49,6 +49,21 @@ interface GroupedOperations {
   items: OperationListItem[];
 }
 
+const parseOperationAmount = (value: string | undefined): number => {
+  if (!value) return 0
+  const parsed = parseFloat(value)
+  return Number.isFinite(parsed) ? parsed : 0
+}
+
+export const getOperationDisplayUsdtAmount = (
+  op: Pick<Operation, 'operationType' | 'amount' | 'totalAmount'>,
+): number => {
+  if (op.operationType === 'deposit') {
+    return parseOperationAmount(op.amount)
+  }
+  return parseOperationAmount(op.totalAmount)
+}
+
 
 export const groupOperationsByDate = (
   operations: OperationListItem[],
@@ -86,7 +101,7 @@ export const mapOperationToTransactionData = (op: Operation): TransactionData =>
   const { getRateToRub } = useWalletStore.getState();
   const usdtRate = getRateToRub("USDT") ?? 1;
 
-  const usdtAmount = parseFloat(op.totalAmount || "0");
+  const usdtAmount = getOperationDisplayUsdtAmount(op)
   const rubAmount = usdtAmount * usdtRate;
 
   let status: TransactionData["status"];
@@ -115,7 +130,7 @@ export const mapOperationToTransactionData = (op: Operation): TransactionData =>
   return {
     id: op.operationId,
     type: op.operationType === "deposit" ? "deposit" : "withdraw",
-    amount: rubAmount.toFixed(2),
+    amount: op.operationType === "deposit" ? usdtAmount.toFixed(2) : rubAmount.toFixed(2),
     amountUSD: `${usdtAmount.toFixed(2)} USDT`,
     commission,
     timestamp: op.createdAt,
