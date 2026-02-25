@@ -1,6 +1,7 @@
 import dayjs from "@/shared/config/dayjs.config";
 import type { Transaction } from "@/widgets/history-widget/history.types";
 import type { TransactionData } from "@/features/overlay-transaction-details/transaction-details";
+import type { Operation } from "@/api/services/operation/schemes/operation.schemas";
 import useWalletStore from '@/shared/stores/wallet'
 
 
@@ -34,7 +35,7 @@ export const truncateText = (text: string, maxLength: number): string => {
 };
 
 
-interface Operation {
+interface OperationListItem {
   operationId: string;
   operationType: string;
   status: string;
@@ -45,15 +46,15 @@ interface Operation {
 
 interface GroupedOperations {
   date: string;
-  items: Operation[];
+  items: OperationListItem[];
 }
 
 
 export const groupOperationsByDate = (
-  operations: Operation[],
+  operations: OperationListItem[],
   t: (key: string) => string
 ): GroupedOperations[] => {
-  const groups: Record<string, Operation[]> = {};
+  const groups: Record<string, OperationListItem[]> = {};
 
   operations.forEach((op) => {
     const date = dayjs(op.createdAt).format("YYYY-MM-DD");
@@ -106,15 +107,28 @@ export const mapOperationToTransactionData = (op: Operation): TransactionData =>
       status = "success";
   }
 
+  const creditAmount = op.amount != null ? `${op.amount} USDT` : undefined
+  const receivedAmount =
+    op.totalAmount != null ? `${op.totalAmount} USDT` : undefined
+  const commission = op.fee != null ? `${op.fee} USDT` : undefined
+
   return {
     id: op.operationId,
     type: op.operationType === "deposit" ? "deposit" : "withdraw",
     amount: rubAmount.toFixed(2),
     amountUSD: `${usdtAmount.toFixed(2)} USDT`,
-    commission: "2.75 USDT",
+    commission,
     timestamp: op.createdAt,
     exchangeRate: `${usdtRate.toFixed(2)} ₽/USDT`,
     status,
-    network:   "TRC 20",
-  };
-};
+    network: op.network ?? undefined,
+    creditAmount,
+    receivedAmount,
+    hash: op.txId ?? undefined,
+    transactionId: op.txId ?? undefined,
+    sender: op.fromAddress ?? undefined,
+    explorerUrl: op.explorerUrl ?? undefined,
+    amlStatus: op.amlStatus ?? undefined,
+    hasAMLIssue: op.amlStatus === "suspicious",
+  }
+}

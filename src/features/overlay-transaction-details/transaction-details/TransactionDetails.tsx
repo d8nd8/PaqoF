@@ -24,8 +24,9 @@ export interface TransactionData {
   transactionId?: string
   network?: string
   sender?: string
+  explorerUrl?: string
   hasAMLIssue?: boolean
-  amlStatus?: 'completed' | 'pending' | 'failed'
+  amlStatus?: 'completed' | 'pending' | 'failed' | 'suspicious'
 }
 
 export interface TransactionDetailsProps {

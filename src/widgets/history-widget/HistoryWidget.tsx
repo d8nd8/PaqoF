@@ -373,6 +373,12 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
           isOpen={isOpen}
           onClose={handleClose}
           transaction={selectedTx}
+          onBottomButtonClick={
+            selectedTx.explorerUrl
+              ? () => window.open(selectedTx.explorerUrl!, '_blank', 'noopener,noreferrer')
+              : undefined
+          }
+          showBottomButton={!!selectedTx.explorerUrl}
         />
       )}
     </HistoryWrapper>
