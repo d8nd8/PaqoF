@@ -283,6 +283,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
       style={{ overflow: isOpen ? 'hidden' : 'auto', ...style }}
     >
       <PageHeader
+        style={style}
         title={t('history.title')}
         showBackButton={false}
       />
