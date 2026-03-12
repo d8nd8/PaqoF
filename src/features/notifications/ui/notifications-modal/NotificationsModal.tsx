@@ -29,7 +29,7 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
       isOpen={isOpen}
       title={t('notifications.title')}
       onClose={onClose}
-      style={{ padding: 0 }}
+      style={{ paddingLeft: 0, paddingRight: 0 }}
     >
       {loading ? (
         <div />
