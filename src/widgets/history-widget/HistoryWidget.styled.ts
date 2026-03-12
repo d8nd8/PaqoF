@@ -6,6 +6,7 @@ export const HistoryWrapper = styled.div<{ $variant?: 'default' | 'card' }>(
     flexDirection: 'column',
     padding: $variant === 'card' ? theme.spacing.md : theme.spacing.lg,
     paddingTop: $variant === 'card' ? theme.spacing.lg : theme.spacing.sm,
+    paddingBottom: 0,
     background:
       $variant === 'card'
         ? theme.colors.systemElevatedBackground
