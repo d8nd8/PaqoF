@@ -9,7 +9,7 @@ export const CurrencyWrapper = styled.div`
   background: ${({ theme }) => theme.colors.systemBackground};
 `
 
-export const Header = styled.div(() => ({
+export const Header = styled.div(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
