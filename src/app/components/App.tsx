@@ -189,8 +189,6 @@ const App = () => {
     }
   }
 
-  // return <Loader />
-
   return (
     <>
       <Wrapper
