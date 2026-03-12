@@ -54,11 +54,13 @@ const PAGE_SIZE = 20
 interface HistoryWidgetProps {
   variant?: 'default' | 'card'
   walletId?: string
+  style?: React.CSSProperties
 }
 
 export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   variant = 'default',
   walletId,
+  style,
 }) => {
   const [activeTab, setActiveTab] = useState('all')
   const [isOpen, setIsOpen] = useState(false)
@@ -277,8 +279,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
 
   return (
     <HistoryWrapper
-      style={{ overflow: isOpen ? 'hidden' : 'auto' }}
       $variant={variant}
+      style={{ overflow: isOpen ? 'hidden' : 'auto', ...style }}
     >
       <PageHeader
         title={t('history.title')}
@@ -380,7 +382,8 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
           transaction={selectedTx}
           onBottomButtonClick={
             selectedTx.explorerUrl
-              ? () => window.open(selectedTx.explorerUrl!, '_blank', 'noopener,noreferrer')
+              ? () =>
+                  window.open(selectedTx.explorerUrl!, '_blank', 'noopener,noreferrer')
               : undefined
           }
           showBottomButton={!!selectedTx.explorerUrl}
