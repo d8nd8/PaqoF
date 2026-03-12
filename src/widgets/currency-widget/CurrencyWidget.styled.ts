@@ -3,13 +3,13 @@ import styled from '@emotion/styled'
 export const CurrencyWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xxl};
+  gap: ${({ theme }) => theme.spacing.page};
   padding: ${({ theme }) => theme.spacing.page};
   padding-top: 0;
   background: ${({ theme }) => theme.colors.systemBackground};
 `
 
-export const Header = styled.div(({ theme }) => ({
+export const Header = styled.div(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -98,12 +98,13 @@ export const BalanceSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
 `
 
 export const BalanceAmount = styled.div`
   font-size: ${({ theme }) => theme.typography.fontSize.xxl};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  line-height: 22px;
 `
 
 export const BalanceFiat = styled.div`
@@ -120,102 +121,133 @@ export const ActionsRow = styled.div`
 export const ChainList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: 10px;
 `
 
 export const ChainTypeCard = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  background: ${({ theme }) => theme.colors.systemElevatedBackground};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.md};
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
-`
-
-export const ChainIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: ${({ theme }) => theme.spacing.md};
-  width: 38px;
-  height: 38px;
-`
-
-export const ChainContent = styled.div`
-  flex: 1;
-  display: flex;
   flex-direction: column;
+  gap: 10px;
+  background: ${({ theme }) => theme.colors.systemElevatedBackground};
+  border-radius: 13px;
+  padding: 14px;
+  overflow: hidden;
 `
 
 export const ChainRow = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 10px;
+  min-height: 38px;
 `
 
-export const ChainInfo = styled.div`
+export const ChainIcon = styled.div`
+  position: relative;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & svg {
+    width: 38px;
+    height: 38px;
+  }
+`
+
+export const ChainContent = styled.div`
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding-bottom: 2px;
 `
 
 export const ChainHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  margin-bottom: -2px;
 `
 
 export const ChainTitle = styled.div`
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 13px;
-  line-height: 1;
+  line-height: 18px;
   letter-spacing: -0.08px;
   color: ${({ theme }) => theme.colors.textPrimary};
 `
 
-export const ChainBadge = styled.div`
-  background: ${({ theme }) => theme.colors.neutral300};
+export const ChainBadge = styled.span`
+  flex-shrink: 0;
+  background: ${({ theme }) => theme.colors.textQuaternary};
   color: ${({ theme }) => theme.colors.textPrimary};
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
   font-size: 11px;
-  padding: 2px 6px;
-  border-radius: 6px;
+  line-height: 13px;
+  letter-spacing: 0.06px;
+  padding: 2px 3px;
+  border-radius: 5px;
 `
 
 export const ChainAddress = styled.div`
-  margin-top: -8px;
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.textSecondary} !important;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
-export const ChainFee = styled.div`
-  margin-top: 2px;
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-`
-
-export const CopyGroup = styled.div`
+export const ChainActions = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+  & path {
+    fill: ${({ theme }) => theme.colors.textSecondary};
+  }
 `
 
-export const CopyButton = styled.div`
+export const ChainButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
   padding: 5px;
+  border: none;
   border-radius: 5px;
   background: ${({ theme }) => theme.colors.textQuaternary};
   cursor: pointer;
-  transition: ${({ theme }) => theme.transition.fast};
+  transition: ${({ theme }) => theme.transition?.fast ?? 'opacity 0.2s'};
 
   svg {
-    width: 20px;
-    height: 20px;
-    fill: ${({ theme }) => theme.colors.reverseBackgroundPrimary};
-    transition: ${({ theme }) => theme.transition.fast};
+    width: 22px;
+    height: 22px;
+    fill: ${({ theme }) =>
+      theme.colors.reverseBackgroundPrimary ?? theme.colors.textPrimary};
   }
+
+  &:active {
+    opacity: 0.8;
+  }
+`
+
+export const ChainFee = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.textSecondary} !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `

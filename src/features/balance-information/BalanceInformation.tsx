@@ -75,7 +75,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       {isVisible ? (
         <S.BalanceAmount>
           {currency} {formattedBalance.integer}
-          <S.BalanceDecimal>.{formattedBalance.decimal}</S.BalanceDecimal>
+          <S.BalanceDecimal>,{formattedBalance.decimal}</S.BalanceDecimal>
         </S.BalanceAmount>
       ) : (
         <S.HiddenBalance>

@@ -8,6 +8,7 @@ import TetherIcon from '@/assets/icons/usdt-icon.svg?react'
 import { ActionItem } from '@/shared/components/ActionItem/ActionItem'
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader'
 import useWalletStore from '@/shared/stores/wallet'
+import { theme } from '@/styles/theme'
 import HistoryWidget from '@/widgets/history-widget/HistoryWidget'
 import CheckIcon from '@icons/check.svg?react'
 import PlusCircleIcon from '@icons/plus-circle.svg?react'
@@ -22,8 +23,10 @@ import {
   BalanceFiat,
   BalanceSection,
   BalanceWrapper,
+  ChainActions,
   ChainAddress,
   ChainBadge,
+  ChainButton,
   ChainContent,
   ChainFee,
   ChainHeader,
@@ -32,8 +35,6 @@ import {
   ChainRow,
   ChainTitle,
   ChainTypeCard,
-  CopyButton,
-  CopyGroup,
   CopyNotification,
   CurrencyWrapper,
 } from './CurrencyWidget.styled'
@@ -71,10 +72,15 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
 
   const balanceRub = rate ? parseFloat(wallet.balance) * rate : null
 
-  const formatter = new Intl.NumberFormat('ru-RU', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+  const formatter = {
+    format: (n: number) =>
+      new Intl.NumberFormat('ru-RU', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+        .format(n)
+        .replace('.', ','),
+  }
 
   const handleCopy = (address: string) => {
     navigator.clipboard.writeText(address)
@@ -82,42 +88,25 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
     setTimeout(() => setCopied(false), 1500)
   }
 
-  const shortenAddress = (address: string, start = 6, end = 6) => {
+  const shortenAddress = (address: string, start = 8, end = 9) => {
     if (!address) return ''
     if (address.length <= start + end) return address
     return `${address.slice(0, start)}...${address.slice(-end)}`
   }
 
-  const renderIcon = () => {
+  const iconSize = { width: 64, height: 64 }
+  const chainIconSize = { width: 38, height: 38 }
+
+  const renderIcon = (size = iconSize) => {
     switch (wallet.currency) {
       case 'USDT':
-        return (
-          <TetherIcon
-            width={64}
-            height={64}
-          />
-        )
+        return <TetherIcon {...size} />
       case 'TON':
-        return (
-          <TonIcon
-            width={64}
-            height={64}
-          />
-        )
+        return <TonIcon {...size} />
       case 'BTC':
-        return (
-          <BtcIcon
-            width={64}
-            height={64}
-          />
-        )
+        return <BtcIcon {...size} />
       default:
-        return (
-          <TetherIcon
-            width={64}
-            height={64}
-          />
-        )
+        return <TetherIcon {...size} />
     }
   }
 
@@ -127,6 +116,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
         <PageHeader
           title={wallet.currency}
           onBack={() => navigate(-1)}
+          style={{ marginBottom: 0 }}
         />
 
         <BalanceWrapper>
@@ -137,13 +127,17 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
             </CopyNotification>
           )}
           <BalanceSection>
-            {renderIcon()}
-            <BalanceAmount>
-              {wallet.balance} {wallet.currency}
-            </BalanceAmount>
-            <BalanceFiat>
-              {balanceRub !== null ? `${formatter.format(balanceRub)} ₽` : '-'}
-            </BalanceFiat>
+            {renderIcon(iconSize)}
+            <div
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            >
+              <BalanceAmount>
+                {wallet.balance} {wallet.currency}
+              </BalanceAmount>
+              <BalanceFiat>
+                {balanceRub !== null ? `${formatter.format(balanceRub)} ₽` : '-'}
+              </BalanceFiat>
+            </div>
           </BalanceSection>
         </BalanceWrapper>
 
@@ -171,31 +165,39 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
         <ChainList>
           {wallet.addresses.map((addr, index) => (
             <ChainTypeCard key={`${addr.address}-${index}`}>
-              <ChainIcon>{renderIcon()}</ChainIcon>
-              <ChainContent>
-                <ChainRow>
+              <ChainRow>
+                <ChainIcon>{renderIcon(chainIconSize)}</ChainIcon>
+                <ChainContent>
                   <ChainHeader>
                     <ChainTitle>{wallet.currency}</ChainTitle>
                     <ChainBadge>{addr.network}</ChainBadge>
                   </ChainHeader>
-                  <CopyGroup>
-                    <CopyButton onClick={onShowScanner}>
-                      <QrIcon
-                        width={20}
-                        height={20}
-                      />
-                    </CopyButton>
-                    <CopyButton onClick={() => handleCopy(addr.address)}>
-                      <CopyIcon
-                        width={20}
-                        height={20}
-                      />
-                    </CopyButton>
-                  </CopyGroup>
-                </ChainRow>
-                <ChainAddress>{shortenAddress(addr.address)}</ChainAddress>
-                <ChainFee>{t('currency.fee', { value: '2.75 USDT' })}</ChainFee>
-              </ChainContent>
+                  <ChainAddress>{shortenAddress(addr.address)}</ChainAddress>
+                </ChainContent>
+                <ChainActions>
+                  <ChainButton
+                    type="button"
+                    onClick={onShowScanner}
+                    aria-label={t('currency.actions.pay')}
+                  >
+                    <QrIcon
+                      width={22}
+                      height={22}
+                    />
+                  </ChainButton>
+                  <ChainButton
+                    type="button"
+                    onClick={() => handleCopy(addr.address)}
+                    aria-label={t('currency.copyNotification')}
+                  >
+                    <CopyIcon
+                      width={22}
+                      height={22}
+                    />
+                  </ChainButton>
+                </ChainActions>
+              </ChainRow>
+              <ChainFee>{t('currency.fee', { value: '2,75 USDT' })}</ChainFee>
             </ChainTypeCard>
           ))}
         </ChainList>
