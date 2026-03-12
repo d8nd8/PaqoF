@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
-
-import * as S from './NotificationList.styled';
+import React, { useState } from 'react'
 import { Notification } from '@/features/notifications'
-import {
-  NotificationDetailsModal
-} from '@/features/notifications/ui/notifications-details-modal/NotificationDetailsModal'
 import type { NotificationProps } from '@/features/notifications/model/mockNotifications'
+import { NotificationDetailsModal } from '@/features/notifications/ui/notifications-details-modal/NotificationDetailsModal'
 import { useTranslation } from 'react-i18next'
 
+import * as S from './NotificationList.styled'
+
 export interface NotificationListProps {
-  notifications: NotificationProps[];
-  onNotificationClick?: (id: string) => void;
+  notifications: NotificationProps[]
+  onNotificationClick?: (id: string) => void
 }
 
 export const NotificationList: React.FC<NotificationListProps> = ({
-                                                                    notifications,
-                                                                    onNotificationClick
-                                                                  }) => {
-  const [selectedNotification, setSelectedNotification] = useState<NotificationProps | null>(null);
+  notifications,
+  onNotificationClick,
+}) => {
+  const [selectedNotification, setSelectedNotification] =
+    useState<NotificationProps | null>(null)
 
   const { t } = useTranslation()
 
   const handleNotificationClick = (notification: NotificationProps) => {
-    setSelectedNotification(notification);
-    onNotificationClick?.(notification.id);
-  };
+    setSelectedNotification(notification)
+    onNotificationClick?.(notification.id)
+  }
 
   const handleCloseModal = () => {
-    setSelectedNotification(null);
-  };
+    setSelectedNotification(null)
+  }
 
   return (
     <S.NotificationListContainer>
@@ -50,14 +49,14 @@ export const NotificationList: React.FC<NotificationListProps> = ({
         notification={
           selectedNotification
             ? {
-              date: selectedNotification.date,
-              title: selectedNotification.title,
-              text: selectedNotification.description,
-              imageUrl: selectedNotification.detailImageUrl
-            }
+                date: selectedNotification.date,
+                title: selectedNotification.title,
+                text: selectedNotification.description,
+                imageUrl: selectedNotification.detailImageUrl,
+              }
             : null
         }
       />
     </S.NotificationListContainer>
-  );
-};
+  )
+}

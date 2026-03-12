@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { FullscreenModal } from '@/shared/ui/fullscreen-modal/FullscreenModal'
 import { NotificationList } from '@/features/notifications'
-import { useTranslation } from 'react-i18next'
 import useNotificationsApiStore from '@/shared/stores/notifications'
+import { FullscreenModal } from '@/shared/ui/fullscreen-modal/FullscreenModal'
+import { useTranslation } from 'react-i18next'
 
 interface NotificationsModalProps {
   isOpen: boolean
@@ -10,9 +10,9 @@ interface NotificationsModalProps {
 }
 
 export const NotificationsModal: React.FC<NotificationsModalProps> = ({
-                                                                        isOpen,
-                                                                        onClose,
-                                                                      }) => {
+  isOpen,
+  onClose,
+}) => {
   const { t } = useTranslation()
   const { notifications, fetch, loading, markAsRead } = useNotificationsApiStore()
 
@@ -29,9 +29,10 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
       isOpen={isOpen}
       title={t('notifications.title')}
       onClose={onClose}
+      style={{ padding: 0 }}
     >
       {loading ? (
-        <div/>
+        <div />
       ) : (
         <NotificationList
           notifications={notifications.map((n) => ({
