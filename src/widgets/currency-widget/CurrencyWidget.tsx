@@ -205,7 +205,7 @@ export const CurrencyWidget: React.FC<CurrencyWidgetProps> = ({
 
       <HistoryWidget
         variant="card"
-        style={{ paddingTop: 0 }}
+        style={{ paddingTop: 20 }}
         walletId={wallet.walletId}
       />
     </>

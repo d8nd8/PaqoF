@@ -280,7 +280,7 @@ export const HistoryWidget: React.FC<HistoryWidgetProps> = ({
   return (
     <HistoryWrapper
       $variant={variant}
-      style={{ overflow: isOpen ? 'hidden' : 'auto', ...style }}
+      style={{ overflow: isOpen ? 'hidden' : 'auto' }}
     >
       <PageHeader
         style={style}
