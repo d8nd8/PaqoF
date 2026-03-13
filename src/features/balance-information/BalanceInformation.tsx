@@ -16,6 +16,7 @@ interface BalanceCardProps {
   balance: number
   currency?: string
   isVisible?: boolean
+  onToggleVisibility?: () => void
   onTopUp?: () => void
   onSend?: () => void
   onPay?: () => void
@@ -26,17 +27,26 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   hasNotifications = false,
   balance,
   currency = '₽',
-  isVisible: initialVisibility = true,
+  isVisible,
+  onToggleVisibility,
   onTopUp,
   onSend,
   onPay,
   onNotificationsClick,
 }) => {
-  const [isVisible, setIsVisible] = useState(initialVisibility)
+  const [internalVisible, setInternalVisible] = useState(true)
   const { t } = useTranslation()
   const user = useUserStore((s) => s.user)
 
-  const toggleVisibility = () => setIsVisible(!isVisible)
+  const visible = isVisible ?? internalVisible
+
+  const toggleVisibility = () => {
+    if (onToggleVisibility) {
+      onToggleVisibility()
+    } else {
+      setInternalVisible((prev) => !prev)
+    }
+  }
 
   const formatBalance = (amount: number) => {
     const parts = amount.toFixed(2).split('.')
@@ -68,11 +78,11 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       <S.BalanceHeader>
         <S.BalanceTitle>{t('main.balanceTitle')}</S.BalanceTitle>
         <S.EyeButton onClick={toggleVisibility}>
-          {isVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
+          {visible ? <EyeOpenIcon /> : <EyeClosedIcon />}
         </S.EyeButton>
       </S.BalanceHeader>
 
-      {isVisible ? (
+      {visible ? (
         <S.BalanceAmount>
           {currency} {formattedBalance.integer}
           <S.BalanceDecimal>,{formattedBalance.decimal}</S.BalanceDecimal>

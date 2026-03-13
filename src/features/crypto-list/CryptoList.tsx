@@ -27,6 +27,7 @@ interface CryptoItemProps {
   rightSection?: React.ReactNode
   disableNavigation?: boolean
   infoVariant?: InfoVariant
+  isBalanceVisible?: boolean
 }
 
 export const CryptoItem: React.FC<CryptoItemProps> = ({
@@ -36,6 +37,7 @@ export const CryptoItem: React.FC<CryptoItemProps> = ({
   rightSection,
   disableNavigation = false,
   infoVariant = 'price',
+  isBalanceVisible = true,
 }) => {
   const navigate = useNavigate()
 
@@ -97,8 +99,12 @@ export const CryptoItem: React.FC<CryptoItemProps> = ({
       {showRightSection &&
         (rightSection || (
           <S.CryptoAmount>
-            <S.CryptoAmountValue>{data.amount}</S.CryptoAmountValue>
-            <S.CryptoAmountInRubles>{data.amountInRubles}</S.CryptoAmountInRubles>
+            <S.CryptoAmountValue>
+              {isBalanceVisible ? data.amount : '••••••••'}
+            </S.CryptoAmountValue>
+            <S.CryptoAmountInRubles>
+              {isBalanceVisible ? data.amountInRubles : '••••••••'}
+            </S.CryptoAmountInRubles>
           </S.CryptoAmount>
         ))}
     </S.CryptoItemContainer>
@@ -112,6 +118,7 @@ interface CryptoListProps {
   renderRightSection?: (crypto: CryptoItemData) => React.ReactNode
   disableNavigation?: boolean
   infoVariant?: InfoVariant
+  isBalanceVisible?: boolean
 }
 
 export const CryptoList: React.FC<CryptoListProps> = ({
@@ -121,6 +128,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
   renderRightSection,
   disableNavigation = false,
   infoVariant = 'price',
+  isBalanceVisible = true,
 }) => {
   return (
     <S.CryptoListContainer>
@@ -133,6 +141,7 @@ export const CryptoList: React.FC<CryptoListProps> = ({
           rightSection={renderRightSection?.(crypto)}
           disableNavigation={disableNavigation}
           infoVariant={infoVariant}
+          isBalanceVisible={isBalanceVisible}
         />
       ))}
     </S.CryptoListContainer>

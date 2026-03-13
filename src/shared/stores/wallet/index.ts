@@ -56,7 +56,9 @@ const useWalletStore = create<IWalletStore>((set, get) => ({
       await Promise.all(currencies.map((c) => get().fetchRates(c)))
       return { wallets }
     } finally {
-      set({ initialLoading: false })
+      setTimeout(() => {
+        set({ initialLoading: false })
+      }, 500)
     }
   },
 

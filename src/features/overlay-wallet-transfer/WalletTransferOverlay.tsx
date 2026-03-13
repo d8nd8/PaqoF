@@ -26,7 +26,12 @@ interface WalletTransferOverlayProps {
   onTopUpClick?: () => void
 }
 
-type ErrorType = 'none' | 'insufficient' | 'invalidAmount' | 'invalidAddress'
+type ErrorType =
+  | 'none'
+  | 'insufficient'
+  | 'invalidAmount'
+  | 'invalidAddress'
+  | 'amountLessThanCommission'
 
 export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
   isOpen,
@@ -92,6 +97,11 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
 
   const sendAmount = amount
 
+  const commissionAmount = useMemo(() => {
+    const numeric = parseFloat(commission.replace(',', '.'))
+    return Number.isFinite(numeric) ? numeric : 0
+  }, [commission])
+
   const fiatValue = useMemo(() => {
     if (!rate) return 0
     return isFiatMode ? sendAmount / rate : sendAmount * rate
@@ -115,6 +125,8 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
       setErrorType('invalidAddress')
     } else if (cryptoAmount > balance) {
       setErrorType('insufficient')
+    } else if (commissionAmount > 0 && cryptoAmount <= commissionAmount) {
+      setErrorType('amountLessThanCommission')
     } else {
       setErrorType('none')
       setShowConfirm(true)
@@ -292,6 +304,12 @@ export const WalletTransferOverlay: React.FC<WalletTransferOverlayProps> = ({
             {errorType === 'invalidAmount' && (
               <S.ErrorSub>
                 {t('currency.overlays.transfer.amount.enterAmount')}
+              </S.ErrorSub>
+            )}
+
+            {errorType === 'amountLessThanCommission' && (
+              <S.ErrorSub>
+                {t('currency.overlays.transfer.amount.lessThanCommission')}
               </S.ErrorSub>
             )}
 

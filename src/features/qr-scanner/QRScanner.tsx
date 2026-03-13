@@ -126,18 +126,33 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   }
 
   const scanImageFile = async (file: File): Promise<boolean> => {
+    let scanner: InstanceType<(typeof import('html5-qrcode'))['Html5Qrcode']> | null =
+      null
+
     try {
+      await closeScanner()
+
       const { Html5Qrcode } = await import('html5-qrcode')
-      const scanner = new Html5Qrcode('gallery-scan-temp')
-      const result = await scanner.scanFile(file, false)
-      await scanner.clear()
+      scanner = new Html5Qrcode('gallery-scan-temp')
+      const result = await scanner.scanFile(file, true)
+
       if (result) {
+        // onScan(result)
         setIsPaymentOverlayOpen(true)
         return true
       }
     } catch (err) {
       console.warn('Ошибка при сканировании:', err)
+    } finally {
+      if (scanner) {
+        try {
+          await scanner.clear()
+        } catch (clearError) {
+          console.warn('Ошибка при очистке file scanner:', clearError)
+        }
+      }
     }
+
     setIsQrErrorOpen(true)
     return false
   }
@@ -196,7 +211,10 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     input.click()
   }
 
-  const handlePayment = async (currency: CryptoItemData, amount: string) => {
+  const handlePayment: (
+    currency: CryptoItemData,
+    amount: string,
+  ) => Promise<void> = async () => {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         // if (Math.random() > 0.3) resolve()

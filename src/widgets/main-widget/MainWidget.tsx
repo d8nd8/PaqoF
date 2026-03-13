@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useMemo, useState } from 'react'
 import { AdBanner } from '@/features/ad-banner/AdBanner'
 import { BalanceCard } from '@/features/balance-information/BalanceInformation'
 import { CryptoList, type CryptoItemData } from '@/features/crypto-list/CryptoList'
@@ -22,6 +22,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
 }) => {
   const navigate = useNavigate()
   const { wallets, loading, rates } = useWalletStore()
+  const [isBalanceVisible, setIsBalanceVisible] = useState(true)
 
   const getRateToRubSync = useMemo(() => {
     return (currency: string) => {
@@ -75,6 +76,8 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
         balance={totalBalanceRub}
         currency="₽"
         hasNotifications
+        isVisible={isBalanceVisible}
+        onToggleVisibility={() => setIsBalanceVisible((prev) => !prev)}
         onTopUp={onTopUp}
         onSend={onSend}
         onPay={onPay}
@@ -91,6 +94,7 @@ export const MainWidget: React.FC<MainWidgetProps> = ({
         ) : (
           <CryptoList
             cryptos={cryptos}
+            isBalanceVisible={isBalanceVisible}
             onCryptoClick={(crypto) => console.log('Clicked:', crypto)}
           />
         )}
