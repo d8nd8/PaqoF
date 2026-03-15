@@ -83,6 +83,47 @@ export const AvatarPlaceholder = styled.div(({ theme }) => ({
   letterSpacing: '1px',
 }))
 
+export const AchievementsBadge = styled.div(({ theme }) => ({
+  position: 'absolute',
+  right: '8px',
+  bottom: '8px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  width: '68px',
+  height: '32px',
+  padding: '0 2px',
+  background: theme.colors.systemElevatedBackground,
+  borderRadius: '13px',
+  boxSizing: 'border-box',
+}))
+
+export const AchievementItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '32px',
+  height: '32px',
+  padding: '4px',
+  borderRadius: '5px',
+  overflow: 'hidden',
+  boxSizing: 'border-box',
+})
+
+export const AchievementIconWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '19px',
+  height: '19px',
+  flexShrink: 0,
+  '& svg': {
+    display: 'block',
+    width: '19px',
+    height: '19px',
+  },
+})
+
 export const Content = styled.div(({ theme }) => ({
   background: theme.colors.systemBackground,
   padding: theme.spacing.lg,

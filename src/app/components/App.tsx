@@ -202,18 +202,17 @@ const App = () => {
         </WrapperRoot>
         <Preloader />
       </Wrapper>
-      {isPinRequired && (
-        <FullOverlay
-          isOpen={!isPinVerified}
-          onClose={() => null}
-        >
-          <SecurityPinCode
-            mode="confirm"
-            onComplete={handlePinComplete}
-            error={pinError}
-          />
-        </FullOverlay>
-      )}
+      <FullOverlay
+        isOpen={!isPinVerified}
+        onClose={() => null}
+        exitOnlyAnimation
+      >
+        <SecurityPinCode
+          mode="confirm"
+          onComplete={handlePinComplete}
+          error={pinError}
+        />
+      </FullOverlay>
 
       <AnimatePresence mode="wait">
         {initialLoading && isPinVerified && (

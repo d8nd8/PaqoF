@@ -4,37 +4,45 @@ import { AnimatePresence } from 'framer-motion'
 
 import * as S from './FullOverlay.styled'
 
-interface FullOverlayProps {
-  isOpen: boolean
-  onClose: () => void
-  children: React.ReactNode
-}
+import type { FullOverlayProps } from './FullOverlay.types'
 
 export const FullOverlay: React.FC<FullOverlayProps> = ({
   isOpen,
   onClose,
   children,
+  exitOnlyAnimation = false,
 }) => {
   const { top, bottom } = useSafeAreaInsets()
+
+  const backdropInitial = exitOnlyAnimation ? { opacity: 1 } : { opacity: 0 }
+  const backdropAnimate = { opacity: 1 }
+  const backdropExit = exitOnlyAnimation
+    ? { opacity: 0, transition: { duration: 0.2 } }
+    : { opacity: 0 }
+  const contentInitial = exitOnlyAnimation ? { y: 0 } : { y: '100%' }
+  const contentAnimate = { y: 0 }
+  const contentExit = exitOnlyAnimation
+    ? { y: '100%', transition: { duration: 0.3, ease: 'easeOut' as const } }
+    : { y: '100%' }
 
   return (
     <AnimatePresence>
       {isOpen && (
         <S.Backdrop
           style={{ zIndex: 10000 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          initial={backdropInitial}
+          animate={backdropAnimate}
+          exit={backdropExit}
+          transition={exitOnlyAnimation ? { duration: 0 } : { duration: 0.2 }}
           onClick={onClose}
         >
           <S.Content
             $top={top}
             $bottom={bottom}
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            initial={contentInitial}
+            animate={contentAnimate}
+            exit={contentExit}
+            transition={exitOnlyAnimation ? { duration: 0 } : { duration: 0.3, ease: 'easeOut' }}
             onClick={(e) => e.stopPropagation()}
           >
             <S.CloseButton
